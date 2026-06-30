@@ -30,10 +30,11 @@ dissertation-context-import-2026-06-30
 Что изменено:
 
 1. Добавлен `Docs/DISSERTATION/PROJECT_STATUS.md`.
-2. Добавлен `Docs/DISSERTATION/DISSERTATION_AUDIT.md`.
-3. Добавлен `Docs/DISSERTATION/SOURCE_REGISTER.md`.
-4. Добавлен `Docs/DISSERTATION/RESEARCH_TASKS_MATRIX.md`.
-5. Зафиксированы рабочая тема, специальность, исходные данные, архитектурная логика, аудит глав, источники и связь задач с инженерными результатами.
+2. Добавлен `Docs/DISSERTATION/DISSERTATION_STRUCTURE.md`.
+3. Добавлен `Docs/DISSERTATION/DISSERTATION_AUDIT.md`.
+4. Добавлен `Docs/DISSERTATION/SOURCE_REGISTER.md`.
+5. Добавлен `Docs/DISSERTATION/RESEARCH_TASKS_MATRIX.md`.
+6. Зафиксированы рабочая тема, специальность, исходные данные, архитектурная логика, структура диссертации, аудит глав, источники и связь задач с инженерными результатами.
 
 Зачем изменено:
 
