@@ -1,8 +1,8 @@
 # Hardware
 
-Раздел предназначен для аппаратной части проекта ПДУ БНПА / PlataVM.
+Аппаратная часть проекта ПДУ БНПА / PlataVM.
 
-## Структура
+## Структура V1.5
 
 ```text
 Hardware/
@@ -11,14 +11,11 @@ Hardware/
 └─ Mechanical/
 ```
 
-## Правило
-
 Перед добавлением схем, PCB или механики необходимо свериться с:
 
 1. `Docs/PROJECT_MASTER.md`;
 2. `Docs/ARCHITECTURE_BASELINE.md`;
-3. `Docs/REQUIREMENTS.md`;
-4. `Docs/PCB_RULES.md`;
-5. `Docs/OPEN_QUESTIONS.md`.
+3. `Docs/POWER_TREE_V1_5.md`;
+4. `Docs/OPEN_QUESTIONS.md`.
 
-Переход к PCB допускается только после `schematic freeze V1.4`.
+Переход к PCB допускается только после `schematic freeze V1.5`.
