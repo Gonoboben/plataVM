@@ -3,14 +3,16 @@
 Статус:
 
 ```text
-interfaces baseline for V1.5 battery architecture clarification
+interfaces baseline for V1.5 minimal battery housing
 ```
 
-## 1. Основной интерфейс
+## 1. Основной внешний интерфейс
 
 ```text
 isolated RS-485 half-duplex
 ```
+
+RS-485 используется между ПДУ и верхним уровнем, но не проходит в корпуса основных АКБ.
 
 CAN/CAN-FD не входит в baseline V1.5 и допускается только как optional/future.
 
@@ -26,43 +28,69 @@ CAN/CAN-FD не входит в baseline V1.5 и допускается толь
 | 5V_CRIT | critical power path | MCU/связь/датчики |
 | 3V3_CRIT | 5V_CRIT | цифровая логика |
 
-`MAIN_INPUT_BUS` и центральный `K_MAIN` не используются.
+## 3. Межкорпусная линия каждой АКБ
 
-## 3. Сигналы батарейных ветвей
+Через СН-176А-12 передаются только:
+
+1. параллельная группа `BAT+`;
+2. параллельная группа `BAT−`;
+3. одна или две пассивные линии управления контактором `K_BATx`.
+
+Не передаются:
+
+1. RS-485;
+2. CAN;
+3. UART;
+4. цифровая телеметрия BMS;
+5. локальная MCU-связь.
+
+## 4. Сигналы батарейных ветвей в корпусе электроники
 
 Для АКБ_1:
 
-1. `BAT1_CONTACTOR_ON` / `BAT1_CONTACTOR_OFF`.
-2. `BAT1_CONTACTOR_FB`.
-3. `BAT1_MAIN_SW_EN`.
-4. `BAT1_BALANCE_SW_EN`.
-5. `BAT1_PACK_PRESENT`.
-6. `BAT1_V`.
-7. `BAT1_I`.
-8. `BAT1_T`.
-9. `BAT1_BMS_STATUS`, если доступен.
+1. `BAT1_K_CTRL_A`;
+2. `BAT1_K_CTRL_B`, если нужен второй провод управления;
+3. `BAT1_MAIN_SW_EN`;
+4. `BAT1_BALANCE_SW_EN`;
+5. `BAT1_PRESENT_SENSE`;
+6. `BAT1_V`;
+7. `BAT1_I`;
+8. `BAT1_RAW_V` после межкорпусного соединителя.
 
 Для АКБ_2 используются симметричные сигналы `BAT2_*`.
 
-## 4. Сигналы HARD_OFF
+`BATx_K_CTRL_A/B` — не цифровой интерфейс, а низкоуровневые цепи управления катушкой контактора.
+
+## 5. Контроль состояния контактора
+
+Базовый контроль выполняется по:
+
+1. команде управления;
+2. появлению или исчезновению `BATx_RAW_V`;
+3. току `BATx_I`;
+4. влиянию ветви на `PACK_BUS_V`.
+
+Отдельный auxiliary feedback допускается как опция при наличии свободного контакта и подходящего контактора.
+
+## 6. Сигналы HARD_OFF
 
 1. `EXT_KILL` — независимый аппаратный запрос аварийного отключения.
 2. `HARD_OFF_REQ` — программный запрос штатного завершения.
-3. `BAT1_CONTACTOR_OFF`.
-4. `BAT2_CONTACTOR_OFF`.
+3. аппаратный запрет драйвера `K_BAT1`.
+4. аппаратный запрет драйвера `K_BAT2`.
 5. `BAT1_MAIN_SW_EN = 0`.
 6. `BAT2_MAIN_SW_EN = 0`.
 7. `PACK_BUS_DISCHARGE_EN`, если используется управляемый разряд.
 8. `PACK_BUS_V` — контроль остаточного напряжения.
 
-## 5. Сигналы POWER_12V_BUS
+## 7. Сигналы POWER_12V_BUS
 
 1. `CH1_EN` ... `CH11_EN`.
 2. `CH1_FAULT` ... `CH14_FAULT`.
 3. `CH1_ISENSE` ... `CH14_ISENSE`.
-4. `CH12...CH14` являются Always-On monitored и отключаются защитой, SAFE и HARD_OFF.
+4. `CH12...CH14` — Always-On monitored.
 
-## 6. Сигналы 5V_SYS_BUS
+## 8. Сигналы 5V_SYS_BUS
 
 1. `5V_SYS_EN`.
 2. `5V_OUT1_EN` ... `5V_OUT7_EN`.
@@ -70,17 +98,17 @@ CAN/CAN-FD не входит в baseline V1.5 и допускается толь
 4. `5V_OUT1_ISENSE` ... `5V_OUT10_ISENSE`.
 5. `5V_OUT8...5V_OUT10` — Always-On monitored.
 
-## 7. Сигналы LIGHT_POWER_BRANCH
+## 9. Сигналы LIGHT_POWER_BRANCH
 
 1. `LED1_PWM` ... `LED6_PWM`.
 2. `LED1_FAULT` ... `LED6_FAULT`.
 3. `LED1_ISENSE` ... `LED6_ISENSE`.
-4. общая команда `LIGHT_BRANCH_EN`.
+4. `LIGHT_BRANCH_EN`.
 
-## 8. Минимальная телеметрия
+## 10. Минимальная телеметрия
 
-1. BAT1_V/I/T/SoC/PACK_PRESENT/contactor feedback.
-2. BAT2_V/I/T/SoC/PACK_PRESENT/contactor feedback.
+1. BAT1_V/I/PRESENT/commanded contactor state.
+2. BAT2_V/I/PRESENT/commanded contactor state.
 3. PACK_BUS_V и суммарный ток.
 4. состояния CH1...CH14 и токи каналов.
 5. состояния 5V_OUT1...5V_OUT10 и токи каналов.
@@ -88,4 +116,6 @@ CAN/CAN-FD не входит в baseline V1.5 и допускается толь
 7. состояние EMG.
 8. режим FSM.
 9. fault-коды и журнал событий.
-10. состояние RS-485.
+10. состояние внешнего RS-485.
+
+Внутренняя температура ячеек и цифровой статус BMS не входят в доступную телеметрию текущей архитектуры.
