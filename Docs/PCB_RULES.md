@@ -2,28 +2,51 @@
 
 ## 1. Зонирование
 
-PCB должна иметь зоны:
+Аппаратная часть должна быть разделена на зоны или отдельные платы:
 
-1. Battery Front-End.
-2. BATTERY_DISCONNECT / PRECHARGE.
-3. MAIN_INPUT_BUS.
+1. Battery Front-End #1.
+2. Battery Front-End #2.
+3. PACK_BUS и общий ввод силовых ветвей.
 4. POWER_12V_BUS CH1...CH14.
-5. 5V_SYS_BUS.
+5. 5V_SYS_BUS и 5V_OUT1...5V_OUT10.
 6. LIGHT_POWER_BRANCH.
-7. RESERVE_BRANCH / critical.
+7. RESERVE_BRANCH / critical domain.
 8. MCU/ADC.
 9. RS-485.
 10. Service/debug.
+
+Центральные `K_MAIN` и `MAIN_INPUT_BUS` не закладываются.
 
 ## 2. Главные ограничения
 
 1. Не разводить PCB до schematic freeze V1.5.
 2. Силовые токи не должны возвращаться через MCU-зону.
-3. 5V_SYS_BUS и 5V_CRIT должны быть разведены как разные домены.
-4. LIGHT_POWER_BRANCH не смешивать с POWER_12V_BUS.
-5. EXT_KILL и BATTERY_DISCONNECT должны иметь понятную аппаратную трассу.
-6. Все выходы должны иметь разъёмы и маркировку.
+3. Battery Front-End #1 и #2 должны быть симметричны.
+4. Токи BAT+/BAT− от СН-176А-12 должны идти короткими широкими путями к Battery Front-End.
+5. 5V_SYS_BUS и 5V_CRIT должны быть разведены как разные домены.
+6. LIGHT_POWER_BRANCH не смешивать с POWER_12V_BUS.
+7. HARD_OFF должен иметь независимые аппаратные трассы к обеим батарейным ветвям.
+8. Балансировочные резисторы и ключи должны иметь отдельный тепловой расчёт и зону отвода тепла.
+9. Все выходы должны иметь разъёмы и маркировку.
+10. При многоплатной архитектуре силовые токи между платами передавать силовыми жгутами, шинами или специализированными разъёмами, а не сигнальными board-to-board контактами.
 
 ## 3. Обязательные test points
 
-PACK_BUS, MAIN_INPUT_BUS, POWER_12V_BUS, 5V_SYS_BUS, 5V_CRIT, 3V3_CRIT, LIGHT_POWER_BRANCH, RS-485 A/B, SWD, UART, GND_PWR, GND_SIG.
+1. BAT1_RAW.
+2. BAT2_RAW.
+3. BAT1_V / BAT1_I sense.
+4. BAT2_V / BAT2_I sense.
+5. PACK_BUS.
+6. POWER_12V_BUS.
+7. 5V_SYS_BUS.
+8. 5V_CRIT.
+9. 3V3_CRIT.
+10. LIGHT_POWER_BRANCH.
+11. BALANCE_PATH_1 / BALANCE_PATH_2.
+12. RS-485 A/B.
+13. SWD и UART.
+14. GND_PWR и GND_SIG.
+
+## 4. Разряд PACK_BUS
+
+Если используется управляемый разряд, разрядный ключ и резистор должны размещаться в силовой зоне с контролем температуры. Если используется постоянный bleeder, его потери в RUN должны быть включены в энергетический бюджет.
