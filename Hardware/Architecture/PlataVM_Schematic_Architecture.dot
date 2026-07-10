@@ -1,0 +1,37 @@
+digraph PlataVM {
+  graph [rankdir=LR, splines=ortho, nodesep=0.6, ranksep=0.9];
+  node [shape=box, style="rounded", fontname="Arial"];
+  edge [fontname="Arial"];
+
+  BAT1 [label="АКБ_1\nBMS + K_BAT1\nСН-176А-12"];
+  BAT2 [label="АКБ_2\nBMS + K_BAT2\nСН-176А-12"];
+
+  A [label="PCB-A_BFE_POWER\nBFE_1 / BFE_2\nMAIN_SW / DECK_BALANCE\nPACK_BUS / HARD_OFF"];
+  B [label="PCB-B_CTRL_RESERVE\nMCU / EMG / 5V_CRIT\nSupervisor / RS-485"];
+  C [label="PCB-C_POWER_12V\nCH1...CH14"];
+  D [label="PCB-D_POWER_5V\n5V_SYS\n5V_OUT1...10"];
+  E [label="PCB-E_LIGHT_POWER\n6 LED drivers"];
+
+  HOST [label="HOST / Computer\nisolated RS-485"];
+  OUT12 [label="12 V loads"];
+  OUT5 [label="5 V loads"];
+  LED [label="6 × Epistar XY-J45"];
+
+  BAT1 -> A [label="BAT1+/BAT1−\nREMOTE_OFF"];
+  BAT2 -> A [label="BAT2+/BAT2−\nREMOTE_OFF"];
+
+  A -> C [label="PACK_BUS_P12_IN"];
+  A -> D [label="PACK_BUS_P5_IN"];
+  A -> E [label="PACK_BUS_LIGHT_IN"];
+  A -> B [label="PACK_BUS_CRIT_IN"];
+
+  B -> A [dir=both, label="control / diagnostics\nEXT_KILL_HW"];
+  B -> C [dir=both, label="P12 control / diagnostics"];
+  B -> D [dir=both, label="P5 control / diagnostics"];
+  B -> E [dir=both, label="PWM / faults / current"];
+
+  HOST -> B [dir=both, label="RS-485"];
+  C -> OUT12;
+  D -> OUT5;
+  E -> LED;
+}

@@ -1,5 +1,53 @@
 # Хронология PlataVM
 
+## 2026-07-10 — принятие многоплатной SCHEMATIC ARCHITECTURE
+
+Решение пользователя:
+
+```text
+выбор на многоплатную архитектуру
+перейти к SCHEMATIC ARCHITECTURE
+```
+
+Принято:
+
+1. Система разбивается на пять функциональных PCB-модулей:
+   - PCB-A_BFE_POWER;
+   - PCB-B_CTRL_RESERVE;
+   - PCB-C_POWER_12V;
+   - PCB-D_POWER_5V;
+   - PCB-E_LIGHT_POWER.
+2. Межсоединения выполняются отдельным пассивным INTERCONNECT: жгут, шины, силовые перемычки и/или пассивная backplane.
+3. Высокие токи распределяются от PCB-A звездой или рассчитанной силовой шиной и не проходят через PCB-B.
+4. Ширина каждого PCB-модуля не более 100 мм.
+5. Принята иерархия листов KiCad и единый корневой проект.
+6. Логические межплатные интерфейсы фиксируются до выбора физических разъёмов.
+7. POWER_GND, SIGNAL_GND, ISO_GND и CHASSIS сохраняются как разные сети до отдельного решения.
+8. Подбор конкретных компонентов временно не является главным этапом.
+9. Допускаются функциональные блоки TBD при фиксированных интерфейсах, направлениях энергии и безопасных состояниях.
+
+Созданы документы:
+
+```text
+Docs/SCHEMATIC_ARCHITECTURE.md
+Docs/INTERBOARD_INTERFACES.md
+Docs/NET_NAMING_RULES.md
+Docs/adr/ADR-2026-07-10-multiboard-schematic-architecture.md
+Hardware/KiCad/README.md
+```
+
+Следующий шаг:
+
+```text
+KiCad workspace
+→ 00_SYSTEM_TOP
+→ пять TOP-листов функциональных плат
+→ 02_INTERBOARD_POWER_AND_CONTROL
+→ pin count
+→ ground/chassis policy
+→ первый schematic architecture review
+```
+
 ## 2026-07-10 — предварительная электрическая база требований K_BAT1/K_BAT2
 
 Цель этапа:
