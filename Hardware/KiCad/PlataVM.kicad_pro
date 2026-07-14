@@ -1,0 +1,26 @@
+{
+  "meta": {
+    "version": 1,
+    "filename": "PlataVM.kicad_pro"
+  },
+  "name": "PlataVM",
+  "project": {
+    "title": "PlataVM V1.5 schematic architecture skeleton",
+    "rev": "A0",
+    "date": "2026-07-14"
+  },
+  "schematic": {
+    "root": "PlataVM.kicad_sch",
+    "status": "architecture skeleton only",
+    "source_of_truth": [
+      "Docs/SCHEMATIC_ARCHITECTURE.md",
+      "Docs/INTERBOARD_INTERFACES.md",
+      "Docs/NET_NAMING_RULES.md"
+    ]
+  },
+  "notes": [
+    "This file starts the KiCad workspace. KiCad may add default project settings on first local save.",
+    "No component part numbers are selected in this commit.",
+    "High-current PCB modules and control PCB boundaries follow the accepted multiboard schematic architecture."
+  ]
+}

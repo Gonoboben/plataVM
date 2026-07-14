@@ -1,0 +1,27 @@
+(kicad_sch
+  (version 20230121)
+  (generator "PlataVM_GPT_architecture_skeleton")
+  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0101")
+  (paper "A3")
+  (title_block
+    (title "01_EXTERNAL_BATTERIES_AND_HARNESS")
+    (date "2026-07-14")
+    (rev "A0")
+    (comment 1 "External battery housings and harness boundaries")
+  )
+  (text "BATTERY HOUSING BOUNDARY:\nАКБ_1 / АКБ_2: LiFePO4 4S24P -> autonomous BMS -> BAT_PROT+ / BAT_PROT- -> power fuse -> monostable K_BATx -> СН-176А-12.\nNo MCU, no RS-485/CAN/UART, no digital BMS telemetry, no raw branch."
+    (at 20 25 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "SN-176A-12 PINOUT:\nPins 1-5: BAT+\nPins 6-10: BAT-\nPin 11: REMOTE_OFF / K_BAT_HOLD_RETURN\nPin 12: RESERVE\nLOCAL_START is separate 2-pin momentary NO connector and does not pass through SN-176A-12."
+    (at 20 75 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "K_BATx HOLD LOOP:\nBAT_PROT+ -> F_CTRL -> LOCAL_START_NO || K_BAT_AUX_NO -> K_BAT_COIL -> pin 11 -> REMOTE_OFF_NC / EXT_KILL_NC -> BAT_PROT-."
+    (at 20 130 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (sheet_instances
+    (path "/01_EXTERNAL_BATTERIES_AND_HARNESS" (page "3"))
+  )
+)

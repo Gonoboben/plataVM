@@ -1,0 +1,27 @@
+(kicad_sch
+  (version 20230121)
+  (generator "PlataVM_GPT_architecture_skeleton")
+  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0110")
+  (paper "A3")
+  (title_block
+    (title "10_BFE_POWER_TOP - PCB-A_BFE_POWER")
+    (date "2026-07-14")
+    (rev "A0")
+    (comment 1 "Battery Front-End, PACK_BUS, DECK_BALANCE, HARD_OFF final actuators")
+  )
+  (text "PCB-A_BFE_POWER CONTAINS:\nBAT1/BAT2 input protection, voltage/current measurements, MAIN_SW1/2, BALANCE_SW1/2 + R_BAL1/2, PACK_BUS, PACK_BUS_DISCHARGE, REMOTE_OFF_NC final elements, EXT_KILL final hardware path."
+    (at 20 25 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "POWER INTERFACES:\nInputs: BAT1+/BAT1-, BAT2+/BAT2- from SN-176A-12 after external K_BATx.\nOutputs: PACK_BUS_CRIT_IN, PACK_BUS_P12_IN, PACK_BUS_P5_IN, PACK_BUS_LIGHT_IN, POWER_GND.\nPACK_BUS distribution must be star or calculated bus, not routed through PCB-B."
+    (at 20 75 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "CONTROL/DIAGNOSTICS:\nInputs from PCB-B: BATx_MAIN_SW_EN, BATx_BALANCE_SW_EN, BATx_HOLD_LOOP_OPEN_CMD, PACK_BUS_DISCHARGE_EN, EXT_KILL_HW.\nOutputs to PCB-B: BATx_PRESENT, BATx_VSENSE, BATx_ISENSE, PACK_BUS_VSENSE, BFE fault signals."
+    (at 20 135 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (sheet_instances
+    (path "/10_BFE_POWER_TOP" (page "5"))
+  )
+)

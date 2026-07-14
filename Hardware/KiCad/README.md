@@ -1,10 +1,10 @@
 # KiCad workspace PlataVM
 
-Статус: `SCHEMATIC ARCHITECTURE INITIALIZED`
+Статус: `KICAD SCHEMATIC SKELETON CREATED`
 
 ## 1. Назначение
 
-Каталог является источником истины для электрической принципиальной схемы и последующих PCB. До создания валидных KiCad-файлов архитектура определяется документами:
+Каталог является источником истины для электрической принципиальной схемы и последующих PCB. Архитектурные ограничения задаются документами:
 
 ```text
 Docs/SCHEMATIC_ARCHITECTURE.md
@@ -12,19 +12,27 @@ Docs/INTERBOARD_INTERFACES.md
 Docs/NET_NAMING_RULES.md
 ```
 
-## 2. Планируемая структура
+Manifest созданного схемного скелета:
+
+```text
+Hardware/KiCad/SCHEMATIC_SKELETON_MANIFEST.md
+```
+
+## 2. Текущая созданная структура
 
 ```text
 Hardware/KiCad/
 ├── PlataVM.kicad_pro
 ├── PlataVM.kicad_sch
-├── sheets/
-│   ├── system/
-│   ├── pcb_a_bfe_power/
-│   ├── pcb_b_ctrl_reserve/
-│   ├── pcb_c_power_12v/
-│   ├── pcb_d_power_5v/
-│   └── pcb_e_light_power/
+├── 00_SYSTEM_TOP.kicad_sch
+├── 01_EXTERNAL_BATTERIES_AND_HARNESS.kicad_sch
+├── 02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
+├── 10_BFE_POWER_TOP.kicad_sch
+├── 20_CTRL_RESERVE_TOP.kicad_sch
+├── 30_POWER_12V_TOP.kicad_sch
+├── 40_POWER_5V_TOP.kicad_sch
+├── 50_LIGHT_POWER_TOP.kicad_sch
+├── SCHEMATIC_SKELETON_MANIFEST.md
 ├── symbols/
 ├── footprints/
 ├── 3dmodels/
@@ -36,6 +44,8 @@ Hardware/KiCad/
 │   └── netlists/
 └── reviews/
 ```
+
+Папки библиотек и экспортов будут наполняться после локальной проверки проекта и начала детализации узлов.
 
 ## 3. Правила проекта
 
@@ -49,15 +59,24 @@ Hardware/KiCad/
 8. Экспорты PDF/SVG создаются для review, но не заменяют исходные `.kicad_sch`.
 9. Силовые и сигнальные интерфейсы должны соответствовать `Docs/INTERBOARD_INTERFACES.md`.
 10. Имена сетей должны соответствовать `Docs/NET_NAMING_RULES.md`.
+11. Пока отсутствуют выбранные компоненты, на листах допускаются функциональные блоки и текстовые ограничения уровня A.
 
-## 4. Порядок создания файлов
+## 4. Проверка после открытия в KiCad
 
-1. Создать `PlataVM.kicad_pro` в локальной актуальной версии KiCad.
-2. Создать корневой `PlataVM.kicad_sch`.
-3. Добавить верхние иерархические листы без конкретных компонентов.
-4. Проверить имена всех портов и шин.
-5. Экспортировать PDF/SVG первого архитектурного review.
-6. После review детализировать по одному функциональному узлу через отдельные ветки/PR.
+Локально открыть:
+
+```text
+Hardware/KiCad/PlataVM.kicad_pro
+```
+
+Проверить:
+
+1. проект открывается;
+2. корневой лист `PlataVM.kicad_sch` видит восемь верхних листов;
+3. каждый лист открывается;
+4. KiCad сохраняет файлы без потери структуры;
+5. русские комментарии остаются в UTF-8;
+6. изменения после первого локального сохранения вносятся отдельным commit.
 
 ## 5. Первый архитектурный комплект
 
@@ -72,10 +91,28 @@ Hardware/KiCad/
 50_LIGHT_POWER_TOP
 ```
 
-## 6. Запреты
+## 6. Следующая детализация
+
+Следующий рабочий лист:
+
+```text
+00_SYSTEM_TOP.kicad_sch
+```
+
+Задача следующего PR:
+
+```text
+заменить текстовую архитектуру на функциональные блоки
+добавить hierarchical labels
+проверить соответствие Docs/INTERBOARD_INTERFACES.md
+не выбирать part numbers
+```
+
+## 7. Запреты
 
 1. Не создавать PCB до проверки иерархии и интерфейсов.
 2. Не назначать случайные footprints для TBD-компонентов.
 3. Не объединять POWER_GND, SIGNAL_GND, ISO_GND и CHASSIS без отдельного решения.
 4. Не прокладывать силовые токи через PCB-B_CTRL_RESERVE.
 5. Не вводить новый функциональный интерфейс без обновления архитектурных документов.
+6. Не считать созданные текстовые листы `schematic freeze`: это только архитектурный скелет.
