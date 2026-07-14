@@ -1,0 +1,27 @@
+(kicad_sch
+  (version 20230121)
+  (generator "PlataVM_GPT_architecture_skeleton")
+  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0130")
+  (paper "A3")
+  (title_block
+    (title "30_POWER_12V_TOP - PCB-C_POWER_12V")
+    (date "2026-07-14")
+    (rev "A0")
+    (comment 1 "14-channel 12V distribution, control and diagnostics")
+  )
+  (text "PCB-C_POWER_12V CONTAINS:\nPACK_BUS_P12_IN input, input protection/local bulk capacitance, CH1..CH11 MCU-controlled outputs, CH12..CH14 Always-On monitored outputs, per-channel protection, current diagnostics and output connectors."
+    (at 20 25 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "CONTROL INPUTS:\nP12_CH_EN[1..11], P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF.\nAlways-On monitored CH12..CH14 still must be removable by protection, SAFE and HARD_OFF."
+    (at 20 75 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (text "DIAGNOSTICS OUTPUTS:\nP12_CH_FAULT_N[1..14], P12_CH_ISENSE[1..14], P12_BOARD_TEMP, P12_INPUT_VSENSE, P12_BOARD_FAULT_N.\nPhysical interface may be parallel IO or local IO/ADC plus internal digital bus; TBD."
+    (at 20 125 0)
+    (effects (font (size 1.8 1.8)) (justify left))
+  )
+  (sheet_instances
+    (path "/30_POWER_12V_TOP" (page "7"))
+  )
+)
