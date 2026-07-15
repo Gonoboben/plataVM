@@ -5,12 +5,13 @@
 Дата обновления `02_INTERBOARD_POWER_AND_CONTROL`: 2026-07-15  
 Дата обновления `01_EXTERNAL_BATTERIES_AND_HARNESS`: 2026-07-15  
 Дата обновления PCB top-листов `10/20/30/40/50`: 2026-07-15  
-Дата добавления `10_BFE_POWER` detailed hierarchy: 2026-07-15
+Дата добавления `10_BFE_POWER` detailed hierarchy: 2026-07-15  
+Дата Level B прохода по `11/12/17`: 2026-07-15
 
 Статус:
 
 ```text
-ARCHITECTURE LEVEL A — top sheets + first BFE detailed hierarchy
+ARCHITECTURE LEVEL B — BFE input boundaries and hold-loop logic refined
 ```
 
 ## 1. Назначение
@@ -55,8 +56,9 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 2. Корневой лист `PlataVM.kicad_sch`.
 3. Системные листы `00`, `01`, `02`.
 4. Top-листы PCB-A/PCB-B/PCB-C/PCB-D/PCB-E.
-5. Первый detailed hierarchy пакет для `10_BFE_POWER_TOP`.
-6. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
+5. Detailed hierarchy пакет для `10_BFE_POWER_TOP`.
+6. Level B проход по критичным BFE-листам `11`, `12`, `17`.
+7. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
 
 ## 4. `10_BFE_POWER` detailed hierarchy
 
@@ -86,7 +88,62 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 19    — connector grouping and service testpoints.
 ```
 
-## 5. Что пока не делается
+## 5. Level B уточнение `11/12/17`
+
+В этом проходе уточнены net names и safe-state logic без выбора компонентов.
+
+### 11_BATTERY_INPUT_1
+
+```text
+BAT1_SN176_POS
+BAT1_SN176_NEG
+BAT1_HOLD_RETURN_IN
+BAT1_TO_MAIN_PATH
+BAT1_MEAS_TAPS
+BAT1_PRESENT_STATUS
+```
+
+### 12_BATTERY_INPUT_2
+
+```text
+BAT2_SN176_POS
+BAT2_SN176_NEG
+BAT2_HOLD_RETURN_IN
+BAT2_TO_MAIN_PATH
+BAT2_MEAS_TAPS
+BAT2_PRESENT_STATUS
+```
+
+### 17_REMOTE_OFF_AND_EXT_KILL
+
+```text
+BAT1_HOLD_RETURN_IN
+BAT1_SN176_NEG_RETURN
+BAT2_HOLD_RETURN_IN
+BAT2_SN176_NEG_RETURN
+BAT1_REMOTE_OFF_OPEN_CMD
+BAT2_REMOTE_OFF_OPEN_CMD
+EXT_KILL_HW_CHAIN
+DIAG_HOLD_LOOP_STATUS
+```
+
+Логика hold-loop:
+
+```text
+BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC -> BAT1_REMOTE_OFF_NC -> BAT1_SN176_NEG return
+BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC -> BAT2_REMOTE_OFF_NC -> BAT2_SN176_NEG return
+```
+
+Правила:
+
+```text
+- BAT1/BAT2 hold loops не объединяются по силовому возврату.
+- EXT_KILL может иметь общий источник команды, но не должен зависеть от MCU firmware.
+- REMOTE_OFF_OPEN_CMD размыкает удерживающую цепь, а не подаёт SET/RESET.
+- Восстановление BMS не вызывает автоматический рестарт K_BATx.
+```
+
+## 6. Что пока не делается
 
 1. Не выбирается `K_BATx`.
 2. Не выбираются `MAIN_SWx`.
@@ -98,8 +155,9 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 8. Не назначаются физические межплатные разъёмы.
 9. Не фиксируется окончательный pin-count.
 10. Не выбираются номиналы `F_BATx`, `F_CTRLx`, R_BAL, suppression и PACK_BUS discharge.
+11. Не выбирается технология `REMOTE_OFF_NC / EXT_KILL_NC`.
 
-## 6. Проверка пользователем
+## 7. Проверка пользователем
 
 После checkout ветки открыть:
 
@@ -110,16 +168,9 @@ Hardware/KiCad/PlataVM.kicad_pro
 Минимальная проверка:
 
 ```text
-10_BFE_POWER_TOP
 11_BATTERY_INPUT_1
 12_BATTERY_INPUT_2
-13_MAIN_PATH_1
-14_MAIN_PATH_2
-15_DECK_BALANCE
-16_PACK_BUS_AND_DISCHARGE
 17_REMOTE_OFF_AND_EXT_KILL
-18_BATTERY_MEASUREMENTS
-19_BFE_CONNECTORS_TESTPOINTS
 ```
 
 Проверить:
@@ -130,20 +181,18 @@ Hardware/KiCad/PlataVM.kicad_pro
 4. KiCad не удаляет labels при сохранении;
 5. `.kicad_prl` не попадает в Git changes.
 
-## 7. Следующий инженерный этап
+## 8. Следующий инженерный этап
 
 После проверки этого пакета следующий шаг:
 
 ```text
-BFE schematic symbols and first real functional blocks
+BFE Level B continuation
 ```
 
 Порядок:
 
 ```text
-11_BATTERY_INPUT_1 / 12_BATTERY_INPUT_2
-→ 17_REMOTE_OFF_AND_EXT_KILL
-→ 16_PACK_BUS_AND_DISCHARGE
+16_PACK_BUS_AND_DISCHARGE
 → 13_MAIN_PATH_1 / 14_MAIN_PATH_2
 → 18_BATTERY_MEASUREMENTS
 → 15_DECK_BALANCE
