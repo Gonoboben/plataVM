@@ -6,31 +6,232 @@
 	(paper "A3")
 	(title_block
 		(title "00_SYSTEM_TOP - PlataVM system overview")
-		(date "2026-07-14")
-		(rev "A0")
-		(comment 1 "Architecture level A: functional hierarchy, no part numbers")
+		(date "2026-07-15")
+		(rev "A2")
+		(company "Gonoboben/plataVM")
+		(comment 1 "Architecture Level A: functional blocks and hierarchical labels")
+		(comment 2 "No part numbers, footprints or PCB layout selected on this sheet")
 	)
 	(lib_symbols)
-	(text "SYSTEM POWER FLOW:\nBAT1/BAT2 -> PCB-A_BFE_POWER -> PACK_BUS -> PCB-C_POWER_12V / PCB-D_POWER_5V / PCB-E_LIGHT_POWER / PCB-B_CTRL_RESERVE.\nPCB-B provides MCU, critical power, EMG, RS-485 and control/diagnostics."
+	(text "00_SYSTEM_TOP - SYSTEM ARCHITECTURE LEVEL A\nPurpose: show power flow, control/diagnostic groups, safety paths\nand top-level hierarchical interface names.\nSource of truth: Docs/SCHEMATIC_ARCHITECTURE.md, Docs/INTERBOARD_INTERFACES.md, Docs/NET_NAMING_RULES.md."
 		(exclude_from_sim no)
-		(at 20 25 0)
+		(at 15 10 0)
 		(effects
 			(font
-				(size 2 2)
+				(size 1.7 1.7)
 			)
 			(justify left)
 		)
-		(uuid "54febbe3-693e-4770-abab-3b38ce7b578b")
+		(uuid "a31c6d57-73ed-4a15-b795-c5dbb2e73501")
 	)
-	(text "SAFETY RULES:\n1. No central K_MAIN.\n2. K_BATx is monostable self-hold and opens on BMS output loss.\n3. EXT_KILL hardware path must not depend on MCU.\n4. POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS are not automatically shorted."
+	(text "EXTERNAL BATTERY HOUSINGS\nAKB_1 / AKB_2: LiFePO4 4S24P -> autonomous BMS -> BAT_PROT -> fuse -> K_BATx -> SN-176A-12.\nNo active electronics, no raw branch, no digital BMS telemetry in battery housings."
 		(exclude_from_sim no)
-		(at 20 65 0)
+		(at 12 32 0)
 		(effects
 			(font
-				(size 1.8 1.8)
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "9b0c86f6-10c4-4b41-b5ac-9d8aa0480e01")
+	)
+	(text "PCB-A_BFE_POWER\nTwo symmetric BFE branches, MAIN_SW1/2, DECK_BALANCE, measurements,\nREMOTE_OFF_NC final elements, EXT_KILL final hardware path, PACK_BUS creation."
+		(exclude_from_sim no)
+		(at 120 32 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "1c516bd0-5371-4671-9bdd-6248b52ba160")
+	)
+	(text "PACK_BUS FANOUT\nPACK_BUS is distributed from PCB-A by star wiring or calculated bus.\nNo central K_MAIN. No sequential high-current feed through PCB-B_CTRL_RESERVE."
+		(exclude_from_sim no)
+		(at 80 82 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "98fa353c-c5dc-401a-91aa-065f1a785e9a")
+	)
+	(text "PCB-B_CTRL_RESERVE\nMCU, fault manager, watchdog/supervisor, EMG/KEEP_ALIVE, 5V_CRIT, 3V3_CRIT,\nisolated RS-485, EXT_KILL input/logic and control/diagnostic interfaces."
+		(exclude_from_sim no)
+		(at 12 128 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "26a6a376-9ea7-49ca-9e5b-85cf659e741f")
+	)
+	(text "LOAD POWER MODULES\nPCB-C_POWER_12V: CH1..CH14.\nPCB-D_POWER_5V: 5V_SYS and 5V_OUT1..10.\nPCB-E_LIGHT_POWER: six independent LED drivers."
+		(exclude_from_sim no)
+		(at 150 128 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "2df2748a-b8c3-40c9-9b76-73c22d9851f2")
+	)
+	(text "SAFETY / GROUND RULES\n1. K_BATx opens on BMS protected output loss and does not auto-restart.\n2. EXT_KILL hardware path does not depend on MCU.\n3. POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS remain separate until a\n   dedicated ground/chassis decision."
+		(exclude_from_sim no)
+		(at 12 184 0)
+		(effects
+			(font
+				(size 1.35 1.35)
 			)
 			(justify left)
 		)
 		(uuid "95da9359-e9bc-475b-b195-7d328734e852")
+	)
+	(hierarchical_label "BAT1_TO_BFE"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 92 38 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f001")
+	)
+	(hierarchical_label "BAT2_TO_BFE"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 92 46 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f002")
+	)
+	(hierarchical_label "PACK_BUS_TO_P12"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 168 92 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f003")
+	)
+	(hierarchical_label "PACK_BUS_TO_P5"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 168 100 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f004")
+	)
+	(hierarchical_label "PACK_BUS_TO_LIGHT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 168 108 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f005")
+	)
+	(hierarchical_label "PACK_BUS_TO_CRIT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 168 116 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f006")
+	)
+	(hierarchical_label "CTRL_TO_BFE"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 108 140 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f007")
+	)
+	(hierarchical_label "CTRL_TO_P12"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 108 148 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f008")
+	)
+	(hierarchical_label "CTRL_TO_P5"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 108 156 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f009")
+	)
+	(hierarchical_label "CTRL_TO_LIGHT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 108 164 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f010")
+	)
+	(hierarchical_label "EXT_KILL_HW"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 12 214 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f011")
+	)
+	(hierarchical_label "RS485_ISOLATED"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 12 222 0)
+		(effects
+			(font
+				(size 1.2 1.2)
+			)
+			(justify left)
+		)
+		(uuid "4f85bf5a-b755-4c25-8dbd-a5813a27f012")
 	)
 )
