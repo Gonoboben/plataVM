@@ -1,27 +1,47 @@
 (kicad_sch
-  (version 20230121)
-  (generator "PlataVM_GPT_architecture_skeleton")
-  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0150")
-  (paper "A3")
-  (title_block
-    (title "50_LIGHT_POWER_TOP - PCB-E_LIGHT_POWER")
-    (date "2026-07-14")
-    (rev "A0")
-    (comment 1 "Six independent LED driver channels")
-  )
-  (text "PCB-E_LIGHT_POWER CONTAINS:\nPACK_BUS_LIGHT_IN input, input protection/local energy storage, six independent onboard LED drivers for 6 x Epistar XY-J45, PWM control, current diagnostics, fault signals and LED connectors."
-    (at 20 25 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "CONTROL INPUTS:\nLIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nEach LED channel remains logically independent; physical grouping 3+3 is allowed inside this PCB only."
-    (at 20 75 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "DIAGNOSTICS OUTPUTS:\nLED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nLIGHT_POWER_BRANCH is not powered from POWER_12V_BUS."
-    (at 20 125 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (sheet_instances
-    (path "/50_LIGHT_POWER_TOP" (page "9"))
-  )
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0150")
+	(paper "A3")
+	(title_block
+		(title "50_LIGHT_POWER_TOP - PCB-E_LIGHT_POWER")
+		(date "2026-07-14")
+		(rev "A0")
+		(comment 1 "Six independent LED driver channels")
+	)
+	(lib_symbols)
+	(text "PCB-E_LIGHT_POWER CONTAINS:\nPACK_BUS_LIGHT_IN input, input protection/local energy storage, six independent onboard LED drivers for 6 x Epistar XY-J45, PWM control, current diagnostics, fault signals and LED connectors."
+		(exclude_from_sim no)
+		(at 20 25 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "8dbefb02-a219-4182-8ed8-bfdc95243334")
+	)
+	(text "CONTROL INPUTS:\nLIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nEach LED channel remains logically independent; physical grouping 3+3 is allowed inside this PCB only."
+		(exclude_from_sim no)
+		(at 20 75 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "a7b98586-ab11-4e84-b8e5-881829bdcca4")
+	)
+	(text "DIAGNOSTICS OUTPUTS:\nLED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nLIGHT_POWER_BRANCH is not powered from POWER_12V_BUS."
+		(exclude_from_sim no)
+		(at 20 125 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "accb4d68-220e-46a4-bd0b-4fa73ca0d38d")
+	)
 )

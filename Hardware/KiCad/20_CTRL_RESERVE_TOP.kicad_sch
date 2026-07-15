@@ -1,27 +1,47 @@
 (kicad_sch
-  (version 20230121)
-  (generator "PlataVM_GPT_architecture_skeleton")
-  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0120")
-  (paper "A3")
-  (title_block
-    (title "20_CTRL_RESERVE_TOP - PCB-B_CTRL_RESERVE")
-    (date "2026-07-14")
-    (rev "A0")
-    (comment 1 "MCU, EMG, critical power, supervisor, RS-485, control IO")
-  )
-  (text "PCB-B_CTRL_RESERVE CONTAINS:\nMCU, watchdog/supervisor, EMG/KEEP_ALIVE, RESERVE_BRANCH, 5V_CRIT, 3V3_CRIT, isolated RS-485, optional CAN footprint DNP, service/debug, control and diagnostic IO."
-    (at 20 25 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "POWER RULES:\nReceives PACK_BUS_CRIT_IN only for critical/EMG path.\nDoes not carry summed CH1..CH14 current, 5V_SYS current, LED current, or BAT1/BAT2 main power.\n5V_CRIT and 3V3_CRIT do not power external outputs."
-    (at 20 75 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "SAFETY/CONTROL:\nEXT_KILL input must generate hardware final actions on PCB-A independent of MCU.\nMCU may log and supervise but must not be the only path for HARD_OFF.\nAll interboard signals follow Docs/INTERBOARD_INTERFACES.md and NET_NAMING_RULES.md."
-    (at 20 135 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (sheet_instances
-    (path "/20_CTRL_RESERVE_TOP" (page "6"))
-  )
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0120")
+	(paper "A3")
+	(title_block
+		(title "20_CTRL_RESERVE_TOP - PCB-B_CTRL_RESERVE")
+		(date "2026-07-14")
+		(rev "A0")
+		(comment 1 "MCU, EMG, critical power, supervisor, RS-485, control IO")
+	)
+	(lib_symbols)
+	(text "PCB-B_CTRL_RESERVE CONTAINS:\nMCU, watchdog/supervisor, EMG/KEEP_ALIVE, RESERVE_BRANCH, 5V_CRIT, 3V3_CRIT, isolated RS-485, optional CAN footprint DNP, service/debug, control and diagnostic IO."
+		(exclude_from_sim no)
+		(at 20 25 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "2fb4c91d-81da-4cf6-be00-b419076e8d29")
+	)
+	(text "SAFETY/CONTROL:\nEXT_KILL input must generate hardware final actions on PCB-A independent of MCU.\nMCU may log and supervise but must not be the only path for HARD_OFF.\nAll interboard signals follow Docs/INTERBOARD_INTERFACES.md and NET_NAMING_RULES.md."
+		(exclude_from_sim no)
+		(at 20 135 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "73c1a6e6-ef41-4f06-9116-b33ea69a94b0")
+	)
+	(text "POWER RULES:\nReceives PACK_BUS_CRIT_IN only for critical/EMG path.\nDoes not carry summed CH1..CH14 current, 5V_SYS current, LED current, or BAT1/BAT2 main power.\n5V_CRIT and 3V3_CRIT do not power external outputs."
+		(exclude_from_sim no)
+		(at 20 75 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "fbda2c18-9b49-4003-92f0-acea8d3ee5ce")
+	)
 )

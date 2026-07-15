@@ -1,23 +1,36 @@
 (kicad_sch
-  (version 20230121)
-  (generator "PlataVM_GPT_architecture_skeleton")
-  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0100")
-  (paper "A3")
-  (title_block
-    (title "00_SYSTEM_TOP - PlataVM system overview")
-    (date "2026-07-14")
-    (rev "A0")
-    (comment 1 "Architecture level A: functional hierarchy, no part numbers")
-  )
-  (text "SYSTEM POWER FLOW:\nBAT1/BAT2 -> PCB-A_BFE_POWER -> PACK_BUS -> PCB-C_POWER_12V / PCB-D_POWER_5V / PCB-E_LIGHT_POWER / PCB-B_CTRL_RESERVE.\nPCB-B provides MCU, critical power, EMG, RS-485 and control/diagnostics."
-    (at 20 25 0)
-    (effects (font (size 2.0 2.0)) (justify left))
-  )
-  (text "SAFETY RULES:\n1. No central K_MAIN.\n2. K_BATx is monostable self-hold and opens on BMS output loss.\n3. EXT_KILL hardware path must not depend on MCU.\n4. POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS are not automatically shorted."
-    (at 20 65 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (sheet_instances
-    (path "/00_SYSTEM_TOP" (page "2"))
-  )
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0100")
+	(paper "A3")
+	(title_block
+		(title "00_SYSTEM_TOP - PlataVM system overview")
+		(date "2026-07-14")
+		(rev "A0")
+		(comment 1 "Architecture level A: functional hierarchy, no part numbers")
+	)
+	(lib_symbols)
+	(text "SYSTEM POWER FLOW:\nBAT1/BAT2 -> PCB-A_BFE_POWER -> PACK_BUS -> PCB-C_POWER_12V / PCB-D_POWER_5V / PCB-E_LIGHT_POWER / PCB-B_CTRL_RESERVE.\nPCB-B provides MCU, critical power, EMG, RS-485 and control/diagnostics."
+		(exclude_from_sim no)
+		(at 20 25 0)
+		(effects
+			(font
+				(size 2 2)
+			)
+			(justify left)
+		)
+		(uuid "54febbe3-693e-4770-abab-3b38ce7b578b")
+	)
+	(text "SAFETY RULES:\n1. No central K_MAIN.\n2. K_BATx is monostable self-hold and opens on BMS output loss.\n3. EXT_KILL hardware path must not depend on MCU.\n4. POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS are not automatically shorted."
+		(exclude_from_sim no)
+		(at 20 65 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "95da9359-e9bc-475b-b195-7d328734e852")
+	)
 )

@@ -1,27 +1,47 @@
 (kicad_sch
-  (version 20230121)
-  (generator "PlataVM_GPT_architecture_skeleton")
-  (uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0140")
-  (paper "A3")
-  (title_block
-    (title "40_POWER_5V_TOP - PCB-D_POWER_5V")
-    (date "2026-07-14")
-    (rev "A0")
-    (comment 1 "5V_SYS DC/DC and ten protected 5V outputs")
-  )
-  (text "PCB-D_POWER_5V CONTAINS:\nPACK_BUS_P5_IN input, 5V_SYS DC/DC, 5V_OUT1..5V_OUT10, output protection, current diagnostics, thermal diagnostics and output connectors.\nPreliminary total limit: 15 A continuous / 20 A peak."
-    (at 20 25 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "CONTROL INPUTS:\n5V_SYS_EN, P5_OUT_EN[1..7], P5_GROUP_SAFE_OFF, P5_GROUP_HARD_OFF.\n5V_OUT8..5V_OUT10 are Always-On monitored, but must be disabled by protection, SAFE and HARD_OFF."
-    (at 20 75 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (text "DIAGNOSTICS OUTPUTS:\nP5_OUT_FAULT_N[1..10], P5_OUT_ISENSE[1..10], 5V_SYS_VSENSE, 5V_SYS_TOTAL_ISENSE, P5_BOARD_TEMP, P5_BOARD_FAULT_N.\n5V_SYS_BUS does not power MCU critical domain."
-    (at 20 125 0)
-    (effects (font (size 1.8 1.8)) (justify left))
-  )
-  (sheet_instances
-    (path "/40_POWER_5V_TOP" (page "8"))
-  )
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "bda0d8c4-9c5d-4f61-b850-0f1e88fb0140")
+	(paper "A3")
+	(title_block
+		(title "40_POWER_5V_TOP - PCB-D_POWER_5V")
+		(date "2026-07-14")
+		(rev "A0")
+		(comment 1 "5V_SYS DC/DC and ten protected 5V outputs")
+	)
+	(lib_symbols)
+	(text "CONTROL INPUTS:\n5V_SYS_EN, P5_OUT_EN[1..7], P5_GROUP_SAFE_OFF, P5_GROUP_HARD_OFF.\n5V_OUT8..5V_OUT10 are Always-On monitored, but must be disabled by protection, SAFE and HARD_OFF."
+		(exclude_from_sim no)
+		(at 20 75 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "7a3682b4-16ac-4596-8c30-8a478fffd1e4")
+	)
+	(text "DIAGNOSTICS OUTPUTS:\nP5_OUT_FAULT_N[1..10], P5_OUT_ISENSE[1..10], 5V_SYS_VSENSE, 5V_SYS_TOTAL_ISENSE, P5_BOARD_TEMP, P5_BOARD_FAULT_N.\n5V_SYS_BUS does not power MCU critical domain."
+		(exclude_from_sim no)
+		(at 20 125 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "93d3d26d-6974-4bf0-b509-6b48ed14e8b9")
+	)
+	(text "PCB-D_POWER_5V CONTAINS:\nPACK_BUS_P5_IN input, 5V_SYS DC/DC, 5V_OUT1..5V_OUT10, output protection, current diagnostics, thermal diagnostics and output connectors.\nPreliminary total limit: 15 A continuous / 20 A peak."
+		(exclude_from_sim no)
+		(at 20 25 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+			)
+			(justify left)
+		)
+		(uuid "dfb27855-13cb-44d6-a8ea-9b5a268df865")
+	)
 )
