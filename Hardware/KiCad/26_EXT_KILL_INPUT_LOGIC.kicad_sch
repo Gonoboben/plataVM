@@ -7,9 +7,9 @@
 	(title_block
 		(title "26_EXT_KILL_INPUT_LOGIC - independent emergency shutdown chain")
 		(date "2026-07-15")
-		(rev "B0")
+		(rev "B1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Architecture Level A/B: external EXT_KILL boundary, latch and hardware fanout")
+		(comment 1 "Interface consistency: external input, latch, final actions and HARD_OFF event")
 		(comment 2 "Text-only placeholders; no switch, relay, optocoupler, comparator, latch, connector or footprint selected")
 	)
 	(lib_symbols)
@@ -19,22 +19,22 @@
 		(effects (font (size 1.28 1.28)) (justify left))
 		(uuid "ctrl-reserve-00000026-0000-4000-8000-000000000101")
 	)
-	(text "INPUT BOUNDARY / FAIL-SAFE POLICY\nEXT_KILL_IN_RAW is a logical external boundary; contact topology, active level, line supervision and cable protection remain TBD.\nDisconnect, short, loss of PCB-B normal control and brownout behavior must be explicitly resolved in the next electrical pass.\nThe chosen implementation shall fail toward safe shutdown for credible single faults."
+	(text "INPUT BOUNDARY / FAIL-SAFE POLICY\nEXT_KILL_IN_RAW is the canonical external logical boundary; contact topology, active level, line supervision and cable protection remain TBD.\nDisconnect, short, loss of PCB-B normal control and brownout behavior require the next electrical pass.\nThe chosen implementation shall fail toward safe shutdown for credible single faults."
 		(exclude_from_sim no)
 		(at 12 76 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000026-0000-4000-8000-000000000102")
 	)
-	(text "HARDWARE LATCH / FANOUT\nEXT_KILL_HW_CHAIN is the aggregate hardware output toward PCB-A.\nThe chain must command BAT1/2 hold-loop opening and MAIN_SW1/2 off independently of firmware.\nEXT_KILL_LATCHED prevents automatic restart until an authorized manual reset condition is satisfied."
+	(text "HARDWARE LATCH / FANOUT\nEXT_KILL_HW_CHAIN is the aggregate hardware output toward PCB-A.\nBAT1/2_HOLD_LOOP_OPEN_HW and BAT1/2_MAIN_SW_OFF_HW are the four branch-specific final actions.\nEXT_KILL_LATCHED prevents automatic restart until EXT_KILL_RESET_AUTH is satisfied."
 		(exclude_from_sim no)
 		(at 12 142 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000026-0000-4000-8000-000000000103")
 	)
-	(text "OBSERVATION ONLY\nEXT_KILL_EVENT_STATUS is provided to MCU/fault manager only for logging and status reporting.\nMCU may not mask, clear or delay the hardware outputs.\nService/debug access must not bypass the latch or force final actuators back on."
+	(text "OBSERVATION ONLY\nEXT_KILL_EVENT_STATUS and HARD_OFF_EVENT are observation/event outputs for logging and keep-alive behavior.\nMCU may not mask, clear or delay the hardware outputs.\nService/debug access must not bypass the latch or force final actuators back on."
 		(exclude_from_sim no)
 		(at 12 208 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000026-0000-4000-8000-000000000104")
 	)
 	(hierarchical_label "EXT_KILL_IN_RAW" (shape input) (exclude_from_sim no) (at 150 62 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000201"))
@@ -47,5 +47,6 @@
 	(hierarchical_label "BAT1_MAIN_SW_OFF_HW" (shape output) (exclude_from_sim no) (at 150 192 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000208"))
 	(hierarchical_label "BAT2_MAIN_SW_OFF_HW" (shape output) (exclude_from_sim no) (at 150 200 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000209"))
 	(hierarchical_label "EXT_KILL_EVENT_STATUS" (shape output) (exclude_from_sim no) (at 150 236 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000210"))
-	(hierarchical_label "SIGNAL_GND" (shape passive) (exclude_from_sim no) (at 150 244 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000211"))
+	(hierarchical_label "HARD_OFF_EVENT" (shape output) (exclude_from_sim no) (at 150 244 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000212"))
+	(hierarchical_label "SIGNAL_GND" (shape passive) (exclude_from_sim no) (at 150 252 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000026-0000-4000-8000-000000000211"))
 )
