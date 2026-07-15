@@ -7,9 +7,9 @@
 	(title_block
 		(title "29_CTRL_CONNECTORS_TESTPOINTS - logical connector and test boundary")
 		(date "2026-07-15")
-		(rev "B0")
+		(rev "B1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Architecture Level A/B: interboard, external, EMG and service interface grouping")
+		(comment 1 "Interface consistency: canonical RS485_ISOLATED and EXT_KILL_IN_RAW groups")
 		(comment 2 "No connector family, pin count, pinout, cable, testpoint technology or footprint selected")
 	)
 	(lib_symbols)
@@ -25,10 +25,10 @@
 		(effects (font (size 1.16 1.16)) (justify left))
 		(uuid "ctrl-reserve-00000029-0000-4000-8000-000000000102")
 	)
-	(text "EXTERNAL / SAFETY / SERVICE GROUPS\nRS485_ISOLATED_EXTERNAL, EXT_KILL_EXTERNAL, EMG_4S2P_EXTERNAL and SERVICE_DEBUG remain separate interface classes.\nEXT_KILL routing and disconnect behavior require hardware fail-safe review before connector selection.\nService access cannot share a pin or return path that can defeat safety action."
+	(text "EXTERNAL / SAFETY / SERVICE GROUPS\nRS485_ISOLATED is the external isolated communication group and EXT_KILL_IN_RAW is the external emergency input boundary.\nEMG_4S2P_EXTERNAL and SERVICE_DEBUG remain separate interface classes.\nDisconnect behavior and safety-return implementation require later electrical and mechanical review."
 		(exclude_from_sim no)
 		(at 12 138 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000029-0000-4000-8000-000000000103")
 	)
 	(text "TESTPOINT POLICY\nLow-energy testpoints may observe critical rails, reset, fault latches and communication status.\nNo testpoint may expose an unprotected high-current PACK_BUS path or bridge POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS.\nFinal testpoint ratings, guarding and access restrictions remain TBD."
@@ -46,8 +46,8 @@
 	(hierarchical_label "DIAG_D_TO_B_P5" (shape passive) (exclude_from_sim no) (at 154 128 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000207"))
 	(hierarchical_label "CTRL_B_TO_E_LIGHT" (shape passive) (exclude_from_sim no) (at 154 136 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000208"))
 	(hierarchical_label "DIAG_E_TO_B_LIGHT" (shape passive) (exclude_from_sim no) (at 154 144 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000209"))
-	(hierarchical_label "RS485_ISOLATED_EXTERNAL" (shape passive) (exclude_from_sim no) (at 154 172 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000210"))
-	(hierarchical_label "EXT_KILL_EXTERNAL" (shape passive) (exclude_from_sim no) (at 154 180 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000211"))
+	(hierarchical_label "RS485_ISOLATED" (shape passive) (exclude_from_sim no) (at 154 172 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000210"))
+	(hierarchical_label "EXT_KILL_IN_RAW" (shape passive) (exclude_from_sim no) (at 154 180 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000211"))
 	(hierarchical_label "EMG_4S2P_EXTERNAL" (shape passive) (exclude_from_sim no) (at 154 188 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000212"))
 	(hierarchical_label "SERVICE_DEBUG" (shape passive) (exclude_from_sim no) (at 154 196 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000213"))
 	(hierarchical_label "CTRL_TP_LOW_ENERGY" (shape passive) (exclude_from_sim no) (at 154 232 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000029-0000-4000-8000-000000000214"))
