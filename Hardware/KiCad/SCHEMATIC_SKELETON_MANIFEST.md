@@ -6,12 +6,13 @@
 Дата обновления `01_EXTERNAL_BATTERIES_AND_HARNESS`: 2026-07-15  
 Дата обновления PCB top-листов `10/20/30/40/50`: 2026-07-15  
 Дата добавления `10_BFE_POWER` detailed hierarchy: 2026-07-15  
-Дата Level B прохода по `11/12/17`: 2026-07-15
+Дата Level B прохода по `11/12/17`: 2026-07-15  
+Дата Level B прохода по `13/14/15/16/18/19`: 2026-07-15
 
 Статус:
 
 ```text
-ARCHITECTURE LEVEL B — BFE input boundaries and hold-loop logic refined
+ARCHITECTURE LEVEL B — PCB-A BFE_POWER functional net groups refined
 ```
 
 ## 1. Назначение
@@ -57,12 +58,10 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 3. Системные листы `00`, `01`, `02`.
 4. Top-листы PCB-A/PCB-B/PCB-C/PCB-D/PCB-E.
 5. Detailed hierarchy пакет для `10_BFE_POWER_TOP`.
-6. Level B проход по критичным BFE-листам `11`, `12`, `17`.
+6. Level B net groups для всех подлистов PCB-A `11…19`.
 7. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
 
 ## 4. `10_BFE_POWER` detailed hierarchy
-
-Подлисты PCB-A:
 
 ```text
 11_BATTERY_INPUT_1
@@ -88,11 +87,9 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 19    — connector grouping and service testpoints.
 ```
 
-## 5. Level B уточнение `11/12/17`
+## 5. Level B net groups
 
-В этом проходе уточнены net names и safe-state logic без выбора компонентов.
-
-### 11_BATTERY_INPUT_1
+### 11/12 — BAT input boundaries
 
 ```text
 BAT1_SN176_POS
@@ -101,11 +98,7 @@ BAT1_HOLD_RETURN_IN
 BAT1_TO_MAIN_PATH
 BAT1_MEAS_TAPS
 BAT1_PRESENT_STATUS
-```
 
-### 12_BATTERY_INPUT_2
-
-```text
 BAT2_SN176_POS
 BAT2_SN176_NEG
 BAT2_HOLD_RETURN_IN
@@ -114,33 +107,108 @@ BAT2_MEAS_TAPS
 BAT2_PRESENT_STATUS
 ```
 
-### 17_REMOTE_OFF_AND_EXT_KILL
-
-```text
-BAT1_HOLD_RETURN_IN
-BAT1_SN176_NEG_RETURN
-BAT2_HOLD_RETURN_IN
-BAT2_SN176_NEG_RETURN
-BAT1_REMOTE_OFF_OPEN_CMD
-BAT2_REMOTE_OFF_OPEN_CMD
-EXT_KILL_HW_CHAIN
-DIAG_HOLD_LOOP_STATUS
-```
-
-Логика hold-loop:
+### 17 — REMOTE_OFF / EXT_KILL hold-loop logic
 
 ```text
 BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC -> BAT1_REMOTE_OFF_NC -> BAT1_SN176_NEG return
 BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC -> BAT2_REMOTE_OFF_NC -> BAT2_SN176_NEG return
 ```
 
-Правила:
+Rules:
 
 ```text
-- BAT1/BAT2 hold loops не объединяются по силовому возврату.
-- EXT_KILL может иметь общий источник команды, но не должен зависеть от MCU firmware.
-- REMOTE_OFF_OPEN_CMD размыкает удерживающую цепь, а не подаёт SET/RESET.
-- Восстановление BMS не вызывает автоматический рестарт K_BATx.
+BAT1/BAT2 hold loops не объединяются по силовому возврату.
+EXT_KILL может иметь общий источник команды, но не должен зависеть от MCU firmware.
+REMOTE_OFF_OPEN_CMD размыкает удерживающую цепь, а не подаёт SET/RESET.
+Восстановление BMS не вызывает автоматический рестарт K_BATx.
+```
+
+### 16 — PACK_BUS / discharge
+
+```text
+BFE1_SW_OUT
+BFE2_SW_OUT
+PACK_BUS_NODE
+PACK_BUS_TO_CRIT
+PACK_BUS_TO_P12
+PACK_BUS_TO_P5
+PACK_BUS_TO_LIGHT
+PACK_BUS_DISCHARGE_EN
+DIAG_PACK_BUS_V
+DIAG_PACK_BUS_DISCH_STATUS
+```
+
+### 13/14 — MAIN paths
+
+```text
+BAT1_TO_MAIN_PATH
+MAIN_SW1_INPUT
+MAIN_SW1_OUTPUT
+BFE1_SW_OUT
+CTRL_MAIN_SW1_EN
+MAIN_SW1_SAFE_OFF
+EXT_KILL_HW_CHAIN
+DIAG_MAIN1_I
+DIAG_MAIN1_VIN
+DIAG_MAIN1_VOUT
+DIAG_MAIN1_FAULT
+
+BAT2_TO_MAIN_PATH
+MAIN_SW2_INPUT
+MAIN_SW2_OUTPUT
+BFE2_SW_OUT
+CTRL_MAIN_SW2_EN
+MAIN_SW2_SAFE_OFF
+EXT_KILL_HW_CHAIN
+DIAG_MAIN2_I
+DIAG_MAIN2_VIN
+DIAG_MAIN2_VOUT
+DIAG_MAIN2_FAULT
+```
+
+### 18 — measurements aggregation
+
+```text
+BAT1_MEAS_TAPS
+BAT2_MEAS_TAPS
+DIAG_MAIN1_I / DIAG_MAIN1_VIN / DIAG_MAIN1_VOUT / DIAG_MAIN1_FAULT
+DIAG_MAIN2_I / DIAG_MAIN2_VIN / DIAG_MAIN2_VOUT / DIAG_MAIN2_FAULT
+DIAG_PACK_BUS_V
+DIAG_PACK_BUS_DISCH_STATUS
+DIAG_HOLD_LOOP_STATUS
+DIAG_BALANCE_STATUS
+DIAG_BFE_TO_CTRL
+```
+
+### 15 — deck balance
+
+```text
+BALANCE_TAP_BAT1
+BALANCE_TAP_BAT2
+BALANCE_PATH_TBD
+BALANCE_ARM
+BALANCE_SW1_EN
+BALANCE_SW2_EN
+BALANCE_ABORT
+EXT_KILL_HW_CHAIN
+DIAG_BALANCE_I
+DIAG_BALANCE_TEMP
+DIAG_BALANCE_STATUS
+```
+
+### 19 — connector/testpoint groups
+
+```text
+PACK_BUS_TO_CRIT
+PACK_BUS_TO_P12
+PACK_BUS_TO_P5
+PACK_BUS_TO_LIGHT
+CTRL_BFE_FROM_CTRL
+DIAG_BFE_TO_CTRL
+EXT_KILL_HW_CHAIN
+BFE_TP_LOW_ENERGY
+BFE_TP_POWER_GUARDED
+BFE_FAULT_INJECTION_TP
 ```
 
 ## 6. Что пока не делается
@@ -156,6 +224,7 @@ BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC -> BAT2_REMOTE_OFF_NC -> BAT2_SN176_NEG 
 9. Не фиксируется окончательный pin-count.
 10. Не выбираются номиналы `F_BATx`, `F_CTRLx`, R_BAL, suppression и PACK_BUS discharge.
 11. Не выбирается технология `REMOTE_OFF_NC / EXT_KILL_NC`.
+12. Не выбираются topology/current sensor/ADC frontend/thermal solutions.
 
 ## 7. Проверка пользователем
 
@@ -168,9 +237,16 @@ Hardware/KiCad/PlataVM.kicad_pro
 Минимальная проверка:
 
 ```text
+10_BFE_POWER_TOP
 11_BATTERY_INPUT_1
 12_BATTERY_INPUT_2
+13_MAIN_PATH_1
+14_MAIN_PATH_2
+15_DECK_BALANCE
+16_PACK_BUS_AND_DISCHARGE
 17_REMOTE_OFF_AND_EXT_KILL
+18_BATTERY_MEASUREMENTS
+19_BFE_CONNECTORS_TESTPOINTS
 ```
 
 Проверить:
@@ -186,15 +262,17 @@ Hardware/KiCad/PlataVM.kicad_pro
 После проверки этого пакета следующий шаг:
 
 ```text
-BFE Level B continuation
+First real symbols / connector skeletons for PCB-A BFE_POWER
 ```
 
 Порядок:
 
 ```text
-16_PACK_BUS_AND_DISCHARGE
-→ 13_MAIN_PATH_1 / 14_MAIN_PATH_2
-→ 18_BATTERY_MEASUREMENTS
-→ 15_DECK_BALANCE
-→ 19_BFE_CONNECTORS_TESTPOINTS
+SN-176A-12 placeholder symbols on 11/12
+→ hold-loop NC actuator placeholders on 17
+→ PACK_BUS/discharge placeholders on 16
+→ MAIN_SW path placeholders on 13/14
+→ measurement frontend placeholders on 18
+→ balance placeholders on 15
+→ connector/testpoint placeholders on 19
 ```
