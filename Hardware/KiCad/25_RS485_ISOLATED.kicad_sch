@@ -7,9 +7,9 @@
 	(title_block
 		(title "25_RS485_ISOLATED - external half-duplex communication boundary")
 		(date "2026-07-15")
-		(rev "B0")
+		(rev "B1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Architecture Level A/B: isolated external RS-485 logic, barrier and cable-side domains")
+		(comment 1 "Interface consistency: RS485_LOGIC group and isolated external boundary")
 		(comment 2 "No transceiver, digital isolator, isolated supply, termination, TVS, connector or footprint selected")
 	)
 	(lib_symbols)
@@ -19,10 +19,10 @@
 		(effects (font (size 1.28 1.28)) (justify left))
 		(uuid "ctrl-reserve-00000025-0000-4000-8000-000000000101")
 	)
-	(text "LOGIC-SIDE DOMAIN\nRS485_TX, RS485_RX and RS485_DE belong to the critical control domain referenced to SIGNAL_GND.\nProtocol timing, failsafe behavior and direction-control implementation remain TBD.\nCommunication loss must default control outputs to their separately defined safe states."
+	(text "LOGIC-SIDE DOMAIN\nRS485_LOGIC groups RS485_TX, RS485_RX and RS485_DE between the MCU and this sheet.\nThe member signals belong to the critical control domain referenced to SIGNAL_GND.\nProtocol timing, failsafe behavior and direction-control implementation remain TBD."
 		(exclude_from_sim no)
 		(at 12 72 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000025-0000-4000-8000-000000000102")
 	)
 	(text "ISOLATION BARRIER / CABLE SIDE\nFuture isolation and isolated-power topology shall keep ISO_GND separate from SIGNAL_GND and POWER_GND.\nRS485_A_ISO and RS485_B_ISO are cable-side logical ports.\nIsolation rating, surge protection, common-mode range, termination and biasing require later calculation."
@@ -40,6 +40,7 @@
 	(hierarchical_label "5V_CRIT" (shape input) (exclude_from_sim no) (at 150 58 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000201"))
 	(hierarchical_label "3V3_CRIT" (shape input) (exclude_from_sim no) (at 150 66 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000202"))
 	(hierarchical_label "SIGNAL_GND" (shape passive) (exclude_from_sim no) (at 150 74 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000203"))
+	(hierarchical_label "RS485_LOGIC" (shape passive) (exclude_from_sim no) (at 150 98 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000212"))
 	(hierarchical_label "RS485_TX" (shape input) (exclude_from_sim no) (at 150 106 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000204"))
 	(hierarchical_label "RS485_RX" (shape output) (exclude_from_sim no) (at 150 114 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000205"))
 	(hierarchical_label "RS485_DE" (shape input) (exclude_from_sim no) (at 150 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000025-0000-4000-8000-000000000206"))
