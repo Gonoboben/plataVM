@@ -7,9 +7,9 @@
 	(title_block
 		(title "19_BFE_CONNECTORS_TESTPOINTS - BFE connector/test boundary")
 		(date "2026-07-15")
-		(rev "C1")
+		(rev "C2")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Symbol skeleton: BFE connector groups and protected testpoint placeholders")
+		(comment 1 "Interface consistency: canonical CTRL_B_TO_A and DIAG_A_TO_B connector groups")
 		(comment 2 "No connector family, pin count, wire section, footprint or BOM part selected")
 	)
 	(lib_symbols)
@@ -25,10 +25,10 @@
 		(effects (font (size 1.22 1.22)) (justify left))
 		(uuid "bfe-lb-00000019-0000-4000-8000-000000000102")
 	)
-	(text "PLACEHOLDER ZONE: J19_CTRL_DIAG_TBD\nFuture low-speed control/diagnostic interconnect to PCB-B_CTRL_RESERVE.\nMust keep high-current routing out of PCB-B.\nIsolation/ground reference policy remains governed by system ground rules."
+	(text "PLACEHOLDER ZONE: J19_CTRL_DIAG_TBD\nCTRL_B_TO_A and DIAG_A_TO_B are the canonical grouped low-speed boundaries to PCB-B_CTRL_RESERVE.\nThey carry no high-current load power.\nIsolation/ground reference policy remains governed by system ground rules."
 		(exclude_from_sim no)
 		(at 12 120 0)
-		(effects (font (size 1.22 1.22)) (justify left))
+		(effects (font (size 1.18 1.18)) (justify left))
 		(uuid "bfe-lb-00000019-0000-4000-8000-000000000103")
 	)
 	(text "PLACEHOLDER ZONE: TP19_SERVICE_TBD\nFuture protected testpoints for bring-up, diagnostics and fault injection.\nPower testpoints shall be guarded; low-energy testpoints shall be current-limited.\nService access and labeling remain TBD."
@@ -41,8 +41,8 @@
 	(hierarchical_label "PACK_BUS_TO_P12" (shape passive) (exclude_from_sim no) (at 154 92 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000202"))
 	(hierarchical_label "PACK_BUS_TO_P5" (shape passive) (exclude_from_sim no) (at 154 100 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000203"))
 	(hierarchical_label "PACK_BUS_TO_LIGHT" (shape passive) (exclude_from_sim no) (at 154 108 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000204"))
-	(hierarchical_label "CTRL_BFE_FROM_CTRL" (shape passive) (exclude_from_sim no) (at 154 134 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000205"))
-	(hierarchical_label "DIAG_BFE_TO_CTRL" (shape passive) (exclude_from_sim no) (at 154 142 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000206"))
+	(hierarchical_label "CTRL_B_TO_A" (shape passive) (exclude_from_sim no) (at 154 134 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000205"))
+	(hierarchical_label "DIAG_A_TO_B" (shape passive) (exclude_from_sim no) (at 154 142 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000206"))
 	(hierarchical_label "EXT_KILL_HW_CHAIN" (shape passive) (exclude_from_sim no) (at 154 150 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000207"))
 	(hierarchical_label "BFE_TP_LOW_ENERGY" (shape passive) (exclude_from_sim no) (at 154 184 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000208"))
 	(hierarchical_label "BFE_TP_POWER_GUARDED" (shape passive) (exclude_from_sim no) (at 154 192 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-lb-00000019-0000-4000-8000-000000000209"))
