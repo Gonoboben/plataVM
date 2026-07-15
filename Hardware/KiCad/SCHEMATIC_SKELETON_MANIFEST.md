@@ -6,7 +6,8 @@
 Дата проверки согласованности PCB-A BFE interfaces: 2026-07-15  
 Дата добавления `20_CTRL_RESERVE` detailed hierarchy: 2026-07-15  
 Дата проверки согласованности PCB-B CTRL_RESERVE interfaces: 2026-07-15  
-Дата добавления `30_POWER_12V` detailed hierarchy: 2026-07-15
+Дата добавления `30_POWER_12V` detailed hierarchy: 2026-07-15  
+Дата проверки согласованности PCB-C POWER_12V interfaces: 2026-07-15
 
 Статус:
 
@@ -14,7 +15,7 @@
 ARCHITECTURE LEVEL A/B
 PCB-A BFE_POWER interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-B CTRL_RESERVE interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
-PCB-C POWER_12V detailed hierarchy: ADDED — INTERFACE CHECK PENDING
+PCB-C POWER_12V interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
 ## 1. Назначение
@@ -25,7 +26,7 @@ PCB-C POWER_12V detailed hierarchy: ADDED — INTERFACE CHECK PENDING
 
 1. границы плат и функциональных листов;
 2. направления энергии;
-3. логические управляющие и диагностические интерфейсы;
+3. точные логические управляющие и диагностические интерфейсы;
 4. безопасные состояния;
 5. независимые аппаратные аварийные пути;
 6. controlled placeholders для решений, требующих расчётов или дополнительных исходных данных.
@@ -40,6 +41,7 @@ Docs/INTERBOARD_INTERFACES.md
 Docs/NET_NAMING_RULES.md
 Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
+Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
 ```
 
 ## 2. Созданные KiCad-файлы
@@ -57,60 +59,53 @@ Hardware/KiCad/02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
 ### PCB-A_BFE_POWER
 
 ```text
-Hardware/KiCad/10_BFE_POWER_TOP.kicad_sch
-Hardware/KiCad/11_BATTERY_INPUT_1.kicad_sch
-Hardware/KiCad/12_BATTERY_INPUT_2.kicad_sch
-Hardware/KiCad/13_MAIN_PATH_1.kicad_sch
-Hardware/KiCad/14_MAIN_PATH_2.kicad_sch
-Hardware/KiCad/15_DECK_BALANCE.kicad_sch
-Hardware/KiCad/16_PACK_BUS_AND_DISCHARGE.kicad_sch
-Hardware/KiCad/17_REMOTE_OFF_AND_EXT_KILL.kicad_sch
-Hardware/KiCad/18_BATTERY_MEASUREMENTS.kicad_sch
-Hardware/KiCad/19_BFE_CONNECTORS_TESTPOINTS.kicad_sch
+10_BFE_POWER_TOP
+11_BATTERY_INPUT_1
+12_BATTERY_INPUT_2
+13_MAIN_PATH_1
+14_MAIN_PATH_2
+15_DECK_BALANCE
+16_PACK_BUS_AND_DISCHARGE
+17_REMOTE_OFF_AND_EXT_KILL
+18_BATTERY_MEASUREMENTS
+19_BFE_CONNECTORS_TESTPOINTS
 ```
 
 ### PCB-B_CTRL_RESERVE
 
 ```text
-Hardware/KiCad/20_CTRL_RESERVE_TOP.kicad_sch
-Hardware/KiCad/21_EMG_INPUT_CHARGE_ORING.kicad_sch
-Hardware/KiCad/22_5V_CRIT_3V3_CRIT.kicad_sch
-Hardware/KiCad/23_MCU_CORE.kicad_sch
-Hardware/KiCad/24_WATCHDOG_SUPERVISOR.kicad_sch
-Hardware/KiCad/25_RS485_ISOLATED.kicad_sch
-Hardware/KiCad/26_EXT_KILL_INPUT_LOGIC.kicad_sch
-Hardware/KiCad/27_CONTROL_IO.kicad_sch
-Hardware/KiCad/28_SERVICE_DEBUG.kicad_sch
-Hardware/KiCad/29_CTRL_CONNECTORS_TESTPOINTS.kicad_sch
+20_CTRL_RESERVE_TOP
+21_EMG_INPUT_CHARGE_ORING
+22_5V_CRIT_3V3_CRIT
+23_MCU_CORE
+24_WATCHDOG_SUPERVISOR
+25_RS485_ISOLATED
+26_EXT_KILL_INPUT_LOGIC
+27_CONTROL_IO
+28_SERVICE_DEBUG
+29_CTRL_CONNECTORS_TESTPOINTS
 ```
 
 ### PCB-C_POWER_12V
 
 ```text
-Hardware/KiCad/30_POWER_12V_TOP.kicad_sch
-Hardware/KiCad/31_POWER_12V_INPUT_PROTECTION.kicad_sch
-Hardware/KiCad/32_POWER_12V_CHANNEL_TEMPLATE.kicad_sch
-Hardware/KiCad/33_POWER_12V_CH1_CH7.kicad_sch
-Hardware/KiCad/34_POWER_12V_CH8_CH14.kicad_sch
-Hardware/KiCad/35_POWER_12V_DIAGNOSTICS.kicad_sch
-Hardware/KiCad/36_POWER_12V_CONNECTORS.kicad_sch
+30_POWER_12V_TOP
+31_POWER_12V_INPUT_PROTECTION
+32_POWER_12V_CHANNEL_TEMPLATE
+33_POWER_12V_CH1_CH7
+34_POWER_12V_CH8_CH14
+35_POWER_12V_DIAGNOSTICS
+36_POWER_12V_CONNECTORS
 ```
 
 ### Оставшиеся top-листы
 
 ```text
-Hardware/KiCad/40_POWER_5V_TOP.kicad_sch
-Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
+40_POWER_5V_TOP
+50_LIGHT_POWER_TOP
 ```
 
-### Отчёты
-
-```text
-Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
-Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
-```
-
-## 3. Зафиксированная многоплатная архитектура
+## 3. Зафиксированная архитектура
 
 ```text
 PCB-A_BFE_POWER
@@ -147,14 +142,14 @@ Detailed hierarchy:
 19_BFE_CONNECTORS_TESTPOINTS
 ```
 
-Interface consistency report:
+Отчёт:
 
 ```text
 Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
-Принятые hold-loop paths:
+Hold-loop paths:
 
 ```text
 BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC_TBD -> BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG
@@ -177,7 +172,7 @@ Detailed hierarchy:
 29_CTRL_CONNECTORS_TESTPOINTS
 ```
 
-Interface consistency report:
+Отчёт:
 
 ```text
 Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
@@ -188,32 +183,15 @@ PASS WITH CONTROLLED PLACEHOLDERS
 
 ```text
 EXT_KILL_HW_CHAIN
-```
-
-Конечные действия:
-
-```text
 BAT1_HOLD_LOOP_OPEN_HW
 BAT2_HOLD_LOOP_OPEN_HW
 BAT1_MAIN_SW_OFF_HW
 BAT2_MAIN_SW_OFF_HW
 ```
 
-Канонические grouped interfaces:
+## 6. PCB-C_POWER_12V
 
-```text
-PWR_A_TO_B_CRIT
-CTRL_B_TO_A
-DIAG_A_TO_B
-CTRL_B_TO_C_P12
-DIAG_C_TO_B_P12
-CTRL_B_TO_D_P5
-DIAG_D_TO_B_P5
-CTRL_B_TO_E_LIGHT
-DIAG_E_TO_B_LIGHT
-```
-
-## 6. PCB-C_POWER_12V detailed hierarchy
+Detailed hierarchy:
 
 ```text
 31_POWER_12V_INPUT_PROTECTION
@@ -224,28 +202,20 @@ DIAG_E_TO_B_LIGHT
 36_POWER_12V_CONNECTORS
 ```
 
-Назначение:
+Отчёт:
 
 ```text
-31 — PACK_BUS_P12_IN branch input, local protection/bulk-energy boundary and input diagnostics.
-32 — reusable single-channel functional contract for control, protection, safe states and diagnostics.
-33 — CH1..CH7, seven independent MCU-controlled channels.
-34 — CH8..CH11 controlled and CH12..CH14 Always-On monitored.
-35 — 14-channel and board-level diagnostic aggregation toward PCB-B.
-36 — logical output/return, harness, connector-class and testpoint boundaries.
+Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
+PASS WITH CONTROLLED PLACEHOLDERS
 ```
-
-## 7. Зафиксированные требования PCB-C
 
 ### Питание
 
 ```text
-Input:  PACK_BUS_P12_IN
-Return: POWER_GND
-Local protected node: P12_PROTECTED_BUS
+PACK_BUS_P12_IN
+POWER_GND
+P12_PROTECTED_BUS
 ```
-
-PCB-C получает отдельную силовую ветвь непосредственно от PCB-A. Ни один ток CH1…CH14 не проходит через PCB-B.
 
 ### Каналы
 
@@ -255,69 +225,91 @@ CH12..CH14 — Always-On monitored during normal RUN
 Nominal continuous requirement — 3 A per channel
 ```
 
-Always-On не отменяет:
+Always-On не отменяет individual protection, monitoring, `P12_GROUP_SAFE_OFF` и `P12_GROUP_HARD_OFF`.
 
-1. индивидуальную защиту;
-2. токовую и fault-диагностику;
-3. групповое `SAFE_OFF`;
-4. групповое `HARD_OFF`;
-5. отключение при board-level protection.
-
-### Канонические управляющие функции
+### Канонические control ports
 
 ```text
+CTRL_B_TO_C_P12
 P12_CH_EN[1..11]
 P12_GROUP_SAFE_OFF
 P12_GROUP_HARD_OFF
 ```
 
-В текущих text-only листах массивы временно представлены сохраняющими идентичность группами:
+### Канонические diagnostic ports
 
 ```text
-P12_CH_EN_1_7
-P12_CH_EN_8_11
-```
-
-Точное представление `[1..11]` против отдельных nets будет проверено отдельным interface-consistency проходом.
-
-### Канонические диагностические функции
-
-```text
+DIAG_C_TO_B_P12
 P12_CH_FAULT_N[1..14]
 P12_CH_ISENSE[1..14]
 P12_BOARD_TEMP
 P12_INPUT_VSENSE
 P12_BOARD_FAULT_N
-DIAG_C_TO_B_P12
 ```
 
-Внутренние группы:
+### Internal decomposition groups
 
 ```text
+P12_CH_EN_1_7
+P12_CH_EN_8_11
 P12_CH_FAULT_N_1_7
 P12_CH_FAULT_N_8_14
 P12_CH_ISENSE_1_7
 P12_CH_ISENSE_8_14
-P12_CH_FAULT_N_1_14
-P12_CH_ISENSE_1_14
 ```
 
-## 8. Safe-state и fault-containment правила PCB-C
+Эти группы являются локальным разложением листов PCB-C, а не альтернативными межплатными именами.
 
-1. `P12_GROUP_HARD_OFF` имеет приоритет над нормальными enable-командами.
-2. `P12_GROUP_SAFE_OFF` блокирует каналы по принятой safe-state последовательности.
-3. Reset, brownout, потеря firmware и disconnected control должны оставлять CH1…CH11 в OFF.
-4. CH12…CH14 выключаются при SAFE/HARD_OFF несмотря на статус Always-On.
-5. Отказ одного канала не должен отключать остальные, если это не требуется upstream branch protection.
-6. Диагностика не является обязательным звеном аппаратного HARD_OFF.
-7. Выбор защиты должен учитывать индуктивные нагрузки, ёмкостной inrush, reverse current и repetitive fault cycling.
+## 7. Safe-state правила PCB-C
 
-## 9. Controlled placeholders PCB-C
+1. CH1…CH11 default OFF при reset, brownout, lost firmware и disconnected control.
+2. `P12_GROUP_HARD_OFF` имеет приоритет над normal enable и Always-On policy.
+3. `P12_GROUP_SAFE_OFF` запрашивает controlled safe state.
+4. CH12…CH14 выключаются при SAFE/HARD_OFF.
+5. Diagnostic transport не может блокировать или задерживать HARD_OFF.
+6. Отказ одного канала должен локализоваться, где это допускает upstream protection coordination.
+
+## 8. Controlled placeholders
+
+### PCB-A
+
+```text
+BAT1_SN176_RESERVE
+BAT2_SN176_RESERVE
+BAT1_EXT_KILL_NC_TBD
+BAT1_REMOTE_OFF_NC_TBD
+BAT2_EXT_KILL_NC_TBD
+BAT2_REMOTE_OFF_NC_TBD
+MAIN_SW1_INPUT
+MAIN_SW1_OUTPUT
+MAIN_SW2_INPUT
+MAIN_SW2_OUTPUT
+MAIN_SW1_SAFE_OFF
+MAIN_SW2_SAFE_OFF
+PACK_BUS_NODE
+BALANCE_PATH_TBD
+BALANCE_ARM
+BALANCE_ABORT
+```
+
+### PCB-B
+
+```text
+RESERVE_BRANCH
+EMG_BUS
+EXT_KILL_RETURN_TBD
+EMG_4S2P_EXTERNAL
+CHASSIS_RS485_SHIELD_TBD
+BOOT_CONFIG_TBD
+```
+
+### PCB-C
 
 ```text
 P12_INPUT_FAULT_N
 P12_INPUT_PRESENT
 P12_CH_STATUS_TBD
+P12_AON_CH12_14
 P12_AON_POLICY_CH12_14
 P12_BOARD_TEMP_SENSE_TBD
 SIGNAL_GND_REFERENCE_TBD
@@ -327,88 +319,70 @@ P12_TP_LOW_ENERGY
 P12_TP_POWER_GUARDED
 ```
 
-Причины:
+## 9. Исходные данные, не блокирующие текущий уровень
 
-1. тип и координация input/channel protection не выбраны;
-2. способ формирования Always-On enable не выбран;
-3. датчик температуры и его размещение не определены;
-4. способ передачи analog diagnostics и reference ground не определён;
-5. физическая схема возвратов, проводники, разъёмы и testpoints требуют нагрузочных и механических данных.
-
-## 10. Исходные данные, пока не требуемые для architecture hierarchy
-
-Следующие данные не блокируют создание Level A/B, но обязательны до component selection и расчёта силовой части:
+До component selection для PCB-C потребуются:
 
 1. назначение каждого CH1…CH14;
 2. длительный, пусковой и аварийный ток каждой нагрузки;
-3. длительность и форма inrush;
+3. inrush profile;
 4. индуктивность/ёмкость нагрузки и кабеля;
-5. duty cycle и допустимая последовательность включения;
-6. максимально допустимое падение напряжения;
-7. длина, сечение и тип проводников;
-8. допустимое число одновременно нагруженных каналов;
-9. ambient/case temperature и тепловой путь;
-10. требования к output discharge и reverse current blocking.
+5. duty cycle и последовательность включения;
+6. допустимое падение напряжения;
+7. длина и сечение проводников;
+8. число одновременно нагруженных каналов;
+9. thermal environment;
+10. reverse-current и output-discharge requirements.
 
-## 11. Что пока не делается
+Эти данные не блокируют переход к Architecture A/B для PCB-D и PCB-E.
 
-1. Не выбирается `K_BATx` и не добавляется `K_MAIN`.
-2. Не выбираются `MAIN_SWx`.
-3. Не выбираются PCB-C eFuse/high-side switches, fuses или current sensors.
-4. Не выбираются TVS, reverse protection, bulk capacitors или suppression.
-5. Не выбираются ADC, mux, local controller или serialized diagnostics.
-6. Не выбираются физические разъёмы, pin count, pinout, кабели, wire gauge или busbar.
-7. Не создаются реальные KiCad library symbols.
-8. Не создаются footprints.
-9. Не выполняется PCB layout.
-10. Не создаётся BOM.
-11. Не объединяются `POWER_GND`, `SIGNAL_GND`, `ISO_GND`, `CHASSIS`.
-12. Не возвращается `.kicad_prl`.
+## 10. Что пока не делается
 
-## 12. Проверка пользователем в KiCad
+1. Не выбираются силовые и управляющие компоненты.
+2. Не добавляется `K_MAIN`.
+3. Не выбираются eFuse/high-side switches, fuses, sensors, TVS и suppression.
+4. Не выбираются DC/DC, LED drivers, MCU, ADC, mux или internal serialized transport.
+5. Не выбираются connectors, pin count, pinout, cables, wire gauge или busbar.
+6. Не создаются реальные KiCad library symbols.
+7. Не создаются footprints.
+8. Не выполняется PCB layout.
+9. Не создаётся BOM.
+10. Не объединяются ground domains.
+11. Не возвращается `.kicad_prl`.
 
-После checkout ветки открыть:
+## 11. Проверка пользователем в KiCad
+
+Открыть:
 
 ```text
 Hardware/KiCad/PlataVM.kicad_pro
 ```
 
-Проверить листы:
+Проверить текущие detailed sheets `10…36`:
+
+1. отсутствие ошибок парсинга;
+2. читаемость text zones;
+3. видимость hierarchical labels;
+4. сохранность bus labels с `[1..N]` после открытия/сохранения;
+5. отсутствие `.kicad_prl` в Git changes;
+6. независимость EXT_KILL от MCU/RS-485;
+7. подчинение CH12…CH14 SAFE/HARD_OFF.
+
+## 12. Следующий инженерный этап
 
 ```text
-30_POWER_12V_TOP
-31_POWER_12V_INPUT_PROTECTION
-32_POWER_12V_CHANNEL_TEMPLATE
-33_POWER_12V_CH1_CH7
-34_POWER_12V_CH8_CH14
-35_POWER_12V_DIAGNOSTICS
-36_POWER_12V_CONNECTORS
+Start PCB-D_POWER_5V detailed hierarchy
 ```
 
-Минимальная проверка:
-
-1. листы открываются без ошибки парсинга;
-2. текстовые зоны читаются;
-3. hierarchical labels видны;
-4. KiCad не удаляет labels при сохранении;
-5. CH12…CH14 явно остаются subject to SAFE/HARD_OFF;
-6. высокие токи не проходят через PCB-B;
-7. `.kicad_prl` не появляется в Git changes.
-
-## 13. Следующий инженерный этап
+Канонические подлисты:
 
 ```text
-Run PCB-C_POWER_12V interface consistency check
+41_5V_DC_DC
+42_5V_OUTPUT_TEMPLATE
+43_5V_OUT1_OUT5
+44_5V_OUT6_OUT10
+45_5V_DIAGNOSTICS
+46_5V_CONNECTORS
 ```
 
-Проверить:
-
-```text
-30/31/32/33/34/35/36
-against:
-02_INTERBOARD_POWER_AND_CONTROL
-27_CONTROL_IO
-Docs/INTERBOARD_INTERFACES.md
-```
-
-После согласования PCB-C можно переходить к `40_POWER_5V` detailed hierarchy. Компоненты, connectors, footprints, BOM и layout в interface-consistency этап не входят.
+Компоненты, connectors, footprints, BOM и layout в следующий этап не входят.
