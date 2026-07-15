@@ -1,10 +1,11 @@
 # Межплатные интерфейсы PlataVM
 
 Дата фиксации: 2026-07-10  
+Дата проверки имён PCB-A/PCB-B: 2026-07-15  
 Статус:
 
 ```text
-LOGICAL INTERFACE BASELINE
+LOGICAL INTERFACE BASELINE — PCB-A / PCB-B NAMES ALIGNED
 ```
 
 ## 1. Назначение
@@ -46,7 +47,9 @@ LOGICAL INTERFACE BASELINE
 | `BAT1_HOLD_LOOP_OPEN_CMD` | B → A | штатный разрыв hold loop АКБ_1 | OPEN по активной команде |
 | `BAT2_HOLD_LOOP_OPEN_CMD` | B → A | штатный разрыв hold loop АКБ_2 | OPEN по активной команде |
 | `PACK_BUS_DISCHARGE_EN` | B → A | управляемый разряд PACK_BUS | определяется схемой; не должен создавать опасный нагрев |
-| `EXT_KILL_HW` | B/внешний вход → A | независимый аппаратный HARD_OFF | отключение обоих MAIN_SW и обоих hold loop |
+| `EXT_KILL_HW_CHAIN` | B/внешний вход → A | независимый аппаратный HARD_OFF | отключение обоих MAIN_SW и обоих hold loop |
+
+Каноническое имя агрегированной аппаратной цепи в KiCad: `EXT_KILL_HW_CHAIN`. Внутри PCB-B она формирует четыре конечных действия: `BAT1_HOLD_LOOP_OPEN_HW`, `BAT2_HOLD_LOOP_OPEN_HW`, `BAT1_MAIN_SW_OFF_HW`, `BAT2_MAIN_SW_OFF_HW`.
 
 ### 4.2 Диагностика от PCB-A к PCB-B
 
