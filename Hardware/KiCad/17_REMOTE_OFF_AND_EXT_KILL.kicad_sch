@@ -7,9 +7,9 @@
 	(title_block
 		(title "17_REMOTE_OFF_AND_EXT_KILL - hold-loop final actuators")
 		(date "2026-07-15")
-		(rev "C0")
+		(rev "C1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Symbol skeleton: NC actuator placement zones for K_BATx hold-loop interruption")
+		(comment 1 "Interface consistency: NC actuator zones and exact hold-loop return nets")
 		(comment 2 "Text-only placeholders; no relay, MOSFET, optocoupler or driver topology selected")
 	)
 	(lib_symbols)
@@ -19,13 +19,13 @@
 		(effects (font (size 1.28 1.28)) (justify left))
 		(uuid "bfe-symbol-00000017-0000-4000-8000-000000000101")
 	)
-	(text "BAT1 HOLD-LOOP ACTUATOR SKELETON\nBAT1_HOLD_RETURN_IN -> K17A_BAT1_EXT_KILL_NC_TBD -> K17B_BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG_RETURN.\nK17A and K17B are normally-closed functional placeholders.\nBAT1_REMOTE_OFF_OPEN_CMD opens the remote-off element. EXT_KILL_HW_CHAIN must open the ext-kill element without MCU firmware dependency."
+	(text "BAT1 HOLD-LOOP ACTUATOR SKELETON\nBAT1_HOLD_RETURN_IN -> K17A_BAT1_EXT_KILL_NC_TBD -> K17B_BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG.\nK17A and K17B are normally-closed functional placeholders.\nBAT1_REMOTE_OFF_OPEN_CMD opens the remote-off element. EXT_KILL_HW_CHAIN must open the ext-kill element without MCU firmware dependency."
 		(exclude_from_sim no)
 		(at 12 66 0)
 		(effects (font (size 1.18 1.18)) (justify left))
 		(uuid "bfe-symbol-00000017-0000-4000-8000-000000000102")
 	)
-	(text "BAT2 HOLD-LOOP ACTUATOR SKELETON\nBAT2_HOLD_RETURN_IN -> K17C_BAT2_EXT_KILL_NC_TBD -> K17D_BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG_RETURN.\nBAT1 and BAT2 hold-loop returns remain separated.\nA common EXT_KILL command source is allowed only if both loops fail toward OPEN and do not depend on normal software execution."
+	(text "BAT2 HOLD-LOOP ACTUATOR SKELETON\nBAT2_HOLD_RETURN_IN -> K17C_BAT2_EXT_KILL_NC_TBD -> K17D_BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG.\nBAT1 and BAT2 hold-loop returns remain separated.\nA common EXT_KILL command source is allowed only if both loops fail toward OPEN and do not depend on normal software execution."
 		(exclude_from_sim no)
 		(at 12 128 0)
 		(effects (font (size 1.18 1.18)) (justify left))
@@ -40,11 +40,11 @@
 	(hierarchical_label "BAT1_HOLD_RETURN_IN" (shape passive) (exclude_from_sim no) (at 144 54 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000201"))
 	(hierarchical_label "BAT1_EXT_KILL_NC_TBD" (shape passive) (exclude_from_sim no) (at 144 62 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000202"))
 	(hierarchical_label "BAT1_REMOTE_OFF_NC_TBD" (shape passive) (exclude_from_sim no) (at 144 70 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000203"))
-	(hierarchical_label "BAT1_SN176_NEG_RETURN" (shape passive) (exclude_from_sim no) (at 144 78 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000204"))
+	(hierarchical_label "BAT1_SN176_NEG" (shape passive) (exclude_from_sim no) (at 144 78 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000204"))
 	(hierarchical_label "BAT2_HOLD_RETURN_IN" (shape passive) (exclude_from_sim no) (at 144 116 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000205"))
 	(hierarchical_label "BAT2_EXT_KILL_NC_TBD" (shape passive) (exclude_from_sim no) (at 144 124 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000206"))
 	(hierarchical_label "BAT2_REMOTE_OFF_NC_TBD" (shape passive) (exclude_from_sim no) (at 144 132 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000207"))
-	(hierarchical_label "BAT2_SN176_NEG_RETURN" (shape passive) (exclude_from_sim no) (at 144 140 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000208"))
+	(hierarchical_label "BAT2_SN176_NEG" (shape passive) (exclude_from_sim no) (at 144 140 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000208"))
 	(hierarchical_label "BAT1_REMOTE_OFF_OPEN_CMD" (shape input) (exclude_from_sim no) (at 144 94 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000209"))
 	(hierarchical_label "BAT2_REMOTE_OFF_OPEN_CMD" (shape input) (exclude_from_sim no) (at 144 156 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000210"))
 	(hierarchical_label "EXT_KILL_HW_CHAIN" (shape input) (exclude_from_sim no) (at 144 170 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "bfe-symbol-00000017-0000-4000-8000-000000000211"))

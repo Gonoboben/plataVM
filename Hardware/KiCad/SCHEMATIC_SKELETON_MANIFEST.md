@@ -9,12 +9,13 @@
 Дата Level B прохода по `11/12/17`: 2026-07-15  
 Дата Level B прохода по `13/14/15/16/18/19`: 2026-07-15  
 Дата symbol-skeleton прохода по `11/12/17`: 2026-07-15  
-Дата symbol-skeleton прохода по `13/14/15/16/18/19`: 2026-07-15
+Дата symbol-skeleton прохода по `13/14/15/16/18/19`: 2026-07-15  
+Дата проверки согласованности PCB-A BFE interfaces: 2026-07-15
 
 Статус:
 
 ```text
-ARCHITECTURE LEVEL B/C0 — PCB-A BFE_POWER net groups refined; text-only symbol skeleton zones added for all BFE sub-sheets
+ARCHITECTURE LEVEL B/C0 — PCB-A BFE_POWER interfaces checked: PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
 ## 1. Назначение
@@ -27,6 +28,7 @@ ARCHITECTURE LEVEL B/C0 — PCB-A BFE_POWER net groups refined; text-only symbol
 Docs/SCHEMATIC_ARCHITECTURE.md
 Docs/INTERBOARD_INTERFACES.md
 Docs/NET_NAMING_RULES.md
+Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 ```
 
 ## 2. Созданные KiCad-файлы
@@ -51,6 +53,7 @@ Hardware/KiCad/20_CTRL_RESERVE_TOP.kicad_sch
 Hardware/KiCad/30_POWER_12V_TOP.kicad_sch
 Hardware/KiCad/40_POWER_5V_TOP.kicad_sch
 Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
+Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 ```
 
 ## 3. Что уже зафиксировано
@@ -62,7 +65,8 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 5. Detailed hierarchy пакет для `10_BFE_POWER_TOP`.
 6. Level B net groups для всех подлистов PCB-A `11…19`.
 7. Text-only symbol skeleton zones для всех подлистов PCB-A `11…19`.
-8. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
+8. Проверка согласованности PCB-A BFE interfaces: `PASS WITH CONTROLLED PLACEHOLDERS`.
+9. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
 
 ## 4. `10_BFE_POWER` detailed hierarchy
 
@@ -90,99 +94,63 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 19    — connector grouping and service testpoints.
 ```
 
-## 5. Level B/C0 text-only symbol skeleton zones
+## 5. Проверка согласованности PCB-A BFE interfaces
 
-### 11/12 — BAT input boundaries
+Отдельный отчёт:
 
 ```text
-J_BAT1_SN176_TBD
-J_BAT2_SN176_TBD
+Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 ```
 
-Pin grouping:
+Результат:
 
 ```text
-Pins 1..5  -> BATx_SN176_POS
-Pins 6..10 -> BATx_SN176_NEG
-Pin 11     -> BATx_HOLD_RETURN_IN
-Pin 12     -> BATx_SN176_RESERVE
+PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
-### 17 — REMOTE_OFF / EXT_KILL hold-loop final actuators
+Исправлено в рамках проверки:
 
 ```text
-K17A_BAT1_EXT_KILL_NC_TBD
-K17B_BAT1_REMOTE_OFF_NC_TBD
-K17C_BAT2_EXT_KILL_NC_TBD
-K17D_BAT2_REMOTE_OFF_NC_TBD
+BAT1_SN176_NEG_RETURN -> BAT1_SN176_NEG
+BAT2_SN176_NEG_RETURN -> BAT2_SN176_NEG
+BALANCE_TAP_BAT1 добавлен как источник на 11_BATTERY_INPUT_1
+BALANCE_TAP_BAT2 добавлен как источник на 12_BATTERY_INPUT_2
+BAT1_PRESENT_STATUS / BAT2_PRESENT_STATUS заведены в 18_BATTERY_MEASUREMENTS
+DIAG_BALANCE_I / DIAG_BALANCE_TEMP заведены в 18_BATTERY_MEASUREMENTS
 ```
 
-Functional chain:
+Принятая цепь hold-loop после проверки:
 
 ```text
-BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC_TBD -> BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG_RETURN
-BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC_TBD -> BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG_RETURN
+BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC_TBD -> BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG
+BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC_TBD -> BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG
 ```
 
-### 16 — PACK_BUS / discharge
+## 6. Controlled placeholders
+
+Следующие labels могут оставаться single-ended до появления реальных generic KiCad symbols или connector-group детализации:
 
 ```text
-NODE16_PACK_BUS_JOIN_TBD
-J16_PACK_BUS_FANOUT_TBD
-SW16_PACK_BUS_DISCHARGE_TBD
-```
-
-Net groups:
-
-```text
-BFE1_SW_OUT
-BFE2_SW_OUT
+BAT1_SN176_RESERVE
+BAT2_SN176_RESERVE
+BAT1_EXT_KILL_NC_TBD
+BAT1_REMOTE_OFF_NC_TBD
+BAT2_EXT_KILL_NC_TBD
+BAT2_REMOTE_OFF_NC_TBD
+MAIN_SW1_INPUT
+MAIN_SW1_OUTPUT
+MAIN_SW2_INPUT
+MAIN_SW2_OUTPUT
 PACK_BUS_NODE
-PACK_BUS_TO_CRIT
-PACK_BUS_TO_P12
-PACK_BUS_TO_P5
-PACK_BUS_TO_LIGHT
-PACK_BUS_DISCHARGE_EN
-DIAG_PACK_BUS_V
-DIAG_PACK_BUS_DISCH_STATUS
+BALANCE_PATH_TBD
+BFE_TP_LOW_ENERGY
+BFE_TP_POWER_GUARDED
+BFE_FAULT_INJECTION_TP
 ```
 
-### 13/14 — MAIN paths
+Причина: это локальные symbol-skeleton точки или намеренно не назначенные/service placeholders, а не финальные межлистовые электрические интерфейсы.
 
-```text
-SENSE13_MAIN1_TBD
-MAIN_SW1_TBD
-SAFE_OFF13_TBD
-SENSE14_MAIN2_TBD
-MAIN_SW2_TBD
-SAFE_OFF14_TBD
-```
-
-### 18 — measurements aggregation
-
-```text
-AFE18_BAT_INPUTS_TBD
-AFE18_MAIN_PATHS_TBD
-AFE18_SYSTEM_STATUS_TBD
-```
-
-### 15 — deck balance
-
-```text
-BAL15_PATH_TBD
-BAL15_SWITCHES_TBD
-BAL15_DIAG_TBD
-```
-
-### 19 — connector/testpoint groups
-
-```text
-J19_PACK_BUS_FANOUT_TBD
-J19_CTRL_DIAG_TBD
-TP19_SERVICE_TBD
-```
-
-## 6. Что пока не делается
+## 7. Что пока не делается
 
 1. Не выбирается `K_BATx`.
 2. Не выбираются `MAIN_SWx`.
@@ -199,7 +167,7 @@ TP19_SERVICE_TBD
 13. Не выбираются topology/current sensor/ADC frontend/thermal solutions.
 14. Не создаётся BOM.
 
-## 7. Проверка пользователем
+## 8. Проверка пользователем
 
 После checkout ветки открыть:
 
@@ -230,10 +198,12 @@ Hardware/KiCad/PlataVM.kicad_pro
 4. KiCad не удаляет labels при сохранении;
 5. `.kicad_prl` не попадает в Git changes.
 
-## 8. Следующий инженерный этап
+## 9. Следующий инженерный этап
 
-Следующий шаг после проверки:
+Рекомендуемый следующий шаг:
 
 ```text
-Resolve cross-sheet interface consistency for PCB-A BFE_POWER, then decide whether to create real generic KiCad placeholder symbols or move to PCB-B_CTRL_RESERVE hierarchy.
+Start PCB-B_CTRL_RESERVE detailed hierarchy
 ```
+
+Причина: PCB-A теперь имеет стабильные имена для питания, hold-loop, PACK_BUS, диагностики, балансировки и connector/testpoint boundaries. Можно безопаснее раскладывать ответственность PCB-B по MCU, watchdog/supervisor, EMG/KEEP_ALIVE, control outputs, diagnostics inputs и isolated RS-485.
