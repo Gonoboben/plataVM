@@ -6,42 +6,288 @@
 	(paper "A3")
 	(title_block
 		(title "02_INTERBOARD_POWER_AND_CONTROL")
-		(date "2026-07-14")
-		(rev "A0")
-		(comment 1 "Logical interboard interface matrix placeholder")
+		(date "2026-07-15")
+		(rev "A1")
+		(company "Gonoboben/plataVM")
+		(comment 1 "Logical interboard interface matrix and preliminary pin-count")
+		(comment 2 "No physical connector family selected on this sheet")
 	)
 	(lib_symbols)
-	(text "POWER DISTRIBUTION FROM PCB-A:\nPACK_BUS_CRIT_IN -> PCB-B_CTRL_RESERVE\nPACK_BUS_P12_IN -> PCB-C_POWER_12V\nPACK_BUS_P5_IN -> PCB-D_POWER_5V\nPACK_BUS_LIGHT_IN -> PCB-E_LIGHT_POWER\nAll returns use POWER_GND unless a local isolated/signal domain is explicitly defined."
+	(text "02_INTERBOARD_POWER_AND_CONTROL - LOGICAL MATRIX LEVEL A\nPurpose: split interboard links into power, control, diagnostics and safety groups.\nThis sheet defines logical grouping only; physical connector choice is TBD."
 		(exclude_from_sim no)
-		(at 20 25 0)
+		(at 12 10 0)
 		(effects
 			(font
-				(size 1.8 1.8)
+				(size 1.65 1.65)
 			)
 			(justify left)
 		)
-		(uuid "2e7ed742-aa89-4b59-a906-9f36d21df22f")
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000201")
 	)
-	(text "DIAGNOSTICS TO PCB-B:\nBATx_PRESENT, BATx_VSENSE, BATx_ISENSE, PACK_BUS_VSENSE, board faults, channel faults, current sense, temperatures.\nPhysical connector choice and pin count are TBD."
+	(text "POWER DISTRIBUTION FROM PCB-A_BFE_POWER\nPACK_BUS_CRIT_IN  -> PCB-B_CTRL_RESERVE\nPACK_BUS_P12_IN   -> PCB-C_POWER_12V\nPACK_BUS_P5_IN    -> PCB-D_POWER_5V\nPACK_BUS_LIGHT_IN -> PCB-E_LIGHT_POWER\nReturn: POWER_GND unless a local isolated/signal domain is explicitly defined."
 		(exclude_from_sim no)
-		(at 20 135 0)
+		(at 12 38 0)
 		(effects
 			(font
-				(size 1.8 1.8)
+				(size 1.35 1.35)
 			)
 			(justify left)
 		)
-		(uuid "c20d3229-21d7-45b1-9c4b-8aa825e15df4")
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000202")
 	)
-	(text "CONTROL FROM PCB-B:\nBATx_MAIN_SW_EN, BATx_BALANCE_SW_EN, BATx_HOLD_LOOP_OPEN_CMD, PACK_BUS_DISCHARGE_EN, EXT_KILL_HW.\nP12_CH_EN[1..11], P5_OUT_EN[1..7], 5V_SYS_EN, LIGHT_BRANCH_EN, LED_PWM[1..6]."
+	(text "PCB-B -> PCB-A CONTROL\nBAT1/2_MAIN_SW_EN\nBAT1/2_BALANCE_SW_EN\nBAT1/2_HOLD_LOOP_OPEN_CMD\nPACK_BUS_DISCHARGE_EN\nEXT_KILL_HW_CHAIN"
 		(exclude_from_sim no)
-		(at 20 85 0)
+		(at 115 38 0)
 		(effects
 			(font
-				(size 1.8 1.8)
+				(size 1.35 1.35)
 			)
 			(justify left)
 		)
-		(uuid "dcaf44de-f25f-4b54-b11e-873c241f60f2")
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000203")
+	)
+	(text "PCB-A -> PCB-B DIAGNOSTICS\nBAT1/2_PRESENT\nBAT1/2_VSENSE\nBAT1/2_ISENSE\nPACK_BUS_VSENSE\nBFE_FAULTS, temperatures, OPEN/CLOSED status TBD"
+		(exclude_from_sim no)
+		(at 210 38 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000204")
+	)
+	(text "PCB-B -> PCB-C POWER_12V CONTROL\nP12_CH_EN[1..11]\nP12_DIAG_MUX / SPI / I2C TBD\nP12_BOARD_ENABLE\nP12_FAULT_RESET TBD"
+		(exclude_from_sim no)
+		(at 12 108 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000205")
+	)
+	(text "PCB-C -> PCB-B DIAGNOSTICS\nCH current/fault/status\nAlways-On CH12..CH14 monitoring\nBoard temperature\nInterface method TBD: parallel, muxed analog, SPI/I2C/other."
+		(exclude_from_sim no)
+		(at 115 108 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000206")
+	)
+	(text "PCB-B -> PCB-D POWER_5V CONTROL\n5V_SYS_EN\nP5_OUT_EN[1..7]\nP5_FAULT_RESET TBD\nDC/DC status interface TBD"
+		(exclude_from_sim no)
+		(at 12 160 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000207")
+	)
+	(text "PCB-D -> PCB-B DIAGNOSTICS\n5V_SYS_VSENSE / ISENSE\n5V_OUT current/fault/status\nAlways-On outputs monitoring\nBoard temperature"
+		(exclude_from_sim no)
+		(at 115 160 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000208")
+	)
+	(text "PCB-B <-> PCB-E LIGHT_POWER\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], driver enable/reset TBD.\nDiagnostics: LED current, open/short, driver fault, board temperature."
+		(exclude_from_sim no)
+		(at 210 108 0)
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000209")
+	)
+	(text "SAFETY AND GROUND POLICY\nEXT_KILL_HW must reach PCB-A final actuators without relying on MCU firmware.\nPOWER_GND, SIGNAL_GND, ISO_GND and CHASSIS are not automatically shorted here.\nShield/chassis termination and reference-ground policy remain a dedicated decision."
+		(exclude_from_sim no)
+		(at 12 216 0)
+		(effects
+			(font
+				(size 1.25 1.25)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000210")
+	)
+	(text "PRELIMINARY PIN-COUNT ESTIMATE\nA<->B logic/diagnostics: approx. 20..32 low-speed pins + power/returns.\nB<->C: approx. 16..32 pins unless diagnostics are serialized/muxed.\nB<->D: approx. 12..24 pins. B<->E: approx. 12..24 pins.\nFinal pin-count waits for MCU, diagnostics topology and connector mechanics."
+		(exclude_from_sim no)
+		(at 170 216 0)
+		(effects
+			(font
+				(size 1.25 1.25)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000211")
+	)
+	(hierarchical_label "PWR_A_TO_B_CRIT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 74 55 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000221")
+	)
+	(hierarchical_label "PWR_A_TO_C_P12"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 74 63 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000222")
+	)
+	(hierarchical_label "PWR_A_TO_D_P5"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 74 71 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000223")
+	)
+	(hierarchical_label "PWR_A_TO_E_LIGHT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 74 79 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000224")
+	)
+	(hierarchical_label "CTRL_B_TO_A"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 152 76 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000225")
+	)
+	(hierarchical_label "DIAG_A_TO_B"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 248 76 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000226")
+	)
+	(hierarchical_label "CTRL_B_TO_C_P12"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 57 138 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000227")
+	)
+	(hierarchical_label "DIAG_C_TO_B_P12"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 162 138 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000228")
+	)
+	(hierarchical_label "CTRL_B_TO_D_P5"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 57 185 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000229")
+	)
+	(hierarchical_label "DIAG_D_TO_B_P5"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 162 185 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000230")
+	)
+	(hierarchical_label "CTRL_B_TO_E_LIGHT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 250 144 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000231")
+	)
+	(hierarchical_label "DIAG_E_TO_B_LIGHT"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 250 152 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000232")
+	)
+	(hierarchical_label "EXT_KILL_HW_CHAIN"
+		(shape passive)
+		(exclude_from_sim no)
+		(at 12 246 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000233")
 	)
 )
