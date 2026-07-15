@@ -1,10 +1,11 @@
 # KiCad schematic skeleton manifest
 
 Дата фиксации: 2026-07-14  
+Дата обновления `00_SYSTEM_TOP`: 2026-07-15  
 Статус:
 
 ```text
-ARCHITECTURE LEVEL A — KiCad workspace skeleton
+ARCHITECTURE LEVEL A — KiCad workspace skeleton + 00_SYSTEM_TOP functional sheet
 ```
 
 ## 1. Назначение
@@ -48,45 +49,13 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
    - `30_POWER_12V_TOP`;
    - `40_POWER_5V_TOP`;
    - `50_LIGHT_POWER_TOP`.
-5. Архитектурные текстовые ограничения на каждом листе.
+5. Архитектурные текстовые ограничения на листах-заглушках.
 6. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
+7. `00_SYSTEM_TOP.kicad_sch` переведён из текстовой заглушки в функциональный архитектурный лист уровня A.
 
-## 4. Что пока не делается
+## 4. Что зафиксировано на `00_SYSTEM_TOP`
 
-1. Не выбирается контактор `K_BATx`.
-2. Не выбираются `MAIN_SWx`.
-3. Не выбираются датчики тока.
-4. Не выбираются DC/DC, LED-драйверы, MCU и eFuse/high-side switches.
-5. Не создаются footprints.
-6. Не выполняется PCB layout.
-7. Не объединяются автоматически `POWER_GND`, `SIGNAL_GND`, `ISO_GND` и `CHASSIS`.
-
-## 5. Проверка перед дальнейшей детализацией
-
-Перед следующими изменениями нужно локально открыть:
-
-```text
-Hardware/KiCad/PlataVM.kicad_pro
-```
-
-и проверить:
-
-1. проект открывается в KiCad;
-2. корневой лист показывает все восемь листов;
-3. каждый лист открывается;
-4. нет потери файлов при сохранении KiCad;
-5. KiCad не заменил русские комментарии некорректной кодировкой;
-6. изменения после первого локального сохранения должны быть внесены отдельным commit.
-
-## 6. Следующий рабочий лист
-
-Следующий детализируемый лист:
-
-```text
-00_SYSTEM_TOP.kicad_sch
-```
-
-На нём нужно заменить текстовую архитектуру на функциональные блоки с точными hierarchical labels:
+Лист `00_SYSTEM_TOP.kicad_sch` содержит функциональные блоки и следующие top-level hierarchical labels:
 
 ```text
 BAT1_TO_BFE
@@ -103,10 +72,50 @@ EXT_KILL_HW
 RS485_ISOLATED
 ```
 
-После этого следует лист:
+Эти labels являются архитектурными именами интерфейсных групп. Детальный pin-count и физические connector groupings ещё не назначены.
+
+## 5. Что пока не делается
+
+1. Не выбирается контактор `K_BATx`.
+2. Не выбираются `MAIN_SWx`.
+3. Не выбираются датчики тока.
+4. Не выбираются DC/DC, LED-драйверы, MCU и eFuse/high-side switches.
+5. Не создаются footprints.
+6. Не выполняется PCB layout.
+7. Не объединяются автоматически `POWER_GND`, `SIGNAL_GND`, `ISO_GND` и `CHASSIS`.
+8. Не назначаются физические межплатные разъёмы.
+
+## 6. Проверка перед merge листа `00_SYSTEM_TOP`
+
+Перед слиянием нужно локально открыть:
+
+```text
+Hardware/KiCad/PlataVM.kicad_pro
+```
+
+и проверить:
+
+1. проект открывается в KiCad;
+2. `00_SYSTEM_TOP.kicad_sch` открывается без ошибки парсинга;
+3. видны функциональные текстовые блоки;
+4. видны hierarchical labels из раздела 4;
+5. KiCad не удаляет labels при сохранении;
+6. `.kicad_prl` не появляется в Git changes из-за `.gitignore`.
+
+## 7. Следующий рабочий лист
+
+После проверки `00_SYSTEM_TOP` следует лист:
 
 ```text
 02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
 ```
 
-где будет зафиксирована первая версия pin-count и logical connector grouping.
+На нём будет зафиксирована первая версия:
+
+```text
+logical connector grouping
+pin-count estimate
+power/control/diagnostic bundle separation
+EXT_KILL routing group
+POWER_GND/SIGNAL_GND/ISO_GND reference policy placeholders
+```
