@@ -7,9 +7,9 @@
 	(title_block
 		(title "28_SERVICE_DEBUG - controlled service and programming boundary")
 		(date "2026-07-15")
-		(rev "B0")
+		(rev "B1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Architecture Level A/B: SWD, service UART, boot/config and operational isolation rules")
+		(comment 1 "Interface consistency: authorized EXT_KILL reset boundary")
 		(comment 2 "No debug probe connector, UART transceiver, USB bridge, test header, ESD part or footprint selected")
 	)
 	(lib_symbols)
@@ -31,10 +31,10 @@
 		(effects (font (size 1.16 1.16)) (justify left))
 		(uuid "ctrl-reserve-00000028-0000-4000-8000-000000000103")
 	)
-	(text "TEST / AUTHORIZATION POLICY\nOperational mode shall restore watchdog and supervisor behavior after service access.\nEXT_KILL_LATCHED can be observed but not overridden by debug tooling.\nAny authorized reset path must be physically and procedurally separated from ordinary firmware commands."
+	(text "TEST / AUTHORIZATION POLICY\nOperational mode shall restore watchdog and supervisor behavior after service access.\nEXT_KILL_RESET_AUTH is only an authorized manual-reset request and cannot energize K_BATx or bypass the hardware latch.\nIts physical implementation and procedural authorization remain TBD."
 		(exclude_from_sim no)
 		(at 12 204 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.14 1.14)) (justify left))
 		(uuid "ctrl-reserve-00000028-0000-4000-8000-000000000104")
 	)
 	(hierarchical_label "3V3_CRIT" (shape input) (exclude_from_sim no) (at 150 60 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000201"))
@@ -47,5 +47,5 @@
 	(hierarchical_label "BOOT_CONFIG_TBD" (shape passive) (exclude_from_sim no) (at 150 186 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000208"))
 	(hierarchical_label "SERVICE_DEBUG_LOGIC" (shape passive) (exclude_from_sim no) (at 150 194 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000209"))
 	(hierarchical_label "EXT_KILL_LATCHED" (shape input) (exclude_from_sim no) (at 150 232 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000210"))
-	(hierarchical_label "SERVICE_AUTH_RESET" (shape output) (exclude_from_sim no) (at 150 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000211"))
+	(hierarchical_label "EXT_KILL_RESET_AUTH" (shape output) (exclude_from_sim no) (at 150 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000028-0000-4000-8000-000000000211"))
 )
