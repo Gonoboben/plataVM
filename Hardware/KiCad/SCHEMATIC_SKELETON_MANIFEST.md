@@ -1,18 +1,9 @@
 # KiCad schematic skeleton manifest
 
 Дата фиксации: 2026-07-14  
-Дата обновления системных и top-листов: 2026-07-15  
-Дата добавления `10_BFE_POWER` detailed hierarchy: 2026-07-15  
-Дата проверки согласованности PCB-A BFE interfaces: 2026-07-15  
-Дата добавления `20_CTRL_RESERVE` detailed hierarchy: 2026-07-15  
-Дата проверки согласованности PCB-B CTRL_RESERVE interfaces: 2026-07-15  
-Дата добавления `30_POWER_12V` detailed hierarchy: 2026-07-15  
-Дата проверки согласованности PCB-C POWER_12V interfaces: 2026-07-15  
-Дата добавления `40_POWER_5V` detailed hierarchy: 2026-07-15  
-Дата проверки согласованности PCB-D POWER_5V interfaces: 2026-07-15  
-Дата добавления `50_LIGHT_POWER` detailed hierarchy: 2026-07-15
+Дата текущего обновления: 2026-07-15
 
-Статус:
+## 1. Текущий статус
 
 ```text
 ARCHITECTURE LEVEL A/B
@@ -20,12 +11,10 @@ PCB-A BFE_POWER interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-B CTRL_RESERVE interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-C POWER_12V interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-D POWER_5V interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
-PCB-E LIGHT_POWER detailed hierarchy: ADDED — INTERFACE CHECK PENDING
+PCB-E LIGHT_POWER interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
-## 1. Назначение
-
-Этот manifest фиксирует хронологию и состояние KiCad workspace принятой многоплатной архитектуры PlataVM. На текущем уровне фиксируются functional boundaries, направления энергии, logical interfaces, safe states и controlled placeholders. Компоненты, footprints, physical connectors, BOM и PCB layout не выбираются.
+Все пять PCB-модулей имеют detailed hierarchy Architecture A/B. Компоненты, реальные KiCad library symbols, footprints, физические разъёмы, BOM и PCB layout не выбирались.
 
 Источники истины:
 
@@ -37,9 +26,10 @@ Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
 Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
 Hardware/KiCad/POWER_5V_INTERFACE_CONSISTENCY.md
+Hardware/KiCad/LIGHT_POWER_INTERFACE_CONSISTENCY.md
 ```
 
-## 2. Многоплатная архитектура
+## 2. Принятая архитектура
 
 ```text
 PCB-A_BFE_POWER
@@ -50,18 +40,18 @@ PCB-E_LIGHT_POWER
 INTERCONNECT passive only
 ```
 
-Правила:
+Неизменяемые правила текущего baseline:
 
 1. `PACK_BUS` создаётся на PCB-A.
 2. `K_MAIN` не добавляется.
-3. High-current power не проходит через PCB-B.
-4. `INTERCONNECT` остаётся пассивным.
-5. `EXT_KILL` не зависит от MCU firmware или external RS-485.
-6. Ground domains не объединяются автоматически.
+3. High-current load power не проходит через PCB-B.
+4. `INTERCONNECT` не содержит обязательной активной электроники.
+5. `EXT_KILL` действует без зависимости от MCU firmware и external RS-485.
+6. `POWER_GND`, `SIGNAL_GND`, `ISO_GND`, `CHASSIS` не объединяются автоматически.
 7. `5V_SYS_BUS` отделён от `5V_CRIT/3V3_CRIT` и EMG.
-8. PCB-E остаётся одной функциональной платой; две зоны по три LED-канала являются локальным разбиением.
+8. PCB-E остаётся одной функциональной платой; зоны 1..3 и 4..6 являются локальным разбиением.
 
-## 3. Detailed hierarchy packages
+## 3. Detailed hierarchy
 
 ### PCB-A_BFE_POWER
 
@@ -129,79 +119,71 @@ INTERCONNECT passive only
 56_LIGHT_CONNECTORS
 ```
 
-## 4. Interface consistency reports
+## 4. Канонические межплатные группы
 
 ```text
-PCB-A: Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
-PCB-B: Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
-PCB-C: Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
-PCB-D: Hardware/KiCad/POWER_5V_INTERFACE_CONSISTENCY.md
-```
-
-Результат завершённых проверок:
-
-```text
-PASS WITH CONTROLLED PLACEHOLDERS
-```
-
-## 5. PCB-E_LIGHT_POWER detailed hierarchy
-
-```text
-51_LIGHT_INPUT_PROTECTION
-52_LED_DRIVER_TEMPLATE
-53_LED_DRIVER_1_3
-54_LED_DRIVER_4_6
-55_LIGHT_DIAGNOSTICS
-56_LIGHT_CONNECTORS
-```
-
-Назначение:
-
-```text
-51 — PACK_BUS_LIGHT_IN branch input, protection/bulk-energy boundary and input diagnostics.
-52 — reusable independent LED-driver control/regulation/protection/diagnostic contract.
-53 — LED channels 1..3 in local thermal/power zone 1.
-54 — LED channels 4..6 in local thermal/power zone 2.
-55 — six-channel and board-level diagnostic aggregation toward PCB-B.
-56 — logical LED output/return, harness, connector-class and testpoint boundaries.
-```
-
-## 6. PCB-E power and channel contract
-
-```text
-Input:        PACK_BUS_LIGHT_IN
-Return:       POWER_GND
-Local node:   LIGHT_PROTECTED_BUS
-Load class:   six independent external LED modules
-```
-
-Каждый канал сохраняет независимые:
-
-```text
-PWM control
-current regulation
-fault reporting
-current diagnostics
-regulated LED output
-```
-
-Разбиение `1..3` и `4..6` является локальной тепловой/компоновочной зоной внутри одной PCB-E.
-
-## 7. Канонические PCB-E interfaces
-
-### Control
-
-```text
+PWR_A_TO_B_CRIT
+CTRL_B_TO_A
+DIAG_A_TO_B
+CTRL_B_TO_C_P12
+DIAG_C_TO_B_P12
+CTRL_B_TO_D_P5
+DIAG_D_TO_B_P5
 CTRL_B_TO_E_LIGHT
+DIAG_E_TO_B_LIGHT
+EXT_KILL_HW_CHAIN
+```
+
+## 5. PCB-A / PCB-B safety contract
+
+```text
+EXT_KILL_HW_CHAIN
+BAT1_HOLD_LOOP_OPEN_HW
+BAT2_HOLD_LOOP_OPEN_HW
+BAT1_MAIN_SW_OFF_HW
+BAT2_MAIN_SW_OFF_HW
+```
+
+`REMOTE_OFF` и `EXT_KILL` имеют приоритет над `LOCAL_START`. Восстановление BMS или critical power не запускает `K_BAT1/K_BAT2` автоматически.
+
+## 6. PCB-C control and diagnostics
+
+```text
+P12_CH_EN[1..11]
+P12_GROUP_SAFE_OFF
+P12_GROUP_HARD_OFF
+P12_CH_FAULT_N[1..14]
+P12_CH_ISENSE[1..14]
+P12_INPUT_VSENSE
+P12_BOARD_TEMP
+P12_BOARD_FAULT_N
+```
+
+CH12..CH14 — Always-On monitored during normal RUN, но выключаются при SAFE/HARD_OFF.
+
+## 7. PCB-D control and diagnostics
+
+```text
+5V_SYS_EN
+P5_OUT_EN[1..7]
+P5_GROUP_SAFE_OFF
+P5_GROUP_HARD_OFF
+P5_OUT_FAULT_N[1..10]
+P5_OUT_ISENSE[1..10]
+5V_SYS_VSENSE
+5V_SYS_TOTAL_ISENSE
+P5_BOARD_TEMP
+P5_BOARD_FAULT_N
+```
+
+OUT8..OUT10 — Always-On monitored during normal RUN, но выключаются при SAFE/HARD_OFF. `5V_SYS_BUS` имеет preliminary budget 15 A continuous / 20 A short peak.
+
+## 8. PCB-E control and diagnostics
+
+```text
 LIGHT_BRANCH_EN
 LED_PWM[1..6]
 LIGHT_GROUP_HARD_OFF
-```
-
-### Diagnostics
-
-```text
-DIAG_E_TO_B_LIGHT
 LED_FAULT_N[1..6]
 LED_ISENSE[1..6]
 LIGHT_INPUT_VSENSE
@@ -209,70 +191,9 @@ LIGHT_BOARD_TEMP
 LIGHT_BOARD_FAULT_N
 ```
 
-### Local decomposition
+Default safe state — все шесть LED outputs OFF. `LIGHT_GROUP_HARD_OFF` имеет приоритет над branch enable и PWM.
 
-```text
-LED_PWM_1_3
-LED_PWM_4_6
-LED_FAULT_N_1_3
-LED_FAULT_N_4_6
-LED_ISENSE_1_3
-LED_ISENSE_4_6
-LED_OUTPUTS_1_3
-LED_OUTPUTS_4_6
-```
-
-Точное совпадение PCB-B ↔ PCB-E будет проверено отдельным interface-consistency проходом.
-
-## 8. Safe-state rules PCB-E
-
-1. Default safe state — все шесть LED outputs OFF.
-2. `LIGHT_GROUP_HARD_OFF` имеет приоритет над `LIGHT_BRANCH_EN` и всеми PWM.
-3. Lost firmware, reset, unpowered/disconnected control не должны включать свет.
-4. Single-channel fault должен локализоваться, если thermal/group protection не требует wider shutdown.
-5. Diagnostic transport не участвует в аппаратном выключении.
-6. Restart/retry policy не может отменять active HARD_OFF.
-
-## 9. Controlled placeholders PCB-E
-
-```text
-LIGHT_INPUT_FAULT_N
-LIGHT_INPUT_PRESENT
-LED_CH_STATUS_TBD
-LIGHT_ZONE1_TEMP_SENSE_TBD
-LIGHT_ZONE2_TEMP_SENSE_TBD
-SIGNAL_GND_REFERENCE_TBD
-LIGHT_RETURN_GROUP_TBD
-LIGHT_OUTPUT_CONNECTOR_CLASS_TBD
-LIGHT_TP_LOW_ENERGY
-LIGHT_TP_POWER_GUARDED
-```
-
-Причины:
-
-- driver topology и conversion ratio не выбраны;
-- LED voltage/current tolerances требуют подтверждения;
-- PWM electrical level/frequency/dimming range не определены;
-- thermal sensor placement и cooling path не определены;
-- diagnostic transport/reference не выбран;
-- harness/return/connector mechanics требуют load and environmental data.
-
-## 10. Данные, необходимые до component selection PCB-E
-
-1. подтверждённый диапазон Vf и рабочий ток каждой LED-матрицы;
-2. допустимая точность и ripple LED current;
-3. PWM frequency, electrical level, minimum pulse/dimming range;
-4. режимы одновременной работы шести каналов;
-5. required startup/shutdown sequencing;
-6. open-load/short-load/reverse-connection behavior;
-7. входной диапазон `PACK_BUS_LIGHT_IN` включая transients;
-8. кабельная длина, сопротивление и допустимое падение;
-9. thermal environment, heat transfer and maximum component/PCB temperatures;
-10. EMI constraints и требования к lighting artifacts/flicker.
-
-Эти данные не блокируют Architecture A/B и interface-consistency, но блокируют выбор driver topology и компонентов.
-
-## 11. Общие controlled placeholders
+## 9. Controlled placeholders
 
 ### PCB-A
 
@@ -338,40 +259,43 @@ LIGHT_RETURN_GROUP_TBD
 LIGHT_OUTPUT_CONNECTOR_CLASS_TBD
 ```
 
-## 12. Что пока не делается
+## 10. Данные, необходимые до component selection
 
-1. Не выбираются силовые и управляющие components.
-2. Не добавляется `K_MAIN`.
-3. Не выбираются LED-driver/controller topology, switches, magnetics, sensors, TVS или filters.
-4. Не выбираются ADC, mux, local controllers или internal serialized transport.
-5. Не выбираются connectors, pinout, cables, wire gauge или busbars.
-6. Не создаются реальные KiCad library symbols.
-7. Не создаются footprints.
-8. Не выполняется PCB layout.
-9. Не создаётся BOM.
-10. Ground domains не объединяются.
-11. `.kicad_prl` не возвращается.
+1. фактический `PACK_BUS` operating/transient range;
+2. load profiles, inrush, duty cycle и simultaneous-use matrix для CH1..CH14 и 5V_OUT1..10;
+3. LED Vf/current tolerances, PWM frequency/level/dimming range и thermal conditions;
+4. EMG energy/hold-up/charge requirements;
+5. EXT_KILL physical contact topology, active level, line supervision и disconnect behavior;
+6. ground/chassis/shield bonding policy;
+7. internal interboard transport choice;
+8. physical connector/harness/mechanical/environmental requirements.
 
-## 13. Проверка пользователем в KiCad
+Эти данные не требовались для Architecture A/B, но блокируют component selection и реальные схемотехнические topology calculations.
 
-Проверить detailed sheets `10…56`:
+## 11. Запрещённые действия текущего этапа
+
+1. Не выбирать MCU, DC/DC, LED drivers, eFuse/high-side switches, sensors, watchdog, isolators или transceivers.
+2. Не добавлять `K_MAIN`.
+3. Не создавать реальные KiCad library symbols и footprints.
+4. Не создавать BOM или PCB layout.
+5. Не выбирать physical connectors, pinout, cables и wire gauge.
+6. Не объединять ground domains.
+7. Не возвращать `.kicad_prl`.
+
+## 12. Проверка пользователем в KiCad
+
+Открыть `Hardware/KiCad/PlataVM.kicad_pro` и проверить листы `10…56`:
 
 1. отсутствие parsing errors;
 2. видимость hierarchical labels;
-3. сохранность bus labels `[1..N]`;
+3. сохранность bus labels `[1..N]` после save;
 4. независимость EXT_KILL от MCU/RS-485;
-5. подчинение всех outputs SAFE/HARD_OFF;
+5. подчинение Always-On outputs SAFE/HARD_OFF;
 6. отделение `5V_SYS_BUS` от critical domain;
-7. симметричность LED zones 1..3 и 4..6;
+7. симметричность LED zones;
 8. отсутствие `.kicad_prl` в Git changes.
 
-## 14. Следующий инженерный этап
-
-```text
-Run PCB-E_LIGHT_POWER interface consistency check
-```
-
-После согласования PCB-E:
+## 13. Следующий этап
 
 ```text
 Run system-wide interface consistency audit
