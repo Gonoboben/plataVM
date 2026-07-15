@@ -7,17 +7,18 @@
 Дата обновления PCB top-листов `10/20/30/40/50`: 2026-07-15  
 Дата добавления `10_BFE_POWER` detailed hierarchy: 2026-07-15  
 Дата Level B прохода по `11/12/17`: 2026-07-15  
-Дата Level B прохода по `13/14/15/16/18/19`: 2026-07-15
+Дата Level B прохода по `13/14/15/16/18/19`: 2026-07-15  
+Дата symbol-skeleton прохода по `11/12/17`: 2026-07-15
 
 Статус:
 
 ```text
-ARCHITECTURE LEVEL B — PCB-A BFE_POWER functional net groups refined
+ARCHITECTURE LEVEL B/C0 — PCB-A BFE_POWER net groups refined; first text-only symbol skeleton zones added
 ```
 
 ## 1. Назначение
 
-Этот пакет создаёт стартовый KiCad workspace для принятой многоплатной `SCHEMATIC ARCHITECTURE`. Он не выбирает компоненты, footprints или part numbers.
+Этот пакет создаёт стартовый KiCad workspace для принятой многоплатной `SCHEMATIC ARCHITECTURE` и постепенно переводит листы от архитектурных текстовых границ к будущим схемным символам.
 
 Источник истины:
 
@@ -59,7 +60,8 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 4. Top-листы PCB-A/PCB-B/PCB-C/PCB-D/PCB-E.
 5. Detailed hierarchy пакет для `10_BFE_POWER_TOP`.
 6. Level B net groups для всех подлистов PCB-A `11…19`.
-7. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
+7. Первый text-only symbol skeleton проход для `11_BATTERY_INPUT_1`, `12_BATTERY_INPUT_2`, `17_REMOTE_OFF_AND_EXT_KILL`.
+8. Безопасные границы: батареи, PACK_BUS, HARD_OFF, EXT_KILL, земли и межплатные интерфейсы.
 
 ## 4. `10_BFE_POWER` detailed hierarchy
 
@@ -95,6 +97,7 @@ Hardware/KiCad/50_LIGHT_POWER_TOP.kicad_sch
 BAT1_SN176_POS
 BAT1_SN176_NEG
 BAT1_HOLD_RETURN_IN
+BAT1_SN176_RESERVE
 BAT1_TO_MAIN_PATH
 BAT1_MEAS_TAPS
 BAT1_PRESENT_STATUS
@@ -102,6 +105,7 @@ BAT1_PRESENT_STATUS
 BAT2_SN176_POS
 BAT2_SN176_NEG
 BAT2_HOLD_RETURN_IN
+BAT2_SN176_RESERVE
 BAT2_TO_MAIN_PATH
 BAT2_MEAS_TAPS
 BAT2_PRESENT_STATUS
@@ -110,8 +114,8 @@ BAT2_PRESENT_STATUS
 ### 17 — REMOTE_OFF / EXT_KILL hold-loop logic
 
 ```text
-BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC -> BAT1_REMOTE_OFF_NC -> BAT1_SN176_NEG return
-BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC -> BAT2_REMOTE_OFF_NC -> BAT2_SN176_NEG return
+BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC_TBD -> BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG_RETURN
+BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC_TBD -> BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG_RETURN
 ```
 
 Rules:
@@ -211,7 +215,44 @@ BFE_TP_POWER_GUARDED
 BFE_FAULT_INJECTION_TP
 ```
 
-## 6. Что пока не делается
+## 6. Symbol skeleton pass `11/12/17`
+
+Этот проход не добавляет реальные библиотечные символы KiCad и не создаёт BOM. Он добавляет текстовые зоны будущей установки символов и фиксирует имена будущих placeholders.
+
+### 11_BATTERY_INPUT_1
+
+```text
+J_BAT1_SN176_TBD — future 12-pin connector placeholder.
+Pins 1..5  -> BAT1_SN176_POS.
+Pins 6..10 -> BAT1_SN176_NEG.
+Pin 11     -> BAT1_HOLD_RETURN_IN.
+Pin 12     -> BAT1_SN176_RESERVE.
+LOCAL_START1 remains external to PCB-A and outside SN-176A-12.
+```
+
+### 12_BATTERY_INPUT_2
+
+```text
+J_BAT2_SN176_TBD — future 12-pin connector placeholder.
+Pins 1..5  -> BAT2_SN176_POS.
+Pins 6..10 -> BAT2_SN176_NEG.
+Pin 11     -> BAT2_HOLD_RETURN_IN.
+Pin 12     -> BAT2_SN176_RESERVE.
+LOCAL_START2 remains external to PCB-A and outside SN-176A-12.
+```
+
+### 17_REMOTE_OFF_AND_EXT_KILL
+
+```text
+K17A_BAT1_EXT_KILL_NC_TBD
+K17B_BAT1_REMOTE_OFF_NC_TBD
+K17C_BAT2_EXT_KILL_NC_TBD
+K17D_BAT2_REMOTE_OFF_NC_TBD
+```
+
+These are functional NC actuator placeholders only. The final implementation technology is still TBD.
+
+## 7. Что пока не делается
 
 1. Не выбирается `K_BATx`.
 2. Не выбираются `MAIN_SWx`.
@@ -224,9 +265,9 @@ BFE_FAULT_INJECTION_TP
 9. Не фиксируется окончательный pin-count.
 10. Не выбираются номиналы `F_BATx`, `F_CTRLx`, R_BAL, suppression и PACK_BUS discharge.
 11. Не выбирается технология `REMOTE_OFF_NC / EXT_KILL_NC`.
-12. Не выбираются topology/current sensor/ADC frontend/thermal solutions.
+12. Не добавляются реальные KiCad library symbols в BOM.
 
-## 7. Проверка пользователем
+## 8. Проверка пользователем
 
 После checkout ветки открыть:
 
@@ -237,16 +278,9 @@ Hardware/KiCad/PlataVM.kicad_pro
 Минимальная проверка:
 
 ```text
-10_BFE_POWER_TOP
 11_BATTERY_INPUT_1
 12_BATTERY_INPUT_2
-13_MAIN_PATH_1
-14_MAIN_PATH_2
-15_DECK_BALANCE
-16_PACK_BUS_AND_DISCHARGE
 17_REMOTE_OFF_AND_EXT_KILL
-18_BATTERY_MEASUREMENTS
-19_BFE_CONNECTORS_TESTPOINTS
 ```
 
 Проверить:
@@ -257,22 +291,18 @@ Hardware/KiCad/PlataVM.kicad_pro
 4. KiCad не удаляет labels при сохранении;
 5. `.kicad_prl` не попадает в Git changes.
 
-## 8. Следующий инженерный этап
-
-После проверки этого пакета следующий шаг:
+## 9. Следующий инженерный этап
 
 ```text
-First real symbols / connector skeletons for PCB-A BFE_POWER
+BFE symbol skeletons continuation
 ```
 
 Порядок:
 
 ```text
-SN-176A-12 placeholder symbols on 11/12
-→ hold-loop NC actuator placeholders on 17
-→ PACK_BUS/discharge placeholders on 16
-→ MAIN_SW path placeholders on 13/14
-→ measurement frontend placeholders on 18
-→ balance placeholders on 15
-→ connector/testpoint placeholders on 19
+16_PACK_BUS_AND_DISCHARGE
+→ 13_MAIN_PATH_1 / 14_MAIN_PATH_2
+→ 18_BATTERY_MEASUREMENTS
+→ 15_DECK_BALANCE
+→ 19_BFE_CONNECTORS_TESTPOINTS
 ```
