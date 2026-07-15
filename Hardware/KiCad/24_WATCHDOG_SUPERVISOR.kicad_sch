@@ -7,28 +7,28 @@
 	(title_block
 		(title "24_WATCHDOG_SUPERVISOR - reset, fault manager and containment")
 		(date "2026-07-15")
-		(rev "B0")
+		(rev "B1")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Architecture Level A/B: watchdog, power supervisor, fault manager and safe-state outputs")
+		(comment 1 "Interface consistency: watchdog, EMG, fault summary and controlled-shutdown ports")
 		(comment 2 "No watchdog, supervisor, latch, gate, isolator, reset IC or footprint selected")
 	)
 	(lib_symbols)
-	(text "24_WATCHDOG_SUPERVISOR - PURPOSE\nDefines independent supervision and fault containment for the critical control domain.\nThe block supervises MCU activity and critical power and can force defined safe states.\nIt does not replace the separate EXT_KILL hardware chain."
+	(text "24_WATCHDOG_SUPERVISOR - PURPOSE\nDefines independent supervision and fault containment for the critical control domain.\nThe block supervises MCU activity, critical power and EMG health and can force defined safe states.\nIt does not replace the separate EXT_KILL hardware chain."
 		(exclude_from_sim no)
 		(at 12 14 0)
-		(effects (font (size 1.28 1.28)) (justify left))
+		(effects (font (size 1.24 1.24)) (justify left))
 		(uuid "ctrl-reserve-00000024-0000-4000-8000-000000000101")
 	)
-	(text "WATCHDOG / RESET\nFuture watchdog receives WATCHDOG_KICK and creates MCU_RESET_N when heartbeat or timing requirements are violated.\nTimeout, startup window, reset pulse and service override policy remain TBD.\nDebug access must not permanently disable watchdog protection in operational mode."
+	(text "WATCHDOG / RESET\nFuture watchdog receives WATCHDOG_KICK and may use MCU_RUN_STATUS for observation.\nIt creates MCU_RESET_N when heartbeat or timing requirements are violated.\nTimeout, startup window, reset pulse and service override policy remain TBD."
 		(exclude_from_sim no)
 		(at 12 70 0)
-		(effects (font (size 1.18 1.18)) (justify left))
+		(effects (font (size 1.16 1.16)) (justify left))
 		(uuid "ctrl-reserve-00000024-0000-4000-8000-000000000102")
 	)
-	(text "FAULT MANAGER\nFault inputs from PCB-A/C/D/E and CRIT_POWER_FAULT_N are aggregated with explicit priority and latching rules.\nFAULT_MANAGER_SAFE_OFF requests non-emergency load shutdown and containment.\nSignal polarity, debounce, filtering and reset authorization remain TBD."
+	(text "FAULT MANAGER\nBFE_FAULT_SUMMARY_N and board-level faults from PCB-C/D/E are aggregated with CRIT_POWER_FAULT_N and EMG_FAULT_N.\nFAULT_MANAGER_SAFE_OFF requests non-emergency load containment.\nCONTROLLED_SHUTDOWN_REQ requests orderly MCU logging/shutdown without replacing hardware OFF."
 		(exclude_from_sim no)
 		(at 12 132 0)
-		(effects (font (size 1.16 1.16)) (justify left))
+		(effects (font (size 1.13 1.13)) (justify left))
 		(uuid "ctrl-reserve-00000024-0000-4000-8000-000000000103")
 	)
 	(text "PRIORITY / RECOVERY\nEXT_KILL_LATCHED has higher priority than MCU commands, watchdog recovery and service actions.\nFAULT_LATCHED_STATUS may be read by the MCU and RS-485 path.\nClearing faults must not automatically restart K_BAT1/K_BAT2 or re-enable high-current loads."
@@ -42,8 +42,10 @@
 	(hierarchical_label "WATCHDOG_KICK" (shape input) (exclude_from_sim no) (at 150 106 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000203"))
 	(hierarchical_label "MCU_RESET_N" (shape output) (exclude_from_sim no) (at 150 114 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000204"))
 	(hierarchical_label "MCU_FAULT_TO_MANAGER" (shape input) (exclude_from_sim no) (at 150 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000205"))
-	(hierarchical_label "CRIT_POWER_GOOD" (shape input) (exclude_from_sim no) (at 150 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000206"))
-	(hierarchical_label "CRIT_POWER_FAULT_N" (shape input) (exclude_from_sim no) (at 150 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000207"))
+	(hierarchical_label "MCU_RUN_STATUS" (shape input) (exclude_from_sim no) (at 150 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000216"))
+	(hierarchical_label "CRIT_POWER_GOOD" (shape input) (exclude_from_sim no) (at 150 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000206"))
+	(hierarchical_label "CRIT_POWER_FAULT_N" (shape input) (exclude_from_sim no) (at 150 146 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000207"))
+	(hierarchical_label "EMG_FAULT_N" (shape input) (exclude_from_sim no) (at 150 154 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000217"))
 	(hierarchical_label "BFE_FAULT_SUMMARY_N" (shape input) (exclude_from_sim no) (at 150 166 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000208"))
 	(hierarchical_label "P12_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 150 174 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000209"))
 	(hierarchical_label "P5_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 150 182 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000210"))
@@ -52,4 +54,5 @@
 	(hierarchical_label "FAULT_MANAGER_SAFE_OFF" (shape output) (exclude_from_sim no) (at 150 228 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000213"))
 	(hierarchical_label "FAULT_LATCHED_STATUS" (shape output) (exclude_from_sim no) (at 150 236 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000214"))
 	(hierarchical_label "WATCHDOG_FAULT_N" (shape output) (exclude_from_sim no) (at 150 244 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000215"))
+	(hierarchical_label "CONTROLLED_SHUTDOWN_REQ" (shape output) (exclude_from_sim no) (at 300 228 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000024-0000-4000-8000-000000000218"))
 )
