@@ -1,0 +1,2 @@
+# KiCad local project state
+*.kicad_prl
