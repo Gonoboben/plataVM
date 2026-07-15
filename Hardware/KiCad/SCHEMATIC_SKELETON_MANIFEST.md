@@ -7,7 +7,8 @@
 Дата добавления `20_CTRL_RESERVE` detailed hierarchy: 2026-07-15  
 Дата проверки согласованности PCB-B CTRL_RESERVE interfaces: 2026-07-15  
 Дата добавления `30_POWER_12V` detailed hierarchy: 2026-07-15  
-Дата проверки согласованности PCB-C POWER_12V interfaces: 2026-07-15
+Дата проверки согласованности PCB-C POWER_12V interfaces: 2026-07-15  
+Дата добавления `40_POWER_5V` detailed hierarchy: 2026-07-15
 
 Статус:
 
@@ -16,22 +17,14 @@ ARCHITECTURE LEVEL A/B
 PCB-A BFE_POWER interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-B CTRL_RESERVE interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
 PCB-C POWER_12V interface consistency: PASS WITH CONTROLLED PLACEHOLDERS
+PCB-D POWER_5V detailed hierarchy: ADDED — INTERFACE CHECK PENDING
 ```
 
 ## 1. Назначение
 
-Этот manifest фиксирует хронологию и текущее состояние KiCad workspace принятой многоплатной архитектуры PlataVM.
+Этот manifest фиксирует хронологию и состояние KiCad workspace принятой многоплатной архитектуры PlataVM.
 
-На текущем уровне фиксируются:
-
-1. границы плат и функциональных листов;
-2. направления энергии;
-3. точные логические управляющие и диагностические интерфейсы;
-4. безопасные состояния;
-5. независимые аппаратные аварийные пути;
-6. controlled placeholders для решений, требующих расчётов или дополнительных исходных данных.
-
-На этом уровне не выбираются компоненты, footprints, физические разъёмы, BOM или PCB layout.
+На текущем уровне фиксируются функциональные границы, направления энергии, logical interfaces, safe states и controlled placeholders. Компоненты, footprints, физические разъёмы, BOM и PCB layout не выбираются.
 
 Источники истины:
 
@@ -44,17 +37,28 @@ Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
 Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
 ```
 
-## 2. Созданные KiCad-файлы
-
-### Системный уровень
+## 2. Многоплатная архитектура
 
 ```text
-Hardware/KiCad/PlataVM.kicad_pro
-Hardware/KiCad/PlataVM.kicad_sch
-Hardware/KiCad/00_SYSTEM_TOP.kicad_sch
-Hardware/KiCad/01_EXTERNAL_BATTERIES_AND_HARNESS.kicad_sch
-Hardware/KiCad/02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
+PCB-A_BFE_POWER
+PCB-B_CTRL_RESERVE
+PCB-C_POWER_12V
+PCB-D_POWER_5V
+PCB-E_LIGHT_POWER
+INTERCONNECT passive only
 ```
+
+Правила:
+
+1. `PACK_BUS` создаётся на PCB-A.
+2. `K_MAIN` не добавляется.
+3. Высокие токи не проходят через PCB-B.
+4. `INTERCONNECT` остаётся пассивным.
+5. `EXT_KILL` не зависит от MCU firmware или external RS-485.
+6. Ground domains не объединяются автоматически.
+7. `5V_SYS_BUS` не является critical rail и не питается от EMG.
+
+## 3. Созданные detailed hierarchy packages
 
 ### PCB-A_BFE_POWER
 
@@ -98,283 +102,39 @@ Hardware/KiCad/02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
 36_POWER_12V_CONNECTORS
 ```
 
-### Оставшиеся top-листы
+### PCB-D_POWER_5V
 
 ```text
 40_POWER_5V_TOP
+41_5V_DC_DC
+42_5V_OUTPUT_TEMPLATE
+43_5V_OUT1_OUT5
+44_5V_OUT6_OUT10
+45_5V_DIAGNOSTICS
+46_5V_CONNECTORS
+```
+
+### Оставшийся top-лист
+
+```text
 50_LIGHT_POWER_TOP
 ```
 
-## 3. Зафиксированная архитектура
+## 4. Interface consistency status
 
 ```text
-PCB-A_BFE_POWER
-PCB-B_CTRL_RESERVE
-PCB-C_POWER_12V
-PCB-D_POWER_5V
-PCB-E_LIGHT_POWER
-INTERCONNECT passive only
+PCB-A: Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
+PCB-B: Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
+PCB-C: Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
 ```
 
-Системные правила:
-
-1. `PACK_BUS` создаётся на PCB-A.
-2. `K_MAIN` не добавляется.
-3. Высокие токи не проходят через PCB-B.
-4. `INTERCONNECT` остаётся пассивным.
-5. `EXT_KILL` не зависит от MCU firmware или внешнего RS-485.
-6. `POWER_GND`, `SIGNAL_GND`, `ISO_GND`, `CHASSIS` не объединяются автоматически.
-7. Две батарейные ветви остаются симметричными без отдельного ADR.
-
-## 4. PCB-A_BFE_POWER
-
-Detailed hierarchy:
+Все три результата:
 
 ```text
-11_BATTERY_INPUT_1
-12_BATTERY_INPUT_2
-13_MAIN_PATH_1
-14_MAIN_PATH_2
-15_DECK_BALANCE
-16_PACK_BUS_AND_DISCHARGE
-17_REMOTE_OFF_AND_EXT_KILL
-18_BATTERY_MEASUREMENTS
-19_BFE_CONNECTORS_TESTPOINTS
-```
-
-Отчёт:
-
-```text
-Hardware/KiCad/BFE_INTERFACE_CONSISTENCY.md
 PASS WITH CONTROLLED PLACEHOLDERS
 ```
 
-Hold-loop paths:
-
-```text
-BAT1_HOLD_RETURN_IN -> BAT1_EXT_KILL_NC_TBD -> BAT1_REMOTE_OFF_NC_TBD -> BAT1_SN176_NEG
-BAT2_HOLD_RETURN_IN -> BAT2_EXT_KILL_NC_TBD -> BAT2_REMOTE_OFF_NC_TBD -> BAT2_SN176_NEG
-```
-
-## 5. PCB-B_CTRL_RESERVE
-
-Detailed hierarchy:
-
-```text
-21_EMG_INPUT_CHARGE_ORING
-22_5V_CRIT_3V3_CRIT
-23_MCU_CORE
-24_WATCHDOG_SUPERVISOR
-25_RS485_ISOLATED
-26_EXT_KILL_INPUT_LOGIC
-27_CONTROL_IO
-28_SERVICE_DEBUG
-29_CTRL_CONNECTORS_TESTPOINTS
-```
-
-Отчёт:
-
-```text
-Hardware/KiCad/CTRL_RESERVE_INTERFACE_CONSISTENCY.md
-PASS WITH CONTROLLED PLACEHOLDERS
-```
-
-Каноническая аппаратная цепь:
-
-```text
-EXT_KILL_HW_CHAIN
-BAT1_HOLD_LOOP_OPEN_HW
-BAT2_HOLD_LOOP_OPEN_HW
-BAT1_MAIN_SW_OFF_HW
-BAT2_MAIN_SW_OFF_HW
-```
-
-## 6. PCB-C_POWER_12V
-
-Detailed hierarchy:
-
-```text
-31_POWER_12V_INPUT_PROTECTION
-32_POWER_12V_CHANNEL_TEMPLATE
-33_POWER_12V_CH1_CH7
-34_POWER_12V_CH8_CH14
-35_POWER_12V_DIAGNOSTICS
-36_POWER_12V_CONNECTORS
-```
-
-Отчёт:
-
-```text
-Hardware/KiCad/POWER_12V_INTERFACE_CONSISTENCY.md
-PASS WITH CONTROLLED PLACEHOLDERS
-```
-
-### Питание
-
-```text
-PACK_BUS_P12_IN
-POWER_GND
-P12_PROTECTED_BUS
-```
-
-### Каналы
-
-```text
-CH1..CH11  — normally MCU-controlled
-CH12..CH14 — Always-On monitored during normal RUN
-Nominal continuous requirement — 3 A per channel
-```
-
-Always-On не отменяет individual protection, monitoring, `P12_GROUP_SAFE_OFF` и `P12_GROUP_HARD_OFF`.
-
-### Канонические control ports
-
-```text
-CTRL_B_TO_C_P12
-P12_CH_EN[1..11]
-P12_GROUP_SAFE_OFF
-P12_GROUP_HARD_OFF
-```
-
-### Канонические diagnostic ports
-
-```text
-DIAG_C_TO_B_P12
-P12_CH_FAULT_N[1..14]
-P12_CH_ISENSE[1..14]
-P12_BOARD_TEMP
-P12_INPUT_VSENSE
-P12_BOARD_FAULT_N
-```
-
-### Internal decomposition groups
-
-```text
-P12_CH_EN_1_7
-P12_CH_EN_8_11
-P12_CH_FAULT_N_1_7
-P12_CH_FAULT_N_8_14
-P12_CH_ISENSE_1_7
-P12_CH_ISENSE_8_14
-```
-
-Эти группы являются локальным разложением листов PCB-C, а не альтернативными межплатными именами.
-
-## 7. Safe-state правила PCB-C
-
-1. CH1…CH11 default OFF при reset, brownout, lost firmware и disconnected control.
-2. `P12_GROUP_HARD_OFF` имеет приоритет над normal enable и Always-On policy.
-3. `P12_GROUP_SAFE_OFF` запрашивает controlled safe state.
-4. CH12…CH14 выключаются при SAFE/HARD_OFF.
-5. Diagnostic transport не может блокировать или задерживать HARD_OFF.
-6. Отказ одного канала должен локализоваться, где это допускает upstream protection coordination.
-
-## 8. Controlled placeholders
-
-### PCB-A
-
-```text
-BAT1_SN176_RESERVE
-BAT2_SN176_RESERVE
-BAT1_EXT_KILL_NC_TBD
-BAT1_REMOTE_OFF_NC_TBD
-BAT2_EXT_KILL_NC_TBD
-BAT2_REMOTE_OFF_NC_TBD
-MAIN_SW1_INPUT
-MAIN_SW1_OUTPUT
-MAIN_SW2_INPUT
-MAIN_SW2_OUTPUT
-MAIN_SW1_SAFE_OFF
-MAIN_SW2_SAFE_OFF
-PACK_BUS_NODE
-BALANCE_PATH_TBD
-BALANCE_ARM
-BALANCE_ABORT
-```
-
-### PCB-B
-
-```text
-RESERVE_BRANCH
-EMG_BUS
-EXT_KILL_RETURN_TBD
-EMG_4S2P_EXTERNAL
-CHASSIS_RS485_SHIELD_TBD
-BOOT_CONFIG_TBD
-```
-
-### PCB-C
-
-```text
-P12_INPUT_FAULT_N
-P12_INPUT_PRESENT
-P12_CH_STATUS_TBD
-P12_AON_CH12_14
-P12_AON_POLICY_CH12_14
-P12_BOARD_TEMP_SENSE_TBD
-SIGNAL_GND_REFERENCE_TBD
-P12_RETURN_GROUP_TBD
-P12_OUTPUT_CONNECTOR_CLASS_TBD
-P12_TP_LOW_ENERGY
-P12_TP_POWER_GUARDED
-```
-
-## 9. Исходные данные, не блокирующие текущий уровень
-
-До component selection для PCB-C потребуются:
-
-1. назначение каждого CH1…CH14;
-2. длительный, пусковой и аварийный ток каждой нагрузки;
-3. inrush profile;
-4. индуктивность/ёмкость нагрузки и кабеля;
-5. duty cycle и последовательность включения;
-6. допустимое падение напряжения;
-7. длина и сечение проводников;
-8. число одновременно нагруженных каналов;
-9. thermal environment;
-10. reverse-current и output-discharge requirements.
-
-Эти данные не блокируют переход к Architecture A/B для PCB-D и PCB-E.
-
-## 10. Что пока не делается
-
-1. Не выбираются силовые и управляющие компоненты.
-2. Не добавляется `K_MAIN`.
-3. Не выбираются eFuse/high-side switches, fuses, sensors, TVS и suppression.
-4. Не выбираются DC/DC, LED drivers, MCU, ADC, mux или internal serialized transport.
-5. Не выбираются connectors, pin count, pinout, cables, wire gauge или busbar.
-6. Не создаются реальные KiCad library symbols.
-7. Не создаются footprints.
-8. Не выполняется PCB layout.
-9. Не создаётся BOM.
-10. Не объединяются ground domains.
-11. Не возвращается `.kicad_prl`.
-
-## 11. Проверка пользователем в KiCad
-
-Открыть:
-
-```text
-Hardware/KiCad/PlataVM.kicad_pro
-```
-
-Проверить текущие detailed sheets `10…36`:
-
-1. отсутствие ошибок парсинга;
-2. читаемость text zones;
-3. видимость hierarchical labels;
-4. сохранность bus labels с `[1..N]` после открытия/сохранения;
-5. отсутствие `.kicad_prl` в Git changes;
-6. независимость EXT_KILL от MCU/RS-485;
-7. подчинение CH12…CH14 SAFE/HARD_OFF.
-
-## 12. Следующий инженерный этап
-
-```text
-Start PCB-D_POWER_5V detailed hierarchy
-```
-
-Канонические подлисты:
+## 5. PCB-D_POWER_5V detailed hierarchy
 
 ```text
 41_5V_DC_DC
@@ -385,4 +145,187 @@ Start PCB-D_POWER_5V detailed hierarchy
 46_5V_CONNECTORS
 ```
 
-Компоненты, connectors, footprints, BOM и layout в следующий этап не входят.
+Назначение:
+
+```text
+41 — PACK_BUS_P5_IN protection/conversion boundary, 5V_SYS enable and primary diagnostics.
+42 — reusable single-output control/protection/diagnostic contract.
+43 — 5V_OUT1..5V_OUT5, five normally controlled outputs.
+44 — 5V_OUT6..5V_OUT7 controlled and 5V_OUT8..5V_OUT10 Always-On monitored.
+45 — ten-output and 5V_SYS diagnostic aggregation toward PCB-B.
+46 — logical output/return, harness, connector-class and testpoint boundaries.
+```
+
+## 6. PCB-D power contract
+
+```text
+Input:              PACK_BUS_P5_IN
+Return:             POWER_GND
+Converted rail:     5V_SYS_BUS
+Board budget:       15 A continuous / 20 A short peak
+Per-output ceiling: up to 3 A within total board budget
+```
+
+`5V_SYS_BUS`:
+
+1. не питает `5V_CRIT` или `3V3_CRIT`;
+2. не питается от `EMG_4S2P`;
+3. предназначен только для PCB-D output domain;
+4. выключается при board HARD_OFF;
+5. требует отдельного converter thermal/EMC расчёта.
+
+## 7. PCB-D output policy
+
+```text
+5V_OUT1..5V_OUT7   — normally controlled
+5V_OUT8..5V_OUT10  — Always-On monitored during normal RUN
+```
+
+Always-On не отменяет:
+
+```text
+individual protection
+P5_GROUP_SAFE_OFF
+P5_GROUP_HARD_OFF
+board-level protection
+current/fault diagnostics
+```
+
+Индивидуальный лимит до 3 А не означает допустимость одновременной нагрузки 10 × 3 А. Суммарная нагрузка должна оставаться в пределах converter, copper и thermal budget.
+
+## 8. Канонические PCB-D interfaces
+
+### Control
+
+```text
+CTRL_B_TO_D_P5
+5V_SYS_EN
+P5_OUT_EN[1..7]
+P5_GROUP_SAFE_OFF
+P5_GROUP_HARD_OFF
+```
+
+### Diagnostics
+
+```text
+DIAG_D_TO_B_P5
+P5_OUT_FAULT_N[1..10]
+P5_OUT_ISENSE[1..10]
+5V_SYS_VSENSE
+5V_SYS_TOTAL_ISENSE
+P5_BOARD_TEMP
+P5_BOARD_FAULT_N
+```
+
+### Local decomposition groups
+
+```text
+P5_OUT_EN_1_5
+P5_OUT_EN_6_7
+P5_OUT_FAULT_N_1_5
+P5_OUT_FAULT_N_6_10
+P5_OUT_ISENSE_1_5
+P5_OUT_ISENSE_6_10
+5V_OUTPUTS_1_5
+5V_OUTPUTS_6_10
+```
+
+Точное совпадение с `27_CONTROL_IO` будет проверено отдельным interface-consistency проходом.
+
+## 9. Safe-state rules PCB-D
+
+1. `5V_SYS_EN` defaults OFF при lost control, если иной startup policy не утверждён отдельно.
+2. `P5_GROUP_HARD_OFF` имеет приоритет над converter/output enables и Always-On policy.
+3. `P5_GROUP_SAFE_OFF` запрашивает controlled safe state выходов.
+4. OUT8…OUT10 выключаются при SAFE/HARD_OFF.
+5. Converter recovery не отменяет HARD_OFF.
+6. Faulted output должен изолироваться без destabilization `5V_SYS_BUS`, где это допускает protection coordination.
+7. Diagnostic transport не участвует в аппаратном выключении.
+
+## 10. Controlled placeholders PCB-D
+
+```text
+P5_DC_DC_FAULT_N
+P5_OUT_STATUS_TBD
+P5_AON_OUT8_10
+P5_AON_POLICY_OUT8_10
+P5_BOARD_TEMP_SENSE_TBD
+SIGNAL_GND_REFERENCE_TBD
+P5_RETURN_GROUP_TBD
+P5_OUTPUT_CONNECTOR_CLASS_TBD
+P5_TP_LOW_ENERGY
+P5_TP_POWER_GUARDED
+```
+
+Причины:
+
+- converter topology и control IC не выбраны;
+- magnetics, switching frequency, ripple and compensation не рассчитаны;
+- output protection and backfeed topology не выбрана;
+- Always-On implementation не выбрана;
+- analog reference/transport не выбран;
+- harness/return/connector mechanics требуют load data.
+
+## 11. Данные, необходимые до component selection PCB-D
+
+1. фактический диапазон `PACK_BUS_P5_IN`, включая minimum during discharge и maximum charge/transient;
+2. load profile каждого `5V_OUT1…10`;
+3. continuous, peak и inrush currents;
+4. допустимые ripple, transient dip и recovery time;
+5. simultaneous-load matrix;
+6. cable length, wire resistance и allowable voltage drop;
+7. backfeed/reverse current requirements;
+8. output discharge requirements;
+9. ambient/case temperature и cooling path;
+10. EMI constraints и допустимая switching frequency range.
+
+Эти данные не блокируют создание Architecture A/B для PCB-E_LIGHT_POWER.
+
+## 12. Что пока не делается
+
+1. Не выбираются DC/DC controller, MOSFETs, magnetics, capacitors или compensation.
+2. Не выбираются load switches/eFuse/fuses/current sensors.
+3. Не выбираются TVS, filters, suppression или backfeed protection.
+4. Не выбираются ADC, mux, local controller или internal serialized transport.
+5. Не выбираются connectors, pinout, cables, wire gauge или busbar.
+6. Не создаются реальные KiCad library symbols.
+7. Не создаются footprints.
+8. Не выполняется PCB layout.
+9. Не создаётся BOM.
+10. Не объединяются ground domains.
+11. Не возвращается `.kicad_prl`.
+
+## 13. Проверка пользователем в KiCad
+
+Проверить листы:
+
+```text
+40_POWER_5V_TOP
+41_5V_DC_DC
+42_5V_OUTPUT_TEMPLATE
+43_5V_OUT1_OUT5
+44_5V_OUT6_OUT10
+45_5V_DIAGNOSTICS
+46_5V_CONNECTORS
+```
+
+Проверить:
+
+1. отсутствие parsing errors;
+2. видимость hierarchical labels;
+3. сохранность bus labels `[1..N]`;
+4. явное отделение `5V_SYS_BUS` от `5V_CRIT/3V3_CRIT`;
+5. подчинение OUT8…OUT10 SAFE/HARD_OFF;
+6. отсутствие `.kicad_prl` в Git changes.
+
+## 14. Следующий инженерный этап
+
+```text
+Run PCB-D_POWER_5V interface consistency check
+```
+
+После согласования PCB-D:
+
+```text
+Start PCB-E_LIGHT_POWER detailed hierarchy
+```
