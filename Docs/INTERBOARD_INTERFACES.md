@@ -1,175 +1,78 @@
 # Межплатные интерфейсы PlataVM
 
-Дата фиксации: 2026-07-10  
-Дата проверки имён PCB-A/PCB-B: 2026-07-15  
+Дата актуализации: 2026-07-16  
 Статус:
 
 ```text
-LOGICAL INTERFACE BASELINE — PCB-A / PCB-B NAMES ALIGNED
+V1.6 LOGICAL/TRANSPORT BASELINE
+CAN-FD for normal PCB-B↔PCB-C/D/E traffic; direct hardware safe lines retained
 ```
 
 ## 1. Назначение
 
-Документ задаёт логические связи между пятью функциональными PCB-модулями. Конкретные типы разъёмов, число контактов, упаковка сигналов в параллельные линии или внутренний последовательный интерфейс определяются отдельным решением.
+Документ задаёт силовые, управляющие, диагностические и коммуникационные связи между PCB-A…PCB-E. Физические разъёмы и окончательный pinout выбираются после 3D-компоновки и подсчёта контактов.
 
 ## 2. Базовые правила
 
 1. Силовые токи не проходят через `PCB-B_CTRL_RESERVE`.
-2. `PACK_BUS` и `POWER_GND` распределяются от `PCB-A_BFE_POWER` звездой или через рассчитанную силовую шину.
-3. Каждая силовая плата получает отдельный вход питания и отдельную защиту ветви.
-4. `EXT_KILL` имеет отдельный аппаратный путь и не зависит от MCU, программной команды или внешнего RS-485.
-5. Логические интерфейсы фиксируются до выбора физического разъёма.
-6. Аналоговые сигналы не должны передаваться без определения диапазона, источника, входного сопротивления, фильтра и опорной земли.
-7. Активный уровень каждого цифрового сигнала обозначается суффиксом `_N` для active-low.
-8. Нельзя объединять `POWER_GND`, `SIGNAL_GND`, `ISO_GND` и `CHASSIS` без отдельной схемы соединения.
+2. `PACK_BUS` и `POWER_GND` распределяются от PCB-A отдельными рассчитанными ветвями.
+3. INTERCONNECT не содержит активных компонентов.
+4. PCB-C/D/E получают локальное питание, защиту и локальные I/O/ADC.
+5. Нормальные команды и подробная телеметрия PCB-B↔PCB-C/D/E передаются по внутренней CAN-FD.
+6. `SAFE_OFF`, `HARD_OFF`, EXT_KILL и критические fault summary не зависят от CAN-FD.
+7. PCB-A↔PCB-B сохраняет прямые critical control/measurement paths.
+8. Внешний isolated RS-485 не используется как внутренняя шина.
+9. `POWER_GND`, `SIGNAL_GND`, `ISO_GND` и `CHASSIS` не объединяются произвольно.
+10. Отсоединение любого межплатного разъёма должно переводить соответствующую силовую функцию в безопасное состояние.
 
-## 3. Силовое распределение от PCB-A_BFE_POWER
+## 3. Силовое распределение от PCB-A
 
-| Получатель | Питание | Возврат | Назначение | Состояние при HARD_OFF |
+| Получатель | Питание | Возврат | Назначение | HARD_OFF |
 |---|---|---|---|---|
-| PCB-B_CTRL_RESERVE | `PACK_BUS_CRIT_IN` | `POWER_GND` | заряд EMG и critical power path | основные АКБ отключаются, critical domain продолжает работу от EMG |
-| PCB-C_POWER_12V | `PACK_BUS_P12_IN` | `POWER_GND` | 14 каналов 12 В | отключено |
-| PCB-D_POWER_5V | `PACK_BUS_P5_IN` | `POWER_GND` | DC/DC 5V_SYS | отключено |
-| PCB-E_LIGHT_POWER | `PACK_BUS_LIGHT_IN` | `POWER_GND` | LED-драйверы | отключено |
+| PCB-B | `PACK_BUS_CRIT_IN` | `POWER_GND` | critical power / EMG charge path | critical domain переходит на EMG |
+| PCB-C | `PACK_BUS_P12_IN` | `POWER_GND` | 14 каналов 12 В | OFF |
+| PCB-D | `PACK_BUS_P5_IN` | `POWER_GND` | DC/DC и внешние 5 В | OFF |
+| PCB-E | `PACK_BUS_LIGHT_IN` | `POWER_GND` | LED-драйверы | OFF |
 
-Каждая ветвь должна иметь собственное средство отключения/защиты в соответствии с архитектурой соответствующей платы.
+Силовые ветви выполняются отдельными шинами/жгутами и не используют сигнальную backplane как токонесущий элемент.
 
-## 4. Интерфейс PCB-A_BFE_POWER ↔ PCB-B_CTRL_RESERVE
+## 4. PCB-A_BFE_POWER ↔ PCB-B_CTRL_RESERVE
 
-### 4.1 Управление от PCB-B к PCB-A
+### 4.1 Прямое управление B→A
 
-| Сигнал | Направление | Назначение | Безопасное состояние |
-|---|---|---|---|
-| `BAT1_MAIN_SW_EN` | B → A | разрешение MAIN_SW1 | OFF |
-| `BAT2_MAIN_SW_EN` | B → A | разрешение MAIN_SW2 | OFF |
-| `BAT1_BALANCE_SW_EN` | B → A | управление BALANCE_SW1 | OFF |
-| `BAT2_BALANCE_SW_EN` | B → A | управление BALANCE_SW2 | OFF |
-| `BAT1_HOLD_LOOP_OPEN_CMD` | B → A | штатный разрыв hold loop АКБ_1 | OPEN по активной команде |
-| `BAT2_HOLD_LOOP_OPEN_CMD` | B → A | штатный разрыв hold loop АКБ_2 | OPEN по активной команде |
-| `PACK_BUS_DISCHARGE_EN` | B → A | управляемый разряд PACK_BUS | определяется схемой; не должен создавать опасный нагрев |
-| `EXT_KILL_HW_CHAIN` | B/внешний вход → A | независимый аппаратный HARD_OFF | отключение обоих MAIN_SW и обоих hold loop |
+| Сигнал | Назначение | Safe state |
+|---|---|---|
+| `BAT1_MAIN_SW_EN` | разрешение MAIN_SW1 | OFF |
+| `BAT2_MAIN_SW_EN` | разрешение MAIN_SW2 | OFF |
+| `BAT1_BALANCE_SW_EN` | BALANCE_SW1 | OFF |
+| `BAT2_BALANCE_SW_EN` | BALANCE_SW2 | OFF |
+| `BAT1_HOLD_LOOP_OPEN_CMD` | штатное открытие hold loop АКБ_1 | OPEN при активной команде |
+| `BAT2_HOLD_LOOP_OPEN_CMD` | штатное открытие hold loop АКБ_2 | OPEN при активной команде |
+| `PACK_BUS_DISCHARGE_EN` | управляемый разряд PACK_BUS | OFF |
+| `EXT_KILL_HW_CHAIN` | независимый аппаратный HARD_OFF | оба MAIN_SW OFF, оба hold loop OPEN |
 
-Каноническое имя агрегированной аппаратной цепи в KiCad: `EXT_KILL_HW_CHAIN`. Внутри PCB-B она формирует четыре конечных действия: `BAT1_HOLD_LOOP_OPEN_HW`, `BAT2_HOLD_LOOP_OPEN_HW`, `BAT1_MAIN_SW_OFF_HW`, `BAT2_MAIN_SW_OFF_HW`.
-
-### 4.2 Диагностика от PCB-A к PCB-B
-
-| Сигнал | Направление | Назначение | Тип на архитектурном уровне |
-|---|---|---|---|
-| `BAT1_PRESENT` | A → B | наличие батарейной линии | digital/conditioned TBD |
-| `BAT2_PRESENT` | A → B | наличие батарейной линии | digital/conditioned TBD |
-| `BAT1_VSENSE` | A → B | напряжение ветви АКБ_1 | analog or digitized TBD |
-| `BAT2_VSENSE` | A → B | напряжение ветви АКБ_2 | analog or digitized TBD |
-| `BAT1_ISENSE` | A → B | ток ветви АКБ_1 | analog or digitized TBD |
-| `BAT2_ISENSE` | A → B | ток ветви АКБ_2 | analog or digitized TBD |
-| `PACK_BUS_VSENSE` | A → B | напряжение PACK_BUS | analog or digitized TBD |
-| `BFE1_FAULT_N` | A → B | аппаратная авария BFE_1 | active-low preferred |
-| `BFE2_FAULT_N` | A → B | аппаратная авария BFE_2 | active-low preferred |
-| `BALANCE1_FAULT_N` | A → B | авария балансировочного тракта 1 | active-low preferred |
-| `BALANCE2_FAULT_N` | A → B | авария балансировочного тракта 2 | active-low preferred |
-| `PACK_BUS_DISCHARGE_FAULT_N` | A → B | отказ разрядной цепи | active-low preferred |
-
-Физический способ передачи измерений будет выбран после определения датчиков и ADC. На первом иерархическом листе эти сигналы показываются как логические порты.
-
-## 5. Интерфейс PCB-C_POWER_12V ↔ PCB-B_CTRL_RESERVE
-
-### 5.1 Управление
+### 4.2 Прямая диагностика A→B
 
 ```text
-P12_CH_EN[1..11]
-P12_GROUP_SAFE_OFF
-P12_GROUP_HARD_OFF
+BAT1_PRESENT
+BAT2_PRESENT
+BAT1_VSENSE
+BAT2_VSENSE
+BAT1_ISENSE
+BAT2_ISENSE
+PACK_BUS_VSENSE
+BFE1_FAULT_N
+BFE2_FAULT_N
+BALANCE1_FAULT_N
+BALANCE2_FAULT_N
+PACK_BUS_DISCHARGE_FAULT_N
 ```
 
-`CH12...CH14` являются Always-On monitored, но должны отключаться аппаратной защитой, SAFE и HARD_OFF.
+Аналоговые каналы сопровождаются явной reference net и не маршрутизируются как неопределённые одиночные сигналы.
 
-### 5.2 Диагностика
+### 4.3 Аппаратный EXT_KILL
 
-```text
-P12_CH_FAULT_N[1..14]
-P12_CH_ISENSE[1..14]
-P12_BOARD_TEMP
-P12_INPUT_VSENSE
-P12_BOARD_FAULT_N
-```
-
-### 5.3 Открытый вопрос физического интерфейса
-
-Допускаются два класса реализации:
-
-1. прямые параллельные сигналы через многоконтактный межплатный разъём;
-2. локальные I/O/ADC на PCB-C и внутренний цифровой интерфейс к PCB-B.
-
-Выбор выполняется после оценки pin count, EMC, отказобезопасности и стоимости. Внешний isolated RS-485 не используется автоматически как внутренний межплатный интерфейс.
-
-## 6. Интерфейс PCB-D_POWER_5V ↔ PCB-B_CTRL_RESERVE
-
-### 6.1 Управление
-
-```text
-5V_SYS_EN
-P5_OUT_EN[1..7]
-P5_GROUP_SAFE_OFF
-P5_GROUP_HARD_OFF
-```
-
-### 6.2 Диагностика
-
-```text
-P5_OUT_FAULT_N[1..10]
-P5_OUT_ISENSE[1..10]
-5V_SYS_VSENSE
-5V_SYS_TOTAL_ISENSE
-P5_BOARD_TEMP
-P5_BOARD_FAULT_N
-```
-
-`5V_OUT8...5V_OUT10` — Always-On monitored, но отключаются защитой, SAFE и HARD_OFF.
-
-## 7. Интерфейс PCB-E_LIGHT_POWER ↔ PCB-B_CTRL_RESERVE
-
-### 7.1 Управление
-
-```text
-LIGHT_BRANCH_EN
-LED_PWM[1..6]
-LIGHT_GROUP_HARD_OFF
-```
-
-### 7.2 Диагностика
-
-```text
-LED_FAULT_N[1..6]
-LED_ISENSE[1..6]
-LIGHT_INPUT_VSENSE
-LIGHT_BOARD_TEMP
-LIGHT_BOARD_FAULT_N
-```
-
-Каждый PWM-канал логически независим. Частота и электрический уровень PWM определяются после выбора драйвера.
-
-## 8. Интерфейсы PCB-B_CTRL_RESERVE
-
-### 8.1 Внешние
-
-1. isolated RS-485 half-duplex.
-2. Вход `EXT_KILL`.
-3. Service/debug: SWD и UART.
-4. Подключение EMG_4S2P.
-5. При необходимости — сервисные дискретные входы/выходы, только после отдельного согласования.
-
-### 8.2 Внутренние источники
-
-```text
-5V_CRIT
-3V3_CRIT
-SIGNAL_GND
-```
-
-`5V_CRIT` и `3V3_CRIT` предназначены только для critical domain. Они не используются как силовое питание каналов CH, 5V_OUT или LED.
-
-## 9. EXT_KILL
-
-Аппаратная цепь должна обеспечивать минимум четыре независимых конечных действия:
+Канонические конечные действия:
 
 ```text
 BAT1_HOLD_LOOP_OPEN_HW
@@ -178,62 +81,216 @@ BAT1_MAIN_SW_OFF_HW
 BAT2_MAIN_SW_OFF_HW
 ```
 
-Функциональная связь:
+MCU может регистрировать событие, но не участвует в обязательном пути отключения.
+
+## 5. Внутренняя CAN-FD PCB-B↔PCB-C/D/E
+
+### 5.1 Назначение
+
+CAN-FD переносит:
+
+- normal enable/configuration commands;
+- per-channel current/voltage/temperature telemetry;
+- channel fault details;
+- board state, counters and service data;
+- firmware/service diagnostics.
+
+CAN-FD не переносит единственный экземпляр команды HARD_OFF и не является условием работы EXT_KILL.
+
+### 5.2 Логические линии физического уровня
+
+Предварительные net names:
 
 ```text
-EXT_KILL active
-→ оба hold loop разомкнуты
-→ MAIN_SW1 и MAIN_SW2 запрещены
-→ повторный запуск заблокирован до ручного сброса
-→ MCU может только зарегистрировать событие, но не обязан участвовать в отключении
+CAN_INT_H
+CAN_INT_L
+CAN_INT_SHIELD / CHASSIS reference as defined by harness
 ```
 
-## 10. Земли, экраны и reference domains
+Топология — линейная шина с termination на двух физических концах. Конкретные платы-концы, длины stub и номиналы common-mode/ESD protection определяются после 3D-компоновки.
+
+### 5.3 Поведение при потере связи
+
+1. локальная аппаратная защита каждого канала продолжает работать;
+2. новые normal commands не принимаются;
+3. платы переходят в заранее определённый communication-loss state;
+4. hard safety lines остаются работоспособными;
+5. board fault/communication loss отображается в GUI;
+6. автоматический restart силовых функций без разрешения PCB-B запрещён.
+
+## 6. PCB-C_POWER_12V ↔ PCB-B
+
+### 6.1 Прямые аппаратные линии B→C
+
+```text
+P12_GROUP_SAFE_OFF
+P12_GROUP_HARD_OFF
+```
+
+`P12_GROUP_HARD_OFF` имеет аппаратный приоритет над CAN-FD commands.
+
+### 6.2 Прямая fault summary C→B
+
+```text
+P12_BOARD_FAULT_N
+```
+
+### 6.3 Логические объекты CAN-FD
+
+```text
+P12_CH_EN[1..11]
+P12_CH_FAULT_N[1..14]
+P12_CH_ISENSE[1..14]
+P12_INPUT_VSENSE
+P12_BOARD_TEMP
+P12 board status/configuration
+```
+
+CH12…CH14 — Always-On monitored в RUN, но отключаются индивидуальной защитой, SAFE и HARD_OFF.
+
+## 7. PCB-D_POWER_5V ↔ PCB-B
+
+### 7.1 Прямые аппаратные линии B→D
+
+```text
+P5_GROUP_SAFE_OFF
+P5_GROUP_HARD_OFF
+```
+
+### 7.2 Прямая fault summary D→B
+
+```text
+P5_BOARD_FAULT_N
+```
+
+### 7.3 Логические объекты CAN-FD
+
+```text
+5V_SYS_EN
+P5_OUT_EN[1..7]
+P5_OUT_FAULT_N[1..10]
+P5_OUT_ISENSE[1..10]
+5V_SYS_VSENSE
+5V_SYS_TOTAL_ISENSE
+P5_BOARD_TEMP
+P5 board status/configuration
+```
+
+OUT8…OUT10 — Always-On monitored в RUN, но отключаются защитой, SAFE и HARD_OFF.
+
+## 8. PCB-E_LIGHT_POWER ↔ PCB-B
+
+### 8.1 Прямые аппаратные линии B→E
+
+```text
+LIGHT_GROUP_HARD_OFF
+```
+
+При необходимости отдельная `LIGHT_GROUP_SAFE_OFF` добавляется только новым интерфейсным решением; baseline safe state достигается снятием разрешения и HARD_OFF.
+
+### 8.2 Прямая fault summary E→B
+
+```text
+LIGHT_BOARD_FAULT_N
+```
+
+### 8.3 Логические объекты CAN-FD
+
+```text
+LIGHT_BRANCH_EN
+LED_PWM[1..6] command values
+LED_FAULT_N[1..6]
+LED_ISENSE[1..6]
+LIGHT_INPUT_VSENSE
+LIGHT_BOARD_TEMP
+LIGHT board status/configuration
+```
+
+Физические PWM-последовательности формируются локально на PCB-E. CAN-FD передаёт заданные значения яркости, а не шесть высокочастотных PWM-линий через межплатный жгут.
+
+## 9. PCB-B external interfaces
+
+1. isolated RS-485 half-duplex;
+2. hardware `EXT_KILL` input;
+3. SWD и service UART;
+4. EMG_4S2P connection;
+5. сервисные I/O только после отдельного решения.
+
+Предварительный внешний протокол RS-485:
+
+```text
+115200 bit/s
+8N1
+half-duplex
+addressed binary frames
+CRC-16
+sequence number
+timeout
+heartbeat
+```
+
+## 10. Ground, shield and reference domains
 
 | Сеть | Назначение |
 |---|---|
-| `POWER_GND` | силовой возврат PACK_BUS и нагрузок |
-| `SIGNAL_GND` | локальная опора MCU и низкоуровневых измерений |
-| `ISO_GND` | изолированная сторона внешнего RS-485 |
-| `CHASSIS` | корпус, экран и EMC-отводы при принятии соответствующей механики |
+| `POWER_GND` | силовой возврат |
+| `SIGNAL_GND` | reference MCU и измерений |
+| `ISO_GND` | isolated RS-485 side |
+| `CHASSIS` | корпус и кабельные экраны |
 
-До определения схемы земли аналоговые сигналы между платами должны сопровождаться явной reference net. Использование безымянного `GND` запрещено.
+Политика:
 
-## 11. Классы межплатных соединений
+1. одна контролируемая точка `SIGNAL_GND–POWER_GND` на PCB-B;
+2. подключение через net-tie/конфигурируемый элемент;
+3. экраны соединяются с CHASSIS у ввода;
+4. ISO_GND плавающий по DC;
+5. опциональная ВЧ-связь ISO_GND–CHASSIS после EMC review;
+6. безымянный `GND` в межплатных контрактах запрещён.
 
-1. `PWR-HI` — PACK_BUS и POWER_GND силовых ветвей.
-2. `PWR-CRIT` — ограниченное питание critical domain.
-3. `CTRL-SAFE` — EXT_KILL и аппаратные блокировки.
-4. `CTRL-NORMAL` — обычные разрешения и PWM.
-5. `DIAG-DIGITAL` — fault/present/status.
-6. `DIAG-ANALOG` — voltage/current/temperature sense.
-7. `COMM-ISOLATED` — внешний RS-485.
-8. `SERVICE` — SWD/UART/test.
+## 11. Классы соединений
 
-Разъём нельзя утверждать, пока не определены его класс, максимальный ток, рабочее напряжение, количество циклов, vibration rating, creepage/clearance и способ фиксации.
+1. `PWR-HI` — PACK_BUS и POWER_GND;
+2. `PWR-CRIT` — critical power;
+3. `CTRL-SAFE` — EXT_KILL, SAFE_OFF, HARD_OFF;
+4. `FAULT-SUMMARY` — прямые board fault lines;
+5. `COMM-INTERNAL` — CAN-FD;
+6. `COMM-ISOLATED` — внешний RS-485;
+7. `SERVICE` — SWD/UART/test.
 
-## 12. Требования к документации интерфейса
+## 12. Требования к физическому разъёму
 
-Для каждого физического межплатного разъёма перед schematic freeze должны быть указаны:
+Для каждого разъёма перед schematic freeze указываются:
 
-1. обозначение разъёма;
-2. плата-источник и плата-получатель;
-3. pin number;
-4. net name;
-5. направление;
-6. нормальное и аварийное состояние;
-7. максимальное напряжение;
-8. длительный и пиковый ток;
-9. reference ground;
-10. тип сигнала;
-11. требование к экрану/витой паре;
-12. допустимое состояние при разъединении;
-13. защита от неверного подключения.
+1. обозначение и ответная часть;
+2. pin number и net name;
+3. направление и safe state;
+4. длительный/пиковый ток;
+5. рабочее напряжение;
+6. reference domain;
+7. тип сигнала и скорость;
+8. требования к витой паре/экрану;
+9. допустимое состояние при разъединении;
+10. keying и защита от неверного подключения;
+11. vibration rating и число циклов;
+12. creepage/clearance.
 
-## 13. Следующий шаг
+Для сигнальных разъёмов предусматривается запас контактов 20–30 %.
 
-1. Построить логический `02_INTERBOARD_POWER_AND_CONTROL`.
-2. Подсчитать pin count всех логических интерфейсов.
-3. Сравнить параллельную и сериализованную передачу диагностики.
-4. Определить механику размещения плат.
-5. После этого выбирать конкретные межплатные разъёмы и жгуты.
+## 13. Reference designators
+
+| Плата | Диапазон |
+|---|---:|
+| PCB-A | 100–199 |
+| PCB-B | 200–299 |
+| PCB-C | 300–399 |
+| PCB-D | 400–499 |
+| PCB-E | 500–599 |
+
+## 14. Следующий шаг
+
+1. обновить логическую карту `02_INTERBOARD_POWER_AND_CONTROL` под CAN-FD + hard lines;
+2. определить CAN-FD node order по 3D-компоновке;
+3. подсчитать hard-line и power pin count;
+4. выбрать физические разъёмы и pinout;
+5. выполнить EMC/fault review communication-loss modes;
+6. после этого заморозить межплатный жгут/backplane.
