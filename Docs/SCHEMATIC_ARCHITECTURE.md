@@ -1,190 +1,254 @@
 # Архитектура принципиальной схемы ПДУ БНПА / PlataVM
 
-Дата фиксации: 2026-07-10  
+Дата актуализации: 2026-07-16  
 Статус:
 
 ```text
-ACCEPTED SCHEMATIC ARCHITECTURE BASELINE
+V1.6 ACCEPTED SCHEMATIC ARCHITECTURE
+CAN-FD internal transport; direct hard safety lines; no component freeze
 ```
 
 ## 1. Назначение
 
-Документ задаёт структуру электрической принципиальной схемы, функциональное разбиение на платы, иерархию листов KiCad и границы между узлами. Он не выбирает конкретные модели компонентов и не заменяет расчёты отдельных узлов.
+Документ задаёт функциональное разбиение принципиальной схемы, иерархию листов KiCad, границы плат и обязательные межплатные контракты. Конкретные модели компонентов, footprints, разъёмы и PCB layout выбираются отдельными расчётными этапами.
 
-## 2. Принятое решение
+## 2. Многоплатная система
 
-ПДУ выполняется как многоплатная система из пяти функциональных PCB-модулей и отдельной пассивной системы межсоединений:
+ПДУ состоит из пяти функциональных PCB-модулей и пассивного INTERCONNECT:
 
-1. `PCB-A_BFE_POWER` — два Battery Front-End, объединение в `PACK_BUS`, силовые измерения, электронные ключи, DECK_BALANCE, аппаратные цепи отключения.
-2. `PCB-B_CTRL_RESERVE` — MCU, критическое питание, EMG/KEEP_ALIVE, watchdog/supervisor, fault manager, isolated RS-485 и формирование управляющих сигналов.
-3. `PCB-C_POWER_12V` — `POWER_12V_BUS`, 14 выходных каналов и их диагностика.
-4. `PCB-D_POWER_5V` — преобразователь `5V_SYS_BUS`, 10 выходов 5 В и их диагностика.
-5. `PCB-E_LIGHT_POWER` — шесть независимых LED-драйверов для `6 × Epistar XY-J45`.
-6. `INTERCONNECT` — пассивный жгут, шины, силовые перемычки и/или пассивная backplane. Он не содержит обязательной активной электроники.
+1. `PCB-A_BFE_POWER` — два Battery Front-End, объединение в PACK_BUS, измерения, электронные ключи, DECK_BALANCE и конечные аппаратные отключения;
+2. `PCB-B_CTRL_RESERVE` — central MCU, critical power, EMG, watchdog/supervisor, fault manager, внешний isolated RS-485, внутренняя CAN-FD и аппаратные safe-control outputs;
+3. `PCB-C_POWER_12V` — 14 защищённых 12 В каналов, local control/ADC и CAN-FD node;
+4. `PCB-D_POWER_5V` — 5V_SYS converter, 10 защищённых выходов, local control/ADC и CAN-FD node;
+5. `PCB-E_LIGHT_POWER` — шесть независимых LED drivers, local PWM/current control и CAN-FD node;
+6. `INTERCONNECT` — только пассивные силовые шины, жгуты, экраны и/или passive backplane.
 
-Ширина каждого PCB-модуля должна быть не более 100 мм. Длина, взаимное расположение и конкретный тип межплатного соединения определяются после формирования интерфейсной матрицы и механического эскиза корпуса.
+Высокие токи не проходят через PCB-B. Центральный `K_MAIN` отсутствует.
 
-## 3. Причины многоплатного разбиения
-
-1. Разделить высокие токи, импульсные преобразователи, LED-драйверы и чувствительную управляющую электронику.
-2. Снизить тепловую плотность каждого модуля.
-3. Упростить испытания и замену отдельных функциональных блоков.
-4. Не пропускать суммарные токи выходных шин через плату MCU.
-5. Позволить независимо дорабатывать `POWER_12V_BUS`, `5V_SYS_BUS` и `LIGHT_POWER_BRANCH` без изменения Battery Front-End.
-6. Сохранить ширину плат не более 100 мм.
-7. Разделить силовые и сигнальные зоны для EMC и измерительной точности.
-
-## 4. Каноническая структура системы
+## 3. Каноническая структура питания
 
 ```text
-АКБ_1 → СН-176А-12 → PCB-A_BFE_POWER / BFE_1 ┐
-                                               ├→ PACK_BUS
-АКБ_2 → СН-176А-12 → PCB-A_BFE_POWER / BFE_2 ┘
+АКБ_1 → BMS → fuse → K_BAT1 → СН-176А-12 → PCB-A / BFE_1 ┐
+                                                               ├→ PACK_BUS
+АКБ_2 → BMS → fuse → K_BAT2 → СН-176А-12 → PCB-A / BFE_2 ┘
 
 PACK_BUS
-├→ PCB-C_POWER_12V → CH1...CH14
-├→ PCB-D_POWER_5V  → 5V_OUT1...5V_OUT10
-├→ PCB-E_LIGHT_POWER → LED1...LED6
-└→ PCB-B_CTRL_RESERVE → RESERVE_BRANCH / EMG / 5V_CRIT / 3V3_CRIT
-
-PCB-B_CTRL_RESERVE
-├→ управление и диагностика PCB-A_BFE_POWER
-├→ управление и диагностика PCB-C_POWER_12V
-├→ управление и диагностика PCB-D_POWER_5V
-├→ управление и диагностика PCB-E_LIGHT_POWER
-└→ isolated RS-485 → верхний уровень
+├→ PACK_BUS_CRIT_IN  → PCB-B
+├→ PACK_BUS_P12_IN   → PCB-C
+├→ PACK_BUS_P5_IN    → PCB-D
+└→ PACK_BUS_LIGHT_IN → PCB-E
 ```
 
-## 5. Границы PCB-A_BFE_POWER
+Каждая силовая ветвь имеет отдельный рассчитанный проводник/шину и локальную защиту. Сигнальная backplane не является силовой шиной.
+
+## 4. Каноническая структура управления
+
+```text
+PCB-B ↔ PCB-A
+  direct critical control, direct measurements, EXT_KILL hardware chain
+
+PCB-B ↔ PCB-C/D/E
+  CAN_INT_H / CAN_INT_L for normal commands and telemetry
+  + direct SAFE/HARD_OFF lines
+  + direct board-fault summary lines
+
+PCB-B ↔ верхний уровень
+  isolated RS-485
+```
+
+Внутренняя CAN-FD не заменяет EXT_KILL, HARD_OFF или локальные аппаратные защиты.
+
+## 5. PCB-A_BFE_POWER
 
 ### 5.1 На плате размещаются
 
-1. Вход `BAT1+ / BAT1−` после СН-176А-12.
-2. Вход `BAT2+ / BAT2−` после СН-176А-12.
-3. Входная TVS/EMI-защита обеих ветвей.
-4. Измерение напряжения и тока каждой батарейной ветви.
-5. `MAIN_SW1` и `MAIN_SW2`.
-6. `BALANCE_SW1 + R_BAL1` и `BALANCE_SW2 + R_BAL2`.
-7. Объединение исправных ветвей в `PACK_BUS`.
-8. Измерение `PACK_BUS_V` и при необходимости суммарного тока.
-9. `PACK_BUS_DISCHARGE`.
-10. Дистанционные размыкающие элементы `REMOTE_OFF_NC` для обеих АКБ.
-11. Конечные аппаратные цепи отключения `MAIN_SW1/MAIN_SW2` и hold loops от `EXT_KILL`.
-12. Силовые выходы `PACK_BUS` к остальным модулям.
+1. `BAT1+ / BAT1−` и `BAT2+ / BAT2−` после СН-176А-12;
+2. входная TVS/EMI-защита обеих ветвей;
+3. измерение напряжения и тока каждой ветви;
+4. `MAIN_SW1`, `MAIN_SW2`;
+5. `BALANCE_SW1/R_BAL1`, `BALANCE_SW2/R_BAL2`;
+6. объединение исправных ветвей в `PACK_BUS`;
+7. измерение `PACK_BUS_VSENSE` и при необходимости общего тока;
+8. `PACK_BUS_DISCHARGE`;
+9. два независимых energize-to-run REMOTE_OFF relay contacts;
+10. конечные аппаратные действия EXT_KILL для MAIN_SW и hold loops;
+11. силовые выходы PACK_BUS к PCB-B/C/D/E;
+12. разъёмы и защищённые test points.
 
-### 5.2 На плате не размещаются
+### 5.2 REMOTE_OFF на PCB-A
 
-1. Основной MCU проекта.
-2. Внешний isolated RS-485.
-3. Каналы CH1...CH14.
-4. Преобразователь 5V_SYS на 15 А.
-5. LED-драйверы.
-6. Активная электроника внутри корпусов основных АКБ.
+Используется физический `NO` run-contact, который замкнут только при healthy critical control:
 
-### 5.3 Особые правила
+```text
+REMOTE_OFF relay energized → run contact CLOSED
+relay de-energized          → run contact OPEN → hold loop OPEN
+```
 
-1. Обе батарейные ветви должны быть электрически и топологически симметричны.
-2. Высокие токи идут по отдельным силовым слоям, шинам или перемычкам и не проходят через сигнальные разъёмы.
-3. Аналоговые измерительные цепи отделяются от силовых коммутационных контуров.
-4. Аппаратный `EXT_KILL` должен воздействовать на конечные отключающие элементы без зависимости от MCU и программного интерфейса.
+Имя `REMOTE_OFF_NC` не используется для физического контакта. Логическая функция может быть active-low, но физическая fail-open реализация — energize-to-run NO.
 
-## 6. Границы PCB-B_CTRL_RESERVE
+### 5.3 PCB-A ↔ PCB-B direct nets
+
+Управление:
+
+```text
+BAT1_MAIN_SW_EN
+BAT2_MAIN_SW_EN
+BAT1_BALANCE_SW_EN
+BAT2_BALANCE_SW_EN
+BAT1_HOLD_LOOP_OPEN_CMD
+BAT2_HOLD_LOOP_OPEN_CMD
+PACK_BUS_DISCHARGE_EN
+EXT_KILL_HW_CHAIN
+```
+
+Диагностика:
+
+```text
+BAT1_PRESENT
+BAT2_PRESENT
+BAT1_VSENSE
+BAT2_VSENSE
+BAT1_ISENSE
+BAT2_ISENSE
+PACK_BUS_VSENSE
+BFE1_FAULT_N
+BFE2_FAULT_N
+BALANCE1_FAULT_N
+BALANCE2_FAULT_N
+PACK_BUS_DISCHARGE_FAULT_N
+```
+
+### 5.4 На PCB-A не размещаются
+
+- central MCU;
+- внешний RS-485;
+- внутренний CAN-FD node как обязательный safety path;
+- каналы CH1…CH14;
+- 5V_SYS converter;
+- LED drivers;
+- активная электроника внутри корпусов основных АКБ.
+
+## 6. PCB-B_CTRL_RESERVE
 
 ### 6.1 На плате размещаются
 
-1. MCU проекта.
-2. Watchdog и supervisor.
-3. Fault manager и аппаратные блокировки низкого уровня.
-4. `RESERVE_BRANCH`.
-5. Заряд и контроль `EMG_4S2P`.
-6. Источники `5V_CRIT` и `3V3_CRIT`.
-7. Логика KEEP_ALIVE.
-8. Внешний isolated RS-485 half-duplex.
-9. Optional CAN/CAN-FD footprint в статусе DNP/future.
-10. Интерфейсы управления и диагностики остальных плат.
-11. Вход `EXT_KILL` и формирование независимого аппаратного сигнала к PCB-A.
-12. SWD/UART service и тестовые точки.
+1. central MCU семейства STM32G4, package TBD;
+2. watchdog и supervisor;
+3. fault manager и аппаратные блокировки;
+4. `RESERVE_BRANCH`, EMG charge/control и KEEP_ALIVE;
+5. `5V_CRIT`, `3V3_CRIT`;
+6. внешний isolated RS-485;
+7. внутренний CAN-FD controller/transceiver;
+8. hard SAFE/HARD_OFF outputs к PCB-C/D/E;
+9. board-fault summary inputs от PCB-C/D/E;
+10. вход EXT_KILL и аппаратное формирование `EXT_KILL_HW_CHAIN`;
+11. SWD/UART service и test points;
+12. единственная управляемая точка `SIGNAL_GND–POWER_GND`;
+13. CHASSIS/shield entry network;
+14. optional внешний CAN/CAN-FD footprint в статусе DNP, электрически отделённый от обязательной внутренней CAN-FD.
 
 ### 6.2 На плате не размещаются
 
-1. Суммарные токи CH1...CH14.
-2. Суммарный ток 5V_SYS_BUS.
-3. Токи LED-матриц.
-4. Основные силовые токи BAT1/BAT2 и PACK_BUS, кроме ограниченной ветви питания critical domain.
+- суммарные токи 12 В каналов;
+- суммарный ток 5V_SYS_BUS;
+- LED power stages;
+- основные токи BAT1/BAT2/PACK_BUS кроме ограниченного critical branch.
 
-## 7. Границы PCB-C_POWER_12V
+### 6.3 Critical power rule
 
-1. Вход от `PACK_BUS` через отдельный силовой интерфейс.
-2. Входная защита и локальная ёмкость.
-3. `CH1...CH11` — MCU-controlled.
-4. `CH12...CH14` — Always-On monitored.
-5. Номинальный длительный ток каждого канала — 3 А.
-6. Индивидуальная защита, управление и токовая диагностика каждого канала.
-7. Аппаратное групповое отключение при SAFE/HARD_OFF.
-8. Внешние выходные разъёмы CH1...CH14.
+`5V_CRIT` и `3V3_CRIT` не являются источником `5V_SYS_BUS`. Потеря healthy critical control должна открыть energize-to-run REMOTE_OFF relay contacts.
 
-Конкретные high-side switch/eFuse и способ сбора диагностики пока `TBD`.
+## 7. PCB-C_POWER_12V
 
-## 8. Границы PCB-D_POWER_5V
+На плате:
 
-1. Вход от `PACK_BUS` через отдельный силовой интерфейс.
-2. DC/DC `PACK_BUS → 5V_SYS_BUS`.
-3. Предварительный общий бюджет: 15 А длительно, 20 А кратковременно.
-4. `5V_OUT1...5V_OUT7` — управляемые.
-5. `5V_OUT8...5V_OUT10` — Always-On monitored.
-6. До 3 А на один выход в пределах общего бюджета.
-7. Индивидуальная защита и токовая диагностика каждого выхода.
-8. Групповое отключение 5V_SYS при SAFE/HARD_OFF.
-9. Внешние выходные разъёмы 5V_OUT1...5V_OUT10.
+1. вход `PACK_BUS_P12_IN` и POWER_GND;
+2. входная защита и локальная bulk capacitance;
+3. CH1…CH11 controlled;
+4. CH12…CH14 Always-On monitored в RUN;
+5. 3 А continuous / 5 А peak до 1 с на канал;
+6. individual high-side switch/eFuse, current sense и fault protection;
+7. local MCU/I/O/ADC и CAN-FD transceiver;
+8. direct `P12_GROUP_SAFE_OFF` и `P12_GROUP_HARD_OFF` inputs;
+9. direct `P12_BOARD_FAULT_N` output;
+10. внешние разъёмы и test points.
 
-`5V_SYS_BUS` не питает critical domain и не питается от EMG.
+Normal channel commands and detailed diagnostics are CAN-FD data objects. Hard-off does not depend on CAN-FD.
 
-## 9. Границы PCB-E_LIGHT_POWER
+## 8. PCB-D_POWER_5V
 
-1. Вход от `PACK_BUS` через отдельный силовой интерфейс.
-2. Общая защита ветви света.
-3. Шесть электрически независимых LED-драйверов.
-4. Шесть входов PWM.
-5. Шесть сигналов fault.
-6. Шесть каналов измерения или контроля тока.
-7. Групповое разрешение `LIGHT_BRANCH_EN`.
-8. Выходы к `LED1...LED6`.
+На плате:
 
-Разбиение силовой части на две зоны по три канала допускается внутри одной платы, но не создаёт отдельную функциональную плату без дополнительного решения.
+1. вход `PACK_BUS_P5_IN` и POWER_GND;
+2. input protection/inrush/bulk network;
+3. preliminary two-phase synchronous buck 15 А continuous / 20 А short;
+4. 10 protected outputs up to 3 А each within total budget;
+5. OUT1…OUT7 controlled;
+6. OUT8…OUT10 Always-On monitored в RUN;
+7. local MCU/I/O/ADC и CAN-FD transceiver;
+8. direct `P5_GROUP_SAFE_OFF` и `P5_GROUP_HARD_OFF` inputs;
+9. direct `P5_BOARD_FAULT_N` output;
+10. thermal monitoring and external output connectors.
 
-## 10. Пассивная система INTERCONNECT
+`5V_SYS_BUS` не питает PCB-B critical domain и не питается от EMG.
 
-`INTERCONNECT` включает:
+## 9. PCB-E_LIGHT_POWER
 
-1. силовое распределение `PACK_BUS`;
-2. общий силовой возврат `POWER_GND`;
-3. сигнальные жгуты между PCB-B и остальными платами;
-4. линии `EXT_KILL`;
-5. экраны, chassis-соединения и точки PE/chassis, если они будут применяться;
-6. сервисные разъёмы и контрольные ответвления.
+На плате:
 
-Базовое правило: `PACK_BUS` распределяется звездой или через рассчитанную силовую шину от PCB-A, а не последовательно через PCB-B, PCB-C, PCB-D или PCB-E.
+1. вход `PACK_BUS_LIGHT_IN` и POWER_GND;
+2. branch input protection and bulk network;
+3. шесть независимых LED driver channels;
+4. две симметричные thermal/power zones 2×3;
+5. local MCU/current-control/PWM generation;
+6. CAN-FD transceiver;
+7. direct `LIGHT_GROUP_HARD_OFF` input;
+8. direct `LIGHT_BOARD_FAULT_N` output;
+9. per-channel current/open/short diagnostics;
+10. external LED connectors and thermal sensors.
 
-Пассивная backplane допускается, но её применение, токовые возможности и конструкция должны быть подтверждены отдельным механическим и тепловым расчётом.
+CAN-FD передаёт brightness setpoints и diagnostics. Шесть высокочастотных PWM-линий не проходят через межплатный жгут. Локальный PWM: 3,3 В active-high, default 1 кГц, configurable 100…1000 Гц.
 
-## 11. Иерархия листов KiCad
+Default safe state — все LED OFF.
 
-### 11.1 Корневой проект
+## 10. INTERCONNECT
+
+INTERCONNECT включает:
+
+1. отдельные PACK_BUS power branches;
+2. POWER_GND returns;
+3. critical power branch;
+4. CAN_INT_H/CAN_INT_L differential pair;
+5. direct SAFE/HARD_OFF lines;
+6. direct board-fault summary lines;
+7. EXT_KILL hardware chain;
+8. CHASSIS/shield connections;
+9. service/test wiring.
+
+INTERCONNECT остаётся пассивным. CAN-FD выполняется как линейная шина с termination на двух физических концах; node order определяется после 3D-компоновки.
+
+## 11. Ground/chassis policy
+
+1. `POWER_GND`, `SIGNAL_GND`, `ISO_GND`, `CHASSIS` — разные nets;
+2. одна точка `SIGNAL_GND–POWER_GND` на PCB-B через net-tie/configurable element;
+3. экраны подключаются к CHASSIS у ввода;
+4. ISO_GND отделён по DC;
+5. optional HF coupling ISO_GND–CHASSIS после EMC review;
+6. безымянный `GND` запрещён в межплатных контрактах.
+
+## 12. Иерархия листов KiCad
+
+### 12.1 Корень
 
 ```text
 PlataVM.kicad_pro
 PlataVM.kicad_sch
-```
-
-### 11.2 Верхний уровень
-
-```text
 00_SYSTEM_TOP.kicad_sch
 01_EXTERNAL_BATTERIES_AND_HARNESS.kicad_sch
 02_INTERBOARD_POWER_AND_CONTROL.kicad_sch
 ```
 
-### 11.3 PCB-A_BFE_POWER
+### 12.2 PCB-A
 
 ```text
 10_BFE_POWER_TOP.kicad_sch
@@ -199,7 +263,7 @@ PlataVM.kicad_sch
 19_BFE_CONNECTORS_TESTPOINTS.kicad_sch
 ```
 
-### 11.4 PCB-B_CTRL_RESERVE
+### 12.3 PCB-B
 
 ```text
 20_CTRL_RESERVE_TOP.kicad_sch
@@ -214,7 +278,9 @@ PlataVM.kicad_sch
 29_CTRL_CONNECTORS_TESTPOINTS.kicad_sch
 ```
 
-### 11.5 PCB-C_POWER_12V
+Внутренняя CAN-FD добавляется в функциональные границы `23_MCU_CORE`, `27_CONTROL_IO` и `29_CTRL_CONNECTORS_TESTPOINTS`; отдельный новый PCB-модуль не создаётся.
+
+### 12.4 PCB-C
 
 ```text
 30_POWER_12V_TOP.kicad_sch
@@ -226,7 +292,7 @@ PlataVM.kicad_sch
 36_POWER_12V_CONNECTORS.kicad_sch
 ```
 
-### 11.6 PCB-D_POWER_5V
+### 12.5 PCB-D
 
 ```text
 40_POWER_5V_TOP.kicad_sch
@@ -238,7 +304,7 @@ PlataVM.kicad_sch
 46_5V_CONNECTORS.kicad_sch
 ```
 
-### 11.7 PCB-E_LIGHT_POWER
+### 12.6 PCB-E
 
 ```text
 50_LIGHT_POWER_TOP.kicad_sch
@@ -250,95 +316,36 @@ PlataVM.kicad_sch
 56_LIGHT_CONNECTORS.kicad_sch
 ```
 
-## 12. Уровни детализации схемы
+## 13. Reference designator ranges
 
-### Уровень A — архитектурный каркас
+| Плата | Диапазон |
+|---|---:|
+| PCB-A | 100–199 |
+| PCB-B | 200–299 |
+| PCB-C | 300–399 |
+| PCB-D | 400–499 |
+| PCB-E | 500–599 |
 
-Допускаются функциональные блоки с маркировкой `TBD`. Фиксируются границы плат, направления энергии, шины, сигналы и аварийные пути.
+## 14. KiCad alignment required
 
-### Уровень B — схемотехнические узлы
+Текущий architecture skeleton должен быть обновлён следующим отдельным schematic PR:
 
-Функциональные блоки заменяются реальными топологиями, но part number может оставаться `TBD` при наличии электрических требований.
+1. добавить CAN_INT_H/CAN_INT_L logical boundaries на PCB-B/C/D/E;
+2. оставить per-channel names как data-object contracts, а не отдельные обязательные межплатные pins;
+3. оставить direct SAFE/HARD_OFF и board-fault summary pins;
+4. заменить физическую семантику `REMOTE_OFF_NC` на energize-to-run NO run-contact;
+5. добавить единственную ground net-tie point на PCB-B;
+6. выполнить повторный system interface consistency audit.
 
-### Уровень C — component freeze
+До этого текущие листы считаются Architecture A/B skeleton, а не frozen physical pinout.
 
-Каждый компонент имеет выбранный part number, символ, footprint, рейтинг и ссылку на расчёт.
+## 15. Запрещённые изменения
 
-### Уровень D — schematic freeze
-
-Пройдены ERC, peer review, интерфейсная проверка, расчёты и трассируемость требований.
-
-## 13. Что допускается обозначать TBD
-
-На первом проходе допускаются:
-
-1. `K_BAT1/K_BAT2` — модель контактора.
-2. `MAIN_SW1/MAIN_SW2` — конкретный силовой ключ.
-3. Датчики тока и их усилители.
-4. `REMOTE_OFF_NC`.
-5. Конкретный MCU.
-6. DC/DC 5V_SYS.
-7. High-side/eFuse каналов 12 В и 5 В.
-8. LED-драйверы.
-9. Межплатные разъёмы.
-10. Конкретные TVS, фильтры и suppression.
-
-При этом нельзя оставлять неопределёнными назначение узла, направление тока, интерфейс, безопасное состояние и требуемые электрические пределы.
-
-## 14. Земли и силовые возвраты
-
-На архитектурном уровне используются отдельные имена:
-
-```text
-POWER_GND
-SIGNAL_GND
-ISO_GND
-CHASSIS
-```
-
-До отдельного решения запрещено считать эти сети взаимозаменяемыми или автоматически объединять их в глобальную `GND`.
-
-Точка и способ соединения `POWER_GND` и `SIGNAL_GND`, а также связь с `CHASSIS`, должны быть определены до завершения листов измерения, RS-485 и PCB layout.
-
-## 15. Порядок разработки
-
-1. Создать структуру KiCad и корневой лист.
-2. Зафиксировать net naming и межплатные интерфейсы.
-3. Построить `00_SYSTEM_TOP`.
-4. Построить `01_EXTERNAL_BATTERIES_AND_HARNESS`.
-5. Построить архитектурный каркас `PCB-A_BFE_POWER`.
-6. Построить `PCB-B_CTRL_RESERVE` и аппаратный путь EXT_KILL.
-7. Построить `PCB-C_POWER_12V`.
-8. Построить `PCB-D_POWER_5V`.
-9. Построить `PCB-E_LIGHT_POWER`.
-10. Выполнить интерфейсную проверку всех листов.
-11. Затем детализировать узлы и выбирать компоненты по отдельным веткам/PR.
-
-## 16. Условия перехода к schematic freeze
-
-1. Определены все физические межплатные разъёмы и pinout.
-2. Определён способ передачи управляющих и диагностических сигналов между PCB-B и силовыми платами.
-3. Определены ground/chassis/shield rules.
-4. Закрыты силовые бюджеты ветвей.
-5. Выбраны и рассчитаны защиты.
-6. Закрыты критические TBD по MAIN_SWx, измерению тока, DC/DC, LED-драйверам и MCU.
-7. Выполнен ERC без необъяснённых ошибок.
-8. Проверено соответствие требованиям и интерфейсной матрице.
-9. Схема прошла отдельный design review.
-
-## 17. Следующий непосредственный результат
-
-Первый схемный пакет должен содержать:
-
-```text
-00_SYSTEM_TOP
-01_EXTERNAL_BATTERIES_AND_HARNESS
-02_INTERBOARD_POWER_AND_CONTROL
-10_BFE_POWER_TOP
-20_CTRL_RESERVE_TOP
-30_POWER_12V_TOP
-40_POWER_5V_TOP
-50_LIGHT_POWER_TOP
-```
-
-На этом этапе листы содержат функциональные блоки и точные имена интерфейсов, но не требуют выбора всех part number.
+1. добавление центрального K_MAIN;
+2. пропуск высоких токов через PCB-B;
+3. зависимость EXT_KILL от firmware/CAN-FD/RS-485;
+4. объединение ground domains без net-tie policy;
+5. активные компоненты в INTERCONNECT;
+6. активная электроника в корпусах основных АКБ;
+7. выбор components/footprints до закрытия соответствующих расчётов;
+8. автоматический restart после BMS recovery.
