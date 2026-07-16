@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>OPEN_QUESTIONS answer sheet template</title>
+<style>
+@page { size: A4 landscape; margin: 12mm; }
+body { font-family: Arial, sans-serif; font-size: 9pt; }
+h1 { text-align:center; font-size:16pt; }
+h2 { text-align:center; font-size:11pt; }
+table { border-collapse:collapse; width:100%; margin:10px 0 20px; }
+th,td { border:1px solid #000; padding:6px; vertical-align:top; }
+th { background:#d9eaf7; font-weight:bold; }
+.meta td,.meta th { width:25%; }
+.questions td:first-child { width:43%; }
+.questions td:last-child { width:57%; }
+.section { font-size:12pt; font-weight:bold; margin-top:18px; }
+</style>
+</head>
+<body>
+<h1>ПДУ БНПА / PlataVM — OPEN_QUESTIONS answer sheet</h1>
+<h2>Повторно используемый шаблон формы вопросов и решений</h2>
+<p style="text-align:center">Инструкция: заполните правую колонку. Если согласны с предложением ассистента — напишите «подтверждаю».</p>
+<table class="meta">
+<tr><th>Версия</th><th>Источник вопросов</th><th>Следующий рубеж</th><th>Что делать с файлом</th></tr>
+<tr><td>TEMPLATE</td><td>Docs/OPEN_QUESTIONS.md</td><td>Gate G-R / расчёты и component selection</td><td>Заполнить и вернуть ассистенту</td></tr>
+</table>
+<div class="section">НАЗВАНИЕ РАЗДЕЛА</div>
+<table class="questions">
+<tr><th>Вопрос из OPEN_QUESTIONS.md</th><th>Ответ / решение владельца проекта</th></tr>
+<tr>
+<td><b>Q-XXX-000</b><br><br><b>Вопрос:</b> Текст вопроса.<br><br><b>Временное допущение:</b> TBD.<br><br><b>Влияние:</b> требования / схема / BOM / PCB / прошивка / испытания</td>
+<td><b>Ответ владельца проекта:</b><br><br><b>Решение:</b><br><br><b>Численное значение / вариант:</b><br><br><b>Источник / основание:</b><br><br><b>Статус:</b> закрыть / оставить открытым / нужен расчёт / нужны испытания<br><br><b>Предложение ассистента:</b> [заполняется для конкретного вопроса]<br><br><b>Рекомендуемый статус:</b> [вариант]</td>
+</tr>
+</table>
+</body></html>
