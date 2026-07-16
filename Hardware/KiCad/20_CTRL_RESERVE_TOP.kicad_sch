@@ -13,56 +13,301 @@
 		(comment 2 "Sub-sheets 21..29 define functional boundaries only; no components selected")
 	)
 	(lib_symbols)
-	(text "20_CTRL_RESERVE_TOP - DETAILED HIERARCHY MAP\nPCB-B_CTRL_RESERVE contains the limited critical/reserve power branch, EMG/KEEP_ALIVE,\nMCU, watchdog/supervisor/fault manager, isolated RS-485, control/diagnostic I/O,\nindependent EXT_KILL handling and controlled service/debug boundaries.\nHigh-current load power must not pass through PCB-B."
-		(exclude_from_sim no)
-		(at 12 12 0)
-		(effects (font (size 1.45 1.45)) (justify left))
-		(uuid "ctrl-b-top-00000020-0000-4000-8000-000000000101")
-	)
 	(text "SUB-SHEETS 21..24\n21_EMG_INPUT_CHARGE_ORING: PACK_BUS critical input, EMG source, charge/ORing and KEEP_ALIVE\n22_5V_CRIT_3V3_CRIT: critical-domain rail generation and monitored power-good/fault\n23_MCU_CORE: normal control, logging and logical interface ownership\n24_WATCHDOG_SUPERVISOR: reset, supervisor, fault manager and safe-state containment"
 		(exclude_from_sim no)
 		(at 12 78 0)
-		(effects (font (size 1.22 1.22)) (justify left))
-		(uuid "ctrl-b-top-00000020-0000-4000-8000-000000000102")
-	)
-	(text "SUB-SHEETS 25..29\n25_RS485_ISOLATED: external half-duplex isolated communication\n26_EXT_KILL_INPUT_LOGIC: independent input, latch and hardware fanout\n27_CONTROL_IO: PCB-A/C/D/E commands and diagnostic groups\n28_SERVICE_DEBUG: SWD, service UART and authorized reset boundary\n29_CTRL_CONNECTORS_TESTPOINTS: logical connector classes and controlled testpoints"
-		(exclude_from_sim no)
-		(at 168 78 0)
-		(effects (font (size 1.22 1.22)) (justify left))
-		(uuid "ctrl-b-top-00000020-0000-4000-8000-000000000103")
+		(effects
+			(font
+				(size 1.22 1.22)
+			)
+			(justify left)
+		)
+		(uuid "29e3c7aa-8840-4b43-85f4-2f2021b06dcd")
 	)
 	(text "ARCHITECTURAL CONSTRAINTS\n- no K_MAIN; PACK_BUS is created and distributed from PCB-A;\n- only the limited PACK_BUS_CRIT_IN branch enters PCB-B;\n- EXT_KILL propagates to PCB-A final actuators without MCU firmware or RS-485 dependency;\n- REMOTE_OFF and EXT_KILL retain priority over LOCAL_START;\n- BMS or critical-power recovery must not automatically energize K_BAT1/K_BAT2;\n- POWER_GND, SIGNAL_GND, ISO_GND and CHASSIS remain distinct until an explicit decision."
 		(exclude_from_sim no)
 		(at 12 160 0)
-		(effects (font (size 1.16 1.16)) (justify left))
-		(uuid "ctrl-b-top-00000020-0000-4000-8000-000000000104")
+		(effects
+			(font
+				(size 1.16 1.16)
+			)
+			(justify left)
+		)
+		(uuid "5251d60d-4bff-4773-a236-051a6c6b8f1b")
+	)
+	(text "SUB-SHEETS 25..29\n25_RS485_ISOLATED: external half-duplex isolated communication\n26_EXT_KILL_INPUT_LOGIC: independent input, latch and hardware fanout\n27_CONTROL_IO: PCB-A/C/D/E commands and diagnostic groups\n28_SERVICE_DEBUG: SWD, service UART and authorized reset boundary\n29_CTRL_CONNECTORS_TESTPOINTS: logical connector classes and controlled testpoints"
+		(exclude_from_sim no)
+		(at 168 78 0)
+		(effects
+			(font
+				(size 1.22 1.22)
+			)
+			(justify left)
+		)
+		(uuid "8444a4f7-00c2-4a0e-8046-bd68713c9cb8")
 	)
 	(text "NEXT CONTROLLED PASS\nCheck exact PCB-B interface names against PCB-A and 02_INTERBOARD_POWER_AND_CONTROL.\nThen add text-only symbol skeleton zones or real topologies only through a separate explicit stage.\nMCU, converters, isolation, transceiver, watchdog, connectors, footprints, BOM and layout remain intentionally unselected."
 		(exclude_from_sim no)
 		(at 12 220 0)
-		(effects (font (size 1.12 1.12)) (justify left))
-		(uuid "ctrl-b-top-00000020-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.12 1.12)
+			)
+			(justify left)
+		)
+		(uuid "9fb7de2a-193f-43dc-89c9-52349654521f")
 	)
-	(hierarchical_label "CTRL_HIER_RESERVE_EMG" (shape passive) (exclude_from_sim no) (at 128 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000201"))
-	(hierarchical_label "CTRL_HIER_MCU_SUPERVISOR" (shape passive) (exclude_from_sim no) (at 128 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000202"))
-	(hierarchical_label "CTRL_HIER_RS485" (shape passive) (exclude_from_sim no) (at 250 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000203"))
-	(hierarchical_label "CTRL_HIER_EXT_KILL" (shape passive) (exclude_from_sim no) (at 250 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000204"))
-	(hierarchical_label "CTRL_HIER_CONTROL_DIAG_IO" (shape passive) (exclude_from_sim no) (at 250 146 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000205"))
-	(hierarchical_label "CTRL_HIER_SERVICE_CONNECTORS" (shape passive) (exclude_from_sim no) (at 250 154 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000206"))
-	(hierarchical_label "PACK_BUS_CRIT_IN" (shape passive) (exclude_from_sim no) (at 12 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000207"))
-	(hierarchical_label "5V_CRIT" (shape passive) (exclude_from_sim no) (at 70 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000208"))
-	(hierarchical_label "3V3_CRIT" (shape passive) (exclude_from_sim no) (at 108 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000209"))
-	(hierarchical_label "MCU_FAULT_MANAGER" (shape passive) (exclude_from_sim no) (at 150 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000210"))
-	(hierarchical_label "RS485_ISOLATED" (shape passive) (exclude_from_sim no) (at 232 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000211"))
-	(hierarchical_label "ISO_GND_POLICY" (shape passive) (exclude_from_sim no) (at 292 252 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000212"))
-	(hierarchical_label "CTRL_B_TO_A" (shape passive) (exclude_from_sim no) (at 12 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000213"))
-	(hierarchical_label "DIAG_A_TO_B" (shape passive) (exclude_from_sim no) (at 64 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000214"))
-	(hierarchical_label "CTRL_B_TO_C_P12" (shape passive) (exclude_from_sim no) (at 116 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000215"))
-	(hierarchical_label "DIAG_C_TO_B_P12" (shape passive) (exclude_from_sim no) (at 188 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000216"))
-	(hierarchical_label "CTRL_B_TO_D_P5" (shape passive) (exclude_from_sim no) (at 262 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000217"))
-	(hierarchical_label "DIAG_D_TO_B_P5" (shape passive) (exclude_from_sim no) (at 330 264 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000218"))
-	(hierarchical_label "CTRL_B_TO_E_LIGHT" (shape passive) (exclude_from_sim no) (at 12 276 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000219"))
-	(hierarchical_label "DIAG_E_TO_B_LIGHT" (shape passive) (exclude_from_sim no) (at 86 276 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000220"))
-	(hierarchical_label "EXT_KILL_HW_CHAIN" (shape passive) (exclude_from_sim no) (at 164 276 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000221"))
-	(hierarchical_label "SERVICE_DEBUG" (shape passive) (exclude_from_sim no) (at 240 276 0) (effects (font (size 1.05 1.05)) (justify left)) (uuid "ctrl-b-top-00000020-0000-4000-8000-000000000222"))
+	(text "20_CTRL_RESERVE_TOP - DETAILED HIERARCHY MAP\nPCB-B_CTRL_RESERVE contains the limited critical/reserve power branch, EMG/KEEP_ALIVE,\nMCU, watchdog/supervisor/fault manager, isolated RS-485, control/diagnostic I/O,\nindependent EXT_KILL handling and controlled service/debug boundaries.\nHigh-current load power must not pass through PCB-B."
+		(exclude_from_sim no)
+		(at 12 12 0)
+		(effects
+			(font
+				(size 1.45 1.45)
+			)
+			(justify left)
+		)
+		(uuid "d0b089a6-22a7-409d-9871-adcb32d41011")
+	)
+	(hierarchical_label "EXT_KILL_HW_CHAIN"
+		(shape passive)
+		(at 164 276 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "092fdc84-2945-4496-b111-d85261294d73")
+	)
+	(hierarchical_label "DIAG_C_TO_B_P12"
+		(shape passive)
+		(at 188 264 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "0b5d74ca-d7f5-4cd2-890d-652772a2e73d")
+	)
+	(hierarchical_label "ISO_GND_POLICY"
+		(shape passive)
+		(at 287.12 236.92 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "0edd3fd1-81fe-428f-87b4-4abc3c5727c2")
+	)
+	(hierarchical_label "DIAG_D_TO_B_P5"
+		(shape passive)
+		(at 325.12 248.92 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "13d1b73c-f121-49fe-a131-65b933085766")
+	)
+	(hierarchical_label "CTRL_B_TO_E_LIGHT"
+		(shape passive)
+		(at 12 276 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "17f8d138-4409-4a56-9b94-f0a91329c2d9")
+	)
+	(hierarchical_label "SERVICE_DEBUG"
+		(shape passive)
+		(at 240 276 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "2381fe46-6962-44f3-b9fc-1053f237d81e")
+	)
+	(hierarchical_label "CTRL_HIER_RS485"
+		(shape passive)
+		(at 250 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "2b6f05bd-6c13-44c1-80e7-83e2f16de2be")
+	)
+	(hierarchical_label "5V_CRIT"
+		(shape passive)
+		(at 70 252 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "32c5ab82-c85e-4bd1-b849-563c279da51f")
+	)
+	(hierarchical_label "CTRL_HIER_CONTROL_DIAG_IO"
+		(shape passive)
+		(at 250 146 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "40664e0b-1f3d-48d7-91c8-4150a2e2a427")
+	)
+	(hierarchical_label "RS485_ISOLATED"
+		(shape passive)
+		(at 232 252 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "51ce6e70-399b-4936-939f-ab44cb254fcf")
+	)
+	(hierarchical_label "CTRL_HIER_SERVICE_CONNECTORS"
+		(shape passive)
+		(at 250 154 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "55edd558-7159-42bb-8a1e-a748fed5be78")
+	)
+	(hierarchical_label "PACK_BUS_CRIT_IN"
+		(shape passive)
+		(at 12 252 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "5cc351f9-9eb8-4181-b2f4-3de282b99895")
+	)
+	(hierarchical_label "CTRL_B_TO_A"
+		(shape passive)
+		(at 12 264 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "6e90fd5d-fd20-4631-801d-b68db2f6b6e4")
+	)
+	(hierarchical_label "MCU_FAULT_MANAGER"
+		(shape passive)
+		(at 150 252 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "76fad457-b073-484e-b79a-65f027c68d07")
+	)
+	(hierarchical_label "CTRL_HIER_EXT_KILL"
+		(shape passive)
+		(at 250 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8dd28f4e-42e2-41ed-b3ce-2db160691807")
+	)
+	(hierarchical_label "CTRL_HIER_MCU_SUPERVISOR"
+		(shape passive)
+		(at 128 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "96118d58-61df-404d-9cef-55d680f04ad8")
+	)
+	(hierarchical_label "CTRL_HIER_RESERVE_EMG"
+		(shape passive)
+		(at 128 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a1854024-3104-4ea2-8819-219ebf7a12ee")
+	)
+	(hierarchical_label "DIAG_E_TO_B_LIGHT"
+		(shape passive)
+		(at 86 276 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "ae447c1d-3c0f-4fb1-be13-b2abcbe5cfd9")
+	)
+	(hierarchical_label "CTRL_B_TO_D_P5"
+		(shape passive)
+		(at 262 264 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "cbe087ba-c848-43d0-acaa-31e67de06c0b")
+	)
+	(hierarchical_label "CTRL_B_TO_C_P12"
+		(shape passive)
+		(at 116 264 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "e5d006b0-0d99-49f7-834d-3c22ec0c0ab5")
+	)
+	(hierarchical_label "DIAG_A_TO_B"
+		(shape passive)
+		(at 64 264 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "eba8df91-edee-45c3-ab46-9b9e0d9f4a28")
+	)
+	(hierarchical_label "3V3_CRIT"
+		(shape passive)
+		(at 108 252 0)
+		(effects
+			(font
+				(size 1.05 1.05)
+			)
+			(justify left)
+		)
+		(uuid "ed3109de-5081-47e5-8b8e-a98cf46ab30f")
+	)
 )

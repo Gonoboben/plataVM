@@ -13,53 +13,268 @@
 		(comment 2 "Sub-sheets 51..56 define functional boundaries only; no components selected")
 	)
 	(lib_symbols)
-	(text "50_LIGHT_POWER_TOP - DETAILED HIERARCHY MAP\nPCB-E receives PACK_BUS_LIGHT_IN directly from PCB-A and drives six independent external LED loads.\nEach channel has independent PWM, current regulation, fault and current diagnostics.\nTwo local zones of three channels are allowed inside one PCB-E; no additional functional PCB is created."
-		(exclude_from_sim no)
-		(at 12 12 0)
-		(effects (font (size 1.28 1.28)) (justify left))
-		(uuid "light-top-00000050-0000-4000-8000-000000000101")
-	)
-	(text "SUB-SHEETS 51..53\n51_LIGHT_INPUT_PROTECTION: branch input, local protection/bulk-energy and input sensing boundaries\n52_LED_DRIVER_TEMPLATE: reusable single-channel control/regulation/protection/diagnostic contract\n53_LED_DRIVER_1_3: three independent driver-channel instances"
-		(exclude_from_sim no)
-		(at 12 72 0)
-		(effects (font (size 1.14 1.14)) (justify left))
-		(uuid "light-top-00000050-0000-4000-8000-000000000102")
-	)
 	(text "SUB-SHEETS 54..56\n54_LED_DRIVER_4_6: three independent driver-channel instances\n55_LIGHT_DIAGNOSTICS: per-channel and board-level diagnostic aggregation toward PCB-B\n56_LIGHT_CONNECTORS: logical LED output/return, harness and protected test boundaries"
 		(exclude_from_sim no)
 		(at 168 72 0)
-		(effects (font (size 1.14 1.14)) (justify left))
-		(uuid "light-top-00000050-0000-4000-8000-000000000103")
-	)
-	(text "CANONICAL CONTROL / DIAGNOSTICS\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nDiagnostics: LED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nCTRL_B_TO_E_LIGHT / DIAG_E_TO_B_LIGHT remain grouped logical boundaries; physical packing is TBD."
-		(exclude_from_sim no)
-		(at 12 150 0)
-		(effects (font (size 1.06 1.06)) (justify left))
-		(uuid "light-top-00000050-0000-4000-8000-000000000104")
+		(effects
+			(font
+				(size 1.14 1.14)
+			)
+			(justify left)
+		)
+		(uuid "65c4d718-7721-4074-8d79-0427ccd1cf76")
 	)
 	(text "ARCHITECTURAL CONSTRAINTS\nDefault safe state is all LED channels OFF. A single channel fault should remain isolated unless thermal/group protection requires wider shutdown.\nDriver topology, conversion ratio, PWM level/frequency, thermal solution, connectors, footprints, BOM and layout remain unselected."
 		(exclude_from_sim no)
 		(at 12 218 0)
-		(effects (font (size 1.08 1.08)) (justify left))
-		(uuid "light-top-00000050-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.08 1.08)
+			)
+			(justify left)
+		)
+		(uuid "7fb3d0d3-21d8-41b3-a380-d256f79406be")
 	)
-	(hierarchical_label "LIGHT_HIER_INPUT_PROTECTION" (shape passive) (exclude_from_sim no) (at 126 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000201"))
-	(hierarchical_label "LIGHT_HIER_DRIVER_TEMPLATE" (shape passive) (exclude_from_sim no) (at 126 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000202"))
-	(hierarchical_label "LIGHT_HIER_DRIVER_1_3" (shape passive) (exclude_from_sim no) (at 126 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000203"))
-	(hierarchical_label "LIGHT_HIER_DRIVER_4_6" (shape passive) (exclude_from_sim no) (at 250 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000204"))
-	(hierarchical_label "LIGHT_HIER_DIAGNOSTICS" (shape passive) (exclude_from_sim no) (at 250 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000205"))
-	(hierarchical_label "LIGHT_HIER_CONNECTORS" (shape passive) (exclude_from_sim no) (at 250 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000206"))
-	(hierarchical_label "PACK_BUS_LIGHT_IN" (shape input) (exclude_from_sim no) (at 12 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000207"))
-	(hierarchical_label "POWER_GND" (shape passive) (exclude_from_sim no) (at 72 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000208"))
-	(hierarchical_label "CTRL_B_TO_E_LIGHT" (shape input) (exclude_from_sim no) (at 124 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000209"))
-	(hierarchical_label "LIGHT_BRANCH_EN" (shape input) (exclude_from_sim no) (at 194 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000210"))
-	(hierarchical_label "LED_PWM[1..6]" (shape input) (exclude_from_sim no) (at 194 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000211"))
-	(hierarchical_label "LIGHT_GROUP_HARD_OFF" (shape input) (exclude_from_sim no) (at 194 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000212"))
-	(hierarchical_label "DIAG_E_TO_B_LIGHT" (shape output) (exclude_from_sim no) (at 266 232 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000213"))
-	(hierarchical_label "LED_FAULT_N[1..6]" (shape output) (exclude_from_sim no) (at 266 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000214"))
-	(hierarchical_label "LED_ISENSE[1..6]" (shape output) (exclude_from_sim no) (at 266 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000215"))
-	(hierarchical_label "LIGHT_INPUT_VSENSE" (shape output) (exclude_from_sim no) (at 266 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000216"))
-	(hierarchical_label "LIGHT_BOARD_TEMP" (shape output) (exclude_from_sim no) (at 266 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000217"))
-	(hierarchical_label "LIGHT_BOARD_FAULT_N" (shape output) (exclude_from_sim no) (at 266 272 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000218"))
-	(hierarchical_label "LED_OUTPUTS_1_6" (shape passive) (exclude_from_sim no) (at 330 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "light-top-00000050-0000-4000-8000-000000000219"))
+	(text "CANONICAL CONTROL / DIAGNOSTICS\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nDiagnostics: LED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nCTRL_B_TO_E_LIGHT / DIAG_E_TO_B_LIGHT remain grouped logical boundaries; physical packing is TBD."
+		(exclude_from_sim no)
+		(at 12 150 0)
+		(effects
+			(font
+				(size 1.06 1.06)
+			)
+			(justify left)
+		)
+		(uuid "9de4273c-0ad0-424e-9e87-d453026a7a31")
+	)
+	(text "SUB-SHEETS 51..53\n51_LIGHT_INPUT_PROTECTION: branch input, local protection/bulk-energy and input sensing boundaries\n52_LED_DRIVER_TEMPLATE: reusable single-channel control/regulation/protection/diagnostic contract\n53_LED_DRIVER_1_3: three independent driver-channel instances"
+		(exclude_from_sim no)
+		(at 12 72 0)
+		(effects
+			(font
+				(size 1.14 1.14)
+			)
+			(justify left)
+		)
+		(uuid "eb47d0d7-9e8c-41b7-ae9e-5c0a77bc11c9")
+	)
+	(text "50_LIGHT_POWER_TOP - DETAILED HIERARCHY MAP\nPCB-E receives PACK_BUS_LIGHT_IN directly from PCB-A and drives six independent external LED loads.\nEach channel has independent PWM, current regulation, fault and current diagnostics.\nTwo local zones of three channels are allowed inside one PCB-E; no additional functional PCB is created."
+		(exclude_from_sim no)
+		(at 12 12 0)
+		(effects
+			(font
+				(size 1.28 1.28)
+			)
+			(justify left)
+		)
+		(uuid "fcbb15b8-37ab-4f46-803c-ae08121d46ef")
+	)
+	(hierarchical_label "LIGHT_HIER_DRIVER_4_6"
+		(shape passive)
+		(at 250 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0ab16c9b-0077-4e64-8050-ca2beacaa2e0")
+	)
+	(hierarchical_label "LIGHT_BOARD_FAULT_N"
+		(shape output)
+		(at 266 272 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "10c30a56-7882-40e8-9ffc-9176d96500c6")
+	)
+	(hierarchical_label "PACK_BUS_LIGHT_IN"
+		(shape input)
+		(at 12 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "1c7d7f1d-de7e-4b70-9e3b-4499aaa22157")
+	)
+	(hierarchical_label "LIGHT_GROUP_HARD_OFF"
+		(shape input)
+		(at 194 256 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "1d5ba6b9-7e3f-48a4-bdd2-8eba21aef15e")
+	)
+	(hierarchical_label "CTRL_B_TO_E_LIGHT"
+		(shape input)
+		(at 124 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "224cdae9-d93f-43e4-ac87-60a854f22136")
+	)
+	(hierarchical_label "LIGHT_BRANCH_EN"
+		(shape input)
+		(at 194 240 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "3853b604-4af5-4395-a624-6f6df7e3d8cd")
+	)
+	(hierarchical_label "LIGHT_HIER_DRIVER_TEMPLATE"
+		(shape passive)
+		(at 126 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8086f35e-9da5-43e0-a521-5f51b7b39c83")
+	)
+	(hierarchical_label "LIGHT_INPUT_VSENSE"
+		(shape output)
+		(at 266 256 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8f70d2ae-0c23-4b1e-b9c4-bd3557473438")
+	)
+	(hierarchical_label "LED_OUTPUTS_1_6"
+		(shape passive)
+		(at 331.47 241.3 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "9cee20bf-222f-4752-ab0c-88bc3c82ba48")
+	)
+	(hierarchical_label "LED_ISENSE[1..6]"
+		(shape output)
+		(at 266 248 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a3471a09-dfbb-4fee-8bcc-fa53db00d018")
+	)
+	(hierarchical_label "LIGHT_HIER_DRIVER_1_3"
+		(shape passive)
+		(at 126 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "ca714251-2203-4667-82ee-c7128fb4e192")
+	)
+	(hierarchical_label "LIGHT_BOARD_TEMP"
+		(shape output)
+		(at 266 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "cb3ea52b-a8dc-4936-9dde-4ac1db26a2d6")
+	)
+	(hierarchical_label "LIGHT_HIER_CONNECTORS"
+		(shape passive)
+		(at 250 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "d6ae6662-e65b-4660-8590-4835276100a2")
+	)
+	(hierarchical_label "LED_FAULT_N[1..6]"
+		(shape output)
+		(at 266 240 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "d884e5ed-cadc-4f72-b77f-329001748aa2")
+	)
+	(hierarchical_label "DIAG_E_TO_B_LIGHT"
+		(shape output)
+		(at 266 232 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e6264062-eca8-46e0-aa03-0642af73b4d7")
+	)
+	(hierarchical_label "POWER_GND"
+		(shape passive)
+		(at 72 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e914e736-bec8-40a4-9f93-b9aea3f8f382")
+	)
+	(hierarchical_label "LIGHT_HIER_DIAGNOSTICS"
+		(shape passive)
+		(at 250 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "ec96ee48-08c8-4d1e-be07-e826f2c81b06")
+	)
+	(hierarchical_label "LED_PWM[1..6]"
+		(shape input)
+		(at 194 248 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "f4ec6ff8-c45e-47d8-a2bc-4b7cb2da4c0a")
+	)
+	(hierarchical_label "LIGHT_HIER_INPUT_PROTECTION"
+		(shape passive)
+		(at 126 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "fe7c49fc-f5d5-436b-99e5-162633805443")
+	)
 )

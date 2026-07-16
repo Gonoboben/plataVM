@@ -13,54 +13,279 @@
 		(comment 2 "Sub-sheets 41..46 define functional boundaries only; no components selected")
 	)
 	(lib_symbols)
-	(text "40_POWER_5V_TOP - DETAILED HIERARCHY MAP\nPCB-D converts PACK_BUS_P5_IN to 5V_SYS_BUS and distributes ten protected 5 V outputs.\nOUT1..OUT7 are normally controlled; OUT8..OUT10 are Always-On monitored.\n5V_SYS does not power PCB-B critical rails and is not supplied by EMG."
-		(exclude_from_sim no)
-		(at 12 12 0)
-		(effects (font (size 1.34 1.34)) (justify left))
-		(uuid "p5-top-00000040-0000-4000-8000-000000000101")
-	)
-	(text "SUB-SHEETS 41..43\n41_5V_DC_DC: PACK_BUS input boundary, conversion, 5V_SYS control and primary diagnostics\n42_5V_OUTPUT_TEMPLATE: reusable output protection/control/diagnostic contract\n43_5V_OUT1_OUT5: five normally controlled output instances"
-		(exclude_from_sim no)
-		(at 12 72 0)
-		(effects (font (size 1.16 1.16)) (justify left))
-		(uuid "p5-top-00000040-0000-4000-8000-000000000102")
-	)
-	(text "SUB-SHEETS 44..46\n44_5V_OUT6_OUT10: OUT6..OUT7 controlled plus OUT8..OUT10 Always-On monitored\n45_5V_DIAGNOSTICS: output and 5V_SYS diagnostic aggregation toward PCB-B\n46_5V_CONNECTORS: logical output/return, harness and test boundaries"
-		(exclude_from_sim no)
-		(at 168 72 0)
-		(effects (font (size 1.16 1.16)) (justify left))
-		(uuid "p5-top-00000040-0000-4000-8000-000000000103")
-	)
 	(text "POWER / THERMAL CONSTRAINTS\nPreliminary board budget: 15 A continuous and 20 A short peak on 5V_SYS_BUS.\nA single output may require up to 3 A only within the total converter, copper and thermal budget.\nEfficiency, switching frequency, magnetics, inrush, ripple, transient response and cooling remain TBD."
 		(exclude_from_sim no)
 		(at 12 150 0)
-		(effects (font (size 1.10 1.10)) (justify left))
-		(uuid "p5-top-00000040-0000-4000-8000-000000000104")
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0094987d-53c7-4c7a-b2d9-ef0951ec5c47")
+	)
+	(text "40_POWER_5V_TOP - DETAILED HIERARCHY MAP\nPCB-D converts PACK_BUS_P5_IN to 5V_SYS_BUS and distributes ten protected 5 V outputs.\nOUT1..OUT7 are normally controlled; OUT8..OUT10 are Always-On monitored.\n5V_SYS does not power PCB-B critical rails and is not supplied by EMG."
+		(exclude_from_sim no)
+		(at 12 12 0)
+		(effects
+			(font
+				(size 1.34 1.34)
+			)
+			(justify left)
+		)
+		(uuid "27d9094b-e3c6-423e-8554-d5bf302064f7")
 	)
 	(text "SAFE / ARCHITECTURE RULES\n5V_SYS_EN controls the conversion path; P5_GROUP_SAFE_OFF and P5_GROUP_HARD_OFF override output enables.\nAlways-On outputs remain protected and subject to SAFE/HARD_OFF.\nNo DC/DC, eFuse, load switch, connector, footprint, BOM or layout is selected."
 		(exclude_from_sim no)
 		(at 12 214 0)
-		(effects (font (size 1.10 1.10)) (justify left))
-		(uuid "p5-top-00000040-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "43fdc2ca-3b3e-4a4c-b0f1-7af2f784819c")
 	)
-	(hierarchical_label "P5_HIER_DC_DC" (shape passive) (exclude_from_sim no) (at 126 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000201"))
-	(hierarchical_label "P5_HIER_OUTPUT_TEMPLATE" (shape passive) (exclude_from_sim no) (at 126 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000202"))
-	(hierarchical_label "P5_HIER_OUT1_OUT5" (shape passive) (exclude_from_sim no) (at 126 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000203"))
-	(hierarchical_label "P5_HIER_OUT6_OUT10" (shape passive) (exclude_from_sim no) (at 250 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000204"))
-	(hierarchical_label "P5_HIER_DIAGNOSTICS" (shape passive) (exclude_from_sim no) (at 250 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000205"))
-	(hierarchical_label "P5_HIER_CONNECTORS" (shape passive) (exclude_from_sim no) (at 250 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000206"))
-	(hierarchical_label "PACK_BUS_P5_IN" (shape input) (exclude_from_sim no) (at 12 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000207"))
-	(hierarchical_label "POWER_GND" (shape passive) (exclude_from_sim no) (at 68 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000208"))
-	(hierarchical_label "5V_SYS_BUS" (shape passive) (exclude_from_sim no) (at 116 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000209"))
-	(hierarchical_label "CTRL_B_TO_D_P5" (shape input) (exclude_from_sim no) (at 172 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000210"))
-	(hierarchical_label "5V_SYS_EN" (shape input) (exclude_from_sim no) (at 236 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000211"))
-	(hierarchical_label "P5_OUT_EN[1..7]" (shape input) (exclude_from_sim no) (at 236 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000212"))
-	(hierarchical_label "P5_AON_OUT8_10" (shape passive) (exclude_from_sim no) (at 236 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000213"))
-	(hierarchical_label "P5_GROUP_SAFE_OFF" (shape input) (exclude_from_sim no) (at 236 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000214"))
-	(hierarchical_label "P5_GROUP_HARD_OFF" (shape input) (exclude_from_sim no) (at 236 272 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000215"))
-	(hierarchical_label "DIAG_D_TO_B_P5" (shape output) (exclude_from_sim no) (at 306 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000216"))
-	(hierarchical_label "P5_OUT_FAULT_N[1..10]" (shape output) (exclude_from_sim no) (at 306 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000217"))
-	(hierarchical_label "P5_OUT_ISENSE[1..10]" (shape output) (exclude_from_sim no) (at 306 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000218"))
-	(hierarchical_label "P5_BOARD_FAULT_N" (shape output) (exclude_from_sim no) (at 306 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000219"))
-	(hierarchical_label "5V_OUTPUTS_1_10" (shape passive) (exclude_from_sim no) (at 306 272 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p5-top-00000040-0000-4000-8000-000000000220"))
+	(text "SUB-SHEETS 41..43\n41_5V_DC_DC: PACK_BUS input boundary, conversion, 5V_SYS control and primary diagnostics\n42_5V_OUTPUT_TEMPLATE: reusable output protection/control/diagnostic contract\n43_5V_OUT1_OUT5: five normally controlled output instances"
+		(exclude_from_sim no)
+		(at 12 72 0)
+		(effects
+			(font
+				(size 1.16 1.16)
+			)
+			(justify left)
+		)
+		(uuid "838f1ddc-1205-4128-87f1-173274a2e118")
+	)
+	(text "SUB-SHEETS 44..46\n44_5V_OUT6_OUT10: OUT6..OUT7 controlled plus OUT8..OUT10 Always-On monitored\n45_5V_DIAGNOSTICS: output and 5V_SYS diagnostic aggregation toward PCB-B\n46_5V_CONNECTORS: logical output/return, harness and test boundaries"
+		(exclude_from_sim no)
+		(at 168 72 0)
+		(effects
+			(font
+				(size 1.16 1.16)
+			)
+			(justify left)
+		)
+		(uuid "d9020f8c-71fb-43c1-ac4b-fb2d76aff5e3")
+	)
+	(hierarchical_label "5V_OUTPUTS_1_10"
+		(shape passive)
+		(at 278.13 272.03 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "069bf9b8-527d-45db-b537-7930b575549f")
+	)
+	(hierarchical_label "P5_HIER_CONNECTORS"
+		(shape passive)
+		(at 250 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0775d4c7-e271-4a23-bea3-eb14a0c36fce")
+	)
+	(hierarchical_label "P5_AON_OUT8_10"
+		(shape passive)
+		(at 236 256 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0f069c4a-09ff-4e3a-ad7f-b5dc71cf762a")
+	)
+	(hierarchical_label "P5_HIER_OUTPUT_TEMPLATE"
+		(shape passive)
+		(at 126 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "2a7de38d-686b-43a6-995f-679bf1abec8f")
+	)
+	(hierarchical_label "P5_BOARD_FAULT_N"
+		(shape output)
+		(at 278.13 264.03 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "5472d9b6-fd14-4544-97d9-2aa6de7125c6")
+	)
+	(hierarchical_label "POWER_GND"
+		(shape passive)
+		(at 68 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "55fd6d52-8453-41ff-91d9-91a9b4074345")
+	)
+	(hierarchical_label "P5_OUT_ISENSE[1..10]"
+		(shape output)
+		(at 278.13 256.03 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "5b0614bc-c281-4ee0-9e7d-953dfaecc299")
+	)
+	(hierarchical_label "P5_HIER_OUT6_OUT10"
+		(shape passive)
+		(at 250 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "5d7b6fb2-7645-4687-8e5b-2c8fafaedfbd")
+	)
+	(hierarchical_label "P5_HIER_DC_DC"
+		(shape passive)
+		(at 126 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "6ff63206-6622-45ae-ad7d-bbeb600df823")
+	)
+	(hierarchical_label "DIAG_D_TO_B_P5"
+		(shape output)
+		(at 278.13 240.03 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "7e97f20c-586f-417d-b53b-fc0973c20e60")
+	)
+	(hierarchical_label "P5_GROUP_SAFE_OFF"
+		(shape input)
+		(at 236 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8066134e-e763-491b-8de5-3ce2095fc4a6")
+	)
+	(hierarchical_label "P5_OUT_FAULT_N[1..10]"
+		(shape output)
+		(at 278.13 248.03 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "87531ff8-18a6-438b-86c7-544633baa5ce")
+	)
+	(hierarchical_label "5V_SYS_BUS"
+		(shape passive)
+		(at 116 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "96da84c9-abe5-43eb-8699-ff24c6c7e717")
+	)
+	(hierarchical_label "P5_HIER_DIAGNOSTICS"
+		(shape passive)
+		(at 250 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a09114ad-4647-47b2-b1f6-a2b2b177d57a")
+	)
+	(hierarchical_label "P5_OUT_EN[1..7]"
+		(shape input)
+		(at 236 248 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a167db99-1e00-4689-95e7-d6e83ddee4fa")
+	)
+	(hierarchical_label "5V_SYS_EN"
+		(shape input)
+		(at 236 240 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "aca1d7f4-dbe0-419c-a826-2e9d412ffaef")
+	)
+	(hierarchical_label "P5_HIER_OUT1_OUT5"
+		(shape passive)
+		(at 126 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "dc344065-36aa-47c4-b0be-8fc1c31ac616")
+	)
+	(hierarchical_label "P5_GROUP_HARD_OFF"
+		(shape input)
+		(at 236 272 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e5541e56-7b5f-4dce-9cfc-db0d3bff2b34")
+	)
+	(hierarchical_label "PACK_BUS_P5_IN"
+		(shape input)
+		(at 12 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e7451cf8-7f8b-4468-8537-bb03ce9981b9")
+	)
+	(hierarchical_label "CTRL_B_TO_D_P5"
+		(shape input)
+		(at 172 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "f041b06f-5c10-4b01-8c54-e3f01e601cba")
+	)
 )

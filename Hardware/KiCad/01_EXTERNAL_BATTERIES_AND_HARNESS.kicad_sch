@@ -92,7 +92,6 @@
 	)
 	(hierarchical_label "BAT1_SN176_POWER"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 92 104 0)
 		(effects
 			(font
@@ -104,7 +103,6 @@
 	)
 	(hierarchical_label "BAT1_REMOTE_OFF_LOOP"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 92 112 0)
 		(effects
 			(font
@@ -116,7 +114,6 @@
 	)
 	(hierarchical_label "BAT1_LOCAL_START"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 92 160 0)
 		(effects
 			(font
@@ -128,7 +125,6 @@
 	)
 	(hierarchical_label "BAT2_SN176_POWER"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 230 104 0)
 		(effects
 			(font
@@ -140,7 +136,6 @@
 	)
 	(hierarchical_label "BAT2_REMOTE_OFF_LOOP"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 230 112 0)
 		(effects
 			(font
@@ -152,7 +147,6 @@
 	)
 	(hierarchical_label "BAT2_LOCAL_START"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 230 160 0)
 		(effects
 			(font
@@ -164,7 +158,6 @@
 	)
 	(hierarchical_label "K_BAT_HOLD_LOOP_RULE"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 230 184 0)
 		(effects
 			(font

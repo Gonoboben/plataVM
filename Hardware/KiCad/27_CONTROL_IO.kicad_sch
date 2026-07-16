@@ -2,7 +2,7 @@
 	(version 20260306)
 	(generator "eeschema")
 	(generator_version "10.0")
-	(uuid "ctrl-reserve-0000-4000-8000-000000000027")
+	(uuid "b708645d-08b4-4947-a3dd-69ae73aaddfc")
 	(paper "A3")
 	(title_block
 		(title "27_CONTROL_IO - interboard control and diagnostics boundary")
@@ -13,91 +13,692 @@
 		(comment 2 "No GPIO expander, ADC, mux, serializer, isolator, level shifter, connector or footprint selected")
 	)
 	(lib_symbols)
+	(text "PCB-D POWER_5V CONTRACT\nControls: 5V_SYS_EN, P5_OUT_EN[1..7], P5_GROUP_SAFE_OFF, P5_GROUP_HARD_OFF.\nDiagnostics: P5_OUT_FAULT_N[1..10], P5_OUT_ISENSE[1..10], 5V_SYS_VSENSE, 5V_SYS_TOTAL_ISENSE, P5_BOARD_TEMP, P5_BOARD_FAULT_N."
+		(exclude_from_sim no)
+		(at 12 118 0)
+		(effects
+			(font
+				(size 1.02 1.02)
+			)
+			(justify left)
+		)
+		(uuid "0c91b414-00c8-4cef-9f7a-3ca2f144b203")
+	)
 	(text "27_CONTROL_IO - PURPOSE\nDefines logical commands and diagnostics between PCB-B and PCB-A/C/D/E.\nNo parallel-versus-serialized transport or MCU pin allocation is selected.\nEvery command requires deterministic safe behavior during reset, brownout, unplugged interface and lost firmware."
 		(exclude_from_sim no)
 		(at 12 12 0)
-		(effects (font (size 1.16 1.16)) (justify left))
-		(uuid "ctrl-reserve-00000027-0000-4000-8000-000000000101")
+		(effects
+			(font
+				(size 1.16 1.16)
+			)
+			(justify left)
+		)
+		(uuid "27dc6c0d-9d6e-44d3-839f-01a128b00494")
 	)
 	(text "PCB-A / PCB-C CONTRACTS\nPCB-A canonical BFE controls and diagnostics remain unchanged.\nPCB-C controls: P12_CH_EN[1..11], P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF.\nPCB-C diagnostics: P12_CH_FAULT_N[1..14], P12_CH_ISENSE[1..14], P12_INPUT_VSENSE, P12_BOARD_TEMP, P12_BOARD_FAULT_N."
 		(exclude_from_sim no)
 		(at 12 62 0)
-		(effects (font (size 1.02 1.02)) (justify left))
-		(uuid "ctrl-reserve-00000027-0000-4000-8000-000000000102")
-	)
-	(text "PCB-D POWER_5V CONTRACT\nControls: 5V_SYS_EN, P5_OUT_EN[1..7], P5_GROUP_SAFE_OFF, P5_GROUP_HARD_OFF.\nDiagnostics: P5_OUT_FAULT_N[1..10], P5_OUT_ISENSE[1..10], 5V_SYS_VSENSE, 5V_SYS_TOTAL_ISENSE, P5_BOARD_TEMP, P5_BOARD_FAULT_N."
-		(exclude_from_sim no)
-		(at 12 118 0)
-		(effects (font (size 1.02 1.02)) (justify left))
-		(uuid "ctrl-reserve-00000027-0000-4000-8000-000000000103")
-	)
-	(text "PCB-E LIGHT_POWER CONTRACT\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nDiagnostics: LED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nAll LED commands default OFF; diagnostic transport cannot delay HARD_OFF."
-		(exclude_from_sim no)
-		(at 12 174 0)
-		(effects (font (size 1.02 1.02)) (justify left))
-		(uuid "ctrl-reserve-00000027-0000-4000-8000-000000000104")
+		(effects
+			(font
+				(size 1.02 1.02)
+			)
+			(justify left)
+		)
+		(uuid "5f12742c-4159-4918-b347-37fdc78a78b0")
 	)
 	(text "TRANSPORT POLICY\nGrouped links remain logical boundaries. Direct parallel, muxed analog or local serialized transport is not selected.\nExternal isolated RS-485 is not automatically used as an internal interboard link.\nNo diagnostic transport participates in SAFE/HARD_OFF execution."
 		(exclude_from_sim no)
 		(at 12 226 0)
-		(effects (font (size 1.02 1.02)) (justify left))
-		(uuid "ctrl-reserve-00000027-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.02 1.02)
+			)
+			(justify left)
+		)
+		(uuid "7f432480-fd40-4bc7-abd3-3d8735bc1f61")
 	)
-	(hierarchical_label "MCU_TO_CONTROL_IO" (shape input) (exclude_from_sim no) (at 138 46 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000201"))
-	(hierarchical_label "CONTROL_IO_TO_MCU" (shape output) (exclude_from_sim no) (at 138 54 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000202"))
-	(hierarchical_label "FAULT_MANAGER_SAFE_OFF" (shape input) (exclude_from_sim no) (at 138 62 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000203"))
-	(hierarchical_label "CTRL_B_TO_A" (shape output) (exclude_from_sim no) (at 138 78 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000212"))
-	(hierarchical_label "BAT1_MAIN_SW_EN" (shape output) (exclude_from_sim no) (at 138 86 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000204"))
-	(hierarchical_label "BAT2_MAIN_SW_EN" (shape output) (exclude_from_sim no) (at 138 94 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000205"))
-	(hierarchical_label "BAT1_BALANCE_SW_EN" (shape output) (exclude_from_sim no) (at 138 102 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000206"))
-	(hierarchical_label "BAT2_BALANCE_SW_EN" (shape output) (exclude_from_sim no) (at 138 110 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000207"))
-	(hierarchical_label "BAT1_HOLD_LOOP_OPEN_CMD" (shape output) (exclude_from_sim no) (at 138 118 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000208"))
-	(hierarchical_label "BAT2_HOLD_LOOP_OPEN_CMD" (shape output) (exclude_from_sim no) (at 138 126 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000209"))
-	(hierarchical_label "PACK_BUS_DISCHARGE_EN" (shape output) (exclude_from_sim no) (at 138 134 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000210"))
-	(hierarchical_label "DIAG_A_TO_B" (shape input) (exclude_from_sim no) (at 138 142 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000211"))
-	(hierarchical_label "BAT1_PRESENT" (shape input) (exclude_from_sim no) (at 300 78 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000222"))
-	(hierarchical_label "BAT2_PRESENT" (shape input) (exclude_from_sim no) (at 300 86 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000223"))
-	(hierarchical_label "BAT1_VSENSE" (shape input) (exclude_from_sim no) (at 300 94 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000224"))
-	(hierarchical_label "BAT2_VSENSE" (shape input) (exclude_from_sim no) (at 300 102 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000225"))
-	(hierarchical_label "BAT1_ISENSE" (shape input) (exclude_from_sim no) (at 300 110 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000226"))
-	(hierarchical_label "BAT2_ISENSE" (shape input) (exclude_from_sim no) (at 300 118 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000227"))
-	(hierarchical_label "PACK_BUS_VSENSE" (shape input) (exclude_from_sim no) (at 300 126 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000228"))
-	(hierarchical_label "BFE1_FAULT_N" (shape input) (exclude_from_sim no) (at 300 134 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000229"))
-	(hierarchical_label "BFE2_FAULT_N" (shape input) (exclude_from_sim no) (at 300 142 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000230"))
-	(hierarchical_label "BALANCE1_FAULT_N" (shape input) (exclude_from_sim no) (at 300 150 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000231"))
-	(hierarchical_label "BALANCE2_FAULT_N" (shape input) (exclude_from_sim no) (at 300 158 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000232"))
-	(hierarchical_label "PACK_BUS_DISCHARGE_FAULT_N" (shape input) (exclude_from_sim no) (at 300 166 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000233"))
-	(hierarchical_label "BFE_FAULT_SUMMARY_N" (shape output) (exclude_from_sim no) (at 300 174 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000234"))
-	(hierarchical_label "CTRL_B_TO_C_P12" (shape output) (exclude_from_sim no) (at 138 158 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000213"))
-	(hierarchical_label "P12_CH_EN[1..11]" (shape output) (exclude_from_sim no) (at 138 166 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000238"))
-	(hierarchical_label "P12_GROUP_SAFE_OFF" (shape output) (exclude_from_sim no) (at 138 174 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000239"))
-	(hierarchical_label "P12_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 138 182 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000219"))
-	(hierarchical_label "DIAG_C_TO_B_P12" (shape input) (exclude_from_sim no) (at 138 190 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000214"))
-	(hierarchical_label "P12_CH_FAULT_N[1..14]" (shape input) (exclude_from_sim no) (at 300 190 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000240"))
-	(hierarchical_label "P12_CH_ISENSE[1..14]" (shape input) (exclude_from_sim no) (at 300 198 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000241"))
-	(hierarchical_label "P12_INPUT_VSENSE" (shape input) (exclude_from_sim no) (at 300 206 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000242"))
-	(hierarchical_label "P12_BOARD_TEMP" (shape input) (exclude_from_sim no) (at 300 214 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000243"))
-	(hierarchical_label "P12_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 300 222 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000235"))
-	(hierarchical_label "CTRL_B_TO_D_P5" (shape output) (exclude_from_sim no) (at 138 206 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000215"))
-	(hierarchical_label "5V_SYS_EN" (shape output) (exclude_from_sim no) (at 138 214 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000244"))
-	(hierarchical_label "P5_OUT_EN[1..7]" (shape output) (exclude_from_sim no) (at 138 222 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000245"))
-	(hierarchical_label "P5_GROUP_SAFE_OFF" (shape output) (exclude_from_sim no) (at 138 230 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000246"))
-	(hierarchical_label "P5_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 138 238 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000220"))
-	(hierarchical_label "DIAG_D_TO_B_P5" (shape input) (exclude_from_sim no) (at 138 246 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000216"))
-	(hierarchical_label "P5_OUT_FAULT_N[1..10]" (shape input) (exclude_from_sim no) (at 300 230 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000247"))
-	(hierarchical_label "P5_OUT_ISENSE[1..10]" (shape input) (exclude_from_sim no) (at 300 238 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000248"))
-	(hierarchical_label "5V_SYS_VSENSE" (shape input) (exclude_from_sim no) (at 300 246 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000249"))
-	(hierarchical_label "5V_SYS_TOTAL_ISENSE" (shape input) (exclude_from_sim no) (at 300 254 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000250"))
-	(hierarchical_label "P5_BOARD_TEMP" (shape input) (exclude_from_sim no) (at 300 262 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000251"))
-	(hierarchical_label "P5_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 300 270 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000236"))
-	(hierarchical_label "CTRL_B_TO_E_LIGHT" (shape output) (exclude_from_sim no) (at 138 262 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000217"))
-	(hierarchical_label "LIGHT_BRANCH_EN" (shape output) (exclude_from_sim no) (at 138 270 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000252"))
-	(hierarchical_label "LED_PWM[1..6]" (shape output) (exclude_from_sim no) (at 138 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000253"))
-	(hierarchical_label "LIGHT_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 138 286 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000221"))
-	(hierarchical_label "DIAG_E_TO_B_LIGHT" (shape input) (exclude_from_sim no) (at 300 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000218"))
-	(hierarchical_label "LED_FAULT_N[1..6]" (shape input) (exclude_from_sim no) (at 300 286 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000254"))
-	(hierarchical_label "LED_ISENSE[1..6]" (shape input) (exclude_from_sim no) (at 300 294 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000255"))
-	(hierarchical_label "LIGHT_INPUT_VSENSE" (shape input) (exclude_from_sim no) (at 300 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000256"))
-	(hierarchical_label "LIGHT_BOARD_TEMP" (shape input) (exclude_from_sim no) (at 300 310 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000257"))
-	(hierarchical_label "LIGHT_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 300 318 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ctrl-reserve-00000027-0000-4000-8000-000000000237"))
+	(text "PCB-E LIGHT_POWER CONTRACT\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], LIGHT_GROUP_HARD_OFF.\nDiagnostics: LED_FAULT_N[1..6], LED_ISENSE[1..6], LIGHT_INPUT_VSENSE, LIGHT_BOARD_TEMP, LIGHT_BOARD_FAULT_N.\nAll LED commands default OFF; diagnostic transport cannot delay HARD_OFF."
+		(exclude_from_sim no)
+		(at 12 174 0)
+		(effects
+			(font
+				(size 1.02 1.02)
+			)
+			(justify left)
+		)
+		(uuid "d5884cd2-9fd3-4c90-bb5c-e862658781be")
+	)
+	(hierarchical_label "LED_FAULT_N[1..6]"
+		(shape input)
+		(at 276.86 232.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "046d0ef8-8a0b-4744-9ac3-95dd1859479a")
+	)
+	(hierarchical_label "PACK_BUS_DISCHARGE_EN"
+		(shape output)
+		(at 137.16 118.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0916729b-07c9-4c51-89ee-eeee22ff9aa9")
+	)
+	(hierarchical_label "P12_GROUP_SAFE_OFF"
+		(shape output)
+		(at 137.16 158.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0b28021e-f617-4e81-b706-667293be9ccd")
+	)
+	(hierarchical_label "PACK_BUS_VSENSE"
+		(shape input)
+		(at 276.86 72.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0dd17874-f96e-4985-a86d-e2499c29c14d")
+	)
+	(hierarchical_label "FAULT_MANAGER_SAFE_OFF"
+		(shape input)
+		(at 137.16 46.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0f42fd39-59f0-4d67-baaf-ccbea4c9ce01")
+	)
+	(hierarchical_label "P5_GROUP_SAFE_OFF"
+		(shape output)
+		(at 137.16 214.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0ff94b4d-6d0f-4836-82b7-5d62d9669715")
+	)
+	(hierarchical_label "BAT1_VSENSE"
+		(shape input)
+		(at 276.86 40.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "14535873-1969-4da6-9b3f-c7f83bf1c6fd")
+	)
+	(hierarchical_label "BALANCE1_FAULT_N"
+		(shape input)
+		(at 276.86 96.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "1a8333ad-b2ba-4eb5-a3c2-4b4db54c20cd")
+	)
+	(hierarchical_label "P12_INPUT_VSENSE"
+		(shape input)
+		(at 276.86 152.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "230d67f4-bebd-4d0c-a23a-6b8bd2618b6e")
+	)
+	(hierarchical_label "5V_SYS_EN"
+		(shape output)
+		(at 137.16 198.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "26545829-2a0d-4268-aac3-68258e1f9268")
+	)
+	(hierarchical_label "P12_GROUP_HARD_OFF"
+		(shape output)
+		(at 137.16 166.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "26b1872d-0d4e-4728-bd4f-148d2d78321d")
+	)
+	(hierarchical_label "LIGHT_GROUP_HARD_OFF"
+		(shape output)
+		(at 137.16 270.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "278652ce-8c5d-43db-abfb-8f8a5ac4088c")
+	)
+	(hierarchical_label "LIGHT_INPUT_VSENSE"
+		(shape input)
+		(at 276.86 246.38 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "2c9ffce3-757f-4cf5-8c79-6237850de5db")
+	)
+	(hierarchical_label "DIAG_D_TO_B_P5"
+		(shape input)
+		(at 137.16 230.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "34caea9f-2dd7-4cba-9302-0e995d8234d8")
+	)
+	(hierarchical_label "DIAG_E_TO_B_LIGHT"
+		(shape input)
+		(at 276.86 224.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "351ead7c-aaec-4e36-b972-29297429591c")
+	)
+	(hierarchical_label "BAT1_BALANCE_SW_EN"
+		(shape output)
+		(at 137.16 86.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "395325f2-bba1-4bff-8a4a-e886eca05458")
+	)
+	(hierarchical_label "LIGHT_BOARD_TEMP"
+		(shape input)
+		(at 276.86 254.38 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "39756747-c140-4378-97ef-be684d9fc620")
+	)
+	(hierarchical_label "BAT2_HOLD_LOOP_OPEN_CMD"
+		(shape output)
+		(at 137.16 110.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "41f3e5d0-f39c-4a73-8bd8-8545565ede3d")
+	)
+	(hierarchical_label "P12_BOARD_TEMP"
+		(shape input)
+		(at 276.86 160.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "486555ff-25df-4b13-a4c8-bf134926cdf8")
+	)
+	(hierarchical_label "BAT2_BALANCE_SW_EN"
+		(shape output)
+		(at 137.16 94.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "4868d256-321c-43e8-af45-a4fb30402335")
+	)
+	(hierarchical_label "BAT2_PRESENT"
+		(shape input)
+		(at 276.86 32.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "559c013d-97ca-4ee5-86da-5acc435bdfe3")
+	)
+	(hierarchical_label "MCU_TO_CONTROL_IO"
+		(shape input)
+		(at 137.16 30.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "55fcd831-f9d3-4f4e-9284-bcc1e741d565")
+	)
+	(hierarchical_label "CTRL_B_TO_D_P5"
+		(shape output)
+		(at 137.16 190.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "587b98de-0036-4909-98e7-12885425a64e")
+	)
+	(hierarchical_label "LIGHT_BRANCH_EN"
+		(shape output)
+		(at 137.16 254.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "6130ade3-0d7e-4a5b-8bea-4084d238b2f4")
+	)
+	(hierarchical_label "LIGHT_BOARD_FAULT_N"
+		(shape input)
+		(at 276.86 262.38 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "627b33b1-922c-4878-9762-49024301380d")
+	)
+	(hierarchical_label "BFE1_FAULT_N"
+		(shape input)
+		(at 276.86 80.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "6f705869-d90e-4783-9e66-5aad5479c9c7")
+	)
+	(hierarchical_label "CONTROL_IO_TO_MCU"
+		(shape output)
+		(at 137.16 38.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "71789bd8-bb8c-4969-a893-dc43a712c0ff")
+	)
+	(hierarchical_label "BFE_FAULT_SUMMARY_N"
+		(shape output)
+		(at 276.86 120.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "7ba9ac6e-9e68-441c-b59b-7e602f7c646e")
+	)
+	(hierarchical_label "P5_OUT_ISENSE[1..10]"
+		(shape input)
+		(at 276.86 184.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "82255731-ac9c-48fb-8acc-bc9dab75b8b3")
+	)
+	(hierarchical_label "LED_PWM[1..6]"
+		(shape output)
+		(at 137.16 262.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8653c3a1-ed9b-4b4f-8788-d16f4caaa93b")
+	)
+	(hierarchical_label "P5_BOARD_FAULT_N"
+		(shape input)
+		(at 276.86 216.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8bb262cc-a6b3-4522-b406-68cb78517ad6")
+	)
+	(hierarchical_label "P12_CH_FAULT_N[1..14]"
+		(shape input)
+		(at 276.86 136.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "98be6063-cca6-49e6-b4c8-4f8ffe86553d")
+	)
+	(hierarchical_label "LED_ISENSE[1..6]"
+		(shape input)
+		(at 276.86 240.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "9af2d5a3-6671-4f6f-8fad-88e0bbc1ae8b")
+	)
+	(hierarchical_label "P5_OUT_EN[1..7]"
+		(shape output)
+		(at 137.16 206.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "9cac82f8-596b-4df4-9d65-f91a7ad9285a")
+	)
+	(hierarchical_label "CTRL_B_TO_C_P12"
+		(shape output)
+		(at 137.16 142.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "9e3511f3-5768-4f75-9404-bfed12fd4e04")
+	)
+	(hierarchical_label "PACK_BUS_DISCHARGE_FAULT_N"
+		(shape input)
+		(at 276.86 112.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a0d28c49-d2bb-4255-9b6e-c584c2f90dde")
+	)
+	(hierarchical_label "CTRL_B_TO_E_LIGHT"
+		(shape output)
+		(at 137.16 246.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a873987b-d42d-4ad3-9cb6-18c05badf2fb")
+	)
+	(hierarchical_label "BFE2_FAULT_N"
+		(shape input)
+		(at 276.86 88.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "aac78c74-5eb5-4500-8f9e-1e72fdd9ddb5")
+	)
+	(hierarchical_label "P5_BOARD_TEMP"
+		(shape input)
+		(at 276.86 208.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "ab7d9707-0d6e-49a7-b77a-1ba57dc1a2e4")
+	)
+	(hierarchical_label "CTRL_B_TO_A"
+		(shape output)
+		(at 137.16 62.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "b0d68b1c-3508-40b6-b02e-52018dfe9b6a")
+	)
+	(hierarchical_label "BAT1_MAIN_SW_EN"
+		(shape output)
+		(at 137.16 70.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "b3f4f45f-d7f9-428b-bed9-ece88e448a91")
+	)
+	(hierarchical_label "BAT1_HOLD_LOOP_OPEN_CMD"
+		(shape output)
+		(at 137.16 102.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "b4fd4770-252c-4aea-9c7d-d0045296d262")
+	)
+	(hierarchical_label "P12_CH_ISENSE[1..14]"
+		(shape input)
+		(at 276.86 144.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "b73d844c-45dd-468b-82f2-365a5718d972")
+	)
+	(hierarchical_label "P5_OUT_FAULT_N[1..10]"
+		(shape input)
+		(at 276.86 176.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "be36778f-234d-4d1f-9ebe-2ac0f072ca7b")
+	)
+	(hierarchical_label "P5_GROUP_HARD_OFF"
+		(shape output)
+		(at 137.16 222.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "c1979e68-6d55-4205-9b53-183af52368da")
+	)
+	(hierarchical_label "BAT2_MAIN_SW_EN"
+		(shape output)
+		(at 137.16 78.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "c8917ea4-59bf-429a-ab01-6fa193be07c1")
+	)
+	(hierarchical_label "BAT1_PRESENT"
+		(shape input)
+		(at 276.86 24.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "d103c4fb-9be9-4eeb-81d0-b87f70f5b98d")
+	)
+	(hierarchical_label "DIAG_C_TO_B_P12"
+		(shape input)
+		(at 137.16 174.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "d1abf765-52b2-4638-a323-24c84709535c")
+	)
+	(hierarchical_label "P12_BOARD_FAULT_N"
+		(shape input)
+		(at 276.86 168.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "dc79fddd-9d7f-402d-96ec-f0c4725b1a3f")
+	)
+	(hierarchical_label "BAT2_VSENSE"
+		(shape input)
+		(at 276.86 48.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "de23b4bc-8b17-4454-8a2c-ae86911ecdb8")
+	)
+	(hierarchical_label "5V_SYS_VSENSE"
+		(shape input)
+		(at 276.86 192.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e1b48a50-b933-4d3e-8f9e-2f8b05ed0b2d")
+	)
+	(hierarchical_label "P12_CH_EN[1..11]"
+		(shape output)
+		(at 137.16 150.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e4b86c3e-43e1-4591-bd94-cb96e3e0b2a8")
+	)
+	(hierarchical_label "DIAG_A_TO_B"
+		(shape input)
+		(at 137.16 126.75 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e7eb8e8d-2ac8-4f9d-8b68-d15dfb369c10")
+	)
+	(hierarchical_label "BALANCE2_FAULT_N"
+		(shape input)
+		(at 276.86 104.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e93a881d-2951-4f5a-b8bb-c8bee42b0460")
+	)
+	(hierarchical_label "5V_SYS_TOTAL_ISENSE"
+		(shape input)
+		(at 276.86 200.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "ea60f03d-06fb-4f2b-abb1-e1e819081400")
+	)
+	(hierarchical_label "BAT2_ISENSE"
+		(shape input)
+		(at 276.86 64.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "ef4ee77f-6156-40a7-b58b-016f54fbedd0")
+	)
+	(hierarchical_label "BAT1_ISENSE"
+		(shape input)
+		(at 276.86 56.4 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "f731a4dc-413d-4a9f-8f04-1de0eabf7ef0")
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
 )

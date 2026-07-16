@@ -13,40 +13,125 @@
 		(comment 2 "Sub-sheets 11..19 define functional boundaries only")
 	)
 	(lib_symbols)
-	(text "10_BFE_POWER_TOP - DETAILED HIERARCHY MAP\nPCB-A_BFE_POWER contains two symmetric battery front-end branches, PACK_BUS creation,\nREMOTE_OFF/EXT_KILL final actuators, DECK_BALANCE, measurements and connector/test boundaries.\nThis top sheet maps functional sub-sheets; it does not select components, footprints or PCB layout."
+	(text "ARCHITECTURAL CONSTRAINTS\n- no K_MAIN; PACK_BUS is created on PCB-A and fanned out by star wiring or calculated bus;\n- high current does not pass through PCB-B_CTRL_RESERVE;\n- K_BATx is monostable in external battery housing; PCB-A only interrupts hold-loop return;\n- EXT_KILL final path must not depend on MCU firmware;\n- BFE_1 and BFE_2 remain symmetric unless an explicit ADR changes that."
 		(exclude_from_sim no)
-		(at 12 12 0)
-		(effects (font (size 1.5 1.5)) (justify left))
-		(uuid "bfe-top-00000010-0000-4000-8000-000000000101")
+		(at 12 132 0)
+		(effects
+			(font
+				(size 1.25 1.25)
+			)
+			(justify left)
+		)
+		(uuid "152658f4-01e6-4c51-978e-1db7648716ae")
 	)
 	(text "SUB-SHEETS\n11_BATTERY_INPUT_1: AKB_1 / SN-176A-12 BFE-side boundary\n12_BATTERY_INPUT_2: AKB_2 / SN-176A-12 BFE-side boundary\n13_MAIN_PATH_1: MAIN_SW1 functional branch\n14_MAIN_PATH_2: MAIN_SW2 functional branch\n15_DECK_BALANCE: controlled deck-side balance path"
 		(exclude_from_sim no)
 		(at 12 62 0)
-		(effects (font (size 1.35 1.35)) (justify left))
-		(uuid "bfe-top-00000010-0000-4000-8000-000000000102")
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "a4769320-f283-4ac3-8f36-b99a206a5894")
 	)
 	(text "SUB-SHEETS CONTINUED\n16_PACK_BUS_AND_DISCHARGE: PACK_BUS creation, fanout and discharge\n17_REMOTE_OFF_AND_EXT_KILL: K_BATx hold-loop final NC actuators\n18_BATTERY_MEASUREMENTS: voltage/current/status measurement groups\n19_BFE_CONNECTORS_TESTPOINTS: connector groups and service testpoints"
 		(exclude_from_sim no)
 		(at 150 62 0)
-		(effects (font (size 1.35 1.35)) (justify left))
-		(uuid "bfe-top-00000010-0000-4000-8000-000000000103")
+		(effects
+			(font
+				(size 1.35 1.35)
+			)
+			(justify left)
+		)
+		(uuid "dfdfd589-ca4e-4226-b185-7eec1e95f5d3")
 	)
-	(text "ARCHITECTURAL CONSTRAINTS\n- no K_MAIN; PACK_BUS is created on PCB-A and fanned out by star wiring or calculated bus;\n- high current does not pass through PCB-B_CTRL_RESERVE;\n- K_BATx is monostable in external battery housing; PCB-A only interrupts hold-loop return;\n- EXT_KILL final path must not depend on MCU firmware;\n- BFE_1 and BFE_2 remain symmetric unless an explicit ADR changes that."
+	(text "10_BFE_POWER_TOP - DETAILED HIERARCHY MAP\nPCB-A_BFE_POWER contains two symmetric battery front-end branches, PACK_BUS creation,\nREMOTE_OFF/EXT_KILL final actuators, DECK_BALANCE, measurements and connector/test boundaries.\nThis top sheet maps functional sub-sheets; it does not select components, footprints or PCB layout."
 		(exclude_from_sim no)
-		(at 12 132 0)
-		(effects (font (size 1.25 1.25)) (justify left))
-		(uuid "bfe-top-00000010-0000-4000-8000-000000000104")
+		(at 12 12 0)
+		(effects
+			(font
+				(size 1.5 1.5)
+			)
+			(justify left)
+		)
+		(uuid "e42c6a41-0e59-46de-ad83-046bdd98a99e")
 	)
 	(text "NEXT DETAIL PASS\nAfter this architecture map is checked in KiCad, the next engineering step is to replace selected TBD blocks\ninside 11..19 with actual schematic symbols and calculated values, starting from the battery input and hold-loop paths."
 		(exclude_from_sim no)
 		(at 12 202 0)
-		(effects (font (size 1.25 1.25)) (justify left))
-		(uuid "bfe-top-00000010-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.25 1.25)
+			)
+			(justify left)
+		)
+		(uuid "f5747d57-e047-492d-9b05-82a301c158dc")
 	)
-	(hierarchical_label "BFE_HIER_BATTERY_INPUTS" (shape passive) (exclude_from_sim no) (at 112 95 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000201"))
-	(hierarchical_label "BFE_HIER_MAIN_PATHS" (shape passive) (exclude_from_sim no) (at 112 107 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000202"))
-	(hierarchical_label "BFE_HIER_BALANCE" (shape passive) (exclude_from_sim no) (at 112 119 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000203"))
-	(hierarchical_label "BFE_HIER_PACK_BUS" (shape passive) (exclude_from_sim no) (at 250 95 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000204"))
-	(hierarchical_label "BFE_HIER_REMOTE_OFF_EXT_KILL" (shape passive) (exclude_from_sim no) (at 250 107 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000205"))
-	(hierarchical_label "BFE_HIER_MEASUREMENTS_CONNECTORS" (shape passive) (exclude_from_sim no) (at 250 119 0) (effects (font (size 1.15 1.15)) (justify left)) (uuid "bfe-top-00000010-0000-4000-8000-000000000206"))
+	(hierarchical_label "BFE_HIER_MEASUREMENTS_CONNECTORS"
+		(shape passive)
+		(at 250 119 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "1a1becc8-a16c-44e8-901d-b6ad34d6acbd")
+	)
+	(hierarchical_label "BFE_HIER_REMOTE_OFF_EXT_KILL"
+		(shape passive)
+		(at 250 107 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "2fd7b2f7-b06a-4190-b86d-5ec2b710d8a7")
+	)
+	(hierarchical_label "BFE_HIER_PACK_BUS"
+		(shape passive)
+		(at 250 95 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "76fbe52b-ea1b-4bff-8ac8-7124431f46bd")
+	)
+	(hierarchical_label "BFE_HIER_MAIN_PATHS"
+		(shape passive)
+		(at 112 107 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "a2ef602b-11fa-4e99-bf56-e2d01198a8d8")
+	)
+	(hierarchical_label "BFE_HIER_BALANCE"
+		(shape passive)
+		(at 112 119 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "b0e8ea3d-6ace-4022-8d86-85207c4da614")
+	)
+	(hierarchical_label "BFE_HIER_BATTERY_INPUTS"
+		(shape passive)
+		(at 112 95 0)
+		(effects
+			(font
+				(size 1.15 1.15)
+			)
+			(justify left)
+		)
+		(uuid "e46de44f-9f4b-431e-93aa-c0ca390ec1f8")
+	)
 )

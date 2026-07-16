@@ -136,7 +136,6 @@
 	)
 	(hierarchical_label "PWR_A_TO_B_CRIT"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 74 55 0)
 		(effects
 			(font
@@ -148,7 +147,6 @@
 	)
 	(hierarchical_label "PWR_A_TO_C_P12"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 74 63 0)
 		(effects
 			(font
@@ -160,7 +158,6 @@
 	)
 	(hierarchical_label "PWR_A_TO_D_P5"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 74 71 0)
 		(effects
 			(font
@@ -172,7 +169,6 @@
 	)
 	(hierarchical_label "PWR_A_TO_E_LIGHT"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 74 79 0)
 		(effects
 			(font
@@ -184,7 +180,6 @@
 	)
 	(hierarchical_label "CTRL_B_TO_A"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 152 76 0)
 		(effects
 			(font
@@ -196,7 +191,6 @@
 	)
 	(hierarchical_label "DIAG_A_TO_B"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 248 76 0)
 		(effects
 			(font
@@ -208,7 +202,6 @@
 	)
 	(hierarchical_label "CTRL_B_TO_C_P12"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 57 138 0)
 		(effects
 			(font
@@ -220,7 +213,6 @@
 	)
 	(hierarchical_label "DIAG_C_TO_B_P12"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 162 138 0)
 		(effects
 			(font
@@ -232,7 +224,6 @@
 	)
 	(hierarchical_label "CTRL_B_TO_D_P5"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 57 185 0)
 		(effects
 			(font
@@ -244,7 +235,6 @@
 	)
 	(hierarchical_label "DIAG_D_TO_B_P5"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 162 185 0)
 		(effects
 			(font
@@ -256,7 +246,6 @@
 	)
 	(hierarchical_label "CTRL_B_TO_E_LIGHT"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 250 144 0)
 		(effects
 			(font
@@ -268,7 +257,6 @@
 	)
 	(hierarchical_label "DIAG_E_TO_B_LIGHT"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 250 152 0)
 		(effects
 			(font
@@ -280,7 +268,6 @@
 	)
 	(hierarchical_label "EXT_KILL_HW_CHAIN"
 		(shape passive)
-		(exclude_from_sim no)
 		(at 12 246 0)
 		(effects
 			(font

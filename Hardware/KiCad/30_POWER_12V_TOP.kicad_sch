@@ -13,54 +13,279 @@
 		(comment 2 "Detailed hierarchy 31..36; no components, connectors or footprints selected")
 	)
 	(lib_symbols)
-	(text "30_POWER_12V_TOP - DETAILED HIERARCHY MAP\nPCB-C receives PACK_BUS_P12_IN directly from PCB-A and distributes fourteen protected 12 V outputs.\nCH1..CH11 are normally controlled from PCB-B; CH12..CH14 are Always-On monitored.\nAll channels remain subject to protection, SAFE_OFF and HARD_OFF."
+	(text "CANONICAL INTERBOARD CONTRACT\nControls: P12_CH_EN[1..11], P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF.\nDiagnostics: P12_CH_FAULT_N[1..14], P12_CH_ISENSE[1..14], P12_BOARD_TEMP, P12_INPUT_VSENSE, P12_BOARD_FAULT_N.\nCTRL_B_TO_C_P12 and DIAG_C_TO_B_P12 remain logical grouped boundaries; physical packing is TBD."
 		(exclude_from_sim no)
-		(at 12 12 0)
-		(effects (font (size 1.36 1.36)) (justify left))
-		(uuid "p12-top-00000030-0000-4000-8000-000000000101")
+		(at 12 150 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "0abbea81-ed02-4fb3-9c4c-a598cd6d86ea")
 	)
 	(text "SUB-SHEETS 31..33\n31_POWER_12V_INPUT_PROTECTION: branch input, transient/reverse protection boundary, bulk energy and input sensing\n32_POWER_12V_CHANNEL_TEMPLATE: single-channel functional contract for protection, control and diagnostics\n33_POWER_12V_CH1_CH7: seven MCU-controlled channel instances"
 		(exclude_from_sim no)
 		(at 12 72 0)
-		(effects (font (size 1.18 1.18)) (justify left))
-		(uuid "p12-top-00000030-0000-4000-8000-000000000102")
+		(effects
+			(font
+				(size 1.18 1.18)
+			)
+			(justify left)
+		)
+		(uuid "260de87e-1d94-43d5-a19e-c7f05aebd0a7")
 	)
-	(text "SUB-SHEETS 34..36\n34_POWER_12V_CH8_CH14: CH8..CH11 controlled plus CH12..CH14 Always-On monitored\n35_POWER_12V_DIAGNOSTICS: channel and board diagnostic aggregation toward PCB-B\n36_POWER_12V_CONNECTORS: logical output/return groups and protected test boundaries"
+	(text "30_POWER_12V_TOP - DETAILED HIERARCHY MAP\nPCB-C receives PACK_BUS_P12_IN directly from PCB-A and distributes fourteen protected 12 V outputs.\nCH1..CH11 are normally controlled from PCB-B; CH12..CH14 are Always-On monitored.\nAll channels remain subject to protection, SAFE_OFF and HARD_OFF."
 		(exclude_from_sim no)
-		(at 168 72 0)
-		(effects (font (size 1.18 1.18)) (justify left))
-		(uuid "p12-top-00000030-0000-4000-8000-000000000103")
-	)
-	(text "CANONICAL INTERBOARD CONTRACT\nControls: P12_CH_EN[1..11], P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF.\nDiagnostics: P12_CH_FAULT_N[1..14], P12_CH_ISENSE[1..14], P12_BOARD_TEMP, P12_INPUT_VSENSE, P12_BOARD_FAULT_N.\nCTRL_B_TO_C_P12 and DIAG_C_TO_B_P12 remain logical grouped boundaries; physical packing is TBD."
-		(exclude_from_sim no)
-		(at 12 150 0)
-		(effects (font (size 1.10 1.10)) (justify left))
-		(uuid "p12-top-00000030-0000-4000-8000-000000000104")
+		(at 12 12 0)
+		(effects
+			(font
+				(size 1.36 1.36)
+			)
+			(justify left)
+		)
+		(uuid "3df1bb43-3a1b-4b69-b097-b8c4b99f5bc8")
 	)
 	(text "ARCHITECTURAL CONSTRAINTS\nNominal continuous requirement is 3 A per output subject to total branch and thermal calculations.\nNo channel current passes through PCB-B. CH12..CH14 remain subject to SAFE/HARD_OFF.\nProtection topology, diagnostic transport, connectors, footprints, BOM and layout remain unselected."
 		(exclude_from_sim no)
 		(at 12 214 0)
-		(effects (font (size 1.10 1.10)) (justify left))
-		(uuid "p12-top-00000030-0000-4000-8000-000000000105")
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "61062683-0a49-4e2a-9a89-d875a8ccedcb")
 	)
-	(hierarchical_label "P12_HIER_INPUT_PROTECTION" (shape passive) (exclude_from_sim no) (at 126 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000201"))
-	(hierarchical_label "P12_HIER_CHANNEL_TEMPLATE" (shape passive) (exclude_from_sim no) (at 126 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000202"))
-	(hierarchical_label "P12_HIER_CH1_CH7" (shape passive) (exclude_from_sim no) (at 126 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000203"))
-	(hierarchical_label "P12_HIER_CH8_CH14" (shape passive) (exclude_from_sim no) (at 250 122 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000204"))
-	(hierarchical_label "P12_HIER_DIAGNOSTICS" (shape passive) (exclude_from_sim no) (at 250 130 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000205"))
-	(hierarchical_label "P12_HIER_CONNECTORS" (shape passive) (exclude_from_sim no) (at 250 138 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000206"))
-	(hierarchical_label "PACK_BUS_P12_IN" (shape input) (exclude_from_sim no) (at 12 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000207"))
-	(hierarchical_label "POWER_GND" (shape passive) (exclude_from_sim no) (at 68 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000208"))
-	(hierarchical_label "CTRL_B_TO_C_P12" (shape input) (exclude_from_sim no) (at 118 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000209"))
-	(hierarchical_label "P12_CH_EN[1..11]" (shape input) (exclude_from_sim no) (at 188 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000212"))
-	(hierarchical_label "P12_AON_CH12_14" (shape passive) (exclude_from_sim no) (at 188 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000213"))
-	(hierarchical_label "P12_GROUP_SAFE_OFF" (shape input) (exclude_from_sim no) (at 188 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000214"))
-	(hierarchical_label "P12_GROUP_HARD_OFF" (shape input) (exclude_from_sim no) (at 188 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000215"))
-	(hierarchical_label "DIAG_C_TO_B_P12" (shape output) (exclude_from_sim no) (at 258 232 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000210"))
-	(hierarchical_label "P12_CH_FAULT_N[1..14]" (shape output) (exclude_from_sim no) (at 258 240 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000218"))
-	(hierarchical_label "P12_CH_ISENSE[1..14]" (shape output) (exclude_from_sim no) (at 258 248 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000219"))
-	(hierarchical_label "P12_INPUT_VSENSE" (shape output) (exclude_from_sim no) (at 258 256 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000220"))
-	(hierarchical_label "P12_BOARD_TEMP" (shape output) (exclude_from_sim no) (at 258 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000217"))
-	(hierarchical_label "P12_BOARD_FAULT_N" (shape output) (exclude_from_sim no) (at 258 272 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000216"))
-	(hierarchical_label "P12_OUTPUTS_CH1_14" (shape passive) (exclude_from_sim no) (at 318 264 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "p12-top-00000030-0000-4000-8000-000000000211"))
+	(text "SUB-SHEETS 34..36\n34_POWER_12V_CH8_CH14: CH8..CH11 controlled plus CH12..CH14 Always-On monitored\n35_POWER_12V_DIAGNOSTICS: channel and board diagnostic aggregation toward PCB-B\n36_POWER_12V_CONNECTORS: logical output/return groups and protected test boundaries"
+		(exclude_from_sim no)
+		(at 168 72 0)
+		(effects
+			(font
+				(size 1.18 1.18)
+			)
+			(justify left)
+		)
+		(uuid "8f2cd0b5-ef63-40a1-9b26-6edb02f9775b")
+	)
+	(hierarchical_label "P12_HIER_DIAGNOSTICS"
+		(shape passive)
+		(at 250 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "1407c110-cd9f-451a-9d9d-cff16403cb41")
+	)
+	(hierarchical_label "P12_CH_ISENSE[1..14]"
+		(shape output)
+		(at 258 248 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "15752a06-5163-40b2-98c6-5eaab048fccc")
+	)
+	(hierarchical_label "P12_GROUP_SAFE_OFF"
+		(shape input)
+		(at 188 256 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "21457bb3-4fc4-48b0-8dad-f470aa25fe40")
+	)
+	(hierarchical_label "POWER_GND"
+		(shape passive)
+		(at 68 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "35fd4fc1-c415-4bb4-b10a-9dd4f9df7000")
+	)
+	(hierarchical_label "P12_BOARD_FAULT_N"
+		(shape output)
+		(at 258 272 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "36e53012-6e0b-42e1-bc4f-3ddd5eb53cd9")
+	)
+	(hierarchical_label "P12_HIER_CH8_CH14"
+		(shape passive)
+		(at 250 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "3a6ed647-c0a0-4dc1-9e0c-1d55ceb87fc3")
+	)
+	(hierarchical_label "P12_HIER_CH1_CH7"
+		(shape passive)
+		(at 126 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "4c28a1a4-e893-47c3-bb59-5062f7a355ff")
+	)
+	(hierarchical_label "P12_HIER_INPUT_PROTECTION"
+		(shape passive)
+		(at 126 122 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "4e60c027-b4f4-4d99-aef9-182677b9f8b5")
+	)
+	(hierarchical_label "P12_GROUP_HARD_OFF"
+		(shape input)
+		(at 188 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "5b19dbaa-f2d5-43d0-b4a2-4a2515bf6f9f")
+	)
+	(hierarchical_label "P12_CH_FAULT_N[1..14]"
+		(shape output)
+		(at 258 240 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "655f65bf-4d35-4ba2-bee9-b8586d413837")
+	)
+	(hierarchical_label "P12_INPUT_VSENSE"
+		(shape output)
+		(at 258 256 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "6ebd014e-9551-488c-8d8e-eab9eb8f67ab")
+	)
+	(hierarchical_label "P12_OUTPUTS_CH1_14"
+		(shape passive)
+		(at 302.26 231.14 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "6fafdfe0-20cc-49ab-be01-ad1596a95722")
+	)
+	(hierarchical_label "P12_HIER_CONNECTORS"
+		(shape passive)
+		(at 250 138 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "748ec966-5f68-482f-b726-dc4344351b3f")
+	)
+	(hierarchical_label "PACK_BUS_P12_IN"
+		(shape input)
+		(at 12 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "7b193f24-78b4-4346-a06b-c06cbb2469c0")
+	)
+	(hierarchical_label "P12_AON_CH12_14"
+		(shape passive)
+		(at 188 248 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "8c386fc2-708d-40d9-a236-dc4bc52a5191")
+	)
+	(hierarchical_label "P12_BOARD_TEMP"
+		(shape output)
+		(at 258 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "a943162f-a27c-42b4-8257-906e3d68099b")
+	)
+	(hierarchical_label "P12_HIER_CHANNEL_TEMPLATE"
+		(shape passive)
+		(at 126 130 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "afad2d27-f809-4a86-b575-650a26a52de5")
+	)
+	(hierarchical_label "P12_CH_EN[1..11]"
+		(shape input)
+		(at 188 240 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "d62b74aa-c11e-49dc-ad4f-94173895e2d7")
+	)
+	(hierarchical_label "DIAG_C_TO_B_P12"
+		(shape output)
+		(at 258 232 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "e00a860c-c474-4d83-aa32-ffc65cef6fbc")
+	)
+	(hierarchical_label "CTRL_B_TO_C_P12"
+		(shape input)
+		(at 118 264 0)
+		(effects
+			(font
+				(size 1.1 1.1)
+			)
+			(justify left)
+		)
+		(uuid "f6e7511e-217e-4be6-bd69-6fda1a953cf8")
+	)
 )
