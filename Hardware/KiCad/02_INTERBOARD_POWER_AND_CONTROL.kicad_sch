@@ -6,288 +6,73 @@
 	(paper "A3")
 	(title_block
 		(title "02_INTERBOARD_POWER_AND_CONTROL")
-		(date "2026-07-15")
-		(rev "A1")
+		(date "2026-07-16")
+		(rev "A2")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Logical interboard interface matrix and preliminary pin-count")
-		(comment 2 "No physical connector family selected on this sheet")
+		(comment 1 "V1.6 transport baseline: CAN-FD normal traffic plus direct hardware safety/fault lines")
+		(comment 2 "No connector family or final physical pinout selected")
 	)
 	(lib_symbols)
-	(text "02_INTERBOARD_POWER_AND_CONTROL - LOGICAL MATRIX LEVEL A\nPurpose: split interboard links into power, control, diagnostics and safety groups.\nThis sheet defines logical grouping only; physical connector choice is TBD."
+	(text "02_INTERBOARD_POWER_AND_CONTROL - V1.6 LOGICAL MATRIX\nPower branches remain separate. PCB-A/PCB-B critical paths remain direct.\nPCB-B communicates with PCB-C/D/E by internal CAN-FD for normal commands and telemetry.\nSAFE/HARD_OFF, EXT_KILL and board-fault summaries remain direct hardware lines."
 		(exclude_from_sim no)
 		(at 12 10 0)
-		(effects
-			(font
-				(size 1.65 1.65)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000201")
+		(effects (font (size 1.45 1.45)) (justify left))
+		(uuid "ib-v16-02-101")
 	)
-	(text "POWER DISTRIBUTION FROM PCB-A_BFE_POWER\nPACK_BUS_CRIT_IN  -> PCB-B_CTRL_RESERVE\nPACK_BUS_P12_IN   -> PCB-C_POWER_12V\nPACK_BUS_P5_IN    -> PCB-D_POWER_5V\nPACK_BUS_LIGHT_IN -> PCB-E_LIGHT_POWER\nReturn: POWER_GND unless a local isolated/signal domain is explicitly defined."
+	(text "POWER DISTRIBUTION FROM PCB-A\nPACK_BUS_CRIT_IN -> PCB-B\nPACK_BUS_P12_IN -> PCB-C\nPACK_BUS_P5_IN -> PCB-D\nPACK_BUS_LIGHT_IN -> PCB-E\nReturns use POWER_GND; high current never passes through PCB-B or the signal backplane."
 		(exclude_from_sim no)
-		(at 12 38 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000202")
+		(at 12 52 0)
+		(effects (font (size 1.18 1.18)) (justify left))
+		(uuid "ib-v16-02-102")
 	)
-	(text "PCB-B -> PCB-A CONTROL\nBAT1/2_MAIN_SW_EN\nBAT1/2_BALANCE_SW_EN\nBAT1/2_HOLD_LOOP_OPEN_CMD\nPACK_BUS_DISCHARGE_EN\nEXT_KILL_HW_CHAIN"
+	(text "PCB-A <-> PCB-B DIRECT CRITICAL CONTRACT\nControls: BAT1/2_MAIN_SW_EN, BAT1/2_BALANCE_SW_EN, BAT1/2_HOLD_LOOP_OPEN_CMD, PACK_BUS_DISCHARGE_EN, EXT_KILL_HW_CHAIN.\nDiagnostics: BAT1/2_PRESENT, BAT1/2_VSENSE, BAT1/2_ISENSE, PACK_BUS_VSENSE and canonical BFE/BALANCE faults."
 		(exclude_from_sim no)
-		(at 115 38 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000203")
+		(at 150 52 0)
+		(effects (font (size 1.12 1.12)) (justify left))
+		(uuid "ib-v16-02-103")
 	)
-	(text "PCB-A -> PCB-B DIAGNOSTICS\nBAT1/2_PRESENT\nBAT1/2_VSENSE\nBAT1/2_ISENSE\nPACK_BUS_VSENSE\nBFE_FAULTS, temperatures, OPEN/CLOSED status TBD"
+	(text "PCB-B <-> PCB-C/D/E NORMAL TRANSPORT\nCAN_INT_H / CAN_INT_L carry normal commands, setpoints, detailed per-channel telemetry and service data.\nCAN-FD loss cannot block local protection or hardware OFF. Physical topology is linear with termination at two ends; node order follows 3D layout."
 		(exclude_from_sim no)
-		(at 210 38 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000204")
+		(at 12 125 0)
+		(effects (font (size 1.14 1.14)) (justify left))
+		(uuid "ib-v16-02-104")
 	)
-	(text "PCB-B -> PCB-C POWER_12V CONTROL\nP12_CH_EN[1..11]\nP12_DIAG_MUX / SPI / I2C TBD\nP12_BOARD_ENABLE\nP12_FAULT_RESET TBD"
+	(text "DIRECT HARDWARE LINES\nPCB-C: P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF, P12_BOARD_FAULT_N.\nPCB-D: P5_GROUP_SAFE_OFF, P5_GROUP_HARD_OFF, P5_BOARD_FAULT_N.\nPCB-E: LIGHT_GROUP_HARD_OFF, LIGHT_BOARD_FAULT_N.\nEXT_KILL_HW_CHAIN remains independent of MCU, CAN-FD and external RS-485."
 		(exclude_from_sim no)
-		(at 12 108 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000205")
+		(at 12 186 0)
+		(effects (font (size 1.12 1.12)) (justify left))
+		(uuid "ib-v16-02-105")
 	)
-	(text "PCB-C -> PCB-B DIAGNOSTICS\nCH current/fault/status\nAlways-On CH12..CH14 monitoring\nBoard temperature\nInterface method TBD: parallel, muxed analog, SPI/I2C/other."
+	(text "GROUND / SHIELD POLICY\nSIGNAL_GND and POWER_GND meet at one controlled PCB-B net-tie/configurable point only.\nISO_GND remains DC-isolated. Cable shields terminate to CHASSIS at entry.\nOptional ISO_GND-to-CHASSIS HF coupling is deferred to EMC review."
 		(exclude_from_sim no)
-		(at 115 108 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000206")
+		(at 190 186 0)
+		(effects (font (size 1.12 1.12)) (justify left))
+		(uuid "ib-v16-02-106")
 	)
-	(text "PCB-B -> PCB-D POWER_5V CONTROL\n5V_SYS_EN\nP5_OUT_EN[1..7]\nP5_FAULT_RESET TBD\nDC/DC status interface TBD"
-		(exclude_from_sim no)
-		(at 12 160 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000207")
-	)
-	(text "PCB-D -> PCB-B DIAGNOSTICS\n5V_SYS_VSENSE / ISENSE\n5V_OUT current/fault/status\nAlways-On outputs monitoring\nBoard temperature"
-		(exclude_from_sim no)
-		(at 115 160 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000208")
-	)
-	(text "PCB-B <-> PCB-E LIGHT_POWER\nControls: LIGHT_BRANCH_EN, LED_PWM[1..6], driver enable/reset TBD.\nDiagnostics: LED current, open/short, driver fault, board temperature."
-		(exclude_from_sim no)
-		(at 210 108 0)
-		(effects
-			(font
-				(size 1.35 1.35)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000209")
-	)
-	(text "SAFETY AND GROUND POLICY\nEXT_KILL_HW must reach PCB-A final actuators without relying on MCU firmware.\nPOWER_GND, SIGNAL_GND, ISO_GND and CHASSIS are not automatically shorted here.\nShield/chassis termination and reference-ground policy remain a dedicated decision."
-		(exclude_from_sim no)
-		(at 12 216 0)
-		(effects
-			(font
-				(size 1.25 1.25)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000210")
-	)
-	(text "PRELIMINARY PIN-COUNT ESTIMATE\nA<->B logic/diagnostics: approx. 20..32 low-speed pins + power/returns.\nB<->C: approx. 16..32 pins unless diagnostics are serialized/muxed.\nB<->D: approx. 12..24 pins. B<->E: approx. 12..24 pins.\nFinal pin-count waits for MCU, diagnostics topology and connector mechanics."
-		(exclude_from_sim no)
-		(at 170 216 0)
-		(effects
-			(font
-				(size 1.25 1.25)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000211")
-	)
-	(hierarchical_label "PWR_A_TO_B_CRIT"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 74 55 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000221")
-	)
-	(hierarchical_label "PWR_A_TO_C_P12"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 74 63 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000222")
-	)
-	(hierarchical_label "PWR_A_TO_D_P5"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 74 71 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000223")
-	)
-	(hierarchical_label "PWR_A_TO_E_LIGHT"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 74 79 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000224")
-	)
-	(hierarchical_label "CTRL_B_TO_A"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 152 76 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000225")
-	)
-	(hierarchical_label "DIAG_A_TO_B"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 248 76 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000226")
-	)
-	(hierarchical_label "CTRL_B_TO_C_P12"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 57 138 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000227")
-	)
-	(hierarchical_label "DIAG_C_TO_B_P12"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 162 138 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000228")
-	)
-	(hierarchical_label "CTRL_B_TO_D_P5"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 57 185 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000229")
-	)
-	(hierarchical_label "DIAG_D_TO_B_P5"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 162 185 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000230")
-	)
-	(hierarchical_label "CTRL_B_TO_E_LIGHT"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 250 144 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000231")
-	)
-	(hierarchical_label "DIAG_E_TO_B_LIGHT"
-		(shape passive)
-		(exclude_from_sim no)
-		(at 250 152 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000232")
-	)
-	(hierarchical_label "EXT_KILL_HW_CHAIN"
-		(shape passive)
+	(text "PIN-COUNT BASIS\nC/D/E normal traffic uses one CAN-FD differential pair plus reference/shield provisions.\nDirect pins are limited to power, SAFE/HARD_OFF, board-fault summary and required returns.\nFinal connector pin count awaits 3D placement, termination location and service reserve of 20-30 percent."
 		(exclude_from_sim no)
 		(at 12 246 0)
-		(effects
-			(font
-				(size 1.15 1.15)
-			)
-			(justify left)
-		)
-		(uuid "8b2d04e2-1a66-4d2e-9d32-000000000233")
+		(effects (font (size 1.08 1.08)) (justify left))
+		(uuid "ib-v16-02-107")
 	)
+	(hierarchical_label "PWR_A_TO_B_CRIT" (shape passive) (exclude_from_sim no) (at 12 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-201"))
+	(hierarchical_label "PWR_A_TO_C_P12" (shape passive) (exclude_from_sim no) (at 68 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-202"))
+	(hierarchical_label "PWR_A_TO_D_P5" (shape passive) (exclude_from_sim no) (at 124 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-203"))
+	(hierarchical_label "PWR_A_TO_E_LIGHT" (shape passive) (exclude_from_sim no) (at 178 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-204"))
+	(hierarchical_label "CTRL_B_TO_A" (shape passive) (exclude_from_sim no) (at 238 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-205"))
+	(hierarchical_label "DIAG_A_TO_B" (shape passive) (exclude_from_sim no) (at 286 278 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-206"))
+	(hierarchical_label "CAN_INT_H" (shape passive) (exclude_from_sim no) (at 12 290 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-207"))
+	(hierarchical_label "CAN_INT_L" (shape passive) (exclude_from_sim no) (at 58 290 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-208"))
+	(hierarchical_label "P12_GROUP_SAFE_OFF" (shape output) (exclude_from_sim no) (at 104 290 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-209"))
+	(hierarchical_label "P12_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 176 290 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-210"))
+	(hierarchical_label "P12_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 250 290 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-211"))
+	(hierarchical_label "P5_GROUP_SAFE_OFF" (shape output) (exclude_from_sim no) (at 12 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-212"))
+	(hierarchical_label "P5_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 82 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-213"))
+	(hierarchical_label "P5_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 154 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-214"))
+	(hierarchical_label "LIGHT_GROUP_HARD_OFF" (shape output) (exclude_from_sim no) (at 224 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-215"))
+	(hierarchical_label "LIGHT_BOARD_FAULT_N" (shape input) (exclude_from_sim no) (at 300 302 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-216"))
+	(hierarchical_label "EXT_KILL_HW_CHAIN" (shape passive) (exclude_from_sim no) (at 12 314 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-217"))
+	(hierarchical_label "SIGNAL_GND_POWER_GND_NET_TIE" (shape passive) (exclude_from_sim no) (at 92 314 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-218"))
+	(hierarchical_label "CHASSIS" (shape passive) (exclude_from_sim no) (at 226 314 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-219"))
+	(hierarchical_label "ISO_GND" (shape passive) (exclude_from_sim no) (at 274 314 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "ib-v16-02-220"))
 )
