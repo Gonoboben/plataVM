@@ -84,14 +84,14 @@
 | Q-ROFF-004 | Программный REMOTE_OFF реализуется реле в energize-to-run: физический NO контакт замкнут только при healthy critical control; потеря питания открывает hold loop | CLOSED_ARCHITECTURE |
 | Q-ROFF-005 | Для двух hold loop применяются два независимых последовательно включённых размыкающих контакта; аппаратный EXT_KILL действует независимо от MCU/RS-485 | CLOSED_ARCHITECTURE |
 | Q-ROFF-009 | После OFF контролируются ток катушки, состояние контакта и PACK_BUS; при отсутствии OPEN за t_OFF фиксируется HARD_OFF_FAILED и запрещается restart | CLOSED_REQUIREMENT |
-| Q-ROFF-010 | EXT_KILL включён последовательно после ветви LOCAL_START || AUX_NO и имеет безусловный аппаратный приоритет | CLOSED_ARCHITECTURE |
+| Q-ROFF-010 | EXT_KILL включён последовательно после ветви LOCAL_START ∥ AUX_NO и имеет безусловный аппаратный приоритет | CLOSED_ARCHITECTURE |
 | Q-ROFF-012 | Потеря 5V_CRIT/3V3_CRIT или healthy supervisor обесточивает REMOTE_OFF relay и разрывает hold loop | CLOSED_ARCHITECTURE |
 | Q-KBAT-020 | Сваривание главного контакта диагностируется по напряжениям до/после K_BAT и току ветви; fault WELDED_CONTACT отображается в GUI и блокирует повторный запуск | CLOSED_REQUIREMENT |
 | Q-KBAT-021 | Штатно: отключить нагрузки и электронные MAIN_SWx, дождаться снижения тока, затем разорвать hold loop; EXT_KILL может разорвать loop немедленно | CLOSED |
 | Q-DB-001 | Паспортный максимум заряда BMS — 15 А; DECK_BALANCE остаётся отдельным ограниченным режимом 2 А nominal / 3 А hard limit | CLOSED_PRELIMINARY |
 | Q-DB-002 | Номинальный ток DECK_BALANCE — 2 А | CLOSED_PRELIMINARY |
 | Q-DB-003 | Максимальный ток DECK_BALANCE — 3 А с аппаратным/программным отключением по превышению | CLOSED_PRELIMINARY |
-| Q-DB-005 | Стартовый критерий завершения: |ΔU| ≤50 мВ и |I| ≤0,2 А в течение 60 с; значения конфигурируемы после испытаний | CLOSED_PRELIMINARY |
+| Q-DB-005 | Стартовый критерий завершения: abs(ΔU) ≤50 мВ и abs(I) ≤0,2 А в течение 60 с; значения конфигурируемы после испытаний | CLOSED_PRELIMINARY |
 | Q-DB-006 | Дополнительные датчики температуры в АКБ не добавляются; DECK_BALANCE разрешён только при подтверждённой температуре батарей 0…45 °C | CLOSED_OWNER_DECISION |
 | Q-P12-003 | На канал PCB-C: 3 А continuous, 5 А peak до 1 с, индивидуальное ограничение и защита | CLOSED_PRELIMINARY |
 | Q-P12-005 | POWER_12V_BUS и PCB-C проектируются на 30 А continuous как аппаратный рейтинг; фактическая одновременная нагрузка определяется общим power budget | CLOSED_PRELIMINARY |
