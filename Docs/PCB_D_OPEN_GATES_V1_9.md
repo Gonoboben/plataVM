@@ -13,6 +13,7 @@
 | Q-P5-013A | Prototype 5-мОм Kelvin shunts | CLOSED_PRELIMINARY |
 | Q-P5-014A | Prototype controller/MOSFET/inductor/shunt/TVS/capacitor candidates | CLOSED_PRELIMINARY |
 | Q-P5-014B | Manual OCP tolerance compatibility with 20 А /1 с | CLOSED_PRELIMINARY |
+| Q-P5-014C | Exact prototype R_DAMP orderable PWR263S-35-R100FE | CLOSED_PRELIMINARY |
 | Q-P5-017A | Preliminary load-step targets | CLOSED_PRELIMINARY |
 | Q-P5-018A | Candidate loss feasibility at 75 Вт | CLOSED_PRELIMINARY |
 
@@ -25,9 +26,9 @@
 | Q-P5-011 | Actual single and simultaneous external load profiles | OPEN_OWNER_DEVICE_DATA |
 | Q-P5-012B | Compare final 300/400/500/600-кГц efficiency/EMI result | OPEN_CALC_TEST |
 | Q-P5-013B | Exact CS filter, slope compensation, propagation delay and hiccup behaviour | OPEN_CALC |
-| Q-P5-014C | Exact R_DAMP orderable and pulse curve | OPEN_CANDIDATE |
 | Q-P5-014D | Exact MLCC DC-bias effective capacitance | OPEN_DATASHEET_CALC |
 | Q-P5-014E | Exact gate resistors, bootstrap and snubber values | OPEN_CALC_TEST |
+| Q-P5-014F | PWR263S-35-R100FE pulse graph and hot-plug application verification | OPEN_DATASHEET_TEST |
 | Q-P5-015 | Sealed-volume thermal result at +60 °C | OPEN_THERMAL_TEST |
 | Q-P5-016 | Loop compensation and stability over VIN/load/cap tolerance | OPEN_CALC_TEST |
 | Q-P5-017B | Bode/load-step bench correlation | OPEN_TEST |
