@@ -22,6 +22,7 @@ local effective ceramic capacitance C1 = 100 мкФ
 source + harness + trace inductance sweep Ls = 0,3…2,0 мкГн
 maximum DC calculation voltage = 16 В
 selected damping capacitor Cd = 330 мкФ
+prototype capacitor voltage class = 35 В minimum
 ```
 
 `C1 = 100 мкФ` — effective capacitance после DC-bias derating, а не сумма номиналов на корпусах.
@@ -50,6 +51,7 @@ Z0 = √(Ls / C1)
 
 ```text
 Cd = 330 мкФ
+Cd voltage rating = 35 В minimum
 Rd = 0,10 Ом nominal
 Rd tuning range = 0,068…0,15 Ом
 ```
@@ -87,12 +89,14 @@ Cd = 330 мкФ
 
 Точный тип конденсатора остаётся открытым. Предпочтителен low-profile polymer/electrolytic class с:
 
-- voltage rating ≥25 В;
+- voltage rating ≥35 В;
 - подтверждённым ripple current при +60 °C;
 - известным ESR;
 - высотой ≤12 мм target;
 - рабочей температурой не ниже −20…+105 °C;
 - ресурсом, достаточным для sealed assembly.
+
+35-В class обязателен, потому что паспортный clamp SMCJ18A около 29,2 В превышает rating 25-В capacitor.
 
 ## 6. Обоснование Rd
 
@@ -182,6 +186,7 @@ continuous dissipation at ripple verified
 
 ```text
 effective ceramics at bias ≥100 мкФ total
+voltage rating ≥35 В for prototype
 ripple capability of full input bank ≥6 А RMS at +60 °C
 local HF ceramics adjacent to each half-bridge
 ```
@@ -245,9 +250,10 @@ The article notes that inductive cabling and input capacitance can create hot-pl
 ## 15. Gate result
 
 ```text
-Cd prototype value: 330 мкФ
+Cd prototype value: 330 мкФ / 35 В minimum
 Rd prototype value: 0,10 Ом
 Rd tuning range: 0,068…0,15 Ом
+input ceramic class: 35 В minimum
 pulse energy qualification: REQUIRED
 series input inductor: DNP
 bench tuning: OPEN
