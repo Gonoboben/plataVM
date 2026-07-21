@@ -14,11 +14,11 @@ Record the primary manufacturer sources used for prototype candidate selection. 
 | LM5143QRHARQ1 | Texas Instruments LM5143A-Q1 product/orderable page and datasheet | active orderable, RHA-40, 3,5…65 В, temperature/package family, design-tool support |
 | BUK9Y6R0-60E | Nexperia product page and interactive datasheet | 60 В, 6,0-мОм logic-level class, LFPAK56, AEC-Q101, 175 °C |
 | XAL1010-332MED | Coilcraft exact product page/datasheet | 3,3 мкГн, ±20 %, DCR, Isat, Irms, package/model resources |
-| WSK2512 5-мОм | Vishay WSK2512 family datasheet and orderable record | 4-terminal family, low resistance, 1-% capability; exact code verification required at purchase |
+| WSK25125L000FEA | Vishay WSK2512 family datasheet and exact orderable record | 5 мОм, 4-terminal family, 1-% capability; purchase traceability required |
 | SMCJ18A | Littelfuse exact product page/datasheet | standoff, breakdown, clamp, pulse power and package |
 | EEH-ZK1V331P | Panasonic exact product page/datasheet | 330 мкФ/35 В, ESR, ripple, temperature and dimensions |
-| PWR263S-35 | Bourns family product page/datasheet | D²PAK, 0,02…130 кОм family, 1/5 %, power/pulse family |
-| C3225X7R1H226M250AC | TDK exact product page and characteristic data | 22 мкФ/50 В/X7R/1210 class; DC-bias data required |
+| PWR263S-35-R100FE | Bourns family datasheet/order scheme | D²PAK, R100=0,10 Ом, F=1 %, E=tape/reel; application pulse curve remains to verify |
+| C3225X7R1H226M250AC | TDK exact product page and characteristic data | production status, 22 мкФ/50 В/X7R/1210; DC-bias data required |
 | 10SVPC330M | Panasonic exact product page/datasheet | 330 мкФ/10 В, ESR, ripple, temperature/endurance and dimensions |
 | GRM32ER71A476KE15L | Murata exact product page/SimSurfing | 47 мкФ/10 В/X7R/1210 class; Ceff data required |
 
@@ -54,6 +54,7 @@ must be recorded for each exact orderable.
 ```text
 manufacturer source hierarchy: PASS
 exact candidate traceability: PASS
+R_DAMP exact order-code traceability: PASS
 inventory/lead-time freeze: OPEN
 production lifecycle strategy: OPEN
 ```
