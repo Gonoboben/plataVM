@@ -38,8 +38,13 @@ PCB_D_CONTROLLER_CANDIDATE_MATRIX_V1_9.md
 PCB_D_INPUT_PROTECTION_TRANSIENT_BOUNDARY_V1_9.md
 PCB_D_INPUT_DAMPING_CALC_V1_9.md
 PCB_D_PROTOTYPE_PARAMETER_SET_V1_9.md
+PCB_D_PROTOTYPE_COMPONENT_CANDIDATES_V1_9.md
+PCB_D_OCP_TOLERANCE_CALC_V1_9.md
+PCB_D_LOAD_TRANSIENT_TARGETS_V1_9.md
+PCB_D_PROTOTYPE_LOSS_BOUNDARY_V1_9.md
 PCB_D_DESIGN_BASIS_CONSISTENCY_V1_9.md
 PCB_D_INPUT_PROTECTION_CONSISTENCY_V1_9.md
+PCB_D_COMPONENT_SELECTION_CONSISTENCY_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
 ../Hardware/Mechanical/PCB_D_POWER_STAGE_PLACEHOLDER.scad
@@ -56,6 +61,7 @@ chronology/2026-07-21-kicad-10-board-verification.md
 chronology/2026-07-21-component-height-placeholders-v1-9.md
 chronology/2026-07-21-pcb-d-two-phase-design-basis.md
 chronology/2026-07-21-pcb-d-input-protection.md
+chronology/2026-07-21-pcb-d-prototype-components.md
 ```
 
 ## KiCad toolchain
@@ -85,22 +91,27 @@ thermal qualification: OPEN
 
 ```text
 2-phase synchronous buck architecture: PRELIMINARY PASS
-preferred prototype controller family: LM5143A-Q1
-compatible 65-V alternate: LM5143-Q1
-42-V alternate after measured proof: LM25143-Q1
+exact prototype controller: LM5143QRHARQ1
+prototype MOSFET: BUK9Y6R0-60E
+prototype inductors: XAL1010-332MED
+prototype shunts: WSK25125L000FEA
+prototype TVS: Littelfuse SMCJ18A
+input capacitor class: 50-В X7R MLCC strategy; Ceff verification open
+RC damping: EEH-ZK1V331P +0,10-Ом PWR263S-35 family
+output capacitor starting set: 2×10SVPC330M + X7R tuning positions
 fSW baseline: 400 кГц per phase
 L baseline: 3,3 мкГн per phase
-prototype sensing: 5 мОм Kelvin shunt per phase
-MOSFET class: 60 В minimum
-TVS prototype class: SMCJ18A
-input capacitor class: 35 В minimum
-RC damping start: 330 мкФ / 35 В + 0,10 Ом
-estimated losses at 75 Вт: 3,4…5,4 Вт
+manual OCP tolerance: PRELIMINARY PASS; minimum margin 10,7 %
+load-transient engineering targets: DEFINED
+candidate loss boundary at 75 Вт: 2,9…6,0 Вт
 PCB-D area/height fit: PRELIMINARY PASS
 input transient boundary: PRELIMINARY DEFINED
-final components/footprints: OPEN
-measured transient clamp: OPEN
-design-tool calculation: OPEN
+R_DAMP exact orderable/pulse curve: OPEN
+MLCC DC-bias effective capacitance: OPEN
+LM5143DESIGN-CALC: OPEN
+prototype converter-core schematic: NEXT
+footprints/3D: OPEN
 loop stability: OPEN
 sealed-volume thermal test: OPEN
+production BOM: NOT FROZEN
 ```
