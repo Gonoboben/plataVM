@@ -5,7 +5,7 @@
 ## Текущая опорная версия
 
 ```text
-ПДУ БНПА / PlataVM V1.9 — guarded service policy and preliminary packaging boundary
+ПДУ БНПА / PlataVM V1.9 — guarded service policy, packaging boundary and preliminary KiCad board outlines
 ```
 
 ## Главная точка входа
@@ -33,6 +33,8 @@
 21. `Docs/chronology/2026-07-21-service-override-v1-9.md`
 22. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
 23. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
+24. `Hardware/KiCad/Boards/README.md`
+25. `Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md`
 
 ## Главные решения
 
@@ -70,6 +72,8 @@
 32. PCB-D preliminary input current: 9,26 А continuous worst checked point and 12,35 А short.
 33. PCB-E preliminary input current at 180 Вт: 22,23 А worst checked point.
 34. PCB-E thermal compliance at 180 Вт is not proven and remains a mandatory calculation/test item.
+35. Созданы пять preliminary `.kicad_pcb` files только с Edge.Cuts, labels и графическими `MHx_TBD` zones.
+36. Board files не содержат footprints, pads, nets, copper, vias, actual drills или production routing.
 
 ## Многоплатное разбиение
 
@@ -138,11 +142,10 @@ Thermal compliance: OPEN CONTROLLED BLOCKER
 
 ## KiCad workspace
 
-```text
-Hardware/KiCad/
-```
+Схемы:
 
 ```text
+Hardware/KiCad/
 00_SYSTEM_TOP
 01_EXTERNAL_BATTERIES_AND_HARNESS
 02_INTERBOARD_POWER_AND_CONTROL
@@ -153,13 +156,23 @@ Hardware/KiCad/
 50…56 PCB-E
 ```
 
-Владелец подтвердил открытие root project и листов 00…56. Перед schematic freeze требуется ERC release commit с записью версии KiCad.
+Preliminary board outlines:
+
+```text
+Hardware/KiCad/Boards/PCB-A_BFE_POWER.kicad_pcb
+Hardware/KiCad/Boards/PCB-B_CTRL_RESERVE.kicad_pcb
+Hardware/KiCad/Boards/PCB-C_POWER_12V.kicad_pcb
+Hardware/KiCad/Boards/PCB-D_POWER_5V.kicad_pcb
+Hardware/KiCad/Boards/PCB-E_LIGHT_POWER.kicad_pcb
+```
+
+Владелец подтвердил открытие root schematic project и листов 00…56. Board files прошли структурную проверку, но должны быть открыты владельцем в KiCad PCB Editor; `kicad-cli/pcbnew` в текущем окружении отсутствуют.
 
 ## Текущий следующий этап
 
-1. перенести preliminary board targets в KiCad mechanical outlines без final freeze;
-2. создать mounting-hole zones `MOUNT_HOLE_TBD`;
-3. выполнить component-height audit для трёх уровней;
+1. открыть пять preliminary board files в установленной версии KiCad и подтвердить отсутствие parser errors;
+2. выполнить component-height/3D audit для трёх уровней;
+3. проверить tool-access к `MHx_TBD` zones;
 4. решить A↔B connector topology: 32 positions либо 16+16;
 5. определить physical CAN-FD node order и termination;
 6. рассчитать PCB-B critical branch current;
