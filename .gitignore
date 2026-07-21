@@ -1,0 +1,12 @@
+# KiCad local/session files
+*.kicad_prl
+~*.lck
+*.kicad_pcb-bak
+*.kicad_sch-bak
+*-backups/
+
+# Generic editor/OS temporary files
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
