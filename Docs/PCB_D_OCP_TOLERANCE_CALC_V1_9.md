@@ -23,7 +23,7 @@ VIN maximum calculation = 16 В
 VOUT = 5 В
 IOUT continuous = 15 А
 IOUT short mode = 20 А
-VCS threshold min/typ/max = 66 / 73 / 82 мВ
+VCS threshold min/typ/max = 66 /73 /80 мВ
 RSHUNT nominal = 5,00 мОм
 R tolerance = ±1 %
 L tolerance = ±20 %
@@ -102,7 +102,7 @@ I_PHASE_PEAK_20A = 10 + 3,617/2
 Запас до minimum peak threshold:
 
 ```text
-13,069 − 11,808 = 1,261 А
+13,069 −11,808 = 1,261 А
 margin ≈10,7 %
 ```
 
@@ -119,7 +119,7 @@ margin ≈10,7 %
 Консервативная комбинация для наиболее позднего срабатывания:
 
 ```text
-VCS = 82 мВ maximum
+VCS = 80 мВ maximum
 RSHUNT = 4,95 мОм minimum
 L = 3,96 мкГн maximum
 fSW = 440 кГц maximum
@@ -130,8 +130,8 @@ VIN = 16 В
 
 ```text
 ΔIL_MIN = 1,973 А p-p
-I_LIMIT_PEAK_MAX = 16,566 А per phase
-I_LIMIT_TOTAL_AVG_MAX ≈31,158 А
+I_LIMIT_PEAK_MAX = 16,162 А per phase
+I_LIMIT_TOTAL_AVG_MAX ≈30,350 А
 ```
 
 Это означает, что аппаратный converter OCP не является точным ограничителем 20-А system mode. Он является более высоким защитным барьером от overload/short-circuit.
@@ -140,8 +140,8 @@ I_LIMIT_TOTAL_AVG_MAX ≈31,158 А
 
 | Параметр | Minimum | Typical | Maximum |
 |---|---:|---:|---:|
-| Phase peak threshold | 13,069 А | 14,600 А | 16,566 А |
-| Equivalent total average threshold | 22,522 А | 26,596 А | 31,158 А |
+| Phase peak threshold | 13,069 А | 14,600 А | 16,162 А |
+| Equivalent total average threshold | 22,522 А | 26,596 А | 30,350 А |
 | 20-A allowed phase peak, worst ripple | 11,808 А | 11,302 А nominal | — |
 
 ## 8. Архитектурное значение
@@ -216,7 +216,7 @@ fault reporting deterministic
 ```text
 5-мОм shunt compatibility with 20-А mode: MANUAL PASS
 minimum peak margin: 10,7 %
-maximum equivalent OCP: about 31,2 А total average
+maximum equivalent OCP: about 30,35 А total average
 exact RT/frequency tolerance: OPEN
 slope compensation: OPEN
 design-tool OCP result: OPEN
