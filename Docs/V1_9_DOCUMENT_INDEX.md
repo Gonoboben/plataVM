@@ -50,9 +50,14 @@ PCB_D_DESIGN_BASIS_CONSISTENCY_V1_9.md
 PCB_D_INPUT_PROTECTION_CONSISTENCY_V1_9.md
 PCB_D_COMPONENT_SELECTION_CONSISTENCY_V1_9.md
 PCB_D_COMPONENT_SELECTION_CONSISTENCY_AMENDMENT_V1_9.md
+PCB_D_LM5143DESIGN_CALC_GATE_V1_9.md
+PCB_D_LM5143DESIGN_CALC_RECORD_V1_9.csv
+PCB_D_CONVERTER_CORE_SCHEMATIC_REVIEW_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
+../Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
 ../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
 ../Hardware/Mechanical/PCB_D_POWER_STAGE_PLACEHOLDER.scad
+../Tools/erc/pcb_d_converter_core_erc.py
 ```
 
 ## Трассируемость решения
@@ -68,6 +73,7 @@ chronology/2026-07-21-pcb-d-two-phase-design-basis.md
 chronology/2026-07-21-pcb-d-input-protection.md
 chronology/2026-07-21-pcb-d-prototype-components.md
 chronology/2026-07-21-pcb-d-prototype-components-source-fix.md
+chronology/2026-07-21-pcb-d-lm5143design-calc.md
 ```
 
 ## KiCad toolchain
@@ -106,8 +112,10 @@ input capacitor class: 50-В X7R MLCC strategy; Ceff verification open
 RC damping: EEH-ZK1V331P + PWR263S-35-R100FE
 output capacitor starting set: 2×10SVPC330M + X7R tuning positions
 fSW baseline: 400 кГц per phase
+RT starting value: 54,9 кОм /1 %
 L baseline: 3,3 мкГн per phase
-manual OCP tolerance: PRELIMINARY PASS; minimum margin 10,7 %; max equivalent 30,35 А
+soft-start starting value: 510 нФ
+manual OCP tolerance: PRELIMINARY PASS; minimum margin 10,28 % with conservative RT sweep
 load-transient engineering targets: DEFINED
 candidate loss boundary at 75 Вт: 2,9…6,0 Вт
 PCB-D area/height fit: PRELIMINARY PASS
@@ -115,10 +123,17 @@ input transient boundary: PRELIMINARY DEFINED
 R_DAMP exact orderable: SELECTED
 R_DAMP pulse-curve/application test: OPEN
 MLCC DC-bias effective capacitance: OPEN
-LM5143DESIGN-CALC: OPEN
-prototype converter-core schematic: NEXT
+LM5143DESIGN-CALC: CALCULATION PASS
+compensation start: 24,9 кОм /3,3 нФ /220 пФ
+nominal crossover/phase margin: 29,18 кГц /73,55°
+modeled minimum phase margin: 56,21°
+external UVLO supervisor: CALC_TBD
+prototype converter-core definition: CREATED
+semantic ERC: PASS
+native KiCad ERC: OPEN
+exact symbols/pin mapping: OPEN
 footprints/3D: OPEN
-loop stability: OPEN
+bench loop/OCP/load-step correlation: OPEN
 sealed-volume thermal test: OPEN
-production BOM: NOT FROZEN
+production BOM/schematic: NOT FROZEN
 ```
