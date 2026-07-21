@@ -75,16 +75,19 @@ VC ≈29,2 В at rated pulse current
 
 ## 5. Voltage classes
 
-После выбора 65-В контроллера сохраняется:
+После выбора 65-В контроллера принимается:
 
 ```text
 controller voltage class: 65 В
 power MOSFET class: 60 В minimum
-input capacitor class: 25 В minimum for normal bank
+input ceramic/bulk capacitor class: 35 В minimum for prototype
+RC damping capacitor class: 35 В minimum
 TVS standoff: 18 В
 ```
 
-25-В входные конденсаторы находятся за тем же TVS и должны проверяться по реальному измеренному peak. Если на capacitor terminals измеряется более 22 В с учётом допуска и ringing, необходимо перейти на 35-В capacitor class либо изменить clamp/layout.
+35-В capacitor class выбран потому, что паспортный clamp SMCJ18A около 29,2 В уже превышает rating 25-В capacitor. Использование 25-В входных конденсаторов в prototype baseline запрещено.
+
+После измерений допускается отдельная оптимизация capacitor voltage class только через новый review. Она не должна опираться на типичное, а не гарантированное поведение TVS.
 
 40-В MOSFET class запрещён до отдельного measured transient review.
 
@@ -210,8 +213,10 @@ Littelfuse — SMCJ18A official product data
 ```text
 65-V controller class: PRELIMINARY ACCEPTED
 60-V MOSFET class: PRELIMINARY ACCEPTED
+35-V input capacitor class: PRELIMINARY ACCEPTED
 SMCJ18A-class TVS: PRELIMINARY ACCEPTED
 40-V MOSFET class: REJECTED UNTIL MEASURED REVIEW
+25-V input capacitor class: REJECTED FOR PROTOTYPE
 sustained overvoltage protection: UPSTREAM ACTION REQUIRED
 transient measurement: OPEN
 final TVS part number: OPEN
