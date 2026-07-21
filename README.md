@@ -19,19 +19,20 @@
 7. `Docs/PCB_MODULE_AREA_BUDGET_V1_9.md`
 8. `Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md`
 9. `Docs/BRANCH_CURRENT_PRECALC_V1_9.md`
-10. `Docs/SCHEMATIC_ARCHITECTURE.md`
-11. `Docs/INTERBOARD_INTERFACES.md`
-12. `Docs/NET_NAMING_RULES.md`
-13. `Docs/POWER_TREE_V1_5.md`
-14. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
-15. `Docs/BATTERY_DISCONNECT.md`
-16. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
-17. `Docs/OPEN_QUESTIONS.md`
-18. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
-19. `Docs/CHRONOLOGY.md`
-20. `Docs/chronology/2026-07-21-service-override-v1-9.md`
-21. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
-22. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
+10. `Docs/BASELINE_CONSISTENCY_V1_9.md`
+11. `Docs/SCHEMATIC_ARCHITECTURE.md`
+12. `Docs/INTERBOARD_INTERFACES.md`
+13. `Docs/NET_NAMING_RULES.md`
+14. `Docs/POWER_TREE_V1_5.md`
+15. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
+16. `Docs/BATTERY_DISCONNECT.md`
+17. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
+18. `Docs/OPEN_QUESTIONS.md`
+19. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
+20. `Docs/CHRONOLOGY.md`
+21. `Docs/chronology/2026-07-21-service-override-v1-9.md`
+22. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
+23. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
 
 ## Главные решения
 
@@ -121,6 +122,19 @@ PCB-E 180 Вт output → 22,23 А input
 ```
 
 Значения задают нижнюю границу для connector candidate search. Финальные efficiency, ripple, temperature rise и sealed-volume thermal compliance остаются открытыми.
+
+## Проверка связности V1.9
+
+```text
+Architecture continuity: PASS
+Service policy consistency: PASS
+Packaging arithmetic: PASS PRELIMINARY
+Interface arithmetic: PASS AFTER CORRECTION
+Power branch precalc: PASS PRELIMINARY
+Thermal compliance: OPEN CONTROLLED BLOCKER
+```
+
+Подробности — `Docs/BASELINE_CONSISTENCY_V1_9.md`.
 
 ## KiCad workspace
 
