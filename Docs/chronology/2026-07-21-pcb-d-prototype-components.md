@@ -31,12 +31,18 @@ D_TVS: Littelfuse SMCJ18A
 C_DAMP: Panasonic EEH-ZK1V331P
 R_DAMP: Bourns PWR263S-35 family, 0,10 Ом target
 C_IN: 22 мкФ /50 В X7R /1210 class, 8 positions
-C_OUT: 2 ×10SVPC330M + 47-мкФ X7R tuning bank
+C_OUT: 2 ×10SVPC330M +47-мкФ X7R tuning bank
 ```
 
 `R_DAMP` exact code and pulse curve remain open. The set is prototype-only and does not freeze production BOM.
 
 ## 3. OCP result
+
+Exact LM5143A-Q1 datasheet threshold:
+
+```text
+VCS min/typ/max = 66 /73 /80 мВ
+```
 
 Manual tolerance sweep:
 
@@ -45,7 +51,7 @@ minimum phase peak threshold: 13,069 А
 minimum equivalent total-average threshold: 22,522 А
 worst-case legal 20-А phase peak: 11,808 А
 minimum preliminary margin: 10,7 %
-maximum equivalent threshold: about 31,158 А
+maximum equivalent threshold: about 30,350 А
 ```
 
 Result:
@@ -117,10 +123,12 @@ Not changed:
 
 ```text
 Docs/PCB_D_PROTOTYPE_COMPONENT_CANDIDATES_V1_9.md
+Docs/PCB_D_COMPONENT_SOURCE_RECORD_V1_9.md
 Docs/PCB_D_OCP_TOLERANCE_CALC_V1_9.md
 Docs/PCB_D_LOAD_TRANSIENT_TARGETS_V1_9.md
 Docs/PCB_D_PROTOTYPE_LOSS_BOUNDARY_V1_9.md
 Docs/PCB_D_COMPONENT_SELECTION_CONSISTENCY_V1_9.md
+Docs/PCB_D_OPEN_GATES_V1_9.md
 ```
 
 Updated:
