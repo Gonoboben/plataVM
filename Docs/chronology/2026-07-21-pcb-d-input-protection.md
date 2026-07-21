@@ -28,10 +28,13 @@ compatible alternate: LM5143-Q1
 42-V alternate after measurement: LM25143-Q1
 MOSFET class: 60 В minimum
 TVS class: SMCJ18A
-RC damping: 330 мкФ + 0,10 Ом
+input ceramic/bulk capacitor class: 35 В minimum
+RC damping: 330 мкФ / 35 В + 0,10 Ом
 Rd tuning: 0,068…0,15 Ом
 series input inductor: DNP
 ```
+
+25-В input capacitors отклонены для первого прототипа, поскольку паспортный clamp SMCJ18A около 29,2 В превышает их voltage rating.
 
 ## 3. Voltage targets
 
@@ -107,7 +110,7 @@ Docs/V1_9_DOCUMENT_INDEX.md
 ```text
 official LM5143DESIGN-CALC run
 → exact controller orderable
-→ exact MOSFET/inductor/shunt/capacitor candidate table
+→ exact MOSFET/inductor/shunt/35-V capacitor candidate table
 → OCP and compensation
 → transient simulation
 → prototype schematic core
