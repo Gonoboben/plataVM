@@ -1,25 +1,28 @@
 # Архитектурная база ПДУ БНПА / PlataVM
 
-Дата актуализации: 2026-07-16  
+Дата актуализации: 2026-07-21  
 Статус:
 
 ```text
-V1.6 OWNER-INPUT-REVIEWED BASELINE
-Architecture A/B preserved; transport and ground policy resolved
+V1.7 OWNER-INPUT-REVIEWED BASELINE
+Architecture A/B preserved; power-budget and external mechanical envelope resolved
 ```
 
 ## 1. Назначение
 
-Документ фиксирует действующую архитектуру питания, управления, резервирования, аварийного отключения и многоплатного разбиения PlataVM.
+Документ фиксирует действующую архитектуру питания, управления, резервирования, аварийного отключения, многоплатного разбиения, общего power budget и механического envelope PlataVM.
 
 Связанные нормативные документы:
 
 ```text
+Docs/PROJECT_MASTER.md
 Docs/KBAT_ELECTRICAL_REQUIREMENTS.md
 Docs/INTERBOARD_INTERFACES.md
+Docs/SYSTEM_POWER_BUDGET_POLICY.md
+Docs/MECHANICAL_ENVELOPE_V1_7.md
 Docs/OPEN_QUESTIONS.md
-Docs/OWNER_ANSWERS_REVIEW_V1_6.md
-Docs/adr/ADR-2026-07-16-owner-input-v1-6.md
+Docs/OWNER_ANSWERS_REVIEW_V1_7.md
+Docs/adr/ADR-2026-07-21-owner-input-v1-7.md
 ```
 
 ## 2. Основные исходные данные
@@ -31,6 +34,7 @@ Docs/adr/ADR-2026-07-16-owner-input-v1-6.md
 | Ячейка | Hunan Huaxing 32700-6000mAh, 3,2 В, 6 А·ч | ACCEPTED |
 | Основная BMS | LiFePO4 4S 12 V 30 A symmetric, supplier item 0102 | PRELIMINARY SUPPLIER DATA |
 | Работа основных АКБ | параллельно в RUN | ACCEPTED |
+| SINGLE_PACK_MODE | деградированный функциональный режим | ACCEPTED |
 | Контакторы АКБ | K_BAT1/K_BAT2, однополюсные по плюсу, моностабильные SPST-NO | ACCEPTED |
 | Межкорпусный соединитель | СН-176А-12 | OWNER-CONTROLLED INPUT |
 | Длина каждой батарейной линии | 1 м | ACCEPTED |
@@ -39,8 +43,11 @@ Docs/adr/ADR-2026-07-16-owner-input-v1-6.md
 | PCB-C hardware rating | 30 А continuous | PRELIMINARY REQUIREMENT |
 | 5V_SYS_BUS | 10 выходов, до 3 А/output; 15 А continuous, 20 А short total | PRELIMINARY REQUIREMENT |
 | LIGHT_POWER_BRANCH | 6 независимых LED-каналов, две зоны 2×3 | ACCEPTED ARCHITECTURE |
+| DUAL_PACK system limit | 40 А continuous / 44 А short по PACK_BUS | ACCEPTED PRELIMINARY |
+| SINGLE_PACK system limit | 20 А continuous / 22 А short по PACK_BUS | ACCEPTED PRELIMINARY |
 | Внешний интерфейс | isolated RS-485 half-duplex, 115200 bit/s preliminary | ACCEPTED / PRELIMINARY RATE |
 | Внутренний интерфейс PCB-B↔PCB-C/D/E | CAN-FD + отдельные аппаратные safe/fault lines | ACCEPTED ARCHITECTURE |
+| Корпус электроники | цилиндр Ø130 мм × 1000 мм; один торец заварен, второй — крышка с разъёмами | ACCEPTED EXTERNAL ENVELOPE |
 
 ## 3. Базовые силовые шины
 
@@ -77,7 +84,7 @@ INTERCONNECT — только пассивные шины, жгуты и/или 
 5. PCB-E — шесть независимых LED-драйверов;
 6. INTERCONNECT — пассивная транспортная среда без активных компонентов.
 
-Ширина каждого PCB-модуля не более 100 мм. Высота сборки предварительно не более 80 мм. Окончательная длина плат определяется 3D-компоновкой.
+Ширина каждого PCB-модуля не более 100 мм. Окончательная высота и длина плат определяются после получения внутреннего диаметра и 3D-компоновки цилиндрического корпуса.
 
 ## 5. Батарейная архитектура
 
@@ -133,8 +140,11 @@ K_BATx:
 | Hold power | target ≤2 Вт; limit ≤4 Вт |
 | Главный контакт | ≥30 А continuous; target class ≥50 А |
 | DC breaking capacity | ≥30 А при 16 В DC |
+| Рабочая температура | −20…+60 °C |
+| Механический ресурс | ≥100 000 циклов |
+| Электрический ресурс | ≥10 000 операций |
 
-Конкретная модель K_BATx не выбрана до измерений dropout, L, inrush, release, температуры и ресурса.
+Конкретная модель K_BATx не выбрана до измерений dropout, L, inrush, release, температуры, vibration и ресурса.
 
 ## 7. REMOTE_OFF и EXT_KILL
 
@@ -207,9 +217,7 @@ t_release_system target ≤100 мс
 
 ## 10. DECK_BALANCE
 
-DECK_BALANCE выполняется только на палубе при отключённых тяжёлых нагрузках.
-
-Предварительно:
+DECK_BALANCE выполняется только на палубе при отключённых тяжёлых нагрузках и двух доступных батареях.
 
 | Параметр | Значение |
 |---|---:|
@@ -219,6 +227,8 @@ DECK_BALANCE выполняется только на палубе при отк
 | Температурное условие | батареи подтверждённо в диапазоне 0…45 °C |
 
 Дополнительная активная электроника и датчики внутри корпусов АКБ не добавляются. Тайм-аут и критерий отсутствия прогресса определяются расчётом и испытанием.
+
+В `SINGLE_PACK_MODE` DECK_BALANCE запрещён.
 
 ## 11. Выходные платы
 
@@ -249,29 +259,104 @@ DECK_BALANCE выполняется только на палубе при отк
 - PWM 3,3 В active-high;
 - default 1 кГц, configurable 100…1000 Гц;
 - default safe state — все LED OFF;
-- общий HARD_OFF действует на обе зоны.
+- общий HARD_OFF действует на обе зоны;
+- отдельный brightness limit в SINGLE_PACK_MODE отсутствует.
 
 ## 12. Общий power budget
 
 Локальные аппаратные рейтинги плат не означают, что все максимумы разрешены одновременно.
 
-Оценка полного режима без critical loads:
+Системные пределы:
 
-| Условие | Ток PACK_BUS |
+| Режим | Continuous | Short | Warning 85 % |
+|---|---:|---:|---:|
+| DUAL_PACK_RUN | 40 А | 44 А | 34 А |
+| SINGLE_PACK_MODE | 20 А | 22 А | 17 А |
+
+Политика:
+
+1. учитывается фактический суммарный ток PACK_BUS;
+2. вход в SINGLE_PACK_MODE не выключает нагрузки по категории;
+3. при 85 % active continuous budget отображается предупреждение;
+4. при 100 % запрещается включение новой некритической нагрузки;
+5. уже включённые нагрузки не отключаются обычным программным budget manager;
+6. яркость автоматически не изменяется;
+7. service override допускается только в диагностическом режиме с журналированием;
+8. аппаратные защиты, SAFE/HARD_OFF и EXT_KILL имеют приоритет.
+
+Подробная логика приведена в `Docs/SYSTEM_POWER_BUDGET_POLICY.md`.
+
+## 13. SINGLE_PACK_MODE
+
+Условия:
+
+```text
+одна основная батарея доступна и подключена
+вторая отсутствует, отключена или изолирована
+```
+
+Режим:
+
+- деградированный, но функциональный;
+- active budget = 20 А continuous / 22 А short;
+- не вводит автоматическое выключение света, 12 В или 5 В нагрузок;
+- запрещает DECK_BALANCE;
+- отображается постоянно в GUI;
+- не допускает автоматический restart второй батареи после BMS recovery;
+- возврат к DUAL_PACK_RUN требует нового LOCAL_START и проверки безопасного параллельного подключения.
+
+## 14. Условия эксплуатации
+
+Принято:
+
+| Параметр | Требование |
 |---|---:|
-| 12,8 В nominal | около 52 А |
-| 9,2 В near BMS UV | около 60,6 А |
+| Рабочая температура | −20…+60 °C |
+| Хранение | −30…+70 °C |
+| Влажность | высокая |
+| Конденсация | возможна |
+| PCB coating | conformal coating обязательно |
+| Среда | морская, внутренний объём штатно сухой |
 
-До закрытия Q-SYS-001…Q-SYS-003 остаются открытыми:
+Вибрационный и ударный профиль остаётся открытым до данных о креплении аппарата.
 
-1. матрица одновременных нагрузок;
-2. политика SINGLE_PACK_MODE;
-3. предупреждение/блокировка несовместимой команды;
-4. таблица приоритетов load shedding.
+## 15. Механический envelope
 
-Отдельный автоматический лимит яркости владельцем не принят, но общий физический power budget обязателен.
+Подтверждено:
 
-## 13. Неизменяемые ограничения
+```text
+цилиндрический корпус
+наружный диаметр 130 мм
+длина 1000 мм
+один торец заварен
+второй торец — съёмная крышка с разъёмами
+сервисный доступ со стороны крышки
+```
+
+Предварительная внутренняя концепция:
+
+- единый продольный извлекаемый carrier/tray;
+- PCB-A у батарейных вводов;
+- PCB-C/D/E с короткими путями к выходным разъёмам;
+- PCB-B в наименее шумной зоне;
+- PACK_BUS/POWER_GND и сигнальный harness трассируются раздельно;
+- глухой заваренный торец не требует обслуживания.
+
+Окончательная 3D-компоновка запрещена до получения внутреннего диаметра, материала, полезной длины, карты разъёмов, pressure/vibration data и thermal interface policy.
+
+## 16. Проверка KiCad
+
+Владелец подтвердил, что текущий root project и листы 00…56 открываются нормально.
+
+Статус:
+
+```text
+OWNER VERIFIED FOR CONTINUED ARCHITECTURE WORK
+```
+
+Перед schematic freeze требуется ERC/parsing review конкретного release commit с записью версии KiCad.
+
+## 17. Неизменяемые ограничения
 
 1. `K_MAIN` отсутствует;
 2. PACK_BUS — единственная главная силовая шина;
@@ -285,12 +370,23 @@ DECK_BALANCE выполняется только на палубе при отк
 10. автоматический рестарт после BMS recovery запрещён;
 11. конкретные part numbers не выбираются без расчёта и подтверждения входных данных.
 
-## 14. Текущий Gate G-R
+## 18. Текущий Gate G-R
 
-Разрешено начинать расчёты и component selection по узлам с закрытыми входными данными. Полный Gate G-R остаётся открыт до:
+Закрыты owner-level блокеры:
 
-1. KiCad verification;
-2. global simultaneous-load matrix;
-3. выбора и испытания K_BATx и REMOTE_OFF relay;
-4. BMS BAT_PROT fault/recovery tests;
-5. 3D-компоновки и физических межплатных разъёмов.
+- KiCad workspace verification;
+- стартовый global power budget;
+- SINGLE_PACK_MODE policy;
+- реакция на прогнозируемую перегрузку;
+- базовые environmental requirements;
+- внешний корпусной envelope.
+
+Полный Gate G-R остаётся открыт до:
+
+1. выбора и испытания K_BATx и REMOTE_OFF relay;
+2. BMS BAT_PROT fault/recovery tests;
+3. определения внутренних размеров, pressure/vibration условий и 3D-компоновки;
+4. physical CAN-FD/hard-line pin count и выбора разъёмов;
+5. закрытия short-limit duration, filters/hysteresis и load profiles.
+
+При этом разрешены расчёты и component selection по отдельным узлам, для которых входные данные уже закрыты и которые не зависят от оставшихся блокеров.
