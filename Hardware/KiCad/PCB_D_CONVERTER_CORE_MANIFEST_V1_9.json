@@ -1,0 +1,192 @@
+{
+  "document": "PCB-D converter-core schematic manifest V1.9",
+  "status": "PROTOTYPE_CALC_TBD_NO_PRODUCTION_FREEZE",
+  "source_main": "c513dbb3c9da57b8b5a26e755accc94e893e3ef3",
+  "architecture": {
+    "input": "PACK_BUS_P5_IN",
+    "output": "5V_SYS_BUS",
+    "phases": 2,
+    "interleave_degrees": 180,
+    "mode": "FPWM",
+    "forbidden_nets": [
+      "K_MAIN",
+      "MAIN_INPUT_BUS",
+      "5V_CRIT",
+      "3V3_CRIT",
+      "EMG_4S2P"
+    ],
+    "high_current_owner": "PCB-D",
+    "high_current_forbidden_board": "PCB-B"
+  },
+  "controller": {
+    "ref": "U_DCDC",
+    "part": "LM5143QRHARQ1",
+    "family": "LM5143A-Q1",
+    "ties": {
+      "MODE": "VDDA",
+      "FB1": "POWER_GND",
+      "FB2": "POWER_GND",
+      "COMP1": "COMP_COMMON",
+      "COMP2": "COMP_COMMON",
+      "SS1": "SS_COMMON",
+      "SS2": "SS_COMMON",
+      "DEMB": "VDDA",
+      "DITH": "VDDA",
+      "VOUT1": "5V_SYS_BUS",
+      "VOUT2": "5V_SYS_BUS",
+      "VCCX": "5V_SYS_BUS"
+    }
+  },
+  "timing": {
+    "RT": {
+      "ref": "R_RT",
+      "value": "54.9 kOhm 1%",
+      "net": "RT"
+    },
+    "CSS": {
+      "ref": "C_SS",
+      "value": "510 nF",
+      "net": "SS_COMMON"
+    },
+    "CRES": {
+      "ref": "C_RES",
+      "value": "470 nF prototype start",
+      "net": "RES"
+    }
+  },
+  "compensation": {
+    "R_COMP": {
+      "ref": "R_COMP",
+      "value": "24.9 kOhm 1%"
+    },
+    "C_COMP": {
+      "ref": "C_COMP",
+      "value": "3.3 nF"
+    },
+    "C_HF": {
+      "ref": "C_HF",
+      "value": "220 pF"
+    },
+    "network": "COMP_COMMON to POWER_GND"
+  },
+  "uvlo": {
+    "ref": "U_UVLO",
+    "value": "CALC_TBD",
+    "rise_target_V": 8.9,
+    "fall_target_V": 8.35,
+    "output_net": "UVLO_OK",
+    "note": "Passive EN divider rejected"
+  },
+  "enable_logic": {
+    "output_net": "EN_RUN",
+    "inputs": [
+      "5V_SYS_EN",
+      "UVLO_OK",
+      "P5_GROUP_SAFE_OFF",
+      "P5_GROUP_HARD_OFF"
+    ],
+    "equation": "5V_SYS_EN AND UVLO_OK AND NOT SAFE_OFF AND NOT HARD_OFF",
+    "implementation": "CALC_TBD",
+    "must_be_hardware": true
+  },
+  "phases": [
+    {
+      "name": "PHASE1",
+      "high_side": {
+        "ref": "Q_HS1",
+        "part": "BUK9Y6R0-60E,115"
+      },
+      "low_side": {
+        "ref": "Q_LS1",
+        "part": "BUK9Y6R0-60E,115"
+      },
+      "inductor": {
+        "ref": "L1",
+        "part": "XAL1010-332MED",
+        "value": "3.3 uH +/-20%"
+      },
+      "shunt": {
+        "ref": "RSH1",
+        "part": "WSK25125L000FEA",
+        "value": "5 mOhm 1% Kelvin"
+      },
+      "switch_net": "SW1",
+      "cs_filter": {
+        "R": "CALC_TBD",
+        "C": "CALC_TBD"
+      },
+      "gate_resistors": {
+        "HS": "CALC_TBD",
+        "LS": "CALC_TBD"
+      },
+      "bootstrap": {
+        "C": "CALC_TBD",
+        "D": "CALC_TBD"
+      },
+      "snubber": "DNP_CALC_TBD"
+    },
+    {
+      "name": "PHASE2",
+      "high_side": {
+        "ref": "Q_HS2",
+        "part": "BUK9Y6R0-60E,115"
+      },
+      "low_side": {
+        "ref": "Q_LS2",
+        "part": "BUK9Y6R0-60E,115"
+      },
+      "inductor": {
+        "ref": "L2",
+        "part": "XAL1010-332MED",
+        "value": "3.3 uH +/-20%"
+      },
+      "shunt": {
+        "ref": "RSH2",
+        "part": "WSK25125L000FEA",
+        "value": "5 mOhm 1% Kelvin"
+      },
+      "switch_net": "SW2",
+      "cs_filter": {
+        "R": "CALC_TBD",
+        "C": "CALC_TBD"
+      },
+      "gate_resistors": {
+        "HS": "CALC_TBD",
+        "LS": "CALC_TBD"
+      },
+      "bootstrap": {
+        "C": "CALC_TBD",
+        "D": "CALC_TBD"
+      },
+      "snubber": "DNP_CALC_TBD"
+    }
+  ],
+  "capacitors": {
+    "input": {
+      "Ceff_required": "at least 100 uF at 16 V/tolerance/temp/aging",
+      "exact_Ceff": "CALC_TBD"
+    },
+    "output": {
+      "polymer": "2 x 10SVPC330M",
+      "mlcc_populated": "4 x 47 uF class",
+      "mlcc_dnp": "2 x 47 uF class",
+      "actual_Ceff_ESR_ESL": "CALC_TBD"
+    }
+  },
+  "safety": {
+    "direct_inputs": [
+      "P5_GROUP_SAFE_OFF",
+      "P5_GROUP_HARD_OFF"
+    ],
+    "fault_output": "P5_DC_DC_FAULT_N",
+    "local_mcu_bypass_prohibited": true,
+    "service_override_bypass_prohibited": true
+  },
+  "freeze": {
+    "production_bom": false,
+    "footprints": false,
+    "layout": false,
+    "copper": false,
+    "thermal_qualification": false
+  }
+}
