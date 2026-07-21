@@ -1,8 +1,8 @@
-# Открытые вопросы ПДУ БНПА / PlataVM V1.8
+# Открытые вопросы ПДУ БНПА / PlataVM V1.9
 
 Дата пересмотра: 2026-07-21  
-Источник: заполненная форма `Ответы_на_вопросы_ПДУ_БНПА_V1.8(1).docx`  
-Статус: `OWNER INPUT V1.8 REVIEWED`; Q-SYS-007 остаётся открытым после запроса объяснения, остальные ответы V1.8 применены.
+Источник: решение владельца по форме V1.9 — `SERVICE_OVERRIDE`, вариант B  
+Статус: `OWNER INPUT V1.9 APPLIED`; Q-SYS-007 закрыт, preliminary packaging boundary и physical interface count подготовлены.
 
 ## 1. Закрытые и зафиксированные решения
 
@@ -158,8 +158,10 @@
 | Q-MECH-008 | Entire assembly removed with lid; boards screwed to owner-selected standoffs; PCB mounting holes required | CLOSED_OWNER_MECHANICAL_CONCEPT |
 | Q-MECH-009 | Pressure hull outside electronics scope; hot-melt adhesive auxiliary only | CLOSED_OWNER_SCOPE_WITH_DFM_RULES |
 | Q-MECH-010 | No thermal contact to hull; internal natural convection and low-loss design | CLOSED_OWNER_THERMAL_CONSTRAINT |
+| Q-MECH-011 | PACKAGING-P1: L0 A+C, L1 D+E, L2 B; preliminary area budgets fit 100 × 250 × 80 мм | CLOSED_PRELIMINARY_FLOORPLAN |
+| Q-MECH-012 | Logical power/signal interface count completed; physical connector placement remains separate | CLOSED_PARTIAL_PIN_COUNT |
 
-### 1.11 System power budget и SINGLE_PACK_MODE
+### 1.11 System power budget, SINGLE_PACK_MODE и service
 
 | ID | Решение | Статус |
 |---|---|---|
@@ -169,6 +171,7 @@
 | Q-SYS-004 | Short ≤1 с; repeat interval ≥10 с; I²t/thermal accumulator | CLOSED_PRELIMINARY_TIMING |
 | Q-SYS-005 | Low-pass 100 мс; warning 85 %/250 мс; clear 80 %/2 с; re-enable 90 %/2 с | CLOSED_PRELIMINARY_FIRMWARE_POLICY |
 | Q-SYS-006 | Critical only PCB-B critical domain; external CH/5V/LED noncritical; load profiles required | CLOSED_OWNER_CLASSIFICATION |
+| Q-SYS-007 | Guarded SERVICE_OVERRIDE: SERVICE_MODE, authorization, double confirmation, one output, 60 с lease, short limits unchanged, full logging | CLOSED_OWNER_DECISION |
 
 ### 1.12 СН-176А-12 owner-controlled scope
 
@@ -190,8 +193,11 @@
 
 | ID | Открытый вопрос | Статус |
 |---|---|---|
-| Q-SCH-006 | Physical interboard connectors and final pinout after multilevel packaging and pin count | OPEN_COMPONENT_SELECTION |
+| Q-SCH-006 | Select physical interboard connector families after current, height and mating-cycle calculations | OPEN_COMPONENT_SELECTION |
 | Q-SCH-012 | Record KiCad version and ERC report for release commit before schematic freeze | OPEN_RELEASE_VERIFICATION |
+| Q-IF-004 | Confirm one 32-position A↔B signal connector or split into 16-position CTRL + 16-position DIAG | OPEN_PACKAGING_DECISION |
+| Q-IF-005 | Select standardized 8-position signal connector class for PCB-C/D/E | OPEN_COMPONENT_SELECTION |
+| Q-IF-006 | Define final CAN-FD physical node order and termination positions | OPEN_LAYOUT_DECISION |
 
 ## 3. Фактическое поведение BMS
 
@@ -230,32 +236,23 @@
 |---|---|---|
 | Q-DB-004 | Maximum timeout and no-progress criterion | OPEN_CALC_TEST |
 
-## 7. Power-budget implementation
+## 7. PCB packaging, current calculation and thermal verification
 
 | ID | Открытый вопрос | Статус |
 |---|---|---|
-| Q-SYS-007 | Decide whether service override is needed; if accepted, duration/authorization/termination | OPEN_OWNER_DECISION_AFTER_EXPLANATION |
-
-До закрытия:
-
-```text
-SERVICE_OVERRIDE = DISABLED BY DEFAULT
-```
-
-Q-SYS-007 не блокирует first hardware/production firmware, если feature остаётся disabled.
-
-## 8. PCB packaging and thermal verification
-
-| ID | Открытый вопрос | Статус |
-|---|---|---|
-| Q-MECH-011 | Preliminary outlines, level arrangement and mounting-hole coordinates within 100 × 250 × 80 мм | OPEN_MECHANICAL_DESIGN |
-| Q-MECH-012 | Internal power/signal harness and connector placement after PCB stack concept | OPEN_MECHANICAL_ELECTRICAL_DESIGN |
+| Q-PKG-001 | Create preliminary KiCad board outlines from V1.9 area budgets | OPEN_MECHANICAL_DESIGN |
+| Q-PKG-002 | Define mounting-hole coordinates after owner selects screw/standoff class | OPEN_OWNER_COMPONENT_INPUT |
+| Q-PKG-003 | Perform component-height audit and 3D inter-level clearance review | OPEN_COMPONENT_LAYOUT |
+| Q-PKG-004 | Confirm PACKAGING-P1 or revise level allocation after thermal/component audit | OPEN_REVIEW |
+| Q-PWR-001 | Calculate maximum PCB-B critical branch current and A↔B power connector rating | OPEN_CALC |
+| Q-PWR-002 | Calculate PCB-D input current, efficiency and branch connector rating | OPEN_CALC |
+| Q-PWR-003 | Calculate PCB-E worst-case branch current and connector rating | OPEN_CALC |
 | Q-THERM-001 | PCB-A…PCB-E loss budget and thermal test at +60 °C without hull contact | OPEN_CALC_TEST |
 | Q-THERM-002 | Confirm continuous ratings or derating after sealed-volume thermal test | OPEN_TEST_DECISION |
 
-## 9. Текущий Gate G-R
+## 8. Текущий Gate G-R
 
-Закрыты owner-level входы V1.8:
+Закрыты owner-level входы V1.9:
 
 1. internal/assembly envelope;
 2. multilevel mounting and extraction;
@@ -263,23 +260,27 @@ Q-SYS-007 не блокирует first hardware/production firmware, если f
 4. thermal-path constraint;
 5. short duration/cooldown/I²t;
 6. filtering/hysteresis;
-7. load classification/profiles.
+7. load classification/profiles;
+8. guarded SERVICE_OVERRIDE;
+9. preliminary packaging boundary;
+10. preliminary physical interface count.
 
 Полный Gate G-R остаётся открыт до:
 
 1. BMS BAT_PROT fault/recovery tests;
 2. K_BATx and REMOTE_OFF candidate selection/tests;
-3. first PCB stack/outlines/mounting review;
-4. physical CAN-FD/hard-line/power pin count and connectors;
-5. thermal calculation/test without hull contact.
+3. preliminary KiCad outlines and mounting review;
+4. current/thermal calculations;
+5. connector class comparison and selection;
+6. release ERC.
 
-Q-SYS-007 является optional owner decision и не блокирует проект при disabled-by-default policy.
-
-Подробности V1.8:
+Подробности V1.9:
 
 ```text
-Docs/OWNER_ANSWERS_REVIEW_V1_8.md
-Docs/SYSTEM_POWER_BUDGET_POLICY.md
-Docs/MECHANICAL_ENVELOPE_V1_8.md
-Docs/adr/ADR-2026-07-21-owner-input-v1-8.md
+Docs/SERVICE_OVERRIDE_POLICY.md
+Docs/PCB_PACKAGING_BOUNDARY_V1_9.md
+Docs/PCB_MODULE_AREA_BUDGET_V1_9.md
+Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md
+Docs/adr/ADR-2026-07-21-service-override-v1-9.md
+Docs/chronology/2026-07-21-service-override-v1-9.md
 ```

@@ -6,7 +6,7 @@
 
 ```text
 главный управляющий документ проекта
-V1.8 owner-input-reviewed baseline
+V1.9 guarded-service and preliminary-packaging baseline
 ```
 
 ## 1. Назначение
@@ -20,7 +20,12 @@ Docs/ARCHITECTURE_BASELINE.md
 Docs/KBAT_ELECTRICAL_REQUIREMENTS.md
 Docs/INTERBOARD_INTERFACES.md
 Docs/SYSTEM_POWER_BUDGET_POLICY.md
+Docs/SERVICE_OVERRIDE_POLICY.md
 Docs/MECHANICAL_ENVELOPE_V1_8.md
+Docs/PCB_PACKAGING_BOUNDARY_V1_9.md
+Docs/PCB_MODULE_AREA_BUDGET_V1_9.md
+Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md
+Docs/BRANCH_CURRENT_PRECALC_V1_9.md
 Docs/OPEN_QUESTIONS.md
 ```
 
@@ -46,8 +51,10 @@ Docs/OPEN_QUESTIONS.md
 16. DECK_BALANCE;
 17. DUAL_PACK_RUN и SINGLE_PACK_MODE;
 18. power-budget manager;
-19. многоуровневая электронная сборка в envelope 100 × 250 × 80 мм;
-20. схемы, PCB, BOM, firmware, GUI, тесты и документация.
+19. guarded SERVICE_OVERRIDE;
+20. многоуровневая электронная сборка в envelope 100 × 250 × 80 мм;
+21. physical interface count и последующий выбор connector classes;
+22. схемы, PCB, BOM, firmware, GUI, тесты и документация.
 
 ## 3. Замороженная системная архитектура
 
@@ -215,6 +222,14 @@ PCB-A выполняет:
 
 PCB-A не содержит главный MCU и не заменяет K_BATx.
 
+Preliminary area budget:
+
+```text
+PCB-A target 94 × 110 мм
+preliminary maximum 100 × 120 мм
+component height ≤23 мм
+```
+
 ## 9. PCB-B_CTRL_RESERVE
 
 PCB-B содержит:
@@ -228,9 +243,18 @@ PCB-B содержит:
 7. внутренний CAN-FD control node;
 8. direct hardware safety/fault interfaces;
 9. controlled SIGNAL_GND–POWER_GND point;
-10. service/debug.
+10. service/debug;
+11. guarded SERVICE_OVERRIDE state machine и журналирование.
 
 PCB-B не проводит суммарные токи пользовательских нагрузок.
+
+Preliminary area budget:
+
+```text
+PCB-B target 94 × 180 мм
+preliminary maximum 100 × 220 мм
+component height ≤16 мм
+```
 
 ## 10. PCB-C_POWER_12V
 
@@ -242,6 +266,14 @@ PCB-B не проводит суммарные токи пользователь
 - local MCU/I/O/ADC;
 - normal commands/telemetry по CAN-FD;
 - direct P12_GROUP_SAFE_OFF, P12_GROUP_HARD_OFF и P12_BOARD_FAULT_N.
+
+Preliminary area budget:
+
+```text
+PCB-C target 94 × 130 мм
+preliminary maximum 100 × 145 мм
+component height ≤23 мм
+```
 
 ## 11. PCB-D_POWER_5V
 
@@ -259,6 +291,27 @@ PCB-B не проводит суммарные токи пользователь
 
 `5V_SYS_BUS` не питает critical domain и не питается от EMG.
 
+Preliminary area/current budget:
+
+```text
+PCB-D target 94 × 125 мм
+preliminary maximum 100 × 140 мм
+component height ≤23 мм
+PACK_BUS_P5_IN connector class = 15 А preliminary
+```
+
+Расчёт при 75 Вт output, 9,2 В input и η=88 %:
+
+```text
+I_IN ≈9,26 А
+```
+
+При 100 Вт short:
+
+```text
+I_IN ≈12,35 А
+```
+
 ## 12. PCB-E_LIGHT_POWER
 
 - 6 independent LED channels;
@@ -271,6 +324,23 @@ PCB-B не проводит суммарные токи пользователь
 - default safe state — all LED OFF;
 - separate automatic brightness limit отсутствует;
 - thermal contact с корпусом запрещён.
+
+Preliminary area/current budget:
+
+```text
+PCB-E target 94 × 110 мм
+preliminary maximum 100 × 130 мм
+component height ≤23 мм
+PACK_BUS_LIGHT_IN connector class = 25 А preliminary
+```
+
+При 180 Вт, 9,2 В и η=88 %:
+
+```text
+I_IN ≈22,23 А
+```
+
+Полная световая мощность при низком напряжении не проходит SINGLE_PACK continuous budget 20 А без учёта других ветвей.
 
 ## 13. Связь
 
@@ -296,7 +366,55 @@ CAN_INT_L
 
 CAN-FD несёт normal commands, configuration, setpoints и telemetry. SAFE/HARD_OFF и board-fault summary остаются direct hardware lines.
 
-## 14. Ground, chassis и shields
+## 14. Preliminary physical interface classes
+
+### 14.1 A↔B
+
+```text
+critical power: 2 logical poles
+control/diagnostics: 32 signal positions target
+```
+
+Допускается split:
+
+```text
+16-position CTRL
+16-position DIAG
+```
+
+### 14.2 B↔C/D/E
+
+Стандартизированный signal class:
+
+```text
+8 positions each
+CAN_H
+CAN_L
+CAN_REF_GND
+SAFE or reserve
+HARD_OFF
+BOARD_FAULT_N
+RESERVE_1
+RESERVE_2
+```
+
+### 14.3 A→C/D/E power
+
+```text
+A→C: 2 high-current poles, 30 А class
+A→D: 2 power poles, 15 А class preliminary
+A→E: 2 high-current poles, 25 А class preliminary
+```
+
+### 14.4 Service/debug
+
+```text
+10 positions preliminary
+```
+
+Конкретные connector families и final pinout не выбраны.
+
+## 15. Ground, chassis и shields
 
 ```text
 POWER_GND
@@ -311,7 +429,7 @@ CHASSIS
 4. optional HF ISO_GND–CHASSIS только после EMC review;
 5. generic unnamed GND, скрывающий domains, запрещён.
 
-## 15. DECK_BALANCE
+## 16. DECK_BALANCE
 
 - только на палубе;
 - две доступные АКБ;
@@ -322,7 +440,7 @@ CHASSIS
 - temperature 0…45 °C;
 - запрещён в SINGLE_PACK_MODE.
 
-## 16. DUAL_PACK_RUN
+## 17. DUAL_PACK_RUN
 
 ```text
 40 А continuous
@@ -334,7 +452,7 @@ I²t / thermal accumulator
 
 Локальные ratings действуют дополнительно.
 
-## 17. SINGLE_PACK_MODE
+## 18. SINGLE_PACK_MODE
 
 ```text
 20 А continuous
@@ -354,7 +472,7 @@ I²t / thermal accumulator
 6. recovery второй BMS не подключает батарею автоматически;
 7. возврат требует LOCAL_START и проверки безопасного параллельного подключения.
 
-## 18. Power-budget admission control
+## 19. Power-budget admission control
 
 ```text
 low-pass = 100 мс
@@ -366,7 +484,7 @@ re-enable below 90 % for 2 с
 
 Already-enabled loads software budget manager не сбрасывает. Hardware protection, SAFE/HARD_OFF и EXT_KILL имеют приоритет.
 
-## 19. Load classification и profiles
+## 20. Load classification и profiles
 
 Critical:
 
@@ -402,19 +520,28 @@ conservative channel maximum
 LOAD_PROFILE_UNKNOWN
 ```
 
-## 20. Service override
+## 21. Guarded SERVICE_OVERRIDE
 
-Service override предназначен только для controlled diagnostics команды, которую normal admission control отклонил бы.
+Выбран вариант B.
 
-До отдельного owner decision:
+Режим:
 
-```text
-SERVICE_OVERRIDE = DISABLED BY DEFAULT
-```
+- доступен только в SERVICE_MODE;
+- требует сервисной авторизации;
+- требует двойного подтверждения;
+- разрешает одну выбранную внешнюю некритическую нагрузку;
+- создаёт одноразовое окно 60 с;
+- автоматически отключает выбранный output не позднее 60 с;
+- не изменяет short limit ≤1 с;
+- блокирует predicted current выше short limit;
+- полностью журналируется;
+- отменяется при reset, communication loss, mode/battery-state change, hardware fault, SAFE/HARD_OFF или EXT_KILL.
 
-Production firmware не должна обходить budget manager. BMS, fuses, eFuse, thermal protection, SAFE/HARD_OFF и EXT_KILL не могут быть отменены.
+Если overridden output держит ток выше continuous limit более 1 с, отключается именно он. Остальные нагрузки не участвуют в обычном software shedding.
 
-## 21. Механический envelope
+Override не применяется к батарейным ключам, critical rails, REMOTE_OFF, safety commands или DECK_BALANCE.
+
+## 22. Механический envelope
 
 Owner-defined available volume:
 
@@ -435,11 +562,42 @@ removed together with lid
 boards fixed by screws to standoffs
 ```
 
-Винты, стойки и крышечная механика — owner-controlled. PCB содержат mounting holes и keepout.
+Винты, стойки и крышечная механика — owner-controlled. PCB содержат mounting-hole zones и keepout.
 
 Отдельный mandatory carrier/tray не вводится.
 
-## 22. Вибрационная фиксация
+## 23. Preliminary packaging candidate PACKAGING-P1
+
+```text
+L0: PCB-A + PCB-C
+L1: PCB-D + PCB-E
+L2: PCB-B
+```
+
+Формальная проверка:
+
+```text
+L0 length = 110 + 130 = 240 мм <250 мм
+L1 length = 125 + 110 = 235 мм <250 мм
+L2 length = 180 мм <250 мм
+height budget = 79 мм <80 мм
+```
+
+Размеры являются area budget и не являются final board outlines.
+
+## 24. Mounting-hole policy
+
+До выбора винтов и стоек:
+
+```text
+MOUNT_HOLE_TBD
+NO FINAL DRILL
+MECHANICAL KEEPOUT ONLY
+```
+
+Каждая плата получает не менее четырёх mounting-hole zones, tool access и дополнительные опоры тяжёлых компонентов.
+
+## 25. Вибрационная фиксация
 
 - solder/screws are primary retention;
 - heavy components require separate mechanical support;
@@ -447,7 +605,7 @@ boards fixed by screws to standoffs
 - не используется как единственная опора, около hot components или с нарушением insulation/repairability;
 - совместимость с −20…+60 °C и conformal coating проверяется.
 
-## 23. Тепловая архитектура
+## 26. Тепловая архитектура
 
 Запрещены thermal pads, heat spreaders и carrier-to-hull contact.
 
@@ -466,15 +624,27 @@ Thermal verification:
 - maximum allowed system load;
 - short cycle 1 с / 10 с.
 
+Предварительные потери:
+
+```text
+PCB-D at 75 Вт:
+6,52…10,23 Вт при η 92…88 %
+
+PCB-E at 180 Вт:
+15,65…24,55 Вт при η 92…88 %
+```
+
+Потери PCB-E являются существенным thermal blocker. До подтверждения actual LED power и driver efficiency continuous rating не считается термически доказанным.
+
 При превышении температуры корректируются потери, topology/components, площадь/число PCB, внутренняя компоновка или continuous rating.
 
-## 24. Корпус и pressure scope
+## 27. Корпус и pressure scope
 
 Pressure-hull material, wall thickness, lid strength and qualification не входят в PCB scope. Корпус принимается owner-provided and qualified.
 
 Герметичность не устраняет external differential pressure; mechanical responsibility остаётся у владельца/изготовителя корпуса.
 
-## 25. HARD_OFF
+## 28. HARD_OFF
 
 ### Штатный
 
@@ -499,11 +669,11 @@ EXT_KILL / critical hardware fault
 → сохранить fault code from EMG if possible
 ```
 
-## 26. KiCad workspace
+## 29. KiCad workspace
 
 Владелец подтвердил, что root project и листы 00…56 открываются нормально. Перед schematic freeze обязательны KiCad version record, ERC release commit и отсутствие `.kicad_prl`.
 
-## 27. Неизменяемые ограничения
+## 30. Неизменяемые ограничения
 
 Без нового ADR запрещено:
 
@@ -517,11 +687,13 @@ EXT_KILL / critical hardware fault
 8. превращать INTERCONNECT в mandatory active board;
 9. automatically restart K_BATx после BMS recovery;
 10. использовать корпус как heat sink без нового решения владельца;
-11. выбирать part numbers без закрытых входов и расчёта.
+11. позволять SERVICE_OVERRIDE обходить аппаратные защиты;
+12. замораживать PCB outlines/mounting holes без component-height и 3D review;
+13. выбирать part numbers без закрытых входов и расчёта.
 
-## 28. Текущий инженерный рубеж
+## 31. Текущий инженерный рубеж
 
-Закрыты V1.8:
+Закрыты V1.9:
 
 - PCB assembly envelope;
 - multilevel mounting/service concept;
@@ -529,15 +701,25 @@ EXT_KILL / critical hardware fault
 - short timing/cooldown/I²t;
 - filtering/hysteresis;
 - critical/noncritical classification;
-- load-profile fallback.
+- load-profile fallback;
+- guarded SERVICE_OVERRIDE;
+- preliminary packaging candidate;
+- module area budgets;
+- logical physical interface count;
+- preliminary PCB-D/PCB-E branch current classes.
 
 Остаются:
 
-1. Q-SYS-007 service override decision;
-2. BMS BAT_PROT tests;
-3. K_BATx/REMOTE_OFF candidate selection and tests;
-4. preliminary PCB outlines and mounting-hole layout;
-5. physical CAN-FD/hard-line pin count and connectors;
-6. thermal calculations/tests without hull contact.
+1. BMS BAT_PROT tests;
+2. K_BATx/REMOTE_OFF candidate selection and tests;
+3. preliminary KiCad board outlines and mounting-hole zones;
+4. component-height/3D clearance review;
+5. A↔B connector 32 vs 16+16 decision;
+6. physical CAN-FD node order and termination;
+7. PCB-B critical branch current calculation;
+8. refinement PCB-D/PCB-E efficiency and ripple calculations;
+9. connector class comparison and selection;
+10. thermal calculations/tests without hull contact;
+11. release ERC.
 
 Разрешено продолжать расчёты и component selection по узлам с закрытыми входными данными.
