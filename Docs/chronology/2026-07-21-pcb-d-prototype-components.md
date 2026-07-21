@@ -13,7 +13,7 @@ MOSFET candidate
 inductor candidate
 5-мОм Kelvin shunt
 TVS orderable
-35-В damping capacitor
+35-В damping capacitor and resistor
 input/output capacitor strategy
 OCP tolerance
 load-step targets
@@ -29,12 +29,12 @@ L1/L2: XAL1010-332MED
 RSH1/RSH2: WSK25125L000FEA
 D_TVS: Littelfuse SMCJ18A
 C_DAMP: Panasonic EEH-ZK1V331P
-R_DAMP: Bourns PWR263S-35 family, 0,10 Ом target
+R_DAMP: Bourns PWR263S-35-R100FE
 C_IN: 22 мкФ /50 В X7R /1210 class, 8 positions
 C_OUT: 2 ×10SVPC330M +47-мкФ X7R tuning bank
 ```
 
-`R_DAMP` exact code and pulse curve remain open. The set is prototype-only and does not freeze production BOM.
+`R_DAMP` exact order code is selected from the manufacturer ordering scheme. Its real pulse-curve/application test remains open. The set is prototype-only and does not freeze production BOM.
 
 ## 3. OCP result
 
@@ -123,11 +123,13 @@ Not changed:
 
 ```text
 Docs/PCB_D_PROTOTYPE_COMPONENT_CANDIDATES_V1_9.md
+Docs/PCB_D_R_DAMP_EXACT_SELECTION_AMENDMENT_V1_9.md
 Docs/PCB_D_COMPONENT_SOURCE_RECORD_V1_9.md
 Docs/PCB_D_OCP_TOLERANCE_CALC_V1_9.md
 Docs/PCB_D_LOAD_TRANSIENT_TARGETS_V1_9.md
 Docs/PCB_D_PROTOTYPE_LOSS_BOUNDARY_V1_9.md
 Docs/PCB_D_COMPONENT_SELECTION_CONSISTENCY_V1_9.md
+Docs/PCB_D_COMPONENT_SELECTION_CONSISTENCY_AMENDMENT_V1_9.md
 Docs/PCB_D_OPEN_GATES_V1_9.md
 ```
 
