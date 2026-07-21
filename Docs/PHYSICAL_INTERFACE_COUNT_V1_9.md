@@ -117,7 +117,7 @@ diagnostic inputs = 10
 | SIGNAL_GND / digital return | 2 |
 | ANALOG_REF_GND / Kelvin reference | 2 |
 | CHASSIS/shield drain, optional | 1 |
-| Reserved signals | 6 |
+| Reserved signals | 7 |
 
 ### 4.5 Итог
 
@@ -127,8 +127,8 @@ diagnostic inputs = 10
 +10 diagnostics
 +4 references
 +1 optional shield
-+6 reserve
-=31 positions
++7 reserve
+=32 positions
 ```
 
 Рекомендуемый connector class для сравнения:
@@ -211,10 +211,17 @@ J_AD_PWR = 2 power poles
 Предварительный input-current design class:
 
 ```text
-≥15 А including transient margin
+15 А continuous connector class
 ```
 
-Точное значение уточняется после efficiency/loss calculation PCB-D.
+Основание:
+
+```text
+75 Вт output, 9,2 В input, η=88 % → 9,26 А
+100 Вт short, 9,2 В input, η=88 % → 12,35 А
+```
+
+Окончательное значение требует efficiency/ripple/temperature-rise расчёта.
 
 ## 8. PCB-A → PCB-E power branch
 
@@ -230,10 +237,16 @@ J_AE_PWR = 2 high-current poles
 Предварительный design class:
 
 ```text
-≥25 А branch class
+25 А continuous connector class
 ```
 
-Значение учитывает существующую световую мощность около 180 Вт при низком PACK_BUS и требует подтверждения расчётом.
+Основание:
+
+```text
+180 Вт output, 9,2 В input, η=88 % → 22,23 А
+```
+
+Thermal compliance и actual LED load остаются открытыми.
 
 ## 9. External isolated RS-485
 
@@ -355,9 +368,9 @@ Optional diagnostics:
 | A↔B control/diagnostics | 0 | 32 target | split 16+16 optional |
 | A→C power | 2 high-current | 0 | 30 А class |
 | B↔C signals | 0 | 8 | standardized |
-| A→D power | 2 | 0 | ≥15 А preliminary |
+| A→D power | 2 | 0 | 15 А preliminary |
 | B↔D signals | 0 | 8 | standardized |
-| A→E power | 2 high-current | 0 | ≥25 А preliminary |
+| A→E power | 2 high-current | 0 | 25 А preliminary |
 | B↔E signals | 0 | 8 | standardized |
 | PCB-B service/debug | 0 | 10 | internal/service |
 
@@ -378,8 +391,8 @@ A↔B reserve удовлетворяет target 20…30 %. B↔E имеет ув
 Перед connector family selection требуется:
 
 1. подтвердить максимальный ток PCB-B critical branch;
-2. выполнить PCB-D input-current/efficiency calculation;
-3. подтвердить PCB-E worst-case branch current;
+2. уточнить PCB-D efficiency/input ripple/temperature rise;
+3. уточнить PCB-E actual load/efficiency/temperature rise;
 4. решить, разделяется ли A↔B 32-position class на два 16-position connectors;
 5. определить допустимую высоту mating pairs в 80 мм assembly;
 6. определить требуемое число mating cycles;
