@@ -4,13 +4,13 @@
 Статус:
 
 ```text
-V1.7 OWNER-INPUT-REVIEWED BASELINE
-Architecture A/B preserved; power-budget and external mechanical envelope resolved
+V1.8 OWNER-INPUT-REVIEWED BASELINE
+Architecture A/B preserved; PCB envelope and power-budget implementation parameters resolved
 ```
 
 ## 1. Назначение
 
-Документ фиксирует действующую архитектуру питания, управления, резервирования, аварийного отключения, многоплатного разбиения, общего power budget и механического envelope PlataVM.
+Документ фиксирует действующую архитектуру питания, управления, резервирования, аварийного отключения, многоплатного разбиения, общего power budget и механического envelope электронной сборки.
 
 Связанные нормативные документы:
 
@@ -19,10 +19,10 @@ Docs/PROJECT_MASTER.md
 Docs/KBAT_ELECTRICAL_REQUIREMENTS.md
 Docs/INTERBOARD_INTERFACES.md
 Docs/SYSTEM_POWER_BUDGET_POLICY.md
-Docs/MECHANICAL_ENVELOPE_V1_7.md
+Docs/MECHANICAL_ENVELOPE_V1_8.md
 Docs/OPEN_QUESTIONS.md
-Docs/OWNER_ANSWERS_REVIEW_V1_7.md
-Docs/adr/ADR-2026-07-21-owner-input-v1-7.md
+Docs/OWNER_ANSWERS_REVIEW_V1_8.md
+Docs/adr/ADR-2026-07-21-owner-input-v1-8.md
 ```
 
 ## 2. Основные исходные данные
@@ -33,7 +33,7 @@ Docs/adr/ADR-2026-07-21-owner-input-v1-7.md
 | АКБ_2 | LiFePO4 4S24P, 12,8 В, 144 А·ч | ACCEPTED |
 | Ячейка | Hunan Huaxing 32700-6000mAh, 3,2 В, 6 А·ч | ACCEPTED |
 | Основная BMS | LiFePO4 4S 12 V 30 A symmetric, supplier item 0102 | PRELIMINARY SUPPLIER DATA |
-| Работа основных АКБ | параллельно в RUN | ACCEPTED |
+| Работа основных АКБ | параллельно в DUAL_PACK_RUN | ACCEPTED |
 | SINGLE_PACK_MODE | деградированный функциональный режим | ACCEPTED |
 | Контакторы АКБ | K_BAT1/K_BAT2, однополюсные по плюсу, моностабильные SPST-NO | ACCEPTED |
 | Межкорпусный соединитель | СН-176А-12 | OWNER-CONTROLLED INPUT |
@@ -43,11 +43,16 @@ Docs/adr/ADR-2026-07-21-owner-input-v1-7.md
 | PCB-C hardware rating | 30 А continuous | PRELIMINARY REQUIREMENT |
 | 5V_SYS_BUS | 10 выходов, до 3 А/output; 15 А continuous, 20 А short total | PRELIMINARY REQUIREMENT |
 | LIGHT_POWER_BRANCH | 6 независимых LED-каналов, две зоны 2×3 | ACCEPTED ARCHITECTURE |
-| DUAL_PACK system limit | 40 А continuous / 44 А short по PACK_BUS | ACCEPTED PRELIMINARY |
-| SINGLE_PACK system limit | 20 А continuous / 22 А short по PACK_BUS | ACCEPTED PRELIMINARY |
+| DUAL_PACK system limit | 40 А continuous / 44 А short ≤1 с | ACCEPTED PRELIMINARY |
+| SINGLE_PACK system limit | 20 А continuous / 22 А short ≤1 с | ACCEPTED PRELIMINARY |
+| Short repeat interval | ≥10 с + I²t/thermal accumulator | ACCEPTED PRELIMINARY |
 | Внешний интерфейс | isolated RS-485 half-duplex, 115200 bit/s preliminary | ACCEPTED / PRELIMINARY RATE |
 | Внутренний интерфейс PCB-B↔PCB-C/D/E | CAN-FD + отдельные аппаратные safe/fault lines | ACCEPTED ARCHITECTURE |
-| Корпус электроники | цилиндр Ø130 мм × 1000 мм; один торец заварен, второй — крышка с разъёмами | ACCEPTED EXTERNAL ENVELOPE |
+| Доступный внутренний корпус | цилиндр Ø130 мм × 1000 мм | OWNER-DEFINED |
+| Электронная сборка | ≤100 × 250 × 80 мм, многоуровневая | ACCEPTED / LENGTH PRELIMINARY |
+| Извлечение | вся сборка вместе с крышкой | ACCEPTED |
+| Тепловой контакт с корпусом | запрещён | ACCEPTED |
+| Охлаждение | внутренняя естественная конвекция, low-loss design | ACCEPTED |
 
 ## 3. Базовые силовые шины
 
@@ -62,7 +67,7 @@ Docs/adr/ADR-2026-07-21-owner-input-v1-7.md
 | `3V3_CRIT` | 5V_CRIT | цифровая critical logic |
 | `5V_SYS_BUS` | отдельный DC/DC PCB-D | внешние 5 В нагрузки |
 
-Отдельные `MAIN_INPUT_BUS` и центральный `K_MAIN` отсутствуют. Высокие токи не проходят через PCB-B.
+Центральный `K_MAIN` и отдельная `MAIN_INPUT_BUS` отсутствуют. Высокие токи не проходят через PCB-B.
 
 ## 4. Многоплатное разбиение
 
@@ -77,14 +82,14 @@ INTERCONNECT — только пассивные шины, жгуты и/или 
 
 Назначение:
 
-1. PCB-A — объединение батарейных ветвей, электронные силовые тракты, измерения, DECK_BALANCE и распределение PACK_BUS;
+1. PCB-A — Battery Front-End, измерения, DECK_BALANCE и распределение PACK_BUS;
 2. PCB-B — critical power, MCU, supervisor, внешний RS-485, внутренняя CAN-FD и аппаратная аварийная логика;
 3. PCB-C — 14 защищённых каналов 12 В;
 4. PCB-D — DC/DC 5 В и 10 защищённых выходов;
 5. PCB-E — шесть независимых LED-драйверов;
 6. INTERCONNECT — пассивная транспортная среда без активных компонентов.
 
-Ширина каждого PCB-модуля не более 100 мм. Окончательная высота и длина плат определяются после получения внутреннего диаметра и 3D-компоновки цилиндрического корпуса.
+Все платы и уровни должны укладываться в assembly envelope `100 × 250 × 80 мм`.
 
 ## 5. Батарейная архитектура
 
@@ -97,20 +102,18 @@ INTERCONNECT — только пассивные шины, жгуты и/или 
 В каждом корпусе основной АКБ находятся только:
 
 1. аккумуляторная сборка;
-2. существующая автономная BMS;
+2. автономная BMS;
 3. силовой предохранитель;
-4. `F_CTRL` у ответвления `BAT_PROT+`;
+4. F_CTRL;
 5. K_BATx;
 6. одна катушка continuous duty;
-7. механически связанный `K_BAT_AUX_NO`;
+7. K_BAT_AUX_NO;
 8. LOCAL_START wiring;
-9. минимальные пассивные элементы suppression.
+9. минимальная passive suppression.
 
-Запрещены дополнительный MCU, локальная управляющая плата, RS-485, CAN, UART, цифровая телеметрия BMS и raw-доступ к ячейкам/BMS.
+Запрещены дополнительный MCU, управляющая плата, RS-485, CAN, UART, цифровая телеметрия BMS и raw-доступ к ячейкам/BMS.
 
 ## 6. K_BATx и LOCAL_START
-
-Функциональная цепь:
 
 ```text
 BAT_PROT+ → F_CTRL → (LOCAL_START_NO ∥ K_BAT_AUX_NO)
@@ -120,21 +123,18 @@ BAT_PROT+ → F_CTRL → (LOCAL_START_NO ∥ K_BAT_AUX_NO)
 
 K_BATx:
 
-- SPST-NO по положительному силовому проводнику;
+- SPST-NO по положительному проводнику;
 - моностабильный;
-- пружинный возврат в OPEN;
 - одна катушка continuous duty;
 - economizer preferred;
-- автоматический возврат в OPEN при исчезновении BAT_PROT;
-- после восстановления BMS остаётся OPEN до нового LOCAL_START.
-
-Предварительная численная база:
+- automatic OPEN при исчезновении BAT_PROT;
+- no automatic restart после восстановления BMS.
 
 | Параметр | Требование |
 |---|---:|
 | Диапазон управляющей цепи | 0…16 В DC |
-| Гарантированное втягивание | 9…16 В |
-| Гарантированное удержание | 7,5…16 В |
+| Guaranteed pull-in | 9…16 В |
+| Guaranteed hold | 7,5…16 В |
 | Inrush | ≤2 А / 150 мс |
 | Hold current | target ≤0,15 А; limit ≤0,25 А |
 | Hold power | target ≤2 Вт; limit ≤4 Вт |
@@ -144,249 +144,272 @@ K_BATx:
 | Механический ресурс | ≥100 000 циклов |
 | Электрический ресурс | ≥10 000 операций |
 
-Конкретная модель K_BATx не выбрана до измерений dropout, L, inrush, release, температуры, vibration и ресурса.
+Конкретная модель не выбрана до измерений и испытаний.
 
 ## 7. REMOTE_OFF и EXT_KILL
 
-Программный REMOTE_OFF реализуется по принципу `energize-to-run`:
+REMOTE_OFF:
 
 ```text
-healthy 5V_CRIT/3V3_CRIT + healthy supervisor
-→ relay coil energized
+healthy critical power + healthy supervisor
+→ energize-to-run relay energized
 → physical NO run contact CLOSED
 
 loss of critical power / supervisor fault / OFF command
-→ relay coil de-energized
-→ physical NO run contact OPEN
+→ relay de-energized
+→ NO run contact OPEN
 → hold loop OPEN
 ```
 
-Требования:
+EXT_KILL:
 
-1. по одному независимому run-contact на hold loop каждой АКБ;
-2. потеря critical power приводит к OPEN;
-3. восстановление питания не включает K_BATx автоматически;
-4. аппаратный EXT_KILL разрывает оба hold loop и запрещает оба MAIN_SW независимо от MCU, RS-485 и CAN-FD;
-5. приоритет EXT_KILL над LOCAL_START обеспечивается физической последовательной цепью;
-6. после OFF контролируются ток катушки, состояние ветви и PACK_BUS;
-7. `HARD_OFF_FAILED` и `WELDED_CONTACT` блокируют restart и отображаются в GUI.
-
-Штатное время разрыва:
+- разрывает оба hold loop;
+- запрещает MAIN_SW1/MAIN_SW2;
+- независим от MCU, RS-485 и CAN-FD;
+- имеет приоритет над LOCAL_START;
+- не допускает automatic restart.
 
 ```text
 t_OFF ≥ max(250 мс; 5 × t_release_max)
 t_release_system target ≤100 мс
 ```
 
+`HARD_OFF_FAILED` и `WELDED_CONTACT` блокируют restart.
+
 ## 8. Межплатное управление и диагностика
 
-### 8.1 PCB-A ↔ PCB-B
+PCB-A↔PCB-B critical controls и key measurements остаются прямыми.
 
-Критическое управление Battery Front-End и ключевые измерения остаются прямыми аппаратными линиями. Внутренняя CAN-FD не является обязательным условием отключения основных АКБ.
+PCB-B↔PCB-C/D/E:
 
-### 8.2 PCB-B ↔ PCB-C/D/E
+1. normal commands, setpoints, configuration и detailed telemetry — CAN-FD;
+2. SAFE_OFF, HARD_OFF и board fault summary — direct hardware lines;
+3. CAN-FD loss не препятствует аппаратному shutdown;
+4. внешний isolated RS-485 не используется как внутренняя шина.
 
-Принято:
-
-1. нормальные команды, конфигурация, per-channel telemetry и журналирование — внутренняя CAN-FD;
-2. PCB-C/D/E имеют локальные MCU либо защищённые I/O/ADC узлы семейства STM32G4;
-3. `SAFE_OFF`, `HARD_OFF` и board fault summary передаются отдельными аппаратными линиями;
-4. отсутствие CAN-FD не должно препятствовать аппаратному безопасному отключению;
-5. внешний isolated RS-485 не используется как внутренняя шина.
-
-Физическая топология CAN-FD, termination и pinout фиксируются после 3D-компоновки и pin count.
+Физическая topology и termination определяются после multilevel packaging и pin count.
 
 ## 9. Ground, chassis и shield policy
 
-Сети остаются раздельными:
-
 | Сеть | Назначение |
 |---|---|
-| `POWER_GND` | силовой возврат PACK_BUS и нагрузок |
-| `SIGNAL_GND` | MCU и низкоуровневые измерения |
-| `ISO_GND` | изолированная сторона внешнего RS-485 |
-| `CHASSIS` | корпус, экраны и EMC-отводы |
+| `POWER_GND` | силовой возврат |
+| `SIGNAL_GND` | MCU и измерения |
+| `ISO_GND` | изолированная сторона RS-485 |
+| `CHASSIS` | корпус и экраны |
 
 Принято:
 
-1. единственная контролируемая точка `SIGNAL_GND–POWER_GND` на PCB-B через net-tie/конфигурируемый элемент;
+1. одна controlled point `SIGNAL_GND–POWER_GND` на PCB-B;
 2. другие прямые соединения запрещены;
-3. экраны подключаются к CHASSIS у ввода коротким низкоиндуктивным путём;
-4. ISO_GND не соединяется с SIGNAL_GND по постоянному току;
-5. опциональная ВЧ-связь ISO_GND–CHASSIS допускается после EMC review.
+3. экраны к CHASSIS у ввода;
+4. ISO_GND не соединяется с SIGNAL_GND по DC;
+5. optional HF coupling ISO_GND–CHASSIS только после EMC review.
 
 ## 10. DECK_BALANCE
-
-DECK_BALANCE выполняется только на палубе при отключённых тяжёлых нагрузках и двух доступных батареях.
 
 | Параметр | Значение |
 |---|---:|
 | Номинальный ток | 2 А |
 | Hard limit | 3 А |
 | Завершение | abs(ΔU) ≤50 мВ и abs(I) ≤0,2 А в течение 60 с |
-| Температурное условие | батареи подтверждённо в диапазоне 0…45 °C |
+| Температура | подтверждённые 0…45 °C |
 
-Дополнительная активная электроника и датчики внутри корпусов АКБ не добавляются. Тайм-аут и критерий отсутствия прогресса определяются расчётом и испытанием.
-
-В `SINGLE_PACK_MODE` DECK_BALANCE запрещён.
+Режим выполняется только на палубе, при двух доступных батареях и отключённых тяжёлых нагрузках. В SINGLE_PACK_MODE запрещён.
 
 ## 11. Выходные платы
 
-### PCB-C POWER_12V
+### PCB-C
 
 - CH1…CH11 controlled;
-- CH12…CH14 Always-On monitored в RUN;
-- все каналы отключаются защитой, SAFE и HARD_OFF;
-- 3 А continuous / 5 А peak до 1 с на канал;
-- hardware board rating 30 А continuous;
-- локальные I/O/ADC и внутренняя CAN-FD.
+- CH12…CH14 Always-On monitored;
+- 3 А continuous / 5 А peak до 1 с;
+- board rating 30 А continuous;
+- local protection/current diagnostics;
+- local MCU/I/O/ADC и CAN-FD.
 
-### PCB-D POWER_5V
+### PCB-D
 
 - 10 выходов до 3 А;
 - OUT8…OUT10 Always-On monitored;
-- общий preliminary limit 15 А continuous / 20 А short;
-- preliminary topology: two-phase synchronous buck с внешними MOSFET и тепловым отводом на корпус;
-- локальные I/O/ADC и внутренняя CAN-FD.
+- 15 А continuous / 20 А short на 5V_SYS_BUS;
+- preliminary two-phase synchronous buck;
+- local MCU/I/O/ADC и CAN-FD;
+- тепловой контакт с корпусом запрещён;
+- thermal design выполняется через low-loss components, PCB copper и внутреннюю конвекцию.
 
 `5V_SYS_BUS` не питает critical domain PCB-B.
 
-### PCB-E LIGHT_POWER
+### PCB-E
 
-- шесть независимых каналов;
-- две локальные силовые зоны 2×3;
+- 6 independent LED channels;
+- две зоны 2×3;
 - functional input 8…16 В;
-- PWM 3,3 В active-high;
-- default 1 кГц, configurable 100…1000 Гц;
-- default safe state — все LED OFF;
-- общий HARD_OFF действует на обе зоны;
-- отдельный brightness limit в SINGLE_PACK_MODE отсутствует.
+- PWM 3,3 В active-high, default 1 кГц, 100…1000 Гц configurable;
+- local current regulation и diagnostics;
+- HARD_OFF direct;
+- отдельный brightness limit в SINGLE_PACK_MODE отсутствует;
+- thermal contact с корпусом запрещён.
 
-## 12. Общий power budget
+## 12. Системный power budget
 
-Локальные аппаратные рейтинги плат не означают, что все максимумы разрешены одновременно.
+| Режим | Continuous | Short | Duration | Warning |
+|---|---:|---:|---:|---:|
+| DUAL_PACK_RUN | 40 А | 44 А | ≤1 с | 34 А |
+| SINGLE_PACK_MODE | 20 А | 22 А | ≤1 с | 17 А |
 
-Системные пределы:
-
-| Режим | Continuous | Short | Warning 85 % |
-|---|---:|---:|---:|
-| DUAL_PACK_RUN | 40 А | 44 А | 34 А |
-| SINGLE_PACK_MODE | 20 А | 22 А | 17 А |
-
-Политика:
-
-1. учитывается фактический суммарный ток PACK_BUS;
-2. вход в SINGLE_PACK_MODE не выключает нагрузки по категории;
-3. при 85 % active continuous budget отображается предупреждение;
-4. при 100 % запрещается включение новой некритической нагрузки;
-5. уже включённые нагрузки не отключаются обычным программным budget manager;
-6. яркость автоматически не изменяется;
-7. service override допускается только в диагностическом режиме с журналированием;
-8. аппаратные защиты, SAFE/HARD_OFF и EXT_KILL имеют приоритет.
-
-Подробная логика приведена в `Docs/SYSTEM_POWER_BUDGET_POLICY.md`.
-
-## 13. SINGLE_PACK_MODE
-
-Условия:
+Повторный short-event:
 
 ```text
-одна основная батарея доступна и подключена
-вторая отсутствует, отключена или изолирована
+не ранее 10 с
+I²t / thermal accumulator required
 ```
 
-Режим:
-
-- деградированный, но функциональный;
-- active budget = 20 А continuous / 22 А short;
-- не вводит автоматическое выключение света, 12 В или 5 В нагрузок;
-- запрещает DECK_BALANCE;
-- отображается постоянно в GUI;
-- не допускает автоматический restart второй батареи после BMS recovery;
-- возврат к DUAL_PACK_RUN требует нового LOCAL_START и проверки безопасного параллельного подключения.
-
-## 14. Условия эксплуатации
+## 13. Filtering и admission control
 
 Принято:
 
-| Параметр | Требование |
-|---|---:|
-| Рабочая температура | −20…+60 °C |
-| Хранение | −30…+70 °C |
-| Влажность | высокая |
-| Конденсация | возможна |
-| PCB coating | conformal coating обязательно |
-| Среда | морская, внутренний объём штатно сухой |
-
-Вибрационный и ударный профиль остаётся открытым до данных о креплении аппарата.
-
-## 15. Механический envelope
-
-Подтверждено:
-
 ```text
-цилиндрический корпус
-наружный диаметр 130 мм
-длина 1000 мм
-один торец заварен
-второй торец — съёмная крышка с разъёмами
-сервисный доступ со стороны крышки
+budget low-pass = 100 мс
+warning ON >85 % for 250 мс
+warning OFF <80 % for 2 с
+block new noncritical command at predicted ≥100 %
+re-enable below 90 % for 2 с
 ```
 
-Предварительная внутренняя концепция:
+Уже включённые нагрузки software budget manager не сбрасывает. Hardware protection, SAFE/HARD_OFF и EXT_KILL имеют приоритет.
 
-- единый продольный извлекаемый carrier/tray;
-- PCB-A у батарейных вводов;
-- PCB-C/D/E с короткими путями к выходным разъёмам;
-- PCB-B в наименее шумной зоне;
-- PACK_BUS/POWER_GND и сигнальный harness трассируются раздельно;
-- глухой заваренный торец не требует обслуживания.
+## 14. Critical/noncritical classification
 
-Окончательная 3D-компоновка запрещена до получения внутреннего диаметра, материала, полезной длины, карты разъёмов, pressure/vibration data и thermal interface policy.
-
-## 16. Проверка KiCad
-
-Владелец подтвердил, что текущий root project и листы 00…56 открываются нормально.
-
-Статус:
+Critical domain:
 
 ```text
-OWNER VERIFIED FOR CONTINUED ARCHITECTURE WORK
+5V_CRIT / 3V3_CRIT
+supervisor
+fault manager
+communication
+journal retention
 ```
 
-Перед schematic freeze требуется ERC/parsing review конкретного release commit с записью версии KiCad.
+Некритические внешние нагрузки:
 
-## 17. Неизменяемые ограничения
+```text
+CH1…CH14
+5V_OUT1…5V_OUT10
+LED1…LED6
+```
+
+Для каждого внешнего устройства хранятся `I_NOM`, `I_PEAK`, `T_PEAK`, `I_INRUSH`.
+
+Неизвестный профиль:
+
+```text
+conservative channel maximum
+LOAD_PROFILE_UNKNOWN
+```
+
+## 15. Service override
+
+Назначение режима разъясняется владельцу. До отдельного решения:
+
+```text
+SERVICE_OVERRIDE = DISABLED BY DEFAULT
+```
+
+Production firmware не должна обходить admission control. Hardware protections не могут быть отменены ни при каком варианте.
+
+## 16. Механический envelope электронной сборки
+
+Принято:
+
+```text
+доступный внутренний цилиндр: Ø130 × 1000 мм
+рабочая электронная сборка: ≤100 × 250 × 80 мм
+многоуровневая конструкция
+извлечение вместе с крышкой
+крепление PCB винтами к стойкам
+```
+
+Винты, стойки и крышечная механика — owner-controlled scope. PCB должны иметь монтажные отверстия и keepout.
+
+Отдельный обязательный carrier/tray не применяется.
+
+## 17. Вибрационная фиксация
+
+- пайка и винтовое крепление — основные;
+- тяжёлые компоненты не удерживаются только пайкой;
+- hot-melt polyethylene adhesive — только auxiliary anti-vibration/strain relief;
+- клей не применяется как единственная опора, у горячих деталей, с нарушением creepage/clearance или ремонтопригодности;
+- совместимость с −20…+60 °C и conformal coating проверяется.
+
+## 18. Тепловая архитектура
+
+Штатный thermal contact с корпусом запрещён.
+
+```text
+component
+→ PCB copper / local internal heatsink
+→ internal air
+→ natural convection inside sealed volume
+```
+
+Обязательна thermal verification при +60 °C, maximum allowed system load и без hull heat sink.
+
+Если режим не проходит, допускается:
+
+```text
+уменьшить потери
+→ заменить topology/components
+→ увеличить площадь/число PCB
+→ изменить внутреннюю компоновку
+→ снизить continuous rating
+```
+
+Добавление thermal contact к корпусу требует нового решения владельца.
+
+## 19. Корпус и mechanical scope
+
+Pressure-hull design, материал, толщина стенки и квалификация крышки находятся вне scope электроники. Корпус принимается как owner-provided qualified enclosure.
+
+Герметичность не отменяет внешнее дифференциальное давление; ответственность за механическую пригодность корпуса остаётся у владельца/изготовителя.
+
+## 20. KiCad workspace
+
+Владелец подтвердил открытие root project и листов 00…56. Перед schematic freeze обязательны запись версии KiCad, ERC release commit и отсутствие `.kicad_prl` в репозитории.
+
+## 21. Неизменяемые ограничения
 
 1. `K_MAIN` отсутствует;
-2. PACK_BUS — единственная главная силовая шина;
-3. высокие токи не проходят через PCB-B;
+2. PACK_BUS — главная силовая шина;
+3. high current не проходит через PCB-B;
 4. EXT_KILL независим от firmware и цифровых шин;
 5. INTERCONNECT пассивный;
-6. EMG не питает POWER_12V_BUS, 5V_SYS_BUS или LIGHT_POWER_BRANCH;
+6. EMG не питает пользовательские силовые ветви;
 7. внешняя связь — isolated RS-485;
-8. внутренняя CAN-FD применяется только между PCB-B и PCB-C/D/E и не заменяет hard safety lines;
-9. батарейный соединитель не используется для цифровой связи;
-10. автоматический рестарт после BMS recovery запрещён;
-11. конкретные part numbers не выбираются без расчёта и подтверждения входных данных.
+8. внутренняя CAN-FD не заменяет hardware safety;
+9. батарейный разъём не используется для digital communication;
+10. automatic restart после BMS recovery запрещён;
+11. part numbers выбираются только после закрытия входов, расчёта и проверки.
 
-## 18. Текущий Gate G-R
+## 22. Текущий Gate G-R
 
-Закрыты owner-level блокеры:
+Закрыты:
 
-- KiCad workspace verification;
-- стартовый global power budget;
-- SINGLE_PACK_MODE policy;
-- реакция на прогнозируемую перегрузку;
-- базовые environmental requirements;
-- внешний корпусной envelope.
+- owner-level system budget;
+- short timing;
+- filtering/hysteresis;
+- critical/noncritical classification;
+- PCB assembly envelope;
+- mounting/service concept;
+- thermal-path constraint.
 
-Полный Gate G-R остаётся открыт до:
+Остаются:
 
-1. выбора и испытания K_BATx и REMOTE_OFF relay;
-2. BMS BAT_PROT fault/recovery tests;
-3. определения внутренних размеров, pressure/vibration условий и 3D-компоновки;
-4. physical CAN-FD/hard-line pin count и выбора разъёмов;
-5. закрытия short-limit duration, filters/hysteresis и load profiles.
+1. Q-SYS-007 service override decision;
+2. BMS BAT_PROT tests;
+3. K_BATx/REMOTE_OFF candidate selection and tests;
+4. physical CAN-FD/hard-line pin count и connector selection;
+5. first PCB packaging/layout review;
+6. thermal calculations/tests without hull contact.
 
-При этом разрешены расчёты и component selection по отдельным узлам, для которых входные данные уже закрыты и которые не зависят от оставшихся блокеров.
+Разрешено продолжать расчёты и component selection по узлам с закрытыми входными данными.
