@@ -85,6 +85,7 @@ selected: WSK25125L000FEA
 quantity: 2
 power: 1 Вт each
 4-terminal Kelvin
+VCS min/typ/max: 66 /73 /80 мВ
 ```
 
 Manual min/typ/max sweep:
@@ -93,7 +94,7 @@ Manual min/typ/max sweep:
 minimum phase peak threshold: 13,069 А
 minimum equivalent total average threshold: 22,522 А
 typical equivalent total average threshold: 26,596 А
-maximum equivalent total average threshold: 31,158 А
+maximum equivalent total average threshold: 30,350 А
 worst-case legal 20-А phase peak: 11,808 А
 minimum preliminary peak margin: 10,7 %
 ```
