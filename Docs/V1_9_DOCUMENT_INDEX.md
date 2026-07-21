@@ -23,6 +23,7 @@ COMPONENT_HEIGHT_3D_GATE_V1_9.md
 COMPONENT_HEIGHT_PLACEHOLDER_MAP_V1_9.md
 PACKAGING_P1_3D_CLEARANCE_REVIEW_V1_9.md
 INTERFACE_TOPOLOGY_DECISION_V1_9.md
+PCB_D_COMPONENT_BOUNDING_BOXES_V1_9.md
 ```
 
 ## Расчёты и проверки
@@ -31,8 +32,12 @@ INTERFACE_TOPOLOGY_DECISION_V1_9.md
 BRANCH_CURRENT_PRECALC_V1_9.md
 BASELINE_CONSISTENCY_V1_9.md
 KICAD_VERSION_RECORD_V1_9.md
+PCB_D_TWO_PHASE_BUCK_DESIGN_BASIS_V1_9.md
+PCB_D_CONTROLLER_CANDIDATE_MATRIX_V1_9.md
+PCB_D_DESIGN_BASIS_CONSISTENCY_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
+../Hardware/Mechanical/PCB_D_POWER_STAGE_PLACEHOLDER.scad
 ```
 
 ## Трассируемость решения
@@ -44,6 +49,7 @@ adr/ADR-2026-07-21-service-override-v1-9.md
 chronology/2026-07-21-service-override-v1-9.md
 chronology/2026-07-21-kicad-10-board-verification.md
 chronology/2026-07-21-component-height-placeholders-v1-9.md
+chronology/2026-07-21-pcb-d-two-phase-design-basis.md
 ```
 
 ## KiCad toolchain
@@ -67,4 +73,21 @@ PACKAGING-P1: CONDITIONAL PASS
 actual component 3D fit: OPEN
 connector selection: OPEN
 thermal qualification: OPEN
+```
+
+## Текущий PCB-D status
+
+```text
+2-phase synchronous buck architecture: PRELIMINARY PASS
+preferred controller family: LM25143
+65-V contingency: LM5143-Q1
+fSW baseline: 400 кГц per phase
+L baseline: 3,3 мкГн per phase
+prototype sensing: 5 мОм Kelvin shunt per phase
+estimated losses at 75 Вт: 3,4…5,4 Вт
+PCB-D area/height fit: PRELIMINARY PASS
+final components/footprints: OPEN
+transient clamp: OPEN
+loop stability: OPEN
+sealed-volume thermal test: OPEN
 ```
