@@ -1,7 +1,8 @@
 # Preliminary PCB board outlines — PlataVM V1.9
 
 Дата: 2026-07-21  
-Статус: `PRELIMINARY MECHANICAL OUTLINES — NOT PRODUCTION PCB`
+Toolchain: `KiCad 10.0 / pcbnew / board format 20260206`  
+Статус: `PRELIMINARY MECHANICAL OUTLINES — APPLICATION OPEN/SAVE CONFIRMED — NOT PRODUCTION PCB`
 
 ## 1. Назначение
 
@@ -14,6 +15,14 @@ PCB-C_POWER_12V.kicad_pcb
 PCB-D_POWER_5V.kicad_pcb
 PCB-E_LIGHT_POWER.kicad_pcb
 ```
+
+Файлы открыты и пересохранены владельцем в KiCad 10.0. Версия подтверждается строкой:
+
+```text
+(generator_version "10.0")
+```
+
+Подробная запись: `../../../Docs/KICAD_VERSION_RECORD_V1_9.md`.
 
 ## 2. Размеры
 
@@ -83,15 +92,27 @@ L2: PCB-B = 180 мм
 
 Остаточный вертикальный резерв только 1 мм, поэтому component-height/3D review обязателен до сохранения этих размеров как baseline.
 
-## 6. Правила следующего шага
+## 6. Project и session files
+
+KiCad 10.0 создаёт рядом с каждой платой project/session files.
+
+```text
+*.kicad_pro — хранится в Git
+*.kicad_prl — локальное состояние сессии, не хранится в Git
+```
+
+`.gitignore` запрещает повторное добавление `.kicad_prl`, backup и lock files.
+
+## 7. Правила следующего шага
 
 Разрешено:
 
-- открыть каждый board file в KiCad;
+- открыть каждый board file в KiCad 10.0;
 - проверить parser и Edge.Cuts;
 - разместить только functional area blocks и mechanical keepouts;
 - подготовить 3D placeholder stack;
-- оценить connector and tool access.
+- оценить connector and tool access;
+- создавать height-class placeholders без выбора part numbers.
 
 Запрещено:
 
@@ -100,13 +121,27 @@ L2: PCB-B = 180 мм
 - начинать production routing;
 - добавлять случайные footprints для заполнения площади;
 - менять schematic architecture через board-level workaround;
-- скрывать thermal blocker PCB-E.
+- скрывать thermal blocker PCB-E;
+- коммитить `.kicad_prl` и локальные backup files.
 
-## 7. Источники
+## 8. Текущий результат
 
 ```text
+KiCad 10.0 application open/save: PASS
+format migration: PASS
+outline dimensions: PASS
+PACKAGING-P1 arithmetic: PASS
+DRC: OPEN FOR LATER DESIGN STAGE
+3D/component-height review: OPEN
+```
+
+## 9. Источники
+
+```text
+Docs/KICAD_VERSION_RECORD_V1_9.md
 Docs/PCB_PACKAGING_BOUNDARY_V1_9.md
 Docs/PCB_MODULE_AREA_BUDGET_V1_9.md
 Docs/PACKAGING_P1_REVIEW_CHECKLIST.md
 Docs/PRE_KICAD_OUTLINE_GATE_V1_9.md
+Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ```
