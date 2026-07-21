@@ -1,11 +1,11 @@
 # PCB-D POWER_5V — amendment к расчётной базе после transient review V1.9
 
 Дата: 2026-07-21  
-Статус: `ACCEPTED AMENDMENT — SUPERSEDES CONTROLLER PREFERENCE ONLY`
+Статус: `ACCEPTED AMENDMENT — SUPERSEDES CONTROLLER PREFERENCE AND INPUT CAPACITOR CLASS`
 
 ## 1. Область действия
 
-Документ изменяет только выбор предпочтительного controller voltage class в:
+Документ изменяет выбор предпочтительного controller voltage class и prototype input capacitor voltage class в:
 
 ```text
 Docs/PCB_D_TWO_PHASE_BUCK_DESIGN_BASIS_V1_9.md
@@ -29,6 +29,7 @@ Docs/PCB_D_TWO_PHASE_BUCK_DESIGN_BASIS_V1_9.md
 ```text
 preferred prototype controller = LM25143-Q1
 65-V LM5143 family = contingency only
+input capacitor voltage class = 25 В minimum
 ```
 
 ## 3. Current statement
@@ -39,6 +40,8 @@ preferred prototype controller = LM25143-Q1
 preferred prototype controller family = LM5143A-Q1
 compatible alternate = LM5143-Q1
 42-V alternate after measured transient proof = LM25143-Q1
+input ceramic/bulk capacitor class = 35 В minimum
+RC damping capacitor class = 35 В minimum
 ```
 
 ## 4. Причина
@@ -76,7 +79,17 @@ MOSFET VDS class = 60 В minimum
 
 ## 6. Capacitor consequence
 
-Входной capacitor bank пока сохраняет `≥25 В`, но должен быть заменён на 35-В class, если measured peak на capacitor terminals превышает 22 В с учётом допуска и repetitive stress.
+Принято:
+
+```text
+input ceramic/bulk capacitors = 35 В minimum
+RC damping capacitor = 35 В minimum
+25-В input capacitors = rejected for prototype
+```
+
+Причина: паспортный clamp SMCJ18A около 29,2 В превышает rating 25-В capacitor. Prototype design не должен использовать кратковременное перенапряжение конденсатора как штатный запас.
+
+Если measured peak приближается к 35 В либо derating/repetitive stress недостаточны, требуется 50-В capacitor class или redesign clamp.
 
 ## 7. Traceability
 
@@ -93,6 +106,7 @@ Docs/PCB_D_PROTOTYPE_PARAMETER_SET_V1_9.md
 
 ```text
 controller preference conflict: RESOLVED
+input capacitor class conflict: RESOLVED
 base topology: UNCHANGED
 prototype voltage margin: INCREASED
 final orderable part: OPEN
