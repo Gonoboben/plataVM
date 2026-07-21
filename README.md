@@ -24,8 +24,9 @@
 12. `Docs/OPEN_QUESTIONS.md`
 13. `Docs/OWNER_ANSWERS_REVIEW_V1_7.md`
 14. `Docs/CHRONOLOGY.md`
-15. `Docs/adr/ADR-2026-07-21-owner-input-v1-7.md`
-16. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
+15. `Docs/chronology/2026-07-21-owner-input-v1-7.md`
+16. `Docs/adr/ADR-2026-07-21-owner-input-v1-7.md`
+17. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
 
 ## Главные решения
 
