@@ -40,6 +40,7 @@ PCB_D_INPUT_PROTECTION_TRANSIENT_BOUNDARY_V1_9.md
 PCB_D_INPUT_DAMPING_CALC_V1_9.md
 PCB_D_PROTOTYPE_PARAMETER_SET_V1_9.md
 PCB_D_PROTOTYPE_COMPONENT_CANDIDATES_V1_9.md
+PCB_D_R_DAMP_EXACT_SELECTION_AMENDMENT_V1_9.md
 PCB_D_COMPONENT_SOURCE_RECORD_V1_9.md
 PCB_D_OCP_TOLERANCE_CALC_V1_9.md
 PCB_D_LOAD_TRANSIENT_TARGETS_V1_9.md
@@ -47,6 +48,7 @@ PCB_D_PROTOTYPE_LOSS_BOUNDARY_V1_9.md
 PCB_D_DESIGN_BASIS_CONSISTENCY_V1_9.md
 PCB_D_INPUT_PROTECTION_CONSISTENCY_V1_9.md
 PCB_D_COMPONENT_SELECTION_CONSISTENCY_V1_9.md
+PCB_D_COMPONENT_SELECTION_CONSISTENCY_AMENDMENT_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
 ../Hardware/Mechanical/PCB_D_POWER_STAGE_PLACEHOLDER.scad
@@ -99,16 +101,17 @@ prototype inductors: XAL1010-332MED
 prototype shunts: WSK25125L000FEA
 prototype TVS: Littelfuse SMCJ18A
 input capacitor class: 50-В X7R MLCC strategy; Ceff verification open
-RC damping: EEH-ZK1V331P +0,10-Ом PWR263S-35 family
+RC damping: EEH-ZK1V331P + PWR263S-35-R100FE
 output capacitor starting set: 2×10SVPC330M + X7R tuning positions
 fSW baseline: 400 кГц per phase
 L baseline: 3,3 мкГн per phase
-manual OCP tolerance: PRELIMINARY PASS; minimum margin 10,7 %
+manual OCP tolerance: PRELIMINARY PASS; minimum margin 10,7 %; max equivalent 30,35 А
 load-transient engineering targets: DEFINED
 candidate loss boundary at 75 Вт: 2,9…6,0 Вт
 PCB-D area/height fit: PRELIMINARY PASS
 input transient boundary: PRELIMINARY DEFINED
-R_DAMP exact orderable/pulse curve: OPEN
+R_DAMP exact orderable: SELECTED
+R_DAMP pulse-curve/application test: OPEN
 MLCC DC-bias effective capacitance: OPEN
 LM5143DESIGN-CALC: OPEN
 prototype converter-core schematic: NEXT
