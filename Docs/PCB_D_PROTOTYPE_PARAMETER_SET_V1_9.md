@@ -42,13 +42,13 @@ L1/L2: XAL1010-332MED
 RSH1/RSH2: WSK25125L000FEA
 D_TVS: Littelfuse SMCJ18A
 C_DAMP: Panasonic EEH-ZK1V331P
-R_DAMP: Bourns PWR263S-35 family, 0,10 Ом /1 % target
+R_DAMP: Bourns PWR263S-35-R100FE
 C_IN_MLCC: TDK C3225X7R1H226M250AC class
 C_OUT_POLY: 2 × Panasonic 10SVPC330M
 C_OUT_MLCC: Murata GRM32ER71A476KE15L class
 ```
 
-`R_DAMP` exact order code and pulse curve remain open. All candidates remain prototype selections, not production BOM freeze.
+All candidates remain prototype selections, not production BOM freeze. `R_DAMP` exact order code is selected, while its application-specific pulse-curve and hot-plug verification remain open.
 
 ## 4. Phase magnetics
 
@@ -154,15 +154,16 @@ Nominal sum is not accepted as effective capacitance. Exact DC-bias curves must 
 C_DAMP: EEH-ZK1V331P
 Cd = 330 мкФ /35 В
 
-R_DAMP target = 0,10 Ом /1 %
-family = PWR263S-35
-Rd tuning = 0,068…0,15 Ом
+R_DAMP = PWR263S-35-R100FE
+R = 0,10 Ом /1 %
+package: D²PAK
+Rd tuning alternatives = 0,068…0,15 Ом
 single-pulse energy ≥50 мДж minimum
 target pulse margin ≥100 мДж
 series power inductor = DNP for first prototype
 ```
 
-The resistor is in series with `C_DAMP` only and does not carry the 15-А continuous input current after capacitor charge.
+The resistor is in series with `C_DAMP` only and does not carry the 15-А continuous input current after capacitor charge. The exact pulse graph must still be checked for the real `20…100 мкс` event.
 
 ## 10. Output capacitor bank
 
@@ -246,7 +247,7 @@ actual Qg/Qgd/Coss curves
 exact hot inductor curves
 MLCC DC-bias Ceff curves
 output capacitor Ceff/ESR/ESL
-exact R_DAMP orderable/pulse curve
+R_DAMP exact pulse-curve acceptance
 exact CS filter
 RT resistor and frequency tolerance
 slope compensation
@@ -262,10 +263,11 @@ input transient boundary: PASS
 controller exact prototype orderable: PASS
 prototype MOSFET/inductor/shunt/TVS: PASS
 capacitor starting sets: PASS
+R_DAMP exact prototype orderable: PASS
 manual OCP tolerance: PASS
 manual load-step targets: PASS
 candidate loss feasibility: PASS
-exact R_DAMP: OPEN
+R_DAMP pulse application: OPEN
 LM5143DESIGN-CALC output: OPEN
 loop compensation: OPEN
 footprint/3D fit: OPEN
