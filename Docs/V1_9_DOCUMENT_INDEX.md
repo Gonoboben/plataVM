@@ -93,7 +93,8 @@ L baseline: 3,3 мкГн per phase
 prototype sensing: 5 мОм Kelvin shunt per phase
 MOSFET class: 60 В minimum
 TVS prototype class: SMCJ18A
-RC damping start: 330 мкФ + 0,10 Ом
+input capacitor class: 35 В minimum
+RC damping start: 330 мкФ / 35 В + 0,10 Ом
 estimated losses at 75 Вт: 3,4…5,4 Вт
 PCB-D area/height fit: PRELIMINARY PASS
 input transient boundary: PRELIMINARY DEFINED
