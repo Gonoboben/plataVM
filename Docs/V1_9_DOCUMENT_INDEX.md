@@ -67,6 +67,7 @@ chronology/2026-07-21-component-height-placeholders-v1-9.md
 chronology/2026-07-21-pcb-d-two-phase-design-basis.md
 chronology/2026-07-21-pcb-d-input-protection.md
 chronology/2026-07-21-pcb-d-prototype-components.md
+chronology/2026-07-21-pcb-d-prototype-components-source-fix.md
 ```
 
 ## KiCad toolchain
