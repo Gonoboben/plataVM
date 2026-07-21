@@ -1,7 +1,7 @@
 # Предварительный расчёт токов ветвей PCB-D и PCB-E — PlataVM V1.9
 
 Дата: 2026-07-21  
-Статус: `PRELIMINARY CALCULATION — COMPONENT EFFICIENCY NOT SELECTED`
+Статус: `PRELIMINARY CURRENT CLASS ACCEPTED — FINAL EFFICIENCY AND THERMAL CALCULATION OPEN`
 
 ## 1. Назначение
 
@@ -239,8 +239,8 @@ continuous limit = 20 А
 
 | Ветвь | Continuous design class | Short design class | Статус |
 |---|---:|---:|---|
-| PACK_BUS_P5_IN | 12 А calculated; 15 А connector class | ≥15 А /1 с | PRELIMINARY ACCEPTED |
-| PACK_BUS_LIGHT_IN | 25 А connector class | определяется driver/inrush profile | PRELIMINARY ACCEPTED |
+| PACK_BUS_P5_IN | 12 А calculated; 15 А connector class | ≥15 А /1 с | PRELIMINARY CLASS ACCEPTED |
+| PACK_BUS_LIGHT_IN | 25 А connector class | определяется driver/inrush profile | PRELIMINARY CLASS ACCEPTED |
 
 ## 9. Открытые данные
 
@@ -256,8 +256,10 @@ continuous limit = 20 А
 ## 10. Результат
 
 ```text
-Q-PWR-002 = CLOSED_PRELIMINARY_CONNECTOR_CURRENT_CLASS
-Q-PWR-003 = CLOSED_PRELIMINARY_CONNECTOR_CURRENT_CLASS
+Q-PWR-002 preliminary connector current class = RESOLVED
+Q-PWR-003 preliminary connector current class = RESOLVED
+Q-PWR-002 final efficiency/ripple/thermal calculation = OPEN
+Q-PWR-003 final load/efficiency/thermal calculation = OPEN
 ```
 
 Финальный connector part number и continuous system permission остаются открытыми.
