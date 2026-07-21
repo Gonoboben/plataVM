@@ -107,23 +107,18 @@ Main switching bank:
 
 ```text
 effective ceramic capacitance at bias ≥100 мкФ
-voltage rating ≥25 В initially
+voltage rating ≥35 В for prototype
 combined ripple capability ≥6 А RMS at +60 °C
 local HF ceramics at each half-bridge
 ```
 
-Voltage-class escalation rule:
-
-```text
-measured capacitor-terminal peak >22 В
-→ move bulk/ceramic candidates to 35-В class or redesign clamp
-```
+25-В input capacitors are rejected for the prototype because the SMCJ18A clamp class is approximately 29,2 В. Any future reduction of voltage class requires a separate measured transient and derating review.
 
 ## 8. RC damping branch
 
 ```text
 Cd = 330 мкФ initial
-Cd voltage rating ≥25 В
+Cd voltage rating ≥35 В
 Rd = 0,10 Ом initial
 Rd tuning range = 0,068…0,15 Ом
 Rd pulse energy ≥50 мДж minimum
@@ -232,6 +227,7 @@ input transient boundary documented: PASS
 controller voltage class selected: PASS
 phase electrical sizing: PASS
 RC damping start values: PASS
+35-В input capacitor class: PASS
 exact OCP calculation: OPEN
 loop compensation: OPEN
 exact component candidates: OPEN
