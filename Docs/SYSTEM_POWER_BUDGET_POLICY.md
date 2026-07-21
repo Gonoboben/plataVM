@@ -1,12 +1,12 @@
 # Системная политика power budget и SINGLE_PACK_MODE — PlataVM
 
 Дата актуализации: 2026-07-21  
-Основание: ответы владельца V1.7 и V1.8, Q-SYS-001…Q-SYS-007  
-Статус: `V1.8 ACCEPTED POLICY; SERVICE OVERRIDE DISABLED PENDING OWNER DECISION`
+Основание: ответы владельца V1.7, V1.8 и V1.9, Q-SYS-001…Q-SYS-007  
+Статус: `V1.9 ACCEPTED POLICY; GUARDED SERVICE_OVERRIDE ENABLED ONLY IN SERVICE_MODE`
 
 ## 1. Назначение
 
-Документ задаёт общий эксплуатационный предел по `PACK_BUS`, правила `DUAL_PACK_RUN` и `SINGLE_PACK_MODE`, предупреждения GUI, admission control новых нагрузок, short-event timing и обработку неизвестных load profiles.
+Документ задаёт общий эксплуатационный предел по `PACK_BUS`, правила `DUAL_PACK_RUN` и `SINGLE_PACK_MODE`, предупреждения GUI, admission control новых нагрузок, short-event timing, обработку неизвестных load profiles и защищённый `SERVICE_OVERRIDE`.
 
 Документ не заменяет:
 
@@ -229,9 +229,10 @@ Power-budget manager не выполняет автоматический load s
 3. `SAFE_OFF`;
 4. `HARD_OFF`;
 5. `EXT_KILL`;
-6. будущей отдельно утверждённой таблицей приоритетов.
+6. будущей отдельно утверждённой таблицей приоритетов;
+7. автоматическим завершением конкретного overridden output в рамках `SERVICE_OVERRIDE`.
 
-До отдельного решения программный load shedding отсутствует.
+Пункт 7 относится только к нагрузке, явно включённой через service override, и не является общим load shedding остальных работающих нагрузок.
 
 ## 12. Критические и некритические нагрузки
 
@@ -314,61 +315,147 @@ I²t / thermal accumulator mandatory
 
 Повторный short-event запрещён до завершения cooldown и восстановления accumulator.
 
-## 15. Service override — назначение и текущий статус
+## 15. SERVICE_OVERRIDE — принятая политика
 
-Service override — это диагностическая возможность один раз разрешить команду, которую обычный software admission control отклонил бы из-за расчётного power budget.
+`SERVICE_OVERRIDE` — защищённая диагностическая функция для однократного включения одной внешней некритической нагрузки, заблокированной обычным software admission control.
 
-Он предназначен только для:
-
-- измерения фактического пускового тока новой нагрузки;
-- проверки корректности load profile;
-- стендовой диагностики одного канала;
-- воспроизведения отказа под контролем инженера;
-- проверки датчиков и журналирования.
-
-Service override не увеличивает физическую способность батареи, BMS, разъёмов, дорожек или ключей. Он не отменяет:
-
-- BMS;
-- eFuse/fuse;
-- overcurrent/thermal protection;
-- `SAFE_OFF`;
-- `HARD_OFF`;
-- `EXT_KILL`;
-- short limit;
-- no-restart interlocks.
-
-Риск режима: инженер может сознательно создать нагрузку выше normal software budget, что способно вызвать BMS trip, просадку PACK_BUS или потерю части функций. Поэтому режим требует отдельного решения владельца.
-
-Текущий статус:
+Принято:
 
 ```text
-SERVICE_OVERRIDE = DISABLED BY DEFAULT
-Q-SYS-007 = OPEN_OWNER_DECISION_AFTER_EXPLANATION
+Q-SYS-007 = CLOSED_OWNER_DECISION
+SERVICE_OVERRIDE = GUARDED SERVICE FUNCTION
 ```
 
-До закрытия Q-SYS-007 production firmware не должна позволять обход admission control.
+Режим предназначен только для:
 
-## 16. Предлагаемая защищённая реализация service override
+- измерения фактического пускового тока;
+- уточнения load profile;
+- стендовой диагностики одного канала;
+- калибровки измерительного тракта;
+- воспроизведения отказа;
+- проверки журналирования.
 
-Рекомендуемый вариант, если функция будет принята:
+Режим не увеличивает физическую способность батареи, BMS, разъёмов, дорожек, ключей или преобразователей.
 
-1. доступ только в `SERVICE_MODE`;
-2. отдельное явное подтверждение в GUI;
-3. действие только для одной выбранной команды;
-4. максимальная длительность 60 с;
-5. постоянный warning и обратный таймер;
-6. полное журналирование режима, тока, оператора/сеанса, команды и результата;
-7. автоматическая отмена при timeout;
-8. автоматическая отмена при выходе из SERVICE_MODE;
-9. автоматическая отмена при смене DUAL/SINGLE режима;
-10. автоматическая отмена при communication loss;
-11. автоматическая отмена при любом hardware fault;
-12. автоматическая отмена при достижении short limit;
-13. безусловная отмена при SAFE/HARD_OFF/EXT_KILL.
+## 16. SERVICE_OVERRIDE — доступ и ограничения
 
-Этот раздел является предложением, а не принятым решением.
+Доступ разрешён только при выполнении:
 
-## 17. Возврат к DUAL_PACK_RUN
+1. активен отдельный `SERVICE_MODE`;
+2. выполнена сервисная авторизация;
+3. оператор получил предупреждение о риске BMS trip и просадки PACK_BUS;
+4. выполнено двойное подтверждение;
+5. выбрана одна нагрузка из CH1…CH14, 5V_OUT1…10 или LED1…6;
+6. отсутствуют active hardware faults;
+7. не активированы SAFE_OFF/HARD_OFF/EXT_KILL;
+8. short cooldown и I²t accumulator разрешают событие;
+9. predicted inrush не превышает short limit.
+
+Override не разрешается для:
+
+```text
+K_BAT1/K_BAT2
+MAIN_SW1/MAIN_SW2
+BALANCE_SW1/BALANCE_SW2
+PACK_BUS_DISCHARGE
+5V_CRIT/3V3_CRIT
+supervisor/watchdog/fault manager
+REMOTE_OFF
+SAFE_OFF/HARD_OFF/EXT_KILL
+DECK_BALANCE
+```
+
+## 17. SERVICE_OVERRIDE — время и завершение
+
+Разделяются два времени.
+
+Одноразовое окно авторизации:
+
+```text
+T_SERVICE_AUTH = 60 s
+```
+
+Максимальная длительность активности выбранного output:
+
+```text
+T_OVERRIDE_OUTPUT_MAX = 60 s
+```
+
+Но превышение continuous limit по-прежнему ограничено:
+
+```text
+T_OVER_CONTINUOUS_MAX = 1 s
+```
+
+Если через 1 с после включения ток остаётся выше active continuous limit, отключается именно overridden output.
+
+При истечении 60 с overridden output автоматически отключается. Для дальнейшей обычной работы требуется новая штатная команда и обычная admission check.
+
+## 18. SERVICE_OVERRIDE — автоматическая отмена
+
+Разрешение и активная команда отменяются при:
+
+1. истечении 60 с;
+2. выходе из SERVICE_MODE;
+3. потере связи;
+4. reset MCU;
+5. смене DUAL_PACK/SINGLE_PACK;
+6. изменении состояния батарейной ветви;
+7. любом hardware fault;
+8. достижении short limit;
+9. превышении continuous limit более 1 с;
+10. запрете I²t accumulator;
+11. SAFE_OFF;
+12. HARD_OFF;
+13. EXT_KILL.
+
+При отмене отключается выбранный overridden output, если аппаратная защита не требует более широкого shutdown.
+
+После reset, power cycle, firmware update или communication loss состояние всегда:
+
+```text
+SERVICE_OVERRIDE = DISABLED
+```
+
+Автоматическое восстановление override запрещено.
+
+## 19. SERVICE_OVERRIDE — GUI и журнал
+
+GUI постоянно показывает:
+
+```text
+SERVICE MODE
+SERVICE OVERRIDE ACTIVE
+selected output
+DUAL_PACK_RUN / SINGLE_PACK_MODE
+I_PACK
+continuous limit
+short limit
+authorization countdown
+output-active countdown
+```
+
+Обязательные log fields:
+
+```text
+timestamp
+operator/session ID
+firmware version
+configuration ID
+battery mode/state
+selected output
+command/setpoint
+I_PACK before command
+BAT1_ISENSE/BAT2_ISENSE
+I_EXPECTED/I_INRUSH_EXPECTED
+measured I_PEAK/T_PEAK/I_SETTLED
+minimum PACK_BUS voltage
+termination reason
+faults
+final output state
+```
+
+## 20. Возврат к DUAL_PACK_RUN
 
 Восстановление BMS отсутствующей батареи не подключает K_BATx автоматически.
 
@@ -382,7 +469,9 @@ Q-SYS-007 = OPEN_OWNER_DECISION_AFTER_EXPLANATION
 6. подтверждения обеих ветвей;
 7. перевода бюджета с 20/22 А на 40/44 А.
 
-## 18. Приоритеты команд
+Активный `SERVICE_OVERRIDE` при смене режима отменяется.
+
+## 21. Приоритеты команд
 
 От высшего к низшему:
 
@@ -395,16 +484,18 @@ battery isolation / no-restart interlock
 short-limit / thermal-accumulator control
 power-budget admission control
 normal operator commands
-service override, если впоследствии разрешён
+guarded SERVICE_OVERRIDE
 ```
 
-Service override никогда не имеет приоритета над защитами.
+`SERVICE_OVERRIDE` никогда не имеет приоритета над защитами или short-limit control.
 
-## 19. Минимальная программа испытаний
+## 22. Минимальная программа испытаний
+
+### 22.1 Power budget
 
 1. warning ON/OFF в DUAL_PACK_RUN;
 2. warning ON/OFF в SINGLE_PACK_MODE;
-3. проверка low-pass 100 мс;
+3. low-pass 100 мс;
 4. warning delay 250 мс;
 5. warning clear 80 % / 2 с;
 6. block новой нагрузки при прогнозе 100 %;
@@ -412,10 +503,37 @@ Service override никогда не имеет приоритета над за
 8. short event 1 с;
 9. cooldown 10 с;
 10. повторяющиеся импульсы и I²t accumulator;
-11. `LOAD_PROFILE_UNKNOWN` с консервативной оценкой;
-12. потеря одной батареи при различных нагрузках;
+11. `LOAD_PROFILE_UNKNOWN`;
+12. потеря одной батареи;
 13. отсутствие automatic brightness reduction;
-14. отсутствие software load shedding уже включённых нагрузок;
+14. отсутствие обычного software load shedding;
 15. восстановление BMS без automatic restart;
-16. приоритет SAFE/HARD_OFF/EXT_KILL;
-17. service override — только после отдельного принятия Q-SYS-007.
+16. приоритет SAFE/HARD_OFF/EXT_KILL.
+
+### 22.2 SERVICE_OVERRIDE
+
+1. попытка без SERVICE_MODE;
+2. авторизация и двойное подтверждение;
+3. тайм-аут неиспользованного разрешения;
+4. один разрешённый output;
+5. запрет второго output;
+6. predicted current выше short limit;
+7. over-continuous менее 1 с;
+8. over-continuous более 1 с;
+9. истечение 60 с;
+10. communication loss;
+11. reset MCU;
+12. смена DUAL/SINGLE;
+13. battery state change;
+14. hardware fault;
+15. SAFE_OFF;
+16. HARD_OFF;
+17. EXT_KILL;
+18. полнота журнала;
+19. невозможность override критических и батарейных команд.
+
+Подробная реализация приведена в:
+
+```text
+Docs/SERVICE_OVERRIDE_POLICY.md
+```
