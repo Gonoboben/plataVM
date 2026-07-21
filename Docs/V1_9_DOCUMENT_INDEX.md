@@ -25,6 +25,8 @@ PACKAGING_P1_REVIEW_CHECKLIST.md
 ```text
 BRANCH_CURRENT_PRECALC_V1_9.md
 BASELINE_CONSISTENCY_V1_9.md
+KICAD_VERSION_RECORD_V1_9.md
+../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ```
 
 ## Трассируемость решения
@@ -34,4 +36,14 @@ OWNER_DECISION_V1_9.md
 V1_9_RELEASE_NOTES.md
 adr/ADR-2026-07-21-service-override-v1-9.md
 chronology/2026-07-21-service-override-v1-9.md
+chronology/2026-07-21-kicad-10-board-verification.md
+```
+
+## KiCad toolchain
+
+```text
+KiCad 10.0
+pcbnew generator_version 10.0
+board format 20260206
+*.kicad_prl excluded from version control
 ```
