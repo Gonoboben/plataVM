@@ -37,9 +37,9 @@ service output lease ≤60 с
 
 Если после 1 с ток остаётся выше continuous limit, отключается только выбранный overridden output.
 
-## 4. Переход к следующему этапу
+## 4. Предварительная компоновка
 
-Создан preliminary candidate:
+Создан candidate:
 
 ```text
 PACKAGING-P1
@@ -67,21 +67,75 @@ L2 length 180 мм < 250 мм
 height budget 79 мм < 80 мм
 ```
 
-## 5. Добавленные документы
+## 5. Physical interface count
+
+Подготовлены предварительные logical classes:
+
+```text
+A↔B critical power: 2 poles
+A↔B control/diagnostics: 32 positions target
+B↔C signals: 8 positions
+B↔D signals: 8 positions
+B↔E signals: 8 positions
+PCB-B service/debug: 10 positions
+```
+
+Power classes:
+
+```text
+A→C: 30 А class
+A→D: 15 А class preliminary
+A→E: 25 А class preliminary
+```
+
+Конкретные connector families не выбраны.
+
+## 6. Предварительный расчёт PCB-D/PCB-E
+
+При минимальном input 9,2 В и η=88 %:
+
+```text
+PCB-D 75 Вт output → 9,26 А input
+PCB-D 100 Вт short → 12,35 А input
+PCB-E 180 Вт output → 22,23 А input
+```
+
+Приняты предварительные классы:
+
+```text
+PACK_BUS_P5_IN: 15 А
+PACK_BUS_LIGHT_IN: 25 А
+```
+
+Тепловые потери:
+
+```text
+PCB-D at 75 Вт: 6,52…10,23 Вт при η=92…88 %
+PCB-E at 180 Вт: 15,65…24,55 Вт при η=92…88 %
+```
+
+PCB-E thermal compliance без контакта с корпусом не доказана и остаётся обязательным расчётно-испытательным пунктом.
+
+## 7. Добавленные документы
 
 ```text
 Docs/SERVICE_OVERRIDE_POLICY.md
 Docs/PCB_PACKAGING_BOUNDARY_V1_9.md
 Docs/PCB_MODULE_AREA_BUDGET_V1_9.md
+Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md
+Docs/BRANCH_CURRENT_PRECALC_V1_9.md
 Docs/adr/ADR-2026-07-21-service-override-v1-9.md
 ```
 
-## 6. Следующий инженерный шаг
+## 8. Следующий инженерный шаг
 
 ```text
-physical interface count
-→ connector classes
-→ preliminary board outlines/mounting zones
-→ thermal-loss budget PCB-D/PCB-E
-→ component candidate search
+preliminary KiCad board outlines
+→ MOUNT_HOLE_TBD zones
+→ component-height/3D audit
+→ A↔B connector 32 vs 16+16 decision
+→ CAN-FD node order/termination
+→ PCB-B critical branch current
+→ connector class comparison
+→ detailed thermal-loss calculations
 ```
