@@ -5,7 +5,7 @@
 ## Текущая опорная версия
 
 ```text
-ПДУ БНПА / PlataVM V1.8 — owner-input-reviewed multiboard architecture
+ПДУ БНПА / PlataVM V1.9 — guarded service policy and preliminary packaging boundary
 ```
 
 ## Главная точка входа
@@ -13,20 +13,24 @@
 1. `Docs/PROJECT_MASTER.md`
 2. `Docs/ARCHITECTURE_BASELINE.md`
 3. `Docs/SYSTEM_POWER_BUDGET_POLICY.md`
-4. `Docs/MECHANICAL_ENVELOPE_V1_8.md`
-5. `Docs/SCHEMATIC_ARCHITECTURE.md`
-6. `Docs/INTERBOARD_INTERFACES.md`
-7. `Docs/NET_NAMING_RULES.md`
-8. `Docs/POWER_TREE_V1_5.md`
-9. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
-10. `Docs/BATTERY_DISCONNECT.md`
-11. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
-12. `Docs/OPEN_QUESTIONS.md`
-13. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
-14. `Docs/CHRONOLOGY.md`
-15. `Docs/chronology/2026-07-21-owner-input-v1-8.md`
-16. `Docs/adr/ADR-2026-07-21-owner-input-v1-8.md`
-17. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
+4. `Docs/SERVICE_OVERRIDE_POLICY.md`
+5. `Docs/MECHANICAL_ENVELOPE_V1_8.md`
+6. `Docs/PCB_PACKAGING_BOUNDARY_V1_9.md`
+7. `Docs/PCB_MODULE_AREA_BUDGET_V1_9.md`
+8. `Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md`
+9. `Docs/SCHEMATIC_ARCHITECTURE.md`
+10. `Docs/INTERBOARD_INTERFACES.md`
+11. `Docs/NET_NAMING_RULES.md`
+12. `Docs/POWER_TREE_V1_5.md`
+13. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
+14. `Docs/BATTERY_DISCONNECT.md`
+15. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
+16. `Docs/OPEN_QUESTIONS.md`
+17. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
+18. `Docs/CHRONOLOGY.md`
+19. `Docs/chronology/2026-07-21-service-override-v1-9.md`
+20. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
+21. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
 
 ## Главные решения
 
@@ -40,7 +44,7 @@
 8. Critical domain — 5V_CRIT/3V3_CRIT, supervisor, fault manager, communication и journal retention.
 9. CH1…CH14, 5V_OUT1…10 и LED1…6 — некритические для admission control.
 10. Unknown load profile использует консервативный maximum и `LOAD_PROFILE_UNKNOWN`.
-11. `SERVICE_OVERRIDE` disabled by default до отдельного решения владельца.
+11. `SERVICE_OVERRIDE` принят как guarded service function: только SERVICE_MODE, двойное подтверждение, один output, lease 60 с, short limits не изменяются.
 12. `DECK_BALANCE` выполняется на палубе и запрещён в SINGLE_PACK_MODE.
 13. K_BAT1/K_BAT2 — однополюсные моностабильные SPST-NO с self-hold.
 14. После BMS recovery требуется новый LOCAL_START.
@@ -57,6 +61,9 @@
 25. Thermal contact с корпусом запрещён; охлаждение — low-loss design, PCB copper и internal natural convection.
 26. Thermal verification выполняется при +60 °C без hull heat sink.
 27. Hot-melt polyethylene adhesive — только auxiliary anti-vibration/strain relief.
+28. Preliminary packaging candidate: L0 PCB-A+PCB-C, L1 PCB-D+PCB-E, L2 PCB-B.
+29. Preliminary board targets: A 94×110, B 94×180, C 94×130, D 94×125, E 94×110 мм.
+30. Preliminary signal classes: A↔B 32 positions; B↔C/D/E standardized 8 positions each.
 
 ## Многоплатное разбиение
 
@@ -70,6 +77,25 @@ INTERCONNECT — passive power/signal wiring or backplane
 ```
 
 High current распределяется от PCB-A и не проходит через PCB-B.
+
+## Preliminary packaging
+
+```text
+L0: PCB-A + PCB-C
+L1: PCB-D + PCB-E
+L2: PCB-B
+```
+
+Формальная геометрическая проверка:
+
+```text
+L0 length = 240 мм < 250 мм
+L1 length = 235 мм < 250 мм
+L2 length = 180 мм < 250 мм
+height budget = 79 мм < 80 мм
+```
+
+Размеры являются area budget, а не final board outlines.
 
 ## KiCad workspace
 
@@ -92,17 +118,19 @@ Hardware/KiCad/
 
 ## Текущий следующий этап
 
-1. объяснить владельцу Q-SYS-007 и зафиксировать `SERVICE_OVERRIDE = disabled` либо guarded service mode;
-2. выполнить preliminary PCB outlines внутри 100 × 250 × 80 мм;
-3. определить уровни, mounting holes и размещение крупных компонентов;
-4. сформировать internal power/signal harness concept;
-5. выполнить physical CAN-FD/hard-line/power pin count;
-6. выбрать interboard connectors;
-7. рассчитать PCB-D/PCB-E losses без thermal contact с корпусом;
-8. выбрать кандидаты K_BATx и REMOTE_OFF relay;
-9. провести BMS/K_BATx/thermal tests;
-10. продолжить component selection по закрытым подсистемам.
+1. перенести preliminary board targets в KiCad mechanical outlines без final freeze;
+2. создать mounting-hole zones `MOUNT_HOLE_TBD`;
+3. выполнить component-height audit для трёх уровней;
+4. решить A↔B connector topology: 32 positions либо 16+16;
+5. определить physical CAN-FD node order и termination;
+6. рассчитать PCB-B critical branch current;
+7. рассчитать PCB-D input current/efficiency;
+8. рассчитать PCB-E worst-case branch current;
+9. сравнить connector classes по току, высоте, mating cycles и coating compatibility;
+10. выполнить thermal-loss budget PCB-D/PCB-E без контакта с корпусом;
+11. выбрать кандидаты K_BATx и REMOTE_OFF relay;
+12. провести BMS/K_BATx/thermal tests.
 
 ## Правило работы
 
-Изменения выполняются через отдельные ветки и pull request. Перед изменением power architecture, interfaces, grounds, protections, battery architecture, emergency power, thermal path или system power policy необходимо обновить архитектурную базу или добавить ADR.
+Изменения выполняются через отдельные ветки и pull request. Перед изменением power architecture, interfaces, grounds, protections, battery architecture, emergency power, thermal path, system power policy или packaging boundary необходимо обновить архитектурную базу или добавить ADR.
