@@ -20,6 +20,9 @@ PHYSICAL_INTERFACE_COUNT_V1_9.md
 PACKAGING_P1_REVIEW_CHECKLIST.md
 PRE_KICAD_OUTLINE_GATE_V1_9.md
 COMPONENT_HEIGHT_3D_GATE_V1_9.md
+COMPONENT_HEIGHT_PLACEHOLDER_MAP_V1_9.md
+PACKAGING_P1_3D_CLEARANCE_REVIEW_V1_9.md
+INTERFACE_TOPOLOGY_DECISION_V1_9.md
 ```
 
 ## Расчёты и проверки
@@ -29,6 +32,7 @@ BRANCH_CURRENT_PRECALC_V1_9.md
 BASELINE_CONSISTENCY_V1_9.md
 KICAD_VERSION_RECORD_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
+../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
 ```
 
 ## Трассируемость решения
@@ -39,6 +43,7 @@ V1_9_RELEASE_NOTES.md
 adr/ADR-2026-07-21-service-override-v1-9.md
 chronology/2026-07-21-service-override-v1-9.md
 chronology/2026-07-21-kicad-10-board-verification.md
+chronology/2026-07-21-component-height-placeholders-v1-9.md
 ```
 
 ## KiCad toolchain
@@ -48,4 +53,18 @@ KiCad 10.0
 pcbnew generator_version 10.0
 board format 20260206
 *.kicad_prl excluded from version control
+```
+
+## Текущий packaging status
+
+```text
+preliminary board outlines: PASS
+functional/height placeholder maps: PASS
+OpenSCAD assembly placeholder: CREATED
+A↔B preliminary topology: 16 CTRL + 16 DIAG
+CAN-FD preliminary order: PCB-B → PCB-D → PCB-E → PCB-C
+PACKAGING-P1: CONDITIONAL PASS
+actual component 3D fit: OPEN
+connector selection: OPEN
+thermal qualification: OPEN
 ```
