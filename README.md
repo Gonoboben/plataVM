@@ -18,19 +18,20 @@
 6. `Docs/PCB_PACKAGING_BOUNDARY_V1_9.md`
 7. `Docs/PCB_MODULE_AREA_BUDGET_V1_9.md`
 8. `Docs/PHYSICAL_INTERFACE_COUNT_V1_9.md`
-9. `Docs/SCHEMATIC_ARCHITECTURE.md`
-10. `Docs/INTERBOARD_INTERFACES.md`
-11. `Docs/NET_NAMING_RULES.md`
-12. `Docs/POWER_TREE_V1_5.md`
-13. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
-14. `Docs/BATTERY_DISCONNECT.md`
-15. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
-16. `Docs/OPEN_QUESTIONS.md`
-17. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
-18. `Docs/CHRONOLOGY.md`
-19. `Docs/chronology/2026-07-21-service-override-v1-9.md`
-20. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
-21. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
+9. `Docs/BRANCH_CURRENT_PRECALC_V1_9.md`
+10. `Docs/SCHEMATIC_ARCHITECTURE.md`
+11. `Docs/INTERBOARD_INTERFACES.md`
+12. `Docs/NET_NAMING_RULES.md`
+13. `Docs/POWER_TREE_V1_5.md`
+14. `Docs/SN176A12_BATTERY_LINE_PINOUT.md`
+15. `Docs/BATTERY_DISCONNECT.md`
+16. `Docs/KBAT_ELECTRICAL_REQUIREMENTS.md`
+17. `Docs/OPEN_QUESTIONS.md`
+18. `Docs/OWNER_ANSWERS_REVIEW_V1_8.md`
+19. `Docs/CHRONOLOGY.md`
+20. `Docs/chronology/2026-07-21-service-override-v1-9.md`
+21. `Docs/adr/ADR-2026-07-21-service-override-v1-9.md`
+22. `Hardware/KiCad/SYSTEM_INTERFACE_CONSISTENCY_V1_6.md`
 
 ## Главные решения
 
@@ -64,6 +65,10 @@
 28. Preliminary packaging candidate: L0 PCB-A+PCB-C, L1 PCB-D+PCB-E, L2 PCB-B.
 29. Preliminary board targets: A 94×110, B 94×180, C 94×130, D 94×125, E 94×110 мм.
 30. Preliminary signal classes: A↔B 32 positions; B↔C/D/E standardized 8 positions each.
+31. Preliminary power classes: A→C 30 А, A→D 15 А, A→E 25 А.
+32. PCB-D preliminary input current: 9,26 А continuous worst checked point and 12,35 А short.
+33. PCB-E preliminary input current at 180 Вт: 22,23 А worst checked point.
+34. PCB-E thermal compliance at 180 Вт is not proven and remains a mandatory calculation/test item.
 
 ## Многоплатное разбиение
 
@@ -97,6 +102,26 @@ height budget = 79 мм < 80 мм
 
 Размеры являются area budget, а не final board outlines.
 
+## Preliminary branch-current result
+
+```text
+PACK_BUS_P5_IN:
+15 А connector class preliminary
+
+PACK_BUS_LIGHT_IN:
+25 А connector class preliminary
+```
+
+При 9,2 В и η=88 %:
+
+```text
+PCB-D 75 Вт output → 9,26 А input
+PCB-D 100 Вт short → 12,35 А input
+PCB-E 180 Вт output → 22,23 А input
+```
+
+Значения задают нижнюю границу для connector candidate search. Финальные efficiency, ripple, temperature rise и sealed-volume thermal compliance остаются открытыми.
+
 ## KiCad workspace
 
 ```text
@@ -124,8 +149,8 @@ Hardware/KiCad/
 4. решить A↔B connector topology: 32 positions либо 16+16;
 5. определить physical CAN-FD node order и termination;
 6. рассчитать PCB-B critical branch current;
-7. рассчитать PCB-D input current/efficiency;
-8. рассчитать PCB-E worst-case branch current;
+7. уточнить PCB-D efficiency/input ripple;
+8. уточнить actual LED load и PCB-E efficiency;
 9. сравнить connector classes по току, высоте, mating cycles и coating compatibility;
 10. выполнить thermal-loss budget PCB-D/PCB-E без контакта с корпусом;
 11. выбрать кандидаты K_BATx и REMOTE_OFF relay;
