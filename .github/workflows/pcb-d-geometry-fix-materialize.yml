@@ -1,0 +1,196 @@
+name: Materialize PCB-D KiCad geometry fix
+
+on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - ".github/workflows/pcb-d-geometry-fix-materialize.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pcb-d-geometry-fix-materialize
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/pcb-d-lm5143design-calc-v1-9
+          fetch-depth: 0
+
+      - name: Patch deterministic symbol-to-sheet coordinate transform
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('Tools/kicad/generate_pcb_d_converter_core.py')
+          text = path.read_text(encoding='utf-8')
+
+          replacements = [
+              (
+                  "wire(x+5.08,y-1.27,x+7.62,y-1.27,f'{ref}:D'),label(drain,x+7.62,y-1.27,'left'),\n        wire(x+5.08,y+1.27,x+7.62,y+1.27,f'{ref}:S'),label(source,x+7.62,y+1.27,'left'),",
+                  "wire(x+5.08,y+1.27,x+7.62,y+1.27,f'{ref}:D'),label(drain,x+7.62,y+1.27,'left'),\n        wire(x+5.08,y-1.27,x+7.62,y-1.27,f'{ref}:S'),label(source,x+7.62,y-1.27,'left'),",
+              ),
+              (
+                  "objects.extend([wire(x,y+2.54,x,y+5.08,f'{ref}:1'),label(net,x,y+5.08,'left')])",
+                  "objects.extend([wire(x,y-2.54,x,y-5.08,f'{ref}:1'),label(net,x,y-5.08,'left')])",
+              ),
+              (
+                  "px,py=x-width/2-2.54,y+offset; ox=px-5.08",
+                  "px,py=x-width/2-2.54,y-offset; ox=px-5.08",
+              ),
+              (
+                  "px,py=x+width/2+2.54,y+offset; ox=px+5.08",
+                  "px,py=x+width/2+2.54,y-offset; ox=px+5.08",
+              ),
+              (
+                  "px,py=x+offset,y-height/2-2.54; oy=py-5.08",
+                  "px,py=x+offset,y+height/2+2.54; oy=py+5.08",
+              ),
+              (
+                  "px,py=x+offset,y+height/2+2.54; oy=py+5.08",
+                  "px,py=x+offset,y-height/2-2.54; oy=py-5.08",
+              ),
+              (
+                  "px,py=ux-15.24,uy+p.y; ox=px-5.08",
+                  "px,py=ux-15.24,uy-p.y; ox=px-5.08",
+              ),
+              (
+                  "px,py=ux+15.24,uy+p.y; ox=px+5.08",
+                  "px,py=ux+15.24,uy-p.y; ox=px+5.08",
+              ),
+              (
+                  "px,py=ux,uy+27.94; oy=py+5.08",
+                  "px,py=ux,uy-27.94; oy=py-5.08",
+              ),
+          ]
+
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'expected one geometry pattern, found {count}: {old[:80]}')
+              text = text.replace(old, new, 1)
+
+          path.write_text(text, encoding='utf-8')
+          print('symbol-to-sheet Y transform patch: APPLIED')
+          PY
+
+      - name: Regenerate and run deterministic Gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+          python Tools/kicad/generate_pcb_d_converter_core.py
+          python Tools/erc/pcb_d_converter_core_erc.py \
+            Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+          python Tools/erc/pcb_d_lm5143_pinmap_erc.py \
+            Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
+          python Tools/erc/pcb_d_kicad_symbol_gate.py \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            Hardware/KiCad/plataVM_symbols.kicad_sym
+
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py --output-dir "$generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch "$generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym "$generated/plataVM_symbols.kicad_sym"
+
+      - name: Install official KiCad 10
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-10.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad
+          kicad-cli version
+
+      - name: Run native ERC and enforce no internal topology errors
+        shell: bash
+        run: |
+          set -u
+          mkdir -p artifacts
+          set +e
+          kicad-cli sch erc \
+            --format json \
+            --output artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC_AFTER_GEOMETRY.json \
+            --severity-error \
+            --exit-code-violations \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            > artifacts/native-erc-after-geometry.log 2>&1
+          native_status=$?
+          set -e
+          printf '%s\n' "$native_status" > artifacts/native-erc-after-geometry-exit-code.txt
+          kicad-cli version > artifacts/kicad-version.txt
+          cat artifacts/native-erc-after-geometry.log
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path('artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC_AFTER_GEOMETRY.json')
+          data = json.loads(report.read_text(encoding='utf-8'))
+          violations = [
+              violation
+              for sheet in data.get('sheets', [])
+              for violation in sheet.get('violations', [])
+          ]
+
+          unexpected = []
+          for violation in violations:
+              description = violation.get('description', '')
+              expected_root_boundary = (
+                  violation.get('type') == 'pin_not_connected'
+                  and description.startswith("Hierarchical label '")
+                  and description.endswith('in root sheet cannot be connected to non-existent parent sheet')
+              )
+              if not expected_root_boundary:
+                  unexpected.append(violation)
+
+          summary = {
+              'total_native_errors': len(violations),
+              'expected_root_boundary_errors': len(violations) - len(unexpected),
+              'unexpected_internal_errors': len(unexpected),
+              'unexpected': unexpected,
+          }
+          Path('artifacts/native-erc-after-geometry-summary.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          if unexpected:
+              raise SystemExit('unexpected internal native ERC errors remain')
+          PY
+
+      - name: Upload geometry-fix evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcb-d-kicad-geometry-fix-evidence
+          path: artifacts/
+          if-no-files-found: error
+
+      - name: Remove one-shot workflow and commit verified fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/pcb-d-geometry-fix-materialize.yml
+          rm -rf Tools/kicad/__pycache__ Tools/erc/__pycache__
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "hardware: fix PCB-D KiCad symbol coordinate transform V1.9"
+          git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
