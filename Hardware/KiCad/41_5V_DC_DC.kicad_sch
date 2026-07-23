@@ -6,11 +6,11 @@
 	(paper "A3")
 	(title_block
 		(title "41_5V_DC_DC - PCB-D converter core V1.9")
-		(date "2026-07-21")
-		(rev "B1-CALC")
+		(date "2026-07-23")
+		(rev "B2-PINMAP")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Prototype converter-core definition after LM5143DESIGN-CALC Gate")
-		(comment 2 "CALC_TBD values explicit; no production BOM, footprints, copper or layout freeze")
+		(comment 1 "Prototype converter-core definition after LM5143DESIGN-CALC and exact RHA-40 pin-map Gates")
+		(comment 2 "Pin map verified; symbol instantiation/native ERC open; no production BOM, footprint, copper or layout freeze")
 	)
 	(lib_symbols)
 	(text "41_5V_DC_DC - PRELIMINARY CONVERTER CORE\nInput: PACK_BUS_P5_IN 9.2...16 V calculation range\nOutput: 5V_SYS_BUS 5.0 V / 15 A continuous / 20 A for 1 s\nTopology: LM5143A-Q1 single-output, two phases, 180 degree interleaving, FPWM\nHigh-current path is local to PCB-D."
@@ -19,22 +19,22 @@
 		(effects (font (size 1.22 1.22)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000101")
 	)
-	(text "CONTROLLER CONFIGURATION\nU_DCDC = LM5143QRHARQ1 prototype candidate\nMODE -> VDDA; DEMB -> VDDA; DITH -> VDDA\nFB1 -> POWER_GND; FB2 -> POWER_GND for fixed 5 V\nCOMP1 <-> COMP2 = COMP_COMMON\nSS1 <-> SS2 = SS_COMMON\nVOUT1/VOUT2 sense common 5V_SYS_BUS\nVCCX -> 5V_SYS_BUS after startup, subject to datasheet constraints."
+	(text "CONTROLLER CONFIGURATION / EXACT RHA-40 PINS\nU_DCDC = LM5143QRHARQ1 prototype candidate\nMODE pin 34 -> VDDA; DEMB pin 33 -> VDDA; DITH pin 38 -> VDDA\nFB1 pin 28 -> AGND; FB2 pin 3 -> AGND for fixed 5 V interleaved operation\nCOMP1 pin 29 <-> COMP2 pin 2 = COMP_COMMON\nSS1 pin 30 <-> SS2 pin 1 = SS_COMMON\nEN1 pin 31 = EN2 pin 40 = hardware EN_RUN\nPG1 pin 24 = P5_PGOOD_OD; PG2 pin 7 = isolated testpad only\nVCC pins 15/16 common; VOUT1 pin 26 and VOUT2 pin 5 sense 5V_SYS_BUS."
 		(exclude_from_sim no)
 		(at 12 48 0)
-		(effects (font (size 1.10 1.10)) (justify left))
+		(effects (font (size 1.02 1.02)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000102")
 	)
 	(text "PHASE 1 POWER STAGE\nQ_HS1/Q_LS1 = BUK9Y6R0-60E,115\nL1 = XAL1010-332MED, 3.3 uH +/-20%\nRSH1 = WSK25125L000FEA, 5 mOhm /1% Kelvin\nPACK_BUS_P5_IN -> half bridge -> SW1 -> L1 -> RSH1 -> 5V_SYS_BUS\nR_GATE_HS1/R_GATE_LS1 = CALC_TBD\nC_BOOT1/D_BOOT1 = CALC_TBD\nRCS1/CCS1 = CALC_TBD\nRC_SNUB1 = DNP_CALC_TBD."
 		(exclude_from_sim no)
-		(at 12 96 0)
-		(effects (font (size 1.06 1.06)) (justify left))
+		(at 12 102 0)
+		(effects (font (size 1.04 1.04)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000103")
 	)
 	(text "PHASE 2 POWER STAGE\nQ_HS2/Q_LS2 = BUK9Y6R0-60E,115\nL2 = XAL1010-332MED, 3.3 uH +/-20%\nRSH2 = WSK25125L000FEA, 5 mOhm /1% Kelvin\nPACK_BUS_P5_IN -> half bridge -> SW2 -> L2 -> RSH2 -> 5V_SYS_BUS\nR_GATE_HS2/R_GATE_LS2 = CALC_TBD\nC_BOOT2/D_BOOT2 = CALC_TBD\nRCS2/CCS2 = CALC_TBD\nRC_SNUB2 = DNP_CALC_TBD."
 		(exclude_from_sim no)
-		(at 102 96 0)
-		(effects (font (size 1.06 1.06)) (justify left))
+		(at 102 102 0)
+		(effects (font (size 1.04 1.04)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000104")
 	)
 	(text "TIMING / COMPENSATION\nR_RT = 54.9 kOhm /1% -> about 400.73 kHz nominal\nC_SS = 510 nF -> about 14.57 ms nominal\nC_RES = 470 nF prototype start; exact hiccup correlation OPEN\nR_COMP = 24.9 kOhm /1%\nC_COMP = 3.3 nF\nC_HF = 220 pF\nCalculated nominal crossover/PM: about 29.18 kHz /73.55 deg\nModeled minimum PM in declared sweep: about 56.21 deg\nBench Bode and load-step correlation remain mandatory."
@@ -43,22 +43,22 @@
 		(effects (font (size 1.06 1.06)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000105")
 	)
-	(text "UVLO / HARDWARE ENABLE\nRequired targets: rising 8.8...9.0 V; falling 8.2...8.5 V\nA passive divider on LM5143A EN cannot implement the required narrow hysteresis.\nU_UVLO external supervisor/comparator = CALC_TBD\nUVLO_OK gates EN1 and EN2.\nEN_RUN = 5V_SYS_EN AND UVLO_OK AND NOT P5_GROUP_SAFE_OFF AND NOT P5_GROUP_HARD_OFF\nExact fail-safe gate implementation = CALC_TBD.\nSAFE/HARD_OFF must not depend on local MCU, CAN-FD or SERVICE_OVERRIDE."
+	(text "UVLO / HARDWARE ENABLE\nRequired targets: rising 8.8...9.0 V; falling 8.2...8.5 V\nA passive divider on LM5143A EN cannot implement the required narrow hysteresis.\nU_UVLO external supervisor/comparator = CALC_TBD\nUVLO_OK gates EN1 pin 31 and EN2 pin 40.\nEN_RUN = 5V_SYS_EN AND UVLO_OK AND NOT P5_GROUP_SAFE_OFF AND NOT P5_GROUP_HARD_OFF\nExact fail-safe gate implementation = CALC_TBD.\nSAFE/HARD_OFF must not depend on local MCU, CAN-FD or SERVICE_OVERRIDE."
 		(exclude_from_sim no)
-		(at 192 96 0)
-		(effects (font (size 1.06 1.06)) (justify left))
+		(at 192 102 0)
+		(effects (font (size 1.04 1.04)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000106")
 	)
-	(text "CAPACITOR / PROTECTION BOUNDARY\nInput TVS and damping remain on PCB-D input-protection boundary.\nCIN: 50-V X7R positions; total actual Ceff >=100 uF at 16 V/tolerance/temp/aging.\nCOUT starting set: 2 x 10SVPC330M + 4 x 47 uF X7R; 2 x 47 uF DNP.\nActual Ceff/ESR/ESL = CALC_TBD until manufacturer curves and placement are reviewed.\nP5_DC_DC_FAULT_N aggregates converter fault; PGOOD and phase diagnostics remain observable."
+	(text "CAPACITOR / PROTECTION BOUNDARY\nInput TVS and damping remain on PCB-D input-protection boundary.\nCIN: 50-V X7R positions; total actual Ceff >=100 uF at 16 V/tolerance/temp/aging.\nCOUT starting set: 2 x 10SVPC330M + 4 x 47 uF X7R; 2 x 47 uF DNP.\nActual Ceff/ESR/ESL = CALC_TBD until manufacturer curves and placement are reviewed.\nP5_DC_DC_FAULT_N uses PG1 and local protection; PG2 is not part of the aggregate."
 		(exclude_from_sim no)
-		(at 12 172 0)
-		(effects (font (size 1.06 1.06)) (justify left))
+		(at 12 178 0)
+		(effects (font (size 1.04 1.04)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000107")
 	)
-	(text "FREEZE STATUS\nCalculation Gate: PASS for prototype schematic\nProduction schematic: NOT FROZEN\nProduction BOM: NOT FROZEN\nFootprints/3D/copper/layout: NOT FROZEN\nNative KiCad ERC: required after exact symbols and pin mapping are instantiated\nCurrent machine-readable semantic ERC: PASS."
+	(text "FREEZE STATUS\nLM5143DESIGN-CALC Gate: PASS\nExact LM5143A-Q1 RHA-40 pin mapping: PASS\nKiCad symbol instantiation and native ERC: OPEN\nProduction schematic/BOM/footprints/3D/copper/layout: NOT FROZEN\nMachine-readable converter-core and pin-map ERC: PASS."
 		(exclude_from_sim no)
-		(at 192 172 0)
-		(effects (font (size 1.06 1.06)) (justify left))
+		(at 192 178 0)
+		(effects (font (size 1.04 1.04)) (justify left))
 		(uuid "power-5v-00000041-0000-4000-8000-000000000108")
 	)
 	(hierarchical_label "PACK_BUS_P5_IN" (shape input) (exclude_from_sim no) (at 158 224 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000201"))
