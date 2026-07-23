@@ -22,8 +22,6 @@ def effects(size=1.0, hide=False, justify=None):
     parts = [f'(effects (font (size {fx(size)} {fx(size)}))']
     if justify:
         parts.append(f' (justify {justify})')
-    if hide:
-        parts.append(' (hide yes)')
     parts.append(')')
     return ''.join(parts)
 
@@ -68,7 +66,8 @@ pins.append(Pin('EP','EXPOSED_PAD','passive','bottom',0,'line','AGND'))
 
 
 def prop(key, val, idx, x, y, angle=0, hide=False):
-    return f'''\t\t(property "{key}" "{val}"\n\t\t\t(at {fx(x)} {fx(y)} {angle})\n\t\t\t{effects(1.0, hide)}\n\t\t)'''
+    hide_line = '\n\t\t\t(hide yes)' if hide else ''
+    return f'''\t\t(property "{key}" "{val}"\n\t\t\t(at {fx(x)} {fx(y)} {angle})\n\t\t\t(show_name no)\n\t\t\t(do_not_autoplace no){hide_line}\n\t\t\t{effects(1.0)}\n\t\t)'''
 
 def pin_def(pin: Pin):
     if pin.side == 'left':
@@ -88,7 +87,7 @@ def controller_symbol(lib_id='plataVM:LM5143A_Q1_RHA40'):
         prop('Description','LM5143A-Q1 PCB-D configured exact RHA-40 symbol; no footprint freeze',4,0,0,hide=True),
     ])
     pintext='\n'.join(pin_def(p) for p in pins)
-    return f'''\t(symbol "{lib_id}"\n\t\t(pin_names (offset 0.762))\n\t\t(exclude_from_sim no)\n\t\t(in_bom yes)\n\t\t(on_board yes)\n{props}\n\t\t(symbol "LM5143A_Q1_RHA40_0_1"\n\t\t\t(rectangle\n\t\t\t\t(start -12.7 -25.4)\n\t\t\t\t(end 12.7 25.4)\n\t\t\t\t(stroke (width 0.254) (type default))\n\t\t\t\t(fill (type background))\n\t\t\t)\n\t\t\t(text "LM5143A-Q1" (at 0 -2.54 0) {effects(1.27)})\n\t\t\t(text "RHA-40 / PCB-D" (at 0 0 0) {effects(1.0)})\n\t\t\t(text "PIN MAP VERIFIED" (at 0 2.54 0) {effects(0.9)})\n\t\t)\n\t\t(symbol "LM5143A_Q1_RHA40_1_1"\n{pintext}\n\t\t)\n\t)'''
+    return f'''\t(symbol "{lib_id}"\n\t\t(pin_names (offset 0.762))\n\t\t(exclude_from_sim no)\n\t\t(in_bom yes)\n\t\t(on_board yes)\n\t\t(in_pos_files yes)\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "LM5143A_Q1_RHA40_0_1"\n\t\t\t(rectangle\n\t\t\t\t(start -12.7 -25.4)\n\t\t\t\t(end 12.7 25.4)\n\t\t\t\t(stroke (width 0.254) (type default))\n\t\t\t\t(fill (type background))\n\t\t\t)\n\t\t\t(text "LM5143A-Q1" (at 0 -2.54 0) {effects(1.27)})\n\t\t\t(text "RHA-40 / PCB-D" (at 0 0 0) {effects(1.0)})\n\t\t\t(text "PIN MAP VERIFIED" (at 0 2.54 0) {effects(0.9)})\n\t\t)\n\t\t(symbol "LM5143A_Q1_RHA40_1_1"\n{pintext}\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
 
 def two_pin_symbol(name, ref, graphic='box', in_bom='yes', on_board='yes', pin_types=('passive','passive')):
     if graphic == 'res':
@@ -106,16 +105,16 @@ def two_pin_symbol(name, ref, graphic='box', in_bom='yes', on_board='yes', pin_t
         prop('Footprint','',2,0,0,hide=True), prop('Datasheet','~',3,0,0,hide=True)
     ])
     base=name.split(':')[-1]
-    return f'''\t(symbol "{name}"\n\t\t(pin_names (offset 0))\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n{props}\n\t\t(symbol "{base}_0_1"\n{shape}\n\t\t)\n\t\t(symbol "{base}_1_1"\n\t\t\t(pin {pin_types[0]} line (at -5.08 0 0) (length 2.54) (name "1" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin {pin_types[1]} line (at 5.08 0 180) (length 2.54) (name "2" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t)\n\t)'''
+    return f'''\t(symbol "{name}"\n\t\t(pin_names (offset 0))\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n\t\t(in_pos_files {on_board})\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "{base}_0_1"\n{shape}\n\t\t)\n\t\t(symbol "{base}_1_1"\n\t\t\t(pin {pin_types[0]} line (at -5.08 0 0) (length 2.54) (name "1" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin {pin_types[1]} line (at 5.08 0 180) (length 2.54) (name "2" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
 
 def nmos_symbol():
     props='\n'.join([prop('Reference','Q',0,0,-4.064),prop('Value','NMOS_POWER',1,0,4.064),prop('Footprint','',2,0,0,hide=True),prop('Datasheet','~',3,0,0,hide=True)])
-    return f'''\t(symbol "plataVM:NMOS_POWER"\n\t\t(pin_names (offset 0.5))\n\t\t(exclude_from_sim no)\n\t\t(in_bom yes)\n\t\t(on_board yes)\n{props}\n\t\t(symbol "NMOS_POWER_0_1"\n\t\t\t(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))\n\t\t\t(text "NMOS" (at 0 0 0) {effects(0.8)})\n\t\t)\n\t\t(symbol "NMOS_POWER_1_1"\n\t\t\t(pin passive line (at -5.08 0 0) (length 2.54) (name "G" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" {effects(0.8)}) (number "3" {effects(0.8)}))\n\t\t)\n\t)'''
+    return f'''\t(symbol "plataVM:NMOS_POWER"\n\t\t(pin_names (offset 0.5))\n\t\t(exclude_from_sim no)\n\t\t(in_bom yes)\n\t\t(on_board yes)\n\t\t(in_pos_files yes)\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "NMOS_POWER_0_1"\n\t\t\t(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))\n\t\t\t(text "NMOS" (at 0 0 0) {effects(0.8)})\n\t\t)\n\t\t(symbol "NMOS_POWER_1_1"\n\t\t\t(pin passive line (at -5.08 0 0) (length 2.54) (name "G" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" {effects(0.8)}) (number "3" {effects(0.8)}))\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
 
 def one_pin_symbol(name, ref, etype='passive', on_board='yes', in_bom='no'):
     base=name.split(':')[-1]
     props='\n'.join([prop('Reference',ref,0,0,-2.54,hide=True),prop('Value',base,1,0,2.54),prop('Footprint','',2,0,0,hide=True),prop('Datasheet','~',3,0,0,hide=True)])
-    return f'''\t(symbol "{name}"\n\t\t(pin_names hide)\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n{props}\n\t\t(symbol "{base}_0_1"\n\t\t\t(polyline (pts (xy -1.27 0) (xy 1.27 0)) (stroke (width 0.254) (type default)) (fill (type none)))\n\t\t)\n\t\t(symbol "{base}_1_1"\n\t\t\t(pin {etype} line (at 0 2.54 270) (length 2.54) (name "1" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t)\n\t)'''
+    return f'''\t(symbol "{name}"\n\t\t(pin_names hide)\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n\t\t(in_pos_files {on_board})\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "{base}_0_1"\n\t\t\t(polyline (pts (xy -1.27 0) (xy 1.27 0)) (stroke (width 0.254) (type default)) (fill (type none)))\n\t\t)\n\t\t(symbol "{base}_1_1"\n\t\t\t(pin {etype} line (at 0 2.54 270) (length 2.54) (name "1" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
 
 
 def box_symbol(name, ref, pin_specs, width=15.24, height=12.7, in_bom='yes', on_board='yes'):
@@ -125,7 +124,7 @@ def box_symbol(name, ref, pin_specs, width=15.24, height=12.7, in_bom='yes', on_
     For left/right pins, offset is Y. For top/bottom pins, offset is X.
     """
     base=name.split(':')[-1]
-    props='\\n'.join([
+    props='\n'.join([
         prop('Reference',ref,0,0,-height/2-2.54),
         prop('Value',base,1,0,height/2+2.54),
         prop('Footprint','',2,0,0,hide=True),
@@ -145,22 +144,25 @@ def box_symbol(name, ref, pin_specs, width=15.24, height=12.7, in_bom='yes', on_
         else:
             raise ValueError(side)
         pin_lines.append(
-            f'''\\t\\t\\t(pin {etype} line (at {fx(x)} {fx(y)} {ang}) (length 2.54) (name "{pname}" {effects(0.8)}) (number "{num}" {effects(0.8)}))'''
+            f'''\t\t\t(pin {etype} line (at {fx(x)} {fx(y)} {ang}) (length 2.54) (name "{pname}" {effects(0.8)}) (number "{num}" {effects(0.8)}))'''
         )
-    return f'''\\t(symbol "{name}"
-\\t\\t(pin_names (offset 0.6))
-\\t\\t(exclude_from_sim no)
-\\t\\t(in_bom {in_bom})
-\\t\\t(on_board {on_board})
+    return f'''\t(symbol "{name}"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom {in_bom})
+\t\t(on_board {on_board})
+\t\t(in_pos_files yes)
+\t\t(duplicate_pin_numbers_are_jumpers no)
 {props}
-\\t\\t(symbol "{base}_0_1"
-\\t\\t\\t(rectangle (start {fx(-width/2)} {fx(-height/2)}) (end {fx(width/2)} {fx(height/2)}) (stroke (width 0.254) (type default)) (fill (type background)))
-\\t\\t\\t(text "CALC_TBD" (at 0 0 0) {effects(0.9)})
-\\t\\t)
-\\t\\t(symbol "{base}_1_1"
+\t\t(symbol "{base}_0_1"
+\t\t\t(rectangle (start {fx(-width/2)} {fx(-height/2)}) (end {fx(width/2)} {fx(height/2)}) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) {effects(0.9)})
+\t\t)
+\t\t(symbol "{base}_1_1"
 {chr(10).join(pin_lines)}
-\\t\\t)
-\\t)'''
+\t\t)
+\t\t(embedded_fonts no)
+\t)'''
 
 uvlo_symbol = box_symbol('plataVM:UVLO_SUPERVISOR_TBD','U',[
     ('1','VIN_SENSE','power_in','left',-2.54),
@@ -218,7 +220,8 @@ root_uuid = uid('schematic-root')
 objects=[]
 
 def property_instance(k,v,x,y,hide=False):
-    return f'''\t\t(property "{k}" "{v}"\n\t\t\t(at {fx(x)} {fx(y)} 0)\n\t\t\t{effects(1.0, hide)}\n\t\t)'''
+    hide_line = '\n\t\t\t(hide yes)' if hide else ''
+    return f'''\t\t(property "{k}" "{v}"\n\t\t\t(at {fx(x)} {fx(y)} 0)\n\t\t\t(show_name no)\n\t\t\t(do_not_autoplace no){hide_line}\n\t\t\t{effects(1.0)}\n\t\t)'''
 
 def sym_instance(lib, ref, value, x, y, pin_nums, rot=0, in_bom='yes', on_board='yes', dnp='no'):
     suid=uid(f'sym:{ref}')
@@ -230,7 +233,7 @@ def sym_instance(lib, ref, value, x, y, pin_nums, rot=0, in_bom='yes', on_board=
         property_instance('Footprint','',x,y,True), property_instance('Datasheet','~',x,y,True),
         property_instance('Description','PROTOTYPE / NO FOOTPRINT FREEZE',x,y,True),
     ])
-    return f'''\t(symbol\n\t\t(lib_id "{lib}")\n\t\t(at {fx(x)} {fx(y)} {rot})\n\t\t(unit 1)\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n\t\t(dnp {dnp})\n\t\t(uuid "{suid}")\n{props}\n{chr(10).join(p_lines)}\n\t\t(instances\n\t\t\t(project "plataVM"\n\t\t\t\t(path "/{suid}"\n\t\t\t\t\t(reference "{ref}")\n\t\t\t\t\t(unit 1)\n\t\t\t\t)\n\t\t\t)\n\t\t)\n\t)'''
+    return f'''\t(symbol\n\t\t(lib_id "{lib}")\n\t\t(at {fx(x)} {fx(y)} {rot})\n\t\t(unit 1)\n\t\t(body_style 1)\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n\t\t(in_pos_files {on_board})\n\t\t(dnp {dnp})\n\t\t(uuid "{suid}")\n{props}\n{chr(10).join(p_lines)}\n\t\t(instances\n\t\t\t(project "plataVM"\n\t\t\t\t(path "/{root_uuid}"\n\t\t\t\t\t(reference "{ref}")\n\t\t\t\t\t(unit 1)\n\t\t\t\t)\n\t\t\t)\n\t\t)\n\t)'''
 
 def label(name,x,y,justify='left'):
     return f'''\t(label "{name}"\n\t\t(at {fx(x)} {fx(y)} 0)\n\t\t{effects(0.9, justify=justify)}\n\t\t(uuid "{uid(f'label:{name}:{x}:{y}')}")\n\t)'''
@@ -420,7 +423,7 @@ notes=[
 for text,x,y,sz in notes:
     objects.append(f'''\t(text "{text}"\n\t\t(exclude_from_sim no)\n\t\t(at {fx(x)} {fx(y)} 0)\n\t\t{effects(sz, justify='left')}\n\t\t(uuid "{uid('text:'+text)}")\n\t)''')
 
-sch_text=f'''(kicad_sch\n\t(version 20260306)\n\t(generator "plataVM_symbol_gate")\n\t(generator_version "1.0")\n\t(uuid "{root_uuid}")\n\t(paper "A3")\n\t(title_block\n\t\t(title "41_5V_DC_DC - PCB-D converter core exact-symbol Gate V1.9")\n\t\t(date "2026-07-23")\n\t\t(rev "B3-SYMBOL")\n\t\t(company "Gonoboben/plataVM")\n\t\t(comment 1 "Exact LM5143A-Q1 RHA-40 symbol instantiated; native ERC target")\n\t\t(comment 2 "No production BOM, footprints, copper, layout or thermal freeze")\n\t)\n\t(lib_symbols\n{chr(10).join(lib_defs)}\n\t)\n{chr(10).join(objects)}\n\t(sheet_instances\n\t\t(path "/"\n\t\t\t(page "1")\n\t\t)\n\t)\n\t(embedded_fonts no)\n)\n'''
+sch_text=f'''(kicad_sch\n\t(version 20260101)\n\t(generator "plataVM_symbol_gate")\n\t(generator_version "1.0")\n\t(uuid "{root_uuid}")\n\t(paper "A3")\n\t(title_block\n\t\t(title "41_5V_DC_DC - PCB-D converter core exact-symbol Gate V1.9")\n\t\t(date "2026-07-23")\n\t\t(rev "B3-SYMBOL")\n\t\t(company "Gonoboben/plataVM")\n\t\t(comment 1 "Exact LM5143A-Q1 RHA-40 symbol instantiated; native ERC target")\n\t\t(comment 2 "No production BOM, footprints, copper, layout or thermal freeze")\n\t)\n\t(lib_symbols\n{chr(10).join(lib_defs)}\n\t)\n{chr(10).join(objects)}\n\t(sheet_instances\n\t\t(path "/"\n\t\t\t(page "1")\n\t\t)\n\t)\n\t(embedded_fonts no)\n)\n'''
 (OUT/'41_5V_DC_DC.kicad_sch').write_text(sch_text, encoding='utf-8')
 
 # Basic deterministic structural checks.

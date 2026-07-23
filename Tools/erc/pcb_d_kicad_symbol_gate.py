@@ -152,6 +152,23 @@ def main(schematic_path: str, symbol_path: str) -> int:
             fail(f"{name} falsely identifies third-party generator as eeschema", errors)
         if '(generator "plataVM_symbol_gate")' not in text:
             fail(f"{name} generator identity mismatch", errors)
+        if "\\t" in text or "\\n" in text:
+            fail(f"{name} contains literal escaped whitespace tokens", errors)
+
+    if '(version 20260101)' not in schematic:
+        fail("schematic format must match the KiCad 10.0 supported 20260101 format", errors)
+    if schematic.count('(embedded_fonts no)') != 15:
+        fail("schematic embedded-font metadata count mismatch", errors)
+    if symbols.count('(embedded_fonts no)') != 14:
+        fail("symbol-library embedded-font metadata count mismatch", errors)
+    if schematic.count('(in_pos_files yes)') < 50:
+        fail("schematic instances/lib symbols are missing in_pos_files metadata", errors)
+    if schematic.count('(duplicate_pin_numbers_are_jumpers no)') != 14:
+        fail("embedded library symbol jumper metadata count mismatch", errors)
+    if schematic.count('(body_style 1)') != 50:
+        fail("schematic symbol body-style metadata count mismatch", errors)
+    if schematic.count('(show_name no)') < 250 or schematic.count('(do_not_autoplace no)') < 250:
+        fail("schematic property metadata is incomplete", errors)
 
     uuids = re.findall(r'\(uuid\s+"([^"]+)"\)', schematic)
     if len(uuids) != len(set(uuids)):
