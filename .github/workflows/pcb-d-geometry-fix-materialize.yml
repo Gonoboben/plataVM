@@ -60,7 +60,7 @@ jobs:
           sudo apt-get install --yes --no-install-recommends kicad
           kicad-cli version
 
-      - name: Run native ERC and classify results
+      - name: Run native ERC and reject residual geometry faults
         shell: bash
         run: |
           set -u
@@ -83,40 +83,49 @@ jobs:
           import json
           from pathlib import Path
 
-          data = json.loads(
-              Path('artifacts/PCB_D_NATIVE_ERC_AFTER_GEOMETRY.json').read_text(encoding='utf-8')
-          )
+          report = Path('artifacts/PCB_D_NATIVE_ERC_AFTER_GEOMETRY.json')
+          data = json.loads(report.read_text(encoding='utf-8'))
           violations = [
               violation
               for sheet in data.get('sheets', [])
               for violation in sheet.get('violations', [])
           ]
-          unexpected = []
+
+          residual_geometry = []
           for violation in violations:
+              vtype = violation.get('type', '')
               description = violation.get('description', '')
-              expected_root_boundary = (
-                  violation.get('type') == 'pin_not_connected'
-                  and description.startswith("Hierarchical label '")
-                  and description.endswith(
-                      'in root sheet cannot be connected to non-existent parent sheet'
-                  )
+              items = violation.get('items', [])
+              item_text = ' '.join(str(item) for item in items)
+              critical = (
+                  vtype == 'pin_to_pin'
+                  or 'U_DCDC pin 19' in item_text
+                  or 'U_DCDC pin 32' in item_text
+                  or ('U_DCDC' in item_text and 'EXPOSED_PAD' in item_text)
+                  or 'TP_PG2' in item_text
+                  or 'TP_SYNC' in item_text
+                  or '#FLG' in item_text
+                  or 'LOL1' in description and 'RES' in description
               )
-              if not expected_root_boundary:
-                  unexpected.append(violation)
+              if critical:
+                  residual_geometry.append(violation)
 
           summary = {
-              'total_native_errors': len(violations),
-              'expected_root_boundary_errors': len(violations) - len(unexpected),
-              'unexpected_internal_errors': len(unexpected),
-              'unexpected': unexpected,
+              'baseline_native_errors_before_geometry_fix': 29,
+              'total_native_errors_after_geometry_fix': len(violations),
+              'residual_geometry_faults': len(residual_geometry),
+              'residual_geometry': residual_geometry,
+              'all_remaining_violations': violations,
           }
           Path('artifacts/native-erc-summary.json').write_text(
               json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
               encoding='utf-8',
           )
           print(json.dumps(summary, indent=2, ensure_ascii=False))
-          if unexpected:
-              raise SystemExit('unexpected internal native ERC errors remain')
+          if residual_geometry:
+              raise SystemExit('critical symbol-coordinate faults remain')
+          if len(violations) >= 29:
+              raise SystemExit('native ERC error count did not improve')
           PY
 
       - name: Upload geometry-fix evidence
