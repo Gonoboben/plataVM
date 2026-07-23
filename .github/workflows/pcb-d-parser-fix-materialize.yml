@@ -28,65 +28,23 @@ jobs:
           ref: agent/pcb-d-lm5143design-calc-v1-9
           fetch-depth: 0
 
-      - name: Reconstruct parser-fix v2 diagnostics
+      - name: Reconstruct verified parser-fix archive
         shell: bash
         run: |
-          set -u
+          set -euo pipefail
           mkdir -p artifacts
-          archive=/tmp/pcb_d_parser_fix_v2.tar.gz
-
-          sha256sum Tools/kicad/.parser_fix_v2/archive.b64.* \
-            > artifacts/parser_fix_v2_chunks.sha256
-          wc -c Tools/kicad/.parser_fix_v2/archive.b64.* \
-            > artifacts/parser_fix_v2_chunks.sizes
-
-          set +e
-          cat Tools/kicad/.parser_fix_v2/archive.b64.* \
-            | base64 --decode > "$archive" \
-            2> artifacts/parser_fix_v2_base64.stderr
-          decode_status=$?
+          archive="$RUNNER_TEMP/pcb_d_parser_fix_v2.tar.gz"
+          cat Tools/kicad/.parser_fix_v2/archive.b64.* | base64 --decode > "$archive"
+          echo "23839cd1121c02aa24009e9c2ea18b8e325a6d79c0eeb262b62d3fbfdf52b8ed  $archive" | sha256sum --check
+          gzip -t "$archive"
           sha256sum "$archive" > artifacts/parser_fix_v2_archive.sha256
-          wc -c "$archive" > artifacts/parser_fix_v2_archive.size
-          gzip -t "$archive" > artifacts/parser_fix_v2_gzip.log 2>&1
-          gzip_status=$?
-          tar -tzf "$archive" > artifacts/parser_fix_v2_members.log 2>&1
-          tar_status=$?
-          set -e
+          tar -tzf "$archive" > artifacts/parser_fix_v2_members.log
 
-          printf 'base64_decode=%s\ngzip_test=%s\ntar_list=%s\n' \
-            "$decode_status" "$gzip_status" "$tar_status" \
-            > artifacts/parser_fix_v2_exit_codes.txt
-          cat artifacts/parser_fix_v2_exit_codes.txt
-          cat artifacts/parser_fix_v2_archive.sha256
-          cat artifacts/parser_fix_v2_members.log
-
-      - name: Upload reconstruction diagnostics
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pcb-d-parser-fix-v2-diagnostics
-          path: artifacts/
-          if-no-files-found: error
-
-      - name: Enforce deterministic parser-fix archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          grep -qx 'base64_decode=0' artifacts/parser_fix_v2_exit_codes.txt
-          grep -qx 'gzip_test=0' artifacts/parser_fix_v2_exit_codes.txt
-          grep -qx 'tar_list=0' artifacts/parser_fix_v2_exit_codes.txt
-          echo "23839cd1121c02aa24009e9c2ea18b8e325a6d79c0eeb262b62d3fbfdf52b8ed  /tmp/pcb_d_parser_fix_v2.tar.gz" \
-            | sha256sum --check
-
-      - name: Extract verified allowlisted files
-        shell: bash
-        run: |
-          set -euo pipefail
           python - <<'PY'
           from pathlib import Path
           import tarfile
 
-          archive = Path('/tmp/pcb_d_parser_fix_v2.tar.gz')
+          archive = Path('/home/runner/work/_temp/pcb_d_parser_fix_v2.tar.gz')
           allowed = {
               'Hardware/KiCad/41_5V_DC_DC.kicad_sch',
               'Hardware/KiCad/plataVM_symbols.kicad_sym',
@@ -113,44 +71,29 @@ jobs:
           print('parser-fix v2 archive allowlist: PASS')
           PY
 
-      - name: Validate regenerated KiCad sources
+      - name: Validate exact symbols and deterministic generation
         shell: bash
         run: |
-          set -u
-          generated="$RUNNER_TEMP/pcb-d-generated"
-          rm -rf "$generated"
-          mkdir -p "$generated" artifacts
-
-          set +e
+          set -euo pipefail
           python -m py_compile \
             Tools/kicad/generate_pcb_d_converter_core.py \
-            Tools/erc/pcb_d_kicad_symbol_gate.py \
-            > artifacts/parser_fix_v2_py_compile.log 2>&1
-          compile_status=$?
-
+            Tools/erc/pcb_d_kicad_symbol_gate.py
           python Tools/erc/pcb_d_kicad_symbol_gate.py \
             Hardware/KiCad/41_5V_DC_DC.kicad_sch \
             Hardware/KiCad/plataVM_symbols.kicad_sym \
-            > artifacts/parser_fix_v2_symbol_gate.log 2>&1
-          symbol_status=$?
+            | tee artifacts/parser_fix_v2_symbol_gate.log
 
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
           python Tools/kicad/generate_pcb_d_converter_core.py \
             --output-dir "$generated" \
-            > artifacts/parser_fix_v2_generation.log 2>&1
-          generation_status=$?
-
+            | tee artifacts/parser_fix_v2_generation.log
           diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
-            "$generated/41_5V_DC_DC.kicad_sch" \
-            > artifacts/parser_fix_v2_schematic.diff 2>&1
-          schematic_diff_status=$?
-
+            "$generated/41_5V_DC_DC.kicad_sch"
           diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
-            "$generated/plataVM_symbols.kicad_sym" \
-            > artifacts/parser_fix_v2_symbol_library.diff 2>&1
-          symbol_diff_status=$?
+            "$generated/plataVM_symbols.kicad_sym"
 
-          python - <<'PY' \
-            > artifacts/parser_fix_v2_hygiene.log 2>&1
+          python - <<'PY'
           from pathlib import Path
 
           for name in (
@@ -165,46 +108,19 @@ jobs:
                   raise SystemExit(f'{name}: escaped parser-control sequence detected')
           print('KiCad parser hygiene: PASS')
           PY
-          hygiene_status=$?
 
           grep -q '(version 20260101)' Hardware/KiCad/41_5V_DC_DC.kicad_sch
-          version_status=$?
-          grep -q '(generator_version "10.0")' Hardware/KiCad/41_5V_DC_DC.kicad_sch
-          generator_version_status=$?
-          set -e
+          grep -q '(generator "plataVM_symbol_gate")' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+          grep -q '(generator_version "1.0")' Hardware/KiCad/41_5V_DC_DC.kicad_sch
 
-          printf 'py_compile=%s\nsymbol_gate=%s\ngeneration=%s\nschematic_diff=%s\nsymbol_library_diff=%s\nhygiene=%s\nversion=%s\ngenerator_version=%s\n' \
-            "$compile_status" "$symbol_status" "$generation_status" \
-            "$schematic_diff_status" "$symbol_diff_status" "$hygiene_status" \
-            "$version_status" "$generator_version_status" \
-            > artifacts/parser_fix_v2_validation_exit_codes.txt
-
-          cat artifacts/parser_fix_v2_validation_exit_codes.txt
-          cat artifacts/parser_fix_v2_py_compile.log
-          cat artifacts/parser_fix_v2_symbol_gate.log
-          cat artifacts/parser_fix_v2_generation.log
-          cat artifacts/parser_fix_v2_schematic.diff
-          cat artifacts/parser_fix_v2_symbol_library.diff
-          cat artifacts/parser_fix_v2_hygiene.log
-
-          test "$compile_status" -eq 0
-          test "$symbol_status" -eq 0
-          test "$generation_status" -eq 0
-          test "$schematic_diff_status" -eq 0
-          test "$symbol_diff_status" -eq 0
-          test "$hygiene_status" -eq 0
-          test "$version_status" -eq 0
-          test "$generator_version_status" -eq 0
-
-      - name: Upload verification evidence
-        if: always()
+      - name: Upload materialization evidence
         uses: actions/upload-artifact@v4
         with:
           name: pcb-d-parser-fix-v2-verification
           path: artifacts/
           if-no-files-found: error
 
-      - name: Remove all one-shot materialization inputs
+      - name: Remove one-shot materialization inputs
         shell: bash
         run: |
           set -euo pipefail
