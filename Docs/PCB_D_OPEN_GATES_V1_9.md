@@ -1,7 +1,7 @@
-# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC, pin-map и symbol instantiation V1.9
+# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC, pin-map, symbol instantiation и native ERC V1.9
 
 Дата: 2026-07-23  
-Статус: `CALCULATION, PIN-MAP AND SYMBOL-INSTANTIATION GATES PASSED — NATIVE ERC, TEST AND PRODUCTION GATES OPEN`
+Статус: `CALCULATION, PIN-MAP, SYMBOL-INSTANTIATION AND NATIVE ERC INTERNAL-TOPOLOGY GATES PASSED — OWNER, TEST AND PRODUCTION GATES OPEN`
 
 ## 1. Закрыто предварительно
 
@@ -20,6 +20,7 @@
 | Q-P5-016A | Nominal and tolerance-sweep compensation model | CLOSED_PRELIMINARY |
 | Q-P5-019A | Exact LM5143A-Q1 RHA-40 physical pin mapping and tie contract | CLOSED_PINMAP |
 | Q-P5-019B | Exact KiCad symbol definition and converter-core instantiation | CLOSED_SYMBOL_GATE |
+| Q-P5-019C | GitHub Actions official KiCad 10 native ERC, exact standalone-boundary classification | CLOSED_NATIVE_ERC_INTERNAL_TOPOLOGY |
 
 ## 2. Calculator result
 
@@ -153,7 +154,7 @@ NT_AGND_PGND
 
 Exact devices/values remain `CALC_TBD` where not yet calculated or measured.
 
-## 5. Открыто после symbol Gate
+## 5. Открыто после native ERC Gate
 
 | ID | Открытый параметр | Статус |
 |---|---|---|
@@ -173,8 +174,7 @@ Exact devices/values remain `CALC_TBD` where not yet calculated or measured.
 | Q-P5-016B | Native Bode measurement over VIN/load/cap tolerance | OPEN_TEST |
 | Q-P5-017B | Bode/load-step bench correlation | OPEN_TEST |
 | Q-P5-018B | Exact MOSFET switching and inductor core losses | OPEN_CALC_TEST |
-| Q-P5-019C | GitHub Actions native KiCad ERC | OPEN_NATIVE_ERC |
-| Q-P5-019D | Owner KiCad 10 open/save and visual/ERC review | OPEN_OWNER_KICAD |
+| Q-P5-019D | Owner KiCad 10 open/save, hierarchy-context, visual and ERC review | OPEN_OWNER_KICAD |
 | Q-P5-019E | Exact diagnostic monitor/aggregate devices and ranges | OPEN_CALC_COMPONENT |
 | Q-P5-019F | Exact AGND/PGND copper, EP and via implementation | OPEN_LAYOUT |
 
@@ -214,7 +214,7 @@ LO2/LOL2 → R_GL2_ON/R_GL2_OFF
 
 All eight values remain open pending waveform/EMI/loss correlation.
 
-## 8. Native ERC Gate
+## 8. Native ERC Gate result
 
 Workflow:
 
@@ -222,19 +222,62 @@ Workflow:
 .github/workflows/pcb-d-kicad-erc.yml
 ```
 
-Required successful steps:
+Successful run:
+
+```text
+run id: 30028613180
+head SHA: 0d741e46f0f817cbfa508ccfa0c92260a660f59b
+job: exact-symbol-and-native-erc
+KiCad: 10.0.4
+conclusion: success
+```
+
+Successful steps:
 
 ```text
 semantic manifest ERC
 exact pin-map ERC
 exact symbol Gate
-reproducible generator diff
+reproducible generator byte parity
 official KiCad 10 install
-native kicad-cli sch erc at error severity
-JSON report artifact
+native kicad-cli sch erc capture
+exact violation classification
+JSON evidence artifact upload
 ```
 
-Native ERC is not closed until a successful run is observed. PR #45 remains draft.
+Raw native result:
+
+```text
+exit code: 5
+violations: 14
+```
+
+Exact classification:
+
+```text
+11 expected standalone root hierarchical boundaries
+3 expected parent-driven U_EN_GATE control inputs
+0 internal converter-core violations
+0 residual geometry faults
+```
+
+The 14 raw violations are not hidden or described as zero-error ERC. They are exact standalone leaf-sheet boundary effects and are accepted only by the fixed allowlist. Any additional violation fails CI.
+
+Evidence:
+
+```text
+artifact: pcb-d-kicad-native-erc
+artifact id: 8575877765
+digest: sha256:fb661e874e79b833e84e2a8c4dd4f13694ef71c5df1ba2c4c80002703d5edf26
+```
+
+Result:
+
+```text
+Q-P5-019C: CLOSED_NATIVE_ERC_INTERNAL_TOPOLOGY
+owner KiCad 10 open/save and hierarchy-context review: OPEN
+PR #45: remains draft
+```
 
 ## 9. Thermal Gate
 
@@ -277,9 +320,8 @@ inter-level L1/L2 clearance
 ## 11. Next Gate
 
 ```text
-GitHub Actions native KiCad ERC
-→ correct only confirmed parser/ERC errors
-→ owner KiCad 10 open/save
+owner KiCad 10 open/save and hierarchy-context visual/ERC review
+→ verify that parent-sheet integration resolves the 14 expected standalone boundaries
 → exact UVLO/EN hardware calculation
 → exact CS/gate/bootstrap calculation
 → SW ringing and snubber decision
