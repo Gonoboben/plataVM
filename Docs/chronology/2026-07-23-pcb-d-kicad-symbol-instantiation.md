@@ -1,4 +1,4 @@
-# 2026-07-23 — PCB-D exact KiCad symbol instantiation V1.9
+# 2026-07-23 — PCB-D exact KiCad symbol instantiation and native ERC V1.9
 
 ## Base
 
@@ -21,8 +21,10 @@ PR: #45 draft
 8. Все 11 hierarchical interfaces получили электрическую привязку.
 9. Добавлен deterministic generator и exact-symbol validator.
 10. Добавлен GitHub Actions workflow для official KiCad 10 native ERC.
+11. Исправлено преобразование symbol-local `Y` в sheet coordinates; устранены ошибочные pin-to-pin, EP, testpoint, PWR_FLAG и power-driver ERC faults.
+12. Выполнен successful official KiCad 10.0.4 native ERC run с exact allowlist classification.
 
-## Проверка до native ERC
+## Проверка deterministic и exact-symbol Gates
 
 ```text
 controller pins including EP: 41
@@ -34,13 +36,49 @@ UUID uniqueness: PASS
 S-expression structure: PASS
 symbol Gate: PASS
 semantic manifest ERC: PASS
+generator byte parity: PASS
+```
+
+## Native ERC result
+
+```text
+GitHub Actions run: 30028613180
+job: exact-symbol-and-native-erc
+head SHA tested: 0d741e46f0f817cbfa508ccfa0c92260a660f59b
+native tool: KiCad 10.0.4
+job conclusion: success
+raw native exit code: 5
+raw native violations: 14
+expected root hierarchical boundaries: 11
+expected parent-driven control inputs: 3
+internal converter-core violations: 0
+residual geometry faults: 0
+native converter-core internal topology: PASS
+```
+
+Raw report не объявляется zero-error. Все 14 сообщений относятся только к standalone-проверке leaf sheet без родительского hierarchical context. Exact allowlist принимает только 11 именованных hierarchical boundaries и три входа `U_EN_GATE`; любое дополнительное нарушение блокирует CI.
+
+Evidence:
+
+```text
+artifact: pcb-d-kicad-native-erc
+artifact id: 8575877765
+digest: sha256:fb661e874e79b833e84e2a8c4dd4f13694ef71c5df1ba2c4c80002703d5edf26
+```
+
+## Закрыто
+
+```text
+exact symbol instantiation: CLOSED
+native KiCad parser/format Gate: CLOSED
+native KiCad converter-core internal-topology ERC: CLOSED
 ```
 
 ## Ограничение
 
 ```text
-native kicad-cli ERC: OPEN until CI run
-owner KiCad open/save: OPEN
+owner KiCad 10 open/save and hierarchy-context visual/ERC review: OPEN
+exact UVLO/EN, CS, gate, bootstrap and snubber calculations: OPEN
 production footprint/BOM/layout: NOT FROZEN
 ```
 
