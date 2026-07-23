@@ -1,0 +1,40 @@
+name: Materialize PCB-D KiCad symbols
+
+on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - ".github/workflows/pcb-d-materialize.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/pcb-d-lm5143design-calc-v1-9
+
+      - name: Reconstruct deterministic generator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat Tools/kicad/.materialize/generator.b64.* | base64 --decode > Tools/kicad/generate_pcb_d_converter_core.py
+          chmod +x Tools/kicad/generate_pcb_d_converter_core.py
+          python Tools/kicad/generate_pcb_d_converter_core.py
+          rm -rf Tools/kicad/.materialize
+          rm .github/workflows/pcb-d-materialize.yml
+
+      - name: Commit generated KiCad artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "hardware: instantiate PCB-D KiCad symbols V1.9"
+          git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
