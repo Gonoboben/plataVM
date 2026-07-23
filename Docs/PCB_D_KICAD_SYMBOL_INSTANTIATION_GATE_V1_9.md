@@ -1,7 +1,7 @@
 # PCB-D POWER_5V — exact KiCad symbol-instantiation Gate V1.9
 
 Дата: 2026-07-23  
-Статус: `EXACT SYMBOLS INSTANTIATED — NATIVE KICAD ERC OPEN`
+Статус: `EXACT SYMBOLS INSTANTIATED — NATIVE KICAD ERC INTERNAL TOPOLOGY PASS`
 
 ## 1. Назначение
 
@@ -91,7 +91,7 @@ HO2 / HOL2
 LO2 / LOL2
 ```
 
-Поэтому прежнее упрощение до четырсох общих независимых tuning positions:
+Поэтому прежнее упрощение заменено восемью независимыми tuning positions:
 
 ```text
 R_GH1_ON   R_GH1_OFF
@@ -148,7 +148,7 @@ U_ISENSE2  → P5_PHASE2_ISENSE
 U_ISUM     → 5V_SYS_TOTAL_ISENSE
 ```
 
-`PG1 pin 24` остастся primary PGOOD. `PG2 pin 7` остаётся isolated testpoint и не включся в fault aggregate.
+`PG1 pin 24` остаётся primary PGOOD. `PG2 pin 7` остаётся isolated testpoint и не включается в fault aggregate.
 
 Diagnostic amplifier/logic parts, ranges, filters and accuracy remain `CALC_TBD`.
 
@@ -171,7 +171,7 @@ star-point coordinates
 hull thermal path
 ```
 
-Hull thermal contact по-прежнему запрещсн.
+Hull thermal contact по-прежнему запрещён.
 
 ## 10. Hierarchical interfaces
 
@@ -214,27 +214,116 @@ RESULT: PASS
 
 ## 12. Native KiCad ERC CI
 
-Добавлен workflow:
+Workflow:
 
 ```text
 .github/workflows/pcb-d-kicad-erc.yml
 ```
 
-Он выполняет:
+Проверенный запуск:
 
 ```text
-semantic manifest ERC
-exact pin-map ERC
-exact symbol-instantiation Gate
-reproducible generator diff
-official KiCad 10 installation
-kicad-cli sch erc --severity-error --exit-code-violations
-ERC JSON artifact upload
+GitHub Actions run: 30028613180
+head SHA: 0d741e46f0f817cbfa508ccfa0c92260a660f59b
+job: exact-symbol-and-native-erc
+native tool: KiCad 10.0.4
+job conclusion: success
 ```
 
-Native ERC нельзя считать закрытым до фактического успешного GitHub Actions run и последующего owner KiCad 10 open/save review.
+Workflow выполнил:
 
-## 13. Freeze boundary
+```text
+semantic manifest ERC: PASS
+exact pin-map ERC: PASS
+exact symbol-instantiation Gate: PASS
+reproducible generator byte parity: PASS
+official KiCad 10 installation: PASS
+native kicad-cli sch erc capture: COMPLETED
+exact ERC classification allowlist: PASS
+ERC JSON evidence artifact upload: PASS
+```
+
+Raw native result:
+
+```text
+raw native exit code: 5
+raw native violations: 14
+```
+
+Raw exit code не интерпретируется как внутренняя ошибка converter-core, поскольку лист проверяется standalone без родительского hierarchical sheet. Exact classification:
+
+```text
+11 × expected root hierarchical boundaries
+3 × expected parent-driven control inputs
+0 × internal converter-core violations
+0 × residual geometry faults
+```
+
+Разрешённые standalone hierarchical boundaries:
+
+```text
+PACK_BUS_P5_IN
+POWER_GND
+5V_SYS_EN
+P5_GROUP_SAFE_OFF
+P5_GROUP_HARD_OFF
+5V_SYS_BUS
+5V_SYS_VSENSE
+5V_SYS_TOTAL_ISENSE
+P5_DC_DC_FAULT_N
+P5_PHASE1_ISENSE
+P5_PHASE2_ISENSE
+```
+
+Разрешённые parent-driven inputs:
+
+```text
+U_EN_GATE pin 1: 5V_SYS_EN
+U_EN_GATE pin 3: SAFE_OFF
+U_EN_GATE pin 4: HARD_OFF
+```
+
+Любое другое ERC violation блокирует CI. Поэтому результат формулируется строго:
+
+```text
+native KiCad ERC converter-core internal topology: PASS
+standalone parent-boundary raw violations: EXPECTED, EXACTLY ALLOWLISTED
+raw ERC report is not zero-error: 14 expected boundary violations
+```
+
+Evidence artifact:
+
+```text
+artifact name: pcb-d-kicad-native-erc
+artifact id: 8575877765
+artifact digest: sha256:fb661e874e79b833e84e2a8c4dd4f13694ef71c5df1ba2c4c80002703d5edf26
+```
+
+## 13. Существенное исправление геометрии
+
+Первый successful native parse выявил 29 ошибок. Причина была не в электрической архитектуре, а в неверном преобразовании локальной координаты `Y` symbol в sheet coordinates внутри генератора.
+
+Исправление:
+
+```text
+commit: a491fca546db5944d5174a128c70a927d9909ff3
+symbol-local Y → sheet Y transform corrected
+controller pins, D/S, EP, testpoints and PWR_FLAG positions corrected
+```
+
+После исправления:
+
+```text
+LOL1 ↔ RES accidental pin-to-pin: eliminated
+EP unconnected error: eliminated
+TP_PG2 / TP_SYNC errors: eliminated
+PWR_FLAG errors: eliminated
+power-pin-not-driven internal errors: eliminated
+native violations: 29 → 14
+residual internal violations: 0
+```
+
+## 14. Freeze boundary
 
 Закрыто:
 
@@ -244,13 +333,13 @@ exact pin mapping
 KiCad symbol definition
 KiCad symbol instantiation
 symbol-core deterministic validation
+native KiCad ERC internal-topology Gate
 ```
 
 Открыто:
 
 ```text
-native KiCad ERC
-owner KiCad 10 open/save
+owner KiCad 10 open/save and visual review
 exact UVLO supervisor and hardware gate
 exact CS/gate/bootstrap/snubber values
 footprints and 3D
@@ -261,12 +350,11 @@ bench and thermal qualification
 
 Production schematic/BOM/footprint freeze не выдан.
 
-## 14. Следующий Gate
+## 15. Следующий Gate
 
 ```text
-GitHub Actions native KiCad ERC
-→ исправить только подтверждённые parser/ERC errors
-→ owner KiCad 10 open/save
+owner KiCad 10 open/save and visual review
+→ verify hierarchy context removes the 14 expected standalone boundaries
 → exact UVLO and enable-gate calculation
 → exact CS/gate/bootstrap calculation
 → SW-node ringing measurement and snubber decision
