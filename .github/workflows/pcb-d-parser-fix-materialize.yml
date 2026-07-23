@@ -35,6 +35,7 @@ jobs:
         run: |
           set -u
           mkdir -p artifacts
+          cp Tools/kicad/generate_pcb_d_converter_core.py artifacts/generator_before_parser_fix.py
           sha256sum Tools/kicad/.parser_fix/parser_fix.b64.* > artifacts/parser_fix_chunks.sha256
           wc -c Tools/kicad/.parser_fix/parser_fix.b64.* > artifacts/parser_fix_chunks.sizes
 
