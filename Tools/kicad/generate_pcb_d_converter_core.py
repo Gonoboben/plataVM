@@ -440,6 +440,8 @@ def balance(text):
     return depth==0 and not q
 
 for p in OUT.iterdir():
+    if not p.is_file():
+        continue
     t=p.read_text(encoding='utf-8')
     assert balance(t), p
     print(p.name, len(t), 'bytes', 'balanced')
