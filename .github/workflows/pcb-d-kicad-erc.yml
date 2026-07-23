@@ -139,9 +139,20 @@ jobs:
           ]
 
           expected_root = []
+          expected_parent_driven_controls = []
           internal = []
+          allowed_control_pin_descriptions = {
+              'Symbol U_EN_GATE Pin 1 [5V_SYS_EN, Input, Line]',
+              'Symbol U_EN_GATE Pin 3 [SAFE_OFF, Input, Line]',
+              'Symbol U_EN_GATE Pin 4 [HARD_OFF, Input, Line]',
+          }
+
           for violation in violations:
               description = violation.get('description', '')
+              item_descriptions = {
+                  item.get('description', '')
+                  for item in violation.get('items', [])
+              }
               is_root_leaf_boundary = (
                   violation.get('type') == 'pin_not_connected'
                   and description.startswith("Hierarchical label '")
@@ -149,8 +160,17 @@ jobs:
                       'in root sheet cannot be connected to non-existent parent sheet'
                   )
               )
+              is_parent_driven_control = (
+                  violation.get('type') == 'pin_not_driven'
+                  and description == 'Input pin not driven by any Output pins'
+                  and len(item_descriptions) == 1
+                  and item_descriptions.issubset(allowed_control_pin_descriptions)
+              )
+
               if is_root_leaf_boundary:
                   expected_root.append(violation)
+              elif is_parent_driven_control:
+                  expected_parent_driven_controls.append(violation)
               else:
                   internal.append(violation)
 
@@ -161,8 +181,12 @@ jobs:
               ),
               'total_violations': len(violations),
               'expected_standalone_leaf_root_boundaries': len(expected_root),
+              'expected_parent_driven_control_inputs': len(
+                  expected_parent_driven_controls
+              ),
               'internal_violations': len(internal),
               'expected_root_boundary_details': expected_root,
+              'expected_parent_control_details': expected_parent_driven_controls,
               'internal_violation_details': internal,
           }
           Path('artifacts/PCB_D_NATIVE_ERC_CLASSIFICATION.json').write_text(
@@ -170,14 +194,21 @@ jobs:
               encoding='utf-8',
           )
           print(json.dumps(summary, indent=2, ensure_ascii=False))
+
           if internal:
-              raise SystemExit('native ERC contains internal violations')
+              raise SystemExit('native ERC contains internal converter-core violations')
           if len(expected_root) != 11:
               raise SystemExit(
                   f'expected exactly 11 standalone leaf boundaries, got {len(expected_root)}'
               )
-          print('native KiCad ERC internal topology: PASS')
-          print('standalone leaf hierarchical boundaries: 11 EXPECTED')
+          if len(expected_parent_driven_controls) != 3:
+              raise SystemExit(
+                  'expected exactly three parent-driven control inputs, got '
+                  f'{len(expected_parent_driven_controls)}'
+              )
+
+          print('native KiCad ERC converter-core internal topology: PASS')
+          print('standalone leaf boundaries: 11 hierarchical + 3 parent-driven EXPECTED')
           PY
 
       - name: Upload native ERC evidence
