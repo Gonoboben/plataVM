@@ -41,6 +41,7 @@ jobs:
           set +e
           cat Tools/kicad/.parser_fix/parser_fix.b64.* | base64 --decode > /tmp/pcb_d_parser_fix.tar.gz 2> artifacts/base64_decode.stderr
           decode_status=$?
+          cp /tmp/pcb_d_parser_fix.tar.gz artifacts/pcb_d_parser_fix_assembled.tar.gz
           sha256sum /tmp/pcb_d_parser_fix.tar.gz > artifacts/parser_fix_archive.sha256
           gzip -t /tmp/pcb_d_parser_fix.tar.gz > artifacts/gzip_test.log 2>&1
           gzip_status=$?
