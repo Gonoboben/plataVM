@@ -106,8 +106,10 @@ jobs:
           sudo apt-get install --yes --no-install-recommends kicad
           kicad-cli version
 
-      - name: Native KiCad ERC — capture result
+      - name: Native KiCad ERC — capture and classify
+        shell: bash
         run: |
+          set -u
           mkdir -p artifacts
           set +e
           kicad-cli sch erc \
@@ -122,16 +124,66 @@ jobs:
           printf '%s\n' "$status" > artifacts/native-erc-exit-code.txt
           kicad-cli version > artifacts/kicad-version.txt
           cat artifacts/native-erc-command.log
-          echo "native ERC exit code: $status"
+          echo "native ERC raw exit code: $status"
 
-      - name: Upload native ERC diagnostics
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path('artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json')
+          data = json.loads(report.read_text(encoding='utf-8'))
+          violations = [
+              violation
+              for sheet in data.get('sheets', [])
+              for violation in sheet.get('violations', [])
+          ]
+
+          expected_root = []
+          internal = []
+          for violation in violations:
+              description = violation.get('description', '')
+              is_root_leaf_boundary = (
+                  violation.get('type') == 'pin_not_connected'
+                  and description.startswith("Hierarchical label '")
+                  and description.endswith(
+                      'in root sheet cannot be connected to non-existent parent sheet'
+                  )
+              )
+              if is_root_leaf_boundary:
+                  expected_root.append(violation)
+              else:
+                  internal.append(violation)
+
+          summary = {
+              'native_tool': 'KiCad 10 release package',
+              'raw_native_exit_code': int(
+                  Path('artifacts/native-erc-exit-code.txt').read_text().strip()
+              ),
+              'total_violations': len(violations),
+              'expected_standalone_leaf_root_boundaries': len(expected_root),
+              'internal_violations': len(internal),
+              'expected_root_boundary_details': expected_root,
+              'internal_violation_details': internal,
+          }
+          Path('artifacts/PCB_D_NATIVE_ERC_CLASSIFICATION.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+          if internal:
+              raise SystemExit('native ERC contains internal violations')
+          if len(expected_root) != 11:
+              raise SystemExit(
+                  f'expected exactly 11 standalone leaf boundaries, got {len(expected_root)}'
+              )
+          print('native KiCad ERC internal topology: PASS')
+          print('standalone leaf hierarchical boundaries: 11 EXPECTED')
+          PY
+
+      - name: Upload native ERC evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pcb-d-kicad-native-erc
           path: artifacts/
           if-no-files-found: error
-
-      - name: Enforce native ERC result
-        run: |
-          test "$(cat artifacts/native-erc-exit-code.txt)" -eq 0
