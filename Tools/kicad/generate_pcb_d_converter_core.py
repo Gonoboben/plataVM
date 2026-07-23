@@ -253,17 +253,17 @@ def add_nmos(ref,x,y,gate,drain,source):
     objects.append(sym_instance('plataVM:NMOS_POWER',ref,'BUK9Y6R0-60E,115',x,y,['1','2','3']))
     objects.extend([
         wire(x-5.08,y,x-7.62,y,f'{ref}:G'),label(gate,x-7.62,y,'right'),
-        wire(x+5.08,y-1.27,x+7.62,y-1.27,f'{ref}:D'),label(drain,x+7.62,y-1.27,'left'),
-        wire(x+5.08,y+1.27,x+7.62,y+1.27,f'{ref}:S'),label(source,x+7.62,y+1.27,'left'),
+        wire(x+5.08,y+1.27,x+7.62,y+1.27,f'{ref}:D'),label(drain,x+7.62,y+1.27,'left'),
+        wire(x+5.08,y-1.27,x+7.62,y-1.27,f'{ref}:S'),label(source,x+7.62,y-1.27,'left'),
     ])
 
 def add_flag(ref,x,y,net):
     objects.append(sym_instance('plataVM:PWR_FLAG',ref,'PWR_FLAG',x,y,['1'],in_bom='no',on_board='no'))
-    objects.extend([wire(x,y+2.54,x,y+5.08,f'{ref}:1'),label(net,x,y+5.08,'left')])
+    objects.extend([wire(x,y-2.54,x,y-5.08,f'{ref}:1'),label(net,x,y-5.08,'left')])
 
 def add_tp(ref,x,y,net):
     objects.append(sym_instance('plataVM:TESTPOINT',ref,'TESTPOINT',x,y,['1']))
-    objects.extend([wire(x,y+2.54,x,y+5.08,f'{ref}:1'),label(net,x,y+5.08,'left')])
+    objects.extend([wire(x,y-2.54,x,y-5.08,f'{ref}:1'),label(net,x,y-5.08,'left')])
 
 def add_box(ref, lib, value, x, y, pin_connections, width, height, in_bom='yes', on_board='yes'):
     """Instantiate a box symbol and connect every pin to an explicit named net."""
@@ -275,10 +275,10 @@ def add_box(ref, lib, value, x, y, pin_connections, width, height, in_bom='yes',
     )
     for num,side,offset,net in pin_connections:
         if side=='left':
-            px,py=x-width/2-2.54,y+offset; ox=px-5.08
+            px,py=x-width/2-2.54,y-offset; ox=px-5.08
             objects.extend([wire(px,py,ox,py,f'{ref}:{num}'), label(net,ox,py,'right')])
         elif side=='right':
-            px,py=x+width/2+2.54,y+offset; ox=px+5.08
+            px,py=x+width/2+2.54,y-offset; ox=px+5.08
             objects.extend([wire(px,py,ox,py,f'{ref}:{num}'), label(net,ox,py,'left')])
         elif side=='top':
             px,py=x+offset,y-height/2-2.54; oy=py-5.08
@@ -294,13 +294,13 @@ ux,uy=150.0,95.0
 objects.append(sym_instance('plataVM:LM5143A_Q1_RHA40','U_DCDC','LM5143QRHARQ1',ux,uy,[p.num for p in pins]))
 for p in pins:
     if p.side=='left':
-        px,py=ux-15.24,uy+p.y; ox=px-5.08
+        px,py=ux-15.24,uy-p.y; ox=px-5.08
         objects.extend([wire(px,py,ox,py,f'U:{p.num}'), label(p.net,ox,py,'right')])
     elif p.side=='right':
-        px,py=ux+15.24,uy+p.y; ox=px+5.08
+        px,py=ux+15.24,uy-p.y; ox=px+5.08
         objects.extend([wire(px,py,ox,py,f'U:{p.num}'), label(p.net,ox,py,'left')])
     else:
-        px,py=ux,uy+27.94; oy=py+5.08
+        px,py=ux,uy-27.94; oy=py-5.08
         objects.extend([wire(px,py,px,oy,f'U:{p.num}'), label(p.net,px,oy,'left')])
 
 # Phase 1 and 2 power stages.
