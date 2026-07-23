@@ -1,0 +1,77 @@
+name: Materialize PCB-D KiCad parser fix
+
+on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - ".github/workflows/pcb-d-parser-fix-materialize.yml"
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pcb-d-parser-fix-materialize
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    if: github.event_name == 'pull_request' && github.head_ref == 'agent/pcb-d-lm5143design-calc-v1-9'
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout exact working branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/pcb-d-lm5143design-calc-v1-9
+          fetch-depth: 0
+
+      - name: Reconstruct and verify parser-fix archive
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat Tools/kicad/.parser_fix/parser_fix.b64.* | base64 --decode > /tmp/pcb_d_parser_fix.tar.gz
+          echo "6b5acab2066c0816a4a218ff37cfde673da1d5b841cf4a20f1f7c7aa16b8a72e  /tmp/pcb_d_parser_fix.tar.gz" | sha256sum --check
+          tar -tzf /tmp/pcb_d_parser_fix.tar.gz
+          tar -xzf /tmp/pcb_d_parser_fix.tar.gz -C .
+
+      - name: Validate regenerated KiCad sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+          python Tools/erc/pcb_d_kicad_symbol_gate.py \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            Hardware/KiCad/plataVM_symbols.kicad_sym
+          rm -rf "$RUNNER_TEMP/pcb-d-generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py \
+            --output-dir "$RUNNER_TEMP/pcb-d-generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            "$RUNNER_TEMP/pcb-d-generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
+            "$RUNNER_TEMP/pcb-d-generated/plataVM_symbols.kicad_sym"
+          test "$(grep -c '\\t\|\\n' Hardware/KiCad/41_5V_DC_DC.kicad_sch || true)" -eq 0
+          grep -q '(version 20260101)' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+
+      - name: Remove one-shot materialization inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf Tools/kicad/.parser_fix
+          rm .github/workflows/pcb-d-parser-fix-materialize.yml
+
+      - name: Commit verified parser fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "hardware: fix PCB-D KiCad parser format V1.9"
+          git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
