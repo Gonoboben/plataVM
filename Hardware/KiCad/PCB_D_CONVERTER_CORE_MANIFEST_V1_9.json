@@ -1,6 +1,6 @@
 {
   "document": "PCB-D converter-core schematic manifest V1.9",
-  "status": "PROTOTYPE_CALC_TBD_PINMAP_VERIFIED_NO_PRODUCTION_FREEZE",
+  "status": "PROTOTYPE_SYMBOLS_INSTANTIATED_NATIVE_ERC_OPEN_NO_PRODUCTION_FREEZE",
   "source_main": "c513dbb3c9da57b8b5a26e755accc94e893e3ef3",
   "architecture": {
     "input": "PACK_BUS_P5_IN",
@@ -18,6 +18,22 @@
     "high_current_owner": "PCB-D",
     "high_current_forbidden_board": "PCB-B"
   },
+  "kicad_artifacts": {
+    "schematic": "Hardware/KiCad/41_5V_DC_DC.kicad_sch",
+    "symbol_library": "Hardware/KiCad/plataVM_symbols.kicad_sym",
+    "generator": "Tools/kicad/generate_pcb_d_converter_core.py",
+    "symbol_validator": "Tools/erc/pcb_d_kicad_symbol_gate.py",
+    "symbol_gate_result": "Hardware/KiCad/PCB_D_KICAD_SYMBOL_GATE_RESULT_V1_9.txt",
+    "format": "KiCad 10 native S-expression",
+    "generator_identity": "plataVM_symbol_gate",
+    "controller_instances": 1,
+    "power_mosfet_instances": 4,
+    "total_symbol_instances": 50,
+    "hierarchical_interfaces": 11,
+    "split_gate_resistor_positions": 8,
+    "footprints_assigned": 0,
+    "native_erc": "OPEN_CI_AND_OWNER_KICAD"
+  },
   "controller": {
     "ref": "U_DCDC",
     "part": "LM5143QRHARQ1",
@@ -33,8 +49,9 @@
       "SS2": "SS_COMMON",
       "DEMB": "VDDA",
       "DITH": "VDDA",
-      "VOUT1": "5V_SYS_BUS_SENSE",
-      "VOUT2": "5V_SYS_BUS_SENSE",
+      "VOUT1": "5V_SYS_BUS",
+      "VOUT2": "5V_SYS_BUS",
+      "VOUT_route_class": "KELVIN_SENSE",
       "VCCX": "5V_SYS_BUS",
       "EN1": "EN_RUN",
       "EN2": "EN_RUN",
@@ -60,7 +77,8 @@
       "39": "SYNCOUT",
       "40": "EN2"
     },
-    "symbol_instantiation": "OPEN_NATIVE_KICAD_REQUIRED",
+    "symbol_definition": "PASS",
+    "symbol_instantiation": "PASS",
     "footprint_freeze": false
   },
   "timing": {
@@ -97,6 +115,7 @@
   },
   "uvlo": {
     "ref": "U_UVLO",
+    "symbol": "UVLO_SUPERVISOR_TBD",
     "value": "CALC_TBD",
     "rise_target_V": 8.9,
     "fall_target_V": 8.35,
@@ -104,8 +123,13 @@
     "note": "Passive EN divider rejected"
   },
   "enable_logic": {
+    "ref": "U_EN_GATE",
+    "symbol": "HW_ENABLE_GATE_TBD",
     "output_net": "EN_RUN",
-    "controller_pins": [31, 40],
+    "controller_pins": [
+      31,
+      40
+    ],
     "inputs": [
       "5V_SYS_EN",
       "UVLO_OK",
@@ -114,7 +138,29 @@
     ],
     "equation": "5V_SYS_EN AND UVLO_OK AND NOT SAFE_OFF AND NOT HARD_OFF",
     "implementation": "CALC_TBD",
-    "must_be_hardware": true
+    "bias": "PACK_BUS_P5_IN",
+    "must_be_hardware": true,
+    "fail_safe_required": true
+  },
+  "grounding": {
+    "controller_ep_net": "AGND",
+    "controlled_join_ref": "NT_AGND_PGND",
+    "join_value": "AGND_PGND_STAR_LAYOUT_TBD",
+    "layout_rule": "AGND and PGND join at controlled point under/adjacent to controller per datasheet; no hull thermal path",
+    "copper_and_via_pattern": "OPEN_LAYOUT_GATE"
+  },
+  "diagnostics": {
+    "fault_ref": "U_FAULT",
+    "fault_implementation": "CALC_TBD",
+    "fault_output": "P5_DC_DC_FAULT_N",
+    "phase_monitor_refs": [
+      "U_ISENSE1",
+      "U_ISENSE2"
+    ],
+    "total_monitor_ref": "U_ISUM",
+    "monitor_implementation": "CALC_TBD",
+    "power_good_source": "PG1 pin 24",
+    "pg2_policy": "testpad only; not aggregated"
   },
   "phases": [
     {
@@ -149,19 +195,23 @@
         "value": "5 mOhm 1% Kelvin"
       },
       "switch_net": "PHASE1_SW",
+      "inductor_output_net": "PHASE1_L_OUT",
       "cs_filter": {
-        "R": "CALC_TBD",
-        "C": "CALC_TBD"
+        "R": "R_CS1 CALC_TBD",
+        "C": "C_CS1 CALC_TBD",
+        "topology": "differential HF filter to 5V_SYS_BUS"
       },
       "gate_resistors": {
-        "HS": "CALC_TBD",
-        "LS": "CALC_TBD"
+        "HS_ON": "R_GH1_ON CALC_TBD",
+        "HS_OFF": "R_GH1_OFF CALC_TBD",
+        "LS_ON": "R_GL1_ON CALC_TBD",
+        "LS_OFF": "R_GL1_OFF CALC_TBD"
       },
       "bootstrap": {
-        "C": "CALC_TBD",
-        "D": "CALC_TBD"
+        "C": "C_BOOT1 CALC_TBD",
+        "D": "D_BOOT1 CALC_TBD"
       },
-      "snubber": "DNP_CALC_TBD"
+      "snubber": "DNP_CALC_TBD_PHASE1"
     },
     {
       "name": "PHASE2",
@@ -195,19 +245,23 @@
         "value": "5 mOhm 1% Kelvin"
       },
       "switch_net": "PHASE2_SW",
+      "inductor_output_net": "PHASE2_L_OUT",
       "cs_filter": {
-        "R": "CALC_TBD",
-        "C": "CALC_TBD"
+        "R": "R_CS2 CALC_TBD",
+        "C": "C_CS2 CALC_TBD",
+        "topology": "differential HF filter to 5V_SYS_BUS"
       },
       "gate_resistors": {
-        "HS": "CALC_TBD",
-        "LS": "CALC_TBD"
+        "HS_ON": "R_GH2_ON CALC_TBD",
+        "HS_OFF": "R_GH2_OFF CALC_TBD",
+        "LS_ON": "R_GL2_ON CALC_TBD",
+        "LS_OFF": "R_GL2_OFF CALC_TBD"
       },
       "bootstrap": {
-        "C": "CALC_TBD",
-        "D": "CALC_TBD"
+        "C": "C_BOOT2 CALC_TBD",
+        "D": "D_BOOT2 CALC_TBD"
       },
-      "snubber": "DNP_CALC_TBD"
+      "snubber": "DNP_CALC_TBD_PHASE2"
     }
   ],
   "capacitors": {
@@ -236,8 +290,10 @@
   "freeze": {
     "calculation_gate": true,
     "pin_mapping": true,
-    "kicad_symbol_instantiation": false,
+    "kicad_symbol_definition": true,
+    "kicad_symbol_instantiation": true,
     "native_kicad_erc": false,
+    "owner_kicad_open_save": false,
     "production_bom": false,
     "footprints": false,
     "layout": false,

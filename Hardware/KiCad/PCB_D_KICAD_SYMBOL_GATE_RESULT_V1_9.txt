@@ -1,0 +1,10 @@
+PCB-D KiCad exact-symbol Gate V1.9
+schematic: Hardware/KiCad/41_5V_DC_DC.kicad_sch
+symbol library: Hardware/KiCad/plataVM_symbols.kicad_sym
+controller pins: 41 including exposed pad
+schematic instances: 50
+split gate resistors: 8
+hierarchical interfaces: 11
+CALC_TBD markers: 38
+RESULT: PASS
+NOTE: native KiCad ERC remains a separate mandatory check.

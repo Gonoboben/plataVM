@@ -1,7 +1,7 @@
-# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC и exact pin-map V1.9
+# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC, pin-map и symbol instantiation V1.9
 
 Дата: 2026-07-23  
-Статус: `CALCULATION AND EXACT PIN-MAP GATES PASSED — SYMBOL, NATIVE ERC, TEST AND PRODUCTION GATES OPEN`
+Статус: `CALCULATION, PIN-MAP AND SYMBOL-INSTANTIATION GATES PASSED — NATIVE ERC, TEST AND PRODUCTION GATES OPEN`
 
 ## 1. Закрыто предварительно
 
@@ -18,7 +18,8 @@
 | Q-P5-018A | Candidate loss feasibility at 75 Вт | CLOSED_PRELIMINARY |
 | LM5143DESIGN-CALC | Official-family calculator configuration and input/output record | CLOSED_CALCULATION |
 | Q-P5-016A | Nominal and tolerance-sweep compensation model | CLOSED_PRELIMINARY |
-| Q-P5-019A | Exact LM5143A-Q1 RHA-40 physical pin mapping and single-output tie contract | CLOSED_PINMAP |
+| Q-P5-019A | Exact LM5143A-Q1 RHA-40 physical pin mapping and tie contract | CLOSED_PINMAP |
+| Q-P5-019B | Exact KiCad symbol definition and converter-core instantiation | CLOSED_SYMBOL_GATE |
 
 ## 2. Calculator result
 
@@ -43,7 +44,7 @@ calculator nominal total-average OCP:
   26,566 А at VINmax
 
 manual minimum total-average OCP: 22,522 А
-worst legal 20-А phase peak with conservative RT sweep: 11,851 А
+worst legal 20-А phase peak: 11,851 А
 minimum phase threshold: 13,069 А
 minimum preliminary margin: 10,28 %
 ```
@@ -62,9 +63,7 @@ modeled minimum phase margin ≈56,21°
 
 These are prototype calculation results, not production guarantees.
 
-## 3. Exact LM5143A-Q1 pin-map result
-
-Exact RHA-40 upper pin group:
+## 3. Exact pin-map result
 
 ```text
 31 EN1
@@ -82,15 +81,15 @@ Exact RHA-40 upper pin group:
 Single-output interleaved contract:
 
 ```text
-MODE -> VDDA
-FB2 -> AGND
-FB1 -> AGND for fixed 5 V
-COMP1 <-> COMP2
-SS1 <-> SS2
-DEMB -> VDDA for FPWM
+MODE → VDDA
+FB2 → AGND
+FB1 → AGND for fixed 5 V
+COMP1 ↔ COMP2
+SS1 ↔ SS2
+DEMB → VDDA for FPWM
 EN1 = EN2 = EN_RUN
 PG1 pin 24 = primary PGOOD
-PG2 pin 7 = isolated testpad only
+PG2 pin 7 = isolated testpoint only
 VCC pins 15 and 16 = common VCC_BIAS
 ```
 
@@ -105,14 +104,62 @@ PG1/PG2 role separation: PASS
 machine-readable pin-map ERC: PASS
 ```
 
-Pin mapping is frozen for the selected prototype controller. Symbol geometry, footprint and production BOM are not frozen.
+## 4. Exact symbol-instantiation result
 
-## 4. Открыто после calculator и pin-map Gates
+Created:
+
+```text
+Hardware/KiCad/plataVM_symbols.kicad_sym
+Tools/kicad/generate_pcb_d_converter_core.py
+Tools/erc/pcb_d_kicad_symbol_gate.py
+Hardware/KiCad/PCB_D_KICAD_SYMBOL_GATE_RESULT_V1_9.txt
+```
+
+Updated:
+
+```text
+Hardware/KiCad/41_5V_DC_DC.kicad_sch
+Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+Tools/erc/pcb_d_converter_core_erc.py
+```
+
+Result:
+
+```text
+exact controller symbol instances: 1
+controller pins including EP: 41
+power MOSFET symbols: 4
+schematic symbol instances: 50
+split gate-resistor positions: 8
+hierarchical interfaces: 11
+CALC_TBD markers: 38
+non-empty footprint assignments: 0
+S-expression balance: PASS
+UUID uniqueness: PASS
+exact symbol Gate: PASS
+```
+
+Direct hardware boundaries now explicit:
+
+```text
+U_UVLO
+U_EN_GATE
+U_FAULT
+U_ISENSE1
+U_ISENSE2
+U_ISUM
+NT_AGND_PGND
+```
+
+Exact devices/values remain `CALC_TBD` where not yet calculated or measured.
+
+## 5. Открыто после symbol Gate
 
 | ID | Открытый параметр | Статус |
 |---|---|---|
 | Q-P5-009C | Exact hot-plug/turn-off transient waveforms and measured clamp | OPEN_MEASUREMENT |
 | Q-P5-009D | Exact external UVLO supervisor/comparator and tolerance network | OPEN_CALC_COMPONENT |
+| Q-P5-009E | Exact fail-safe hardware EN_RUN gate topology and polarity | OPEN_CALC_COMPONENT |
 | Q-P5-010 | Final allowed 5V_SYS_BUS droop/overshoot from actual devices | OPEN_OWNER_DEVICE_DATA |
 | Q-P5-011 | Actual single and simultaneous external load profiles | OPEN_OWNER_DEVICE_DATA |
 | Q-P5-012B | Compare final 300/400/500/600-кГц efficiency/EMI result | OPEN_CALC_TEST |
@@ -120,72 +167,78 @@ Pin mapping is frozen for the selected prototype controller. Symbol geometry, fo
 | Q-P5-013B | Exact CS filter, propagation delay and hiccup behaviour | OPEN_CALC_TEST |
 | Q-P5-013C | Bench OCP onset, phase sharing and no-nuisance 20-А correlation | OPEN_TEST |
 | Q-P5-014D | Exact MLCC DC-bias effective capacitance | OPEN_DATASHEET_CALC |
-| Q-P5-014E | Exact gate resistors, bootstrap and snubber values | OPEN_CALC_TEST |
+| Q-P5-014E | Eight exact split gate resistors, bootstrap and snubber values | OPEN_CALC_TEST |
 | Q-P5-014F | PWR263S-35-R100FE pulse graph and hot-plug application verification | OPEN_DATASHEET_TEST |
 | Q-P5-015 | Sealed-volume thermal result at +60 °C | OPEN_THERMAL_TEST |
 | Q-P5-016B | Native Bode measurement over VIN/load/cap tolerance | OPEN_TEST |
 | Q-P5-017B | Bode/load-step bench correlation | OPEN_TEST |
 | Q-P5-018B | Exact MOSFET switching and inductor core losses | OPEN_CALC_TEST |
-| Q-P5-019B | Exact KiCad symbol/discrete-core instantiation and native KiCad ERC | OPEN_SCHEMATIC_ERC |
+| Q-P5-019C | GitHub Actions native KiCad ERC | OPEN_NATIVE_ERC |
+| Q-P5-019D | Owner KiCad 10 open/save and visual/ERC review | OPEN_OWNER_KICAD |
+| Q-P5-019E | Exact diagnostic monitor/aggregate devices and ranges | OPEN_CALC_COMPONENT |
+| Q-P5-019F | Exact AGND/PGND copper, EP and via implementation | OPEN_LAYOUT |
 
-## 5. UVLO result
+## 6. UVLO and hardware enable result
 
-Required operating window:
+Required window:
 
 ```text
 rising 8,8…9,0 В
 falling 8,2…8,5 В
 ```
 
-LM5143A-Q1 EN thresholds do not permit this narrow hysteresis from one passive divider. Therefore:
+A passive divider remains rejected. The symbol-core now contains explicit placeholders:
 
 ```text
-passive EN divider: REJECTED
-external supervisor/comparator: CALC_TBD
-nominal target: 8,9 В rising /8,35 В falling
-hardware-qualified UVLO_OK required for EN1 pin 31 and EN2 pin 40
+U_UVLO = external supervisor, CALC_TBD
+U_EN_GATE = fail-safe hardware gate, CALC_TBD
+
+EN_RUN = 5V_SYS_EN
+AND UVLO_OK
+AND NOT SAFE_OFF
+AND NOT HARD_OFF
 ```
 
-The exact device and resistor network remain outside production freeze.
+Both EN pins receive `EN_RUN`. Local MCU/CAN-FD and SERVICE_OVERRIDE cannot bypass the hardware path.
 
-## 6. Prototype converter-core status
+## 7. Gate-drive result
 
-Created or updated:
+Separate controller outputs require separate tuning positions:
 
 ```text
-Hardware/KiCad/41_5V_DC_DC.kicad_sch
-Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
-Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
-Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_ERC_RESULT_V1_9.txt
-Tools/erc/pcb_d_converter_core_erc.py
-Tools/erc/pcb_d_lm5143_pinmap_erc.py
+HO1/HOL1 → R_GH1_ON/R_GH1_OFF
+LO1/LOL1 → R_GL1_ON/R_GL1_OFF
+HO2/HOL2 → R_GH2_ON/R_GH2_OFF
+LO2/LOL2 → R_GL2_ON/R_GL2_OFF
 ```
 
-The sheet and manifests contain:
+All eight values remain open pending waveform/EMI/loss correlation.
 
-- selected prototype candidates;
-- confirmed RT/SS/compensation starting values;
-- exact LM5143A-Q1 physical pin numbers and roles;
-- explicit `CALC_TBD` values for UVLO, CS filters, gate resistors, bootstrap and snubbers;
-- DNP/tuning options;
-- direct SAFE/HARD_OFF equation;
-- no production BOM status;
-- no footprint freeze.
+## 8. Native ERC Gate
 
-Validation:
+Workflow:
 
 ```text
-S-expression structural check: PASS
-machine-readable converter-core semantic ERC: PASS
-machine-readable exact pin-map ERC: PASS
-native KiCad application ERC: OPEN
+.github/workflows/pcb-d-kicad-erc.yml
 ```
 
-The current sheet remains a preliminary converter-core definition. Production schematic freeze is not granted.
+Required successful steps:
 
-## 7. Thermal Gate
+```text
+semantic manifest ERC
+exact pin-map ERC
+exact symbol Gate
+reproducible generator diff
+official KiCad 10 install
+native kicad-cli sch erc at error severity
+JSON report artifact
+```
 
-Prototype component selection and calculation do not close:
+Native ERC is not closed until a successful run is observed. PR #45 remains draft.
+
+## 9. Thermal Gate
+
+Still required:
 
 ```text
 sealed enclosure
@@ -194,7 +247,7 @@ no hull thermal contact
 15 А continuous until steady state
 ```
 
-Required measurements:
+Measurements:
 
 - four MOSFET temperatures;
 - L1/L2 temperatures;
@@ -205,7 +258,7 @@ Required measurements:
 - fault telemetry;
 - conformal-coating impact.
 
-## 8. Mechanical Gate
+## 10. Mechanical Gate
 
 Required before footprint freeze:
 
@@ -221,16 +274,17 @@ connector and harness mating volume
 inter-level L1/L2 clearance
 ```
 
-## 9. Next Gate
+## 11. Next Gate
 
 ```text
-create exact KiCad symbol from verified pin map
-→ instantiate controller and discrete converter-core symbols
-→ owner KiCad 10.0 open/save
-→ native KiCad ERC
-→ exact UVLO/CS/gate/bootstrap/snubber calculation
+GitHub Actions native KiCad ERC
+→ correct only confirmed parser/ERC errors
+→ owner KiCad 10 open/save
+→ exact UVLO/EN hardware calculation
+→ exact CS/gate/bootstrap calculation
+→ SW ringing and snubber decision
 → Bode/load-step/OCP bench correlation
-→ exact footprint/3D candidate review
+→ footprint/3D candidate review
 → prototype BOM Gate
 → electrical/transient/load/thermal test plan
 ```

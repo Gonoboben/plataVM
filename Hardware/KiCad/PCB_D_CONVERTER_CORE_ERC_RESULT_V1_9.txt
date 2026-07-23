@@ -1,11 +1,8 @@
 PCB-D converter-core semantic ERC V1.9
 manifest: Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
 phases: 2
-exact LM5143A-Q1 RHA-40 pin map: PASS
-single-output interleaved ties: PASS
-PG1 pin 24 / PG2 pin 7 role separation: PASS
-EN1 pin 31 / EN2 pin 40 hardware EN_RUN: PASS
-CALC_TBD markers: 19
-controlled freeze policy: PASS
+exact LM5143A-Q1 RHA-40 symbol instantiation: PASS
+split gate-resistor positions: 8
+CALC_TBD markers: 24
 RESULT: PASS
-NOTE: native KiCad ERC remains mandatory after exact symbols are instantiated.
+NOTE: native KiCad ERC and owner KiCad open/save remain mandatory.
