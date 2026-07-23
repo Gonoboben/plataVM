@@ -1,4 +1,4 @@
-PCB-D KiCad exact-symbol Gate V1.9
+PCB-D KiCad exact-symbol and native ERC Gate V1.9
 schematic: Hardware/KiCad/41_5V_DC_DC.kicad_sch
 symbol library: Hardware/KiCad/plataVM_symbols.kicad_sym
 controller pins: 41 including exposed pad
@@ -6,5 +6,16 @@ schematic instances: 50
 split gate resistors: 8
 hierarchical interfaces: 11
 CALC_TBD markers: 38
+exact symbol Gate: PASS
+official native tool: KiCad 10.0.4
+GitHub Actions run: 30028613180
+head SHA: 0d741e46f0f817cbfa508ccfa0c92260a660f59b
+raw native ERC exit code: 5
+raw native ERC violations: 14
+expected standalone hierarchical boundaries: 11
+expected parent-driven control inputs: 3
+internal converter-core violations: 0
+residual geometry faults: 0
+native converter-core internal topology: PASS
 RESULT: PASS
-NOTE: native KiCad ERC remains a separate mandatory check.
+NOTE: owner KiCad 10 open/save and visual review remain mandatory before production freeze.
