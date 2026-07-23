@@ -26,33 +26,31 @@ jobs:
       - name: Reconstruct deterministic generator
         shell: bash
         run: |
-          set -u
+          set -euo pipefail
           cat Tools/kicad/.materialize/generator.b64.* | base64 --decode > Tools/kicad/generate_pcb_d_converter_core.py
+          python - <<'PY'
+          from pathlib import Path
+          path = Path('Tools/kicad/generate_pcb_d_converter_core.py')
+          text = path.read_text(encoding='utf-8')
+          old = "for p in OUT.iterdir():\n    t=p.read_text(encoding='utf-8')"
+          new = "for p in OUT.iterdir():\n    if not p.is_file():\n        continue\n    t=p.read_text(encoding='utf-8')"
+          if old not in text:
+              raise SystemExit('expected generator self-check block not found')
+          path.write_text(text.replace(old, new), encoding='utf-8')
+          PY
           chmod +x Tools/kicad/generate_pcb_d_converter_core.py
-          set +e
-          python -m py_compile Tools/kicad/generate_pcb_d_converter_core.py > /tmp/materialize.log 2>&1
-          status=$?
-          if [ "$status" -eq 0 ]; then
-            python Tools/kicad/generate_pcb_d_converter_core.py >> /tmp/materialize.log 2>&1
-            status=$?
-          fi
-          set -e
-          cat /tmp/materialize.log
-          if [ "$status" -ne 0 ]; then
-            cp /tmp/materialize.log Hardware/KiCad/PCB_D_MATERIALIZE_FAILURE.txt
-            echo "materialization failed with status $status" >> Hardware/KiCad/PCB_D_MATERIALIZE_FAILURE.txt
-          else
-            rm -f Hardware/KiCad/PCB_D_MATERIALIZE_FAILURE.txt
-            rm -rf Tools/kicad/.materialize
-            rm .github/workflows/pcb-d-materialize.yml
-          fi
+          python -m py_compile Tools/kicad/generate_pcb_d_converter_core.py
+          python Tools/kicad/generate_pcb_d_converter_core.py
+          rm -f Hardware/KiCad/PCB_D_MATERIALIZE_FAILURE.txt
+          rm -rf Tools/kicad/.materialize
+          rm .github/workflows/pcb-d-materialize.yml
 
-      - name: Commit materialization result
+      - name: Commit generated KiCad artifacts
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "hardware: materialize PCB-D KiCad symbol gate"
+          git commit -m "hardware: instantiate PCB-D KiCad symbols V1.9"
           git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
