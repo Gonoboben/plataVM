@@ -1,6 +1,6 @@
 {
   "document": "PCB-D converter-core schematic manifest V1.9",
-  "status": "PROTOTYPE_CALC_TBD_NO_PRODUCTION_FREEZE",
+  "status": "PROTOTYPE_CALC_TBD_PINMAP_VERIFIED_NO_PRODUCTION_FREEZE",
   "source_main": "c513dbb3c9da57b8b5a26e755accc94e893e3ef3",
   "architecture": {
     "input": "PACK_BUS_P5_IN",
@@ -22,26 +22,52 @@
     "ref": "U_DCDC",
     "part": "LM5143QRHARQ1",
     "family": "LM5143A-Q1",
+    "package": "RHA VQFN-40",
     "ties": {
       "MODE": "VDDA",
-      "FB1": "POWER_GND",
-      "FB2": "POWER_GND",
+      "FB1": "AGND",
+      "FB2": "AGND",
       "COMP1": "COMP_COMMON",
       "COMP2": "COMP_COMMON",
       "SS1": "SS_COMMON",
       "SS2": "SS_COMMON",
       "DEMB": "VDDA",
       "DITH": "VDDA",
-      "VOUT1": "5V_SYS_BUS",
-      "VOUT2": "5V_SYS_BUS",
-      "VCCX": "5V_SYS_BUS"
+      "VOUT1": "5V_SYS_BUS_SENSE",
+      "VOUT2": "5V_SYS_BUS_SENSE",
+      "VCCX": "5V_SYS_BUS",
+      "EN1": "EN_RUN",
+      "EN2": "EN_RUN",
+      "PG1": "P5_PGOOD_OD",
+      "PG2": "NC_PG2_TESTPAD"
     }
+  },
+  "pin_mapping": {
+    "file": "Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json",
+    "datasheet": "TI SNVSCC1, May 2022",
+    "status": "PASS",
+    "physical_pins": 40,
+    "exposed_pad": 1,
+    "upper_pin_group": {
+      "31": "EN1",
+      "32": "RES",
+      "33": "DEMB",
+      "34": "MODE",
+      "35": "AGND",
+      "36": "VDDA",
+      "37": "RT",
+      "38": "DITH",
+      "39": "SYNCOUT",
+      "40": "EN2"
+    },
+    "symbol_instantiation": "OPEN_NATIVE_KICAD_REQUIRED",
+    "footprint_freeze": false
   },
   "timing": {
     "RT": {
       "ref": "R_RT",
       "value": "54.9 kOhm 1%",
-      "net": "RT"
+      "net": "RT_SET"
     },
     "CSS": {
       "ref": "C_SS",
@@ -51,7 +77,7 @@
     "CRES": {
       "ref": "C_RES",
       "value": "470 nF prototype start",
-      "net": "RES"
+      "net": "RES_TIMER"
     }
   },
   "compensation": {
@@ -67,7 +93,7 @@
       "ref": "C_HF",
       "value": "220 pF"
     },
-    "network": "COMP_COMMON to POWER_GND"
+    "network": "COMP_COMMON to AGND"
   },
   "uvlo": {
     "ref": "U_UVLO",
@@ -79,6 +105,7 @@
   },
   "enable_logic": {
     "output_net": "EN_RUN",
+    "controller_pins": [31, 40],
     "inputs": [
       "5V_SYS_EN",
       "UVLO_OK",
@@ -92,6 +119,17 @@
   "phases": [
     {
       "name": "PHASE1",
+      "controller_pins": {
+        "CS": 27,
+        "VOUT": 26,
+        "HB": 20,
+        "SW": 21,
+        "HO": 22,
+        "HOL": 23,
+        "LO": 18,
+        "LOL": 19,
+        "PGND": 17
+      },
       "high_side": {
         "ref": "Q_HS1",
         "part": "BUK9Y6R0-60E,115"
@@ -110,7 +148,7 @@
         "part": "WSK25125L000FEA",
         "value": "5 mOhm 1% Kelvin"
       },
-      "switch_net": "SW1",
+      "switch_net": "PHASE1_SW",
       "cs_filter": {
         "R": "CALC_TBD",
         "C": "CALC_TBD"
@@ -127,6 +165,17 @@
     },
     {
       "name": "PHASE2",
+      "controller_pins": {
+        "CS": 4,
+        "VOUT": 5,
+        "HB": 11,
+        "SW": 10,
+        "HO": 9,
+        "HOL": 8,
+        "LO": 13,
+        "LOL": 12,
+        "PGND": 14
+      },
       "high_side": {
         "ref": "Q_HS2",
         "part": "BUK9Y6R0-60E,115"
@@ -145,7 +194,7 @@
         "part": "WSK25125L000FEA",
         "value": "5 mOhm 1% Kelvin"
       },
-      "switch_net": "SW2",
+      "switch_net": "PHASE2_SW",
       "cs_filter": {
         "R": "CALC_TBD",
         "C": "CALC_TBD"
@@ -179,10 +228,16 @@
       "P5_GROUP_HARD_OFF"
     ],
     "fault_output": "P5_DC_DC_FAULT_N",
+    "power_good_source": "PG1 pin 24",
+    "pg2_policy": "testpad only; not aggregated",
     "local_mcu_bypass_prohibited": true,
     "service_override_bypass_prohibited": true
   },
   "freeze": {
+    "calculation_gate": true,
+    "pin_mapping": true,
+    "kicad_symbol_instantiation": false,
+    "native_kicad_erc": false,
     "production_bom": false,
     "footprints": false,
     "layout": false,
