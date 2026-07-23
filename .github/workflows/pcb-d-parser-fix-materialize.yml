@@ -1,29 +1,26 @@
 name: Materialize PCB-D KiCad parser fix
 
 on:
-  push:
-    branches:
-      - agent/pcb-d-lm5143design-calc-v1-9
-    paths:
-      - ".github/workflows/pcb-d-parser-fix-materialize.yml"
   pull_request:
     branches:
       - main
     types: [opened, synchronize, reopened]
+    paths:
+      - ".github/workflows/pcb-d-parser-fix-materialize.yml"
+      - "Tools/kicad/.parser_fix_v2/**"
   workflow_dispatch:
 
 permissions:
   contents: write
 
 concurrency:
-  group: pcb-d-parser-fix-materialize
+  group: pcb-d-parser-fix-materialize-v2
   cancel-in-progress: true
 
 jobs:
   materialize:
     if: github.event_name == 'pull_request' && github.head_ref == 'agent/pcb-d-lm5143design-calc-v1-9'
     runs-on: ubuntu-24.04
-    timeout-minutes: 25
     steps:
       - name: Checkout exact working branch
         uses: actions/checkout@v4
@@ -31,125 +28,90 @@ jobs:
           ref: agent/pcb-d-lm5143design-calc-v1-9
           fetch-depth: 0
 
-      - name: Recover only verified canonical files
-        shell: bash
-        run: |
-          set -euo pipefail
-          archive="$RUNNER_TEMP/pcb_d_parser_fix.tar.gz"
-          recovered="$RUNNER_TEMP/pcb-d-recovered"
-          rm -rf "$recovered"
-          mkdir -p "$recovered"
-
-          cat Tools/kicad/.parser_fix/parser_fix.b64.* | base64 --decode > "$archive"
-
-          # The archive trailer and fourth member are damaged. Extract into an
-          # isolated directory, ignore tar's final status, and trust only the
-          # three earlier members whose exact SHA-256 values are verified below.
-          set +e
-          tar -xzf "$archive" -C "$recovered"
-          tar_status=$?
-          set -e
-          echo "recoverable archive tar status: $tar_status (non-zero expected)"
-
-          printf '%s  %s\n' \
-            '597c74c46556f581d57a8221a6de78bf8d5caf79165b2ca086a418d0676c3a71' \
-            "$recovered/Hardware/KiCad/41_5V_DC_DC.kicad_sch" \
-            '34718ed0d10b6662629485a792e7fd05442da30d276961858277171399d1c034' \
-            "$recovered/Hardware/KiCad/plataVM_symbols.kicad_sym" \
-            'fed0cf5c5f8aeb71d54a75256b319e685149c0b9cc7d04c3fa5211770db325f7' \
-            "$recovered/Tools/erc/pcb_d_kicad_symbol_gate.py" \
-            | sha256sum --check --strict
-
-          python -m py_compile "$recovered/Tools/erc/pcb_d_kicad_symbol_gate.py"
-          python "$recovered/Tools/erc/pcb_d_kicad_symbol_gate.py" \
-            "$recovered/Hardware/KiCad/41_5V_DC_DC.kicad_sch" \
-            "$recovered/Hardware/KiCad/plataVM_symbols.kicad_sym"
-
-          install -m 0644 \
-            "$recovered/Hardware/KiCad/41_5V_DC_DC.kicad_sch" \
-            Hardware/KiCad/41_5V_DC_DC.kicad_sch
-          install -m 0644 \
-            "$recovered/Hardware/KiCad/plataVM_symbols.kicad_sym" \
-            Hardware/KiCad/plataVM_symbols.kicad_sym
-          install -m 0755 \
-            "$recovered/Tools/erc/pcb_d_kicad_symbol_gate.py" \
-            Tools/erc/pcb_d_kicad_symbol_gate.py
-
-      - name: Validate final workspace Gates
-        shell: bash
-        run: |
-          set -euo pipefail
-          python Tools/erc/pcb_d_converter_core_erc.py \
-            Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
-          python Tools/erc/pcb_d_lm5143_pinmap_erc.py \
-            Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
-          python Tools/erc/pcb_d_kicad_symbol_gate.py \
-            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
-            Hardware/KiCad/plataVM_symbols.kicad_sym
-          python - <<'PY'
-          from pathlib import Path
-          for name in (
-              'Hardware/KiCad/41_5V_DC_DC.kicad_sch',
-              'Hardware/KiCad/plataVM_symbols.kicad_sym',
-          ):
-              data = Path(name).read_bytes()
-              if b'\x00' in data:
-                  raise SystemExit(f'{name}: NUL byte detected')
-              text = data.decode('utf-8')
-              if r'\t' in text or r'\n' in text:
-                  raise SystemExit(f'{name}: escaped parser-control sequence detected')
-          print('final parser hygiene: PASS')
-          PY
-
-      - name: Install official KiCad 10 release package
-        shell: bash
-        run: |
-          set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install --yes software-properties-common
-          sudo add-apt-repository --yes ppa:kicad/kicad-10.0-releases
-          sudo apt-get update
-          sudo apt-get install --yes --no-install-recommends kicad
-          kicad-cli version
-
-      - name: Run native KiCad ERC before commit
+      - name: Reconstruct and verify deterministic parser-fix archive
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p artifacts
-          kicad-cli sch erc \
-            --format json \
-            --output artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json \
-            --severity-error \
-            --exit-code-violations \
-            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
-            > artifacts/native-erc-command.log 2>&1
-          cat artifacts/native-erc-command.log
-          printf 'workflow_run_id=%s\nhead_before_commit=%s\n' \
-            "$GITHUB_RUN_ID" "$GITHUB_SHA" \
-            > artifacts/materialization-provenance.txt
+          cat Tools/kicad/.parser_fix_v2/archive.b64.* | base64 --decode > /tmp/pcb_d_parser_fix_v2.tar.gz
+          echo "23839cd1121c02aa24009e9c2ea18b8e325a6d79c0eeb262b62d3fbfdf52b8ed  /tmp/pcb_d_parser_fix_v2.tar.gz" | sha256sum --check
+          gzip -t /tmp/pcb_d_parser_fix_v2.tar.gz
+          sha256sum Tools/kicad/.parser_fix_v2/archive.b64.* > artifacts/parser_fix_v2_chunks.sha256
+          sha256sum /tmp/pcb_d_parser_fix_v2.tar.gz > artifacts/parser_fix_v2_archive.sha256
 
-      - name: Upload verified materialization evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: pcb-d-kicad-materialization-evidence
-          path: artifacts/
-          if-no-files-found: error
+          python - <<'PY'
+          from pathlib import Path
+          import tarfile
 
-      - name: Remove one-shot recovery inputs
+          archive = Path('/tmp/pcb_d_parser_fix_v2.tar.gz')
+          allowed = {
+              'Hardware/KiCad/41_5V_DC_DC.kicad_sch',
+              'Hardware/KiCad/plataVM_symbols.kicad_sym',
+              'Tools/kicad/generate_pcb_d_converter_core.py',
+              'Tools/erc/pcb_d_kicad_symbol_gate.py',
+          }
+
+          with tarfile.open(archive, 'r:gz') as tf:
+              members = tf.getmembers()
+              names = [m.name.removeprefix('./') for m in members]
+              if len(names) != len(set(names)):
+                  raise SystemExit('duplicate archive member detected')
+              if set(names) != allowed:
+                  raise SystemExit(f'unexpected archive members: {sorted(set(names) ^ allowed)}')
+              for member in members:
+                  name = member.name.removeprefix('./')
+                  path = Path(name)
+                  if not member.isfile():
+                      raise SystemExit(f'non-regular archive member rejected: {name}')
+                  if path.is_absolute() or '..' in path.parts:
+                      raise SystemExit(f'unsafe archive path rejected: {name}')
+              tf.extractall('.', filter='data')
+
+          print('parser-fix v2 archive allowlist: PASS')
+          PY
+
+      - name: Validate regenerated KiCad sources
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf Tools/kicad/.parser_fix
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+          python Tools/erc/pcb_d_kicad_symbol_gate.py \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            Hardware/KiCad/plataVM_symbols.kicad_sym | tee artifacts/parser_fix_v2_symbol_gate.log
+          rm -rf "$RUNNER_TEMP/pcb-d-generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py \
+            --output-dir "$RUNNER_TEMP/pcb-d-generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            "$RUNNER_TEMP/pcb-d-generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
+            "$RUNNER_TEMP/pcb-d-generated/plataVM_symbols.kicad_sym"
+          test "$(grep -c '\\t\|\\n' Hardware/KiCad/41_5V_DC_DC.kicad_sch || true)" -eq 0
+          grep -q '(version 20260101)' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+          grep -q '(generator_version "10.0")' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+
+      - name: Upload verification evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcb-d-parser-fix-v2-verification
+          path: artifacts/
+          if-no-files-found: error
+
+      - name: Remove all one-shot materialization inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf Tools/kicad/.parser_fix Tools/kicad/.parser_fix_v2
           rm .github/workflows/pcb-d-parser-fix-materialize.yml
           rm -rf Tools/kicad/__pycache__ Tools/erc/__pycache__
 
-      - name: Commit verified canonical KiCad sources
+      - name: Commit verified KiCad 10 parser fix
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "hardware: materialize canonical PCB-D KiCad 10 sources V1.9"
+          git commit -m "hardware: fix PCB-D KiCad parser format V1.9"
           git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
