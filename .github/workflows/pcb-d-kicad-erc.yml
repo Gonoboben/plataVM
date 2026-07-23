@@ -52,20 +52,31 @@ jobs:
           sudo apt-get install --yes --no-install-recommends kicad
           kicad-cli version
 
-      - name: Native KiCad ERC — error severity
+      - name: Native KiCad ERC — capture result
         run: |
           mkdir -p artifacts
+          set +e
           kicad-cli sch erc \
             --format json \
             --output artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json \
             --severity-error \
             --exit-code-violations \
-            Hardware/KiCad/41_5V_DC_DC.kicad_sch
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            > artifacts/native-erc-command.log 2>&1
+          status=$?
+          set -e
+          printf '%s\n' "$status" > artifacts/native-erc-exit-code.txt
+          cat artifacts/native-erc-command.log
+          echo "native ERC exit code: $status"
 
-      - name: Upload native ERC report
+      - name: Upload native ERC diagnostics
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: pcb-d-kicad-native-erc
-          path: artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json
-          if-no-files-found: warn
+          path: artifacts/
+          if-no-files-found: error
+
+      - name: Enforce native ERC result
+        run: |
+          test "$(cat artifacts/native-erc-exit-code.txt)" -eq 0
