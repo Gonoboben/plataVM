@@ -116,22 +116,41 @@ jobs:
       - name: Validate regenerated KiCad sources
         shell: bash
         run: |
-          set -euo pipefail
+          set -u
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
+          mkdir -p "$generated" artifacts
+
+          set +e
           python -m py_compile \
             Tools/kicad/generate_pcb_d_converter_core.py \
-            Tools/erc/pcb_d_kicad_symbol_gate.py
+            Tools/erc/pcb_d_kicad_symbol_gate.py \
+            > artifacts/parser_fix_v2_py_compile.log 2>&1
+          compile_status=$?
+
           python Tools/erc/pcb_d_kicad_symbol_gate.py \
             Hardware/KiCad/41_5V_DC_DC.kicad_sch \
             Hardware/KiCad/plataVM_symbols.kicad_sym \
-            | tee artifacts/parser_fix_v2_symbol_gate.log
-          rm -rf "$RUNNER_TEMP/pcb-d-generated"
+            > artifacts/parser_fix_v2_symbol_gate.log 2>&1
+          symbol_status=$?
+
           python Tools/kicad/generate_pcb_d_converter_core.py \
-            --output-dir "$RUNNER_TEMP/pcb-d-generated"
+            --output-dir "$generated" \
+            > artifacts/parser_fix_v2_generation.log 2>&1
+          generation_status=$?
+
           diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
-            "$RUNNER_TEMP/pcb-d-generated/41_5V_DC_DC.kicad_sch"
+            "$generated/41_5V_DC_DC.kicad_sch" \
+            > artifacts/parser_fix_v2_schematic.diff 2>&1
+          schematic_diff_status=$?
+
           diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
-            "$RUNNER_TEMP/pcb-d-generated/plataVM_symbols.kicad_sym"
-          python - <<'PY'
+            "$generated/plataVM_symbols.kicad_sym" \
+            > artifacts/parser_fix_v2_symbol_library.diff 2>&1
+          symbol_diff_status=$?
+
+          python - <<'PY' \
+            > artifacts/parser_fix_v2_hygiene.log 2>&1
           from pathlib import Path
 
           for name in (
@@ -146,8 +165,36 @@ jobs:
                   raise SystemExit(f'{name}: escaped parser-control sequence detected')
           print('KiCad parser hygiene: PASS')
           PY
+          hygiene_status=$?
+
           grep -q '(version 20260101)' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+          version_status=$?
           grep -q '(generator_version "10.0")' Hardware/KiCad/41_5V_DC_DC.kicad_sch
+          generator_version_status=$?
+          set -e
+
+          printf 'py_compile=%s\nsymbol_gate=%s\ngeneration=%s\nschematic_diff=%s\nsymbol_library_diff=%s\nhygiene=%s\nversion=%s\ngenerator_version=%s\n' \
+            "$compile_status" "$symbol_status" "$generation_status" \
+            "$schematic_diff_status" "$symbol_diff_status" "$hygiene_status" \
+            "$version_status" "$generator_version_status" \
+            > artifacts/parser_fix_v2_validation_exit_codes.txt
+
+          cat artifacts/parser_fix_v2_validation_exit_codes.txt
+          cat artifacts/parser_fix_v2_py_compile.log
+          cat artifacts/parser_fix_v2_symbol_gate.log
+          cat artifacts/parser_fix_v2_generation.log
+          cat artifacts/parser_fix_v2_schematic.diff
+          cat artifacts/parser_fix_v2_symbol_library.diff
+          cat artifacts/parser_fix_v2_hygiene.log
+
+          test "$compile_status" -eq 0
+          test "$symbol_status" -eq 0
+          test "$generation_status" -eq 0
+          test "$schematic_diff_status" -eq 0
+          test "$symbol_diff_status" -eq 0
+          test "$hygiene_status" -eq 0
+          test "$version_status" -eq 0
+          test "$generator_version_status" -eq 0
 
       - name: Upload verification evidence
         if: always()
