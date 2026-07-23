@@ -1,75 +1,4747 @@
 (kicad_sch
 	(version 20260306)
-	(generator "eeschema")
-	(generator_version "10.0")
-	(uuid "power-5v-0000-4000-8000-000000000041")
+	(generator "plataVM_symbol_gate")
+	(generator_version "1.0")
+	(uuid "d3c9d66b-51f6-53a6-af26-3a9355c81649")
 	(paper "A3")
 	(title_block
-		(title "41_5V_DC_DC - PCB-D converter core V1.9")
+		(title "41_5V_DC_DC - PCB-D converter core exact-symbol Gate V1.9")
 		(date "2026-07-23")
-		(rev "B2-PINMAP")
+		(rev "B3-SYMBOL")
 		(company "Gonoboben/plataVM")
-		(comment 1 "Prototype converter-core definition after LM5143DESIGN-CALC and exact RHA-40 pin-map Gates")
-		(comment 2 "Pin map verified; symbol instantiation/native ERC open; no production BOM, footprint, copper or layout freeze")
+		(comment 1 "Exact LM5143A-Q1 RHA-40 symbol instantiated; native ERC target")
+		(comment 2 "No production BOM, footprints, copper, layout or thermal freeze")
 	)
-	(lib_symbols)
-	(text "41_5V_DC_DC - PRELIMINARY CONVERTER CORE\nInput: PACK_BUS_P5_IN 9.2...16 V calculation range\nOutput: 5V_SYS_BUS 5.0 V / 15 A continuous / 20 A for 1 s\nTopology: LM5143A-Q1 single-output, two phases, 180 degree interleaving, FPWM\nHigh-current path is local to PCB-D."
+	(lib_symbols
+	(symbol "plataVM:LM5143A_Q1_RHA40"
+		(pin_names (offset 0.762))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "U"
+			(at 0 -29.21 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "LM5143A_Q1_RHA40"
+			(at 0 -26.67 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "https://www.ti.com/lit/ds/symlink/lm5143a-q1.pdf"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "LM5143A-Q1 PCB-D configured exact RHA-40 symbol; no footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "LM5143A_Q1_RHA40_0_1"
+			(rectangle
+				(start -12.7 -25.4)
+				(end 12.7 25.4)
+				(stroke (width 0.254) (type default))
+				(fill (type background))
+			)
+			(text "LM5143A-Q1" (at 0 -2.54 0) (effects (font (size 1.27 1.27))))
+			(text "RHA-40 / PCB-D" (at 0 0 0) (effects (font (size 1 1))))
+			(text "PIN MAP VERIFIED" (at 0 2.54 0) (effects (font (size 0.9 0.9))))
+		)
+		(symbol "LM5143A_Q1_RHA40_1_1"
+			(pin passive line
+				(at -15.24 -24.13 0)
+				(length 2.54)
+				(name "SS2" (effects (font (size 0.9 0.9))))
+				(number "1" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at -15.24 -21.59 0)
+				(length 2.54)
+				(name "COMP2" (effects (font (size 0.9 0.9))))
+				(number "2" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at -15.24 -19.05 0)
+				(length 2.54)
+				(name "FB2" (effects (font (size 0.9 0.9))))
+				(number "3" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at -15.24 -16.51 0)
+				(length 2.54)
+				(name "CS2" (effects (font (size 0.9 0.9))))
+				(number "4" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at -15.24 -13.97 0)
+				(length 2.54)
+				(name "VOUT2" (effects (font (size 0.9 0.9))))
+				(number "5" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_in line
+				(at -15.24 -11.43 0)
+				(length 2.54)
+				(name "VCCX" (effects (font (size 0.9 0.9))))
+				(number "6" (effects (font (size 0.9 0.9))))
+			)
+			(pin open_collector line
+				(at -15.24 -8.89 0)
+				(length 2.54)
+				(name "PG2" (effects (font (size 0.9 0.9))))
+				(number "7" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 -6.35 0)
+				(length 2.54)
+				(name "HOL2" (effects (font (size 0.9 0.9))))
+				(number "8" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 -3.81 0)
+				(length 2.54)
+				(name "HO2" (effects (font (size 0.9 0.9))))
+				(number "9" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at -15.24 -1.27 0)
+				(length 2.54)
+				(name "SW2" (effects (font (size 0.9 0.9))))
+				(number "10" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at -15.24 1.27 0)
+				(length 2.54)
+				(name "HB2" (effects (font (size 0.9 0.9))))
+				(number "11" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 3.81 0)
+				(length 2.54)
+				(name "LOL2" (effects (font (size 0.9 0.9))))
+				(number "12" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 6.35 0)
+				(length 2.54)
+				(name "LO2" (effects (font (size 0.9 0.9))))
+				(number "13" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_in line
+				(at -15.24 8.89 0)
+				(length 2.54)
+				(name "PGND2" (effects (font (size 0.9 0.9))))
+				(number "14" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_out line
+				(at -15.24 11.43 0)
+				(length 2.54)
+				(name "VCC" (effects (font (size 0.9 0.9))))
+				(number "15" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at -15.24 13.97 0)
+				(length 2.54)
+				(name "VCC" (effects (font (size 0.9 0.9))))
+				(number "16" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_in line
+				(at -15.24 16.51 0)
+				(length 2.54)
+				(name "PGND1" (effects (font (size 0.9 0.9))))
+				(number "17" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 19.05 0)
+				(length 2.54)
+				(name "LO1" (effects (font (size 0.9 0.9))))
+				(number "18" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at -15.24 21.59 0)
+				(length 2.54)
+				(name "LOL1" (effects (font (size 0.9 0.9))))
+				(number "19" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at -15.24 24.13 0)
+				(length 2.54)
+				(name "HB1" (effects (font (size 0.9 0.9))))
+				(number "20" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at 15.24 -24.13 180)
+				(length 2.54)
+				(name "SW1" (effects (font (size 0.9 0.9))))
+				(number "21" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at 15.24 -21.59 180)
+				(length 2.54)
+				(name "HO1" (effects (font (size 0.9 0.9))))
+				(number "22" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at 15.24 -19.05 180)
+				(length 2.54)
+				(name "HOL1" (effects (font (size 0.9 0.9))))
+				(number "23" (effects (font (size 0.9 0.9))))
+			)
+			(pin open_collector line
+				(at 15.24 -16.51 180)
+				(length 2.54)
+				(name "PG1" (effects (font (size 0.9 0.9))))
+				(number "24" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_in line
+				(at 15.24 -13.97 180)
+				(length 2.54)
+				(name "VIN" (effects (font (size 0.9 0.9))))
+				(number "25" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 -11.43 180)
+				(length 2.54)
+				(name "VOUT1" (effects (font (size 0.9 0.9))))
+				(number "26" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 -8.89 180)
+				(length 2.54)
+				(name "CS1" (effects (font (size 0.9 0.9))))
+				(number "27" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 -6.35 180)
+				(length 2.54)
+				(name "FB1" (effects (font (size 0.9 0.9))))
+				(number "28" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at 15.24 -3.81 180)
+				(length 2.54)
+				(name "COMP1" (effects (font (size 0.9 0.9))))
+				(number "29" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 -1.27 180)
+				(length 2.54)
+				(name "SS1" (effects (font (size 0.9 0.9))))
+				(number "30" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 1.27 180)
+				(length 2.54)
+				(name "EN1" (effects (font (size 0.9 0.9))))
+				(number "31" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at 15.24 3.81 180)
+				(length 2.54)
+				(name "RES" (effects (font (size 0.9 0.9))))
+				(number "32" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 6.35 180)
+				(length 2.54)
+				(name "DEMB" (effects (font (size 0.9 0.9))))
+				(number "33" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 8.89 180)
+				(length 2.54)
+				(name "MODE" (effects (font (size 0.9 0.9))))
+				(number "34" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_in line
+				(at 15.24 11.43 180)
+				(length 2.54)
+				(name "AGND" (effects (font (size 0.9 0.9))))
+				(number "35" (effects (font (size 0.9 0.9))))
+			)
+			(pin power_out line
+				(at 15.24 13.97 180)
+				(length 2.54)
+				(name "VDDA" (effects (font (size 0.9 0.9))))
+				(number "36" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 16.51 180)
+				(length 2.54)
+				(name "RT" (effects (font (size 0.9 0.9))))
+				(number "37" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 19.05 180)
+				(length 2.54)
+				(name "DITH" (effects (font (size 0.9 0.9))))
+				(number "38" (effects (font (size 0.9 0.9))))
+			)
+			(pin output line
+				(at 15.24 21.59 180)
+				(length 2.54)
+				(name "SYNCOUT" (effects (font (size 0.9 0.9))))
+				(number "39" (effects (font (size 0.9 0.9))))
+			)
+			(pin input line
+				(at 15.24 24.13 180)
+				(length 2.54)
+				(name "EN2" (effects (font (size 0.9 0.9))))
+				(number "40" (effects (font (size 0.9 0.9))))
+			)
+			(pin passive line
+				(at 0 27.94 270)
+				(length 2.54)
+				(name "EXPOSED_PAD" (effects (font (size 0.9 0.9))))
+				(number "EP" (effects (font (size 0.9 0.9))))
+			)
+		)
+	)
+	(symbol "plataVM:R"
+		(pin_names (offset 0))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "R"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "R"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "R_0_1"
+			(rectangle (start -2.54 -1.016) (end 2.54 1.016) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "R_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:C"
+		(pin_names (offset 0))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "C"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "C"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "C_0_1"
+			(polyline (pts (xy -0.762 -2.032) (xy -0.762 2.032)) (stroke (width 0.254) (type default)) (fill (type none)))
+			(polyline (pts (xy 0.762 -2.032) (xy 0.762 2.032)) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "C_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:L"
+		(pin_names (offset 0))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "L"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "L"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "L_0_1"
+			(rectangle (start -2.54 -1.27) (end 2.54 1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+			(text "L" (at 0 0 0) (effects (font (size 1 1))))
+		)
+		(symbol "L_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:D"
+		(pin_names (offset 0))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "D"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "D"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "D_0_1"
+			(polyline (pts (xy -1.27 -1.778) (xy -1.27 1.778) (xy 1.27 0) (xy -1.27 -1.778)) (stroke (width 0.254) (type default)) (fill (type none)))
+			(polyline (pts (xy 1.27 -1.778) (xy 1.27 1.778)) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "D_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:NET_TIE_TBD"
+		(pin_names (offset 0))
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(property "Reference" "NT"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "NET_TIE_TBD"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "NET_TIE_TBD_0_1"
+			(rectangle (start -2.54 -1.27) (end 2.54 1.27) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "NET_TIE_TBD_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:NMOS_POWER"
+		(pin_names (offset 0.5))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "Q"
+			(at 0 -4.064 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "NMOS_POWER"
+			(at 0 4.064 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "NMOS_POWER_0_1"
+			(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))
+			(text "NMOS" (at 0 0 0) (effects (font (size 0.8 0.8))))
+		)
+		(symbol "NMOS_POWER_1_1"
+			(pin passive line (at -5.08 0 0) (length 2.54) (name "G" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:PWR_FLAG"
+		(pin_names hide)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(property "Reference" "#FLG"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Value" "PWR_FLAG"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "PWR_FLAG_0_1"
+			(polyline (pts (xy -1.27 0) (xy 1.27 0)) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "PWR_FLAG_1_1"
+			(pin power_out line (at 0 2.54 270) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+		)
+	)
+	(symbol "plataVM:TESTPOINT"
+		(pin_names hide)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(property "Reference" "TP"
+			(at 0 -2.54 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Value" "TESTPOINT"
+			(at 0 2.54 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(symbol "TESTPOINT_0_1"
+			(polyline (pts (xy -1.27 0) (xy 1.27 0)) (stroke (width 0.254) (type default)) (fill (type none)))
+		)
+		(symbol "TESTPOINT_1_1"
+			(pin passive line (at 0 2.54 270) (length 2.54) (name "1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+		)
+	)
+\t(symbol "plataVM:UVLO_SUPERVISOR_TBD"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+		(property "Reference" "U"
+			(at 0 -7.62 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Value" "UVLO_SUPERVISOR_TBD"
+			(at 0 7.62 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Description" "CALC_TBD placeholder; no production part/footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+\t\t(symbol "UVLO_SUPERVISOR_TBD_0_1"
+\t\t\t(rectangle (start -7.62 -5.08) (end 7.62 5.08) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) (effects (font (size 0.9 0.9))))
+\t\t)
+\t\t(symbol "UVLO_SUPERVISOR_TBD_1_1"
+\t\t\t(pin power_in line (at -10.16 -2.54 0) (length 2.54) (name "VIN_SENSE" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin power_in line (at -10.16 2.54 0) (length 2.54) (name "GND" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin output line (at 10.16 0 180) (length 2.54) (name "UVLO_OK" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+\t\t)
+\t)
+\t(symbol "plataVM:HW_ENABLE_GATE_TBD"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+		(property "Reference" "U"
+			(at 0 -11.43 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Value" "HW_ENABLE_GATE_TBD"
+			(at 0 11.43 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Description" "CALC_TBD placeholder; no production part/footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+\t\t(symbol "HW_ENABLE_GATE_TBD_0_1"
+\t\t\t(rectangle (start -10.16 -8.89) (end 10.16 8.89) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) (effects (font (size 0.9 0.9))))
+\t\t)
+\t\t(symbol "HW_ENABLE_GATE_TBD_1_1"
+\t\t\t(pin input line (at -12.7 -6.35 0) (length 2.54) (name "5V_SYS_EN" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -12.7 -3.81 0) (length 2.54) (name "UVLO_OK" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -12.7 -1.27 0) (length 2.54) (name "SAFE_OFF" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -12.7 1.27 0) (length 2.54) (name "HARD_OFF" (effects (font (size 0.8 0.8)))) (number "4" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin power_in line (at -12.7 3.81 0) (length 2.54) (name "PACK_BIAS" (effects (font (size 0.8 0.8)))) (number "5" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin power_in line (at -12.7 6.35 0) (length 2.54) (name "GND" (effects (font (size 0.8 0.8)))) (number "6" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin output line (at 12.7 0 180) (length 2.54) (name "EN_RUN" (effects (font (size 0.8 0.8)))) (number "7" (effects (font (size 0.8 0.8)))))
+\t\t)
+\t)
+\t(symbol "plataVM:FAULT_EXPORT_TBD"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+		(property "Reference" "U"
+			(at 0 -8.89 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Value" "FAULT_EXPORT_TBD"
+			(at 0 8.89 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Description" "CALC_TBD placeholder; no production part/footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+\t\t(symbol "FAULT_EXPORT_TBD_0_1"
+\t\t\t(rectangle (start -8.89 -6.35) (end 8.89 6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) (effects (font (size 0.9 0.9))))
+\t\t)
+\t\t(symbol "FAULT_EXPORT_TBD_1_1"
+\t\t\t(pin input line (at -11.43 -3.81 0) (length 2.54) (name "PGOOD_OD" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -11.43 -1.27 0) (length 2.54) (name "UVLO_OK" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -11.43 1.27 0) (length 2.54) (name "EN_RUN" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin power_in line (at -11.43 3.81 0) (length 2.54) (name "GND" (effects (font (size 0.8 0.8)))) (number "4" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin open_collector line (at 11.43 0 180) (length 2.54) (name "FAULT_N" (effects (font (size 0.8 0.8)))) (number "5" (effects (font (size 0.8 0.8)))))
+\t\t)
+\t)
+\t(symbol "plataVM:ISENSE_EXPORT_TBD"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+		(property "Reference" "U"
+			(at 0 -6.35 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Value" "ISENSE_EXPORT_TBD"
+			(at 0 6.35 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Description" "CALC_TBD placeholder; no production part/footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+\t\t(symbol "ISENSE_EXPORT_TBD_0_1"
+\t\t\t(rectangle (start -7.62 -3.81) (end 7.62 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) (effects (font (size 0.9 0.9))))
+\t\t)
+\t\t(symbol "ISENSE_EXPORT_TBD_1_1"
+\t\t\t(pin input line (at -10.16 -1.27 0) (length 2.54) (name "SHUNT_HI" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -10.16 1.27 0) (length 2.54) (name "SHUNT_LO" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin output line (at 10.16 0 180) (length 2.54) (name "ISENSE" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+\t\t)
+\t)
+\t(symbol "plataVM:ISENSE_SUM_TBD"
+\t\t(pin_names (offset 0.6))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+		(property "Reference" "U"
+			(at 0 -6.35 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Value" "ISENSE_SUM_TBD"
+			(at 0 6.35 0)
+			(effects (font (size 1 1)))
+		)\n		(property "Footprint" ""
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Datasheet" "~"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)\n		(property "Description" "CALC_TBD placeholder; no production part/footprint freeze"
+			(at 0 0 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+\t\t(symbol "ISENSE_SUM_TBD_0_1"
+\t\t\t(rectangle (start -7.62 -3.81) (end 7.62 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "CALC_TBD" (at 0 0 0) (effects (font (size 0.9 0.9))))
+\t\t)
+\t\t(symbol "ISENSE_SUM_TBD_1_1"
+\t\t\t(pin input line (at -10.16 -1.27 0) (length 2.54) (name "PHASE1" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin input line (at -10.16 1.27 0) (length 2.54) (name "PHASE2" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+\t\t\t(pin output line (at 10.16 0 180) (length 2.54) (name "TOTAL" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+\t\t)
+\t)
+	)
+	(symbol
+		(lib_id "plataVM:LM5143A_Q1_RHA40")
+		(at 150 95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "94cad467-8d35-5990-ae6e-a509ab43f03f")
+		(property "Reference" "U_DCDC"
+			(at 150 91 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "LM5143QRHARQ1"
+			(at 150 99 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 150 95 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 150 95 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 150 95 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "bee210cc-f58c-5eb0-9c20-f489877b1482")
+		)
+		(pin "2"
+			(uuid "6f01e71a-288b-5f4c-9367-b2d13a68a081")
+		)
+		(pin "3"
+			(uuid "158558be-72d7-5563-b70c-114d3bef5a2d")
+		)
+		(pin "4"
+			(uuid "1c528313-868d-503a-8a42-73af76461c25")
+		)
+		(pin "5"
+			(uuid "14841d75-1755-583c-a076-f802d8232ba8")
+		)
+		(pin "6"
+			(uuid "09a6c13b-8a80-5d8a-8197-45fe5ef1bc68")
+		)
+		(pin "7"
+			(uuid "5eb3638f-adac-5d08-893e-d69486d5dbf7")
+		)
+		(pin "8"
+			(uuid "bc0a482c-53dc-59d1-973a-40da12f500cd")
+		)
+		(pin "9"
+			(uuid "1b0d3213-232c-559e-9ee9-ed457b50d6f7")
+		)
+		(pin "10"
+			(uuid "4c017ba4-5a89-5e9d-be18-776fef7188c9")
+		)
+		(pin "11"
+			(uuid "f28d4d48-c759-5f16-acfa-95e5567152d6")
+		)
+		(pin "12"
+			(uuid "db8441f3-4bc6-5204-be5a-260741701c55")
+		)
+		(pin "13"
+			(uuid "7593d1ce-c579-5cc1-90d6-90ab03e78b5f")
+		)
+		(pin "14"
+			(uuid "9305c7a3-bcd9-5890-9f06-9d0ffb4ef79b")
+		)
+		(pin "15"
+			(uuid "625a4535-88d3-5575-be8b-a2c6c0c387c1")
+		)
+		(pin "16"
+			(uuid "65f43530-380b-593b-82b0-1c75fae15259")
+		)
+		(pin "17"
+			(uuid "419735f7-6555-55e7-8c60-3440b4ee5197")
+		)
+		(pin "18"
+			(uuid "1e9eb465-ac66-50ea-a72f-4c7f52f4b067")
+		)
+		(pin "19"
+			(uuid "e4ae358b-f46e-575b-890c-6eaa92ba4124")
+		)
+		(pin "20"
+			(uuid "1ff4b2d0-f683-55d8-81a1-5610c3748004")
+		)
+		(pin "21"
+			(uuid "a37c8012-0069-5ce3-9eaf-2554d60c980b")
+		)
+		(pin "22"
+			(uuid "8c943035-468a-594e-bda8-47fe179a7a9f")
+		)
+		(pin "23"
+			(uuid "d1be4c63-5405-5983-9f81-fd8850a1a8db")
+		)
+		(pin "24"
+			(uuid "33574f39-9302-595a-9b47-d22512cd51ff")
+		)
+		(pin "25"
+			(uuid "42499e67-90d3-550d-a8b4-ec057f7df274")
+		)
+		(pin "26"
+			(uuid "67810c40-6392-5be8-95dc-18b4656a2144")
+		)
+		(pin "27"
+			(uuid "d826b70f-894d-5e16-b9de-17cae7ce3ff5")
+		)
+		(pin "28"
+			(uuid "184f4b54-6a99-5260-ba39-d5bf3506a8bf")
+		)
+		(pin "29"
+			(uuid "c7848def-add9-59c5-9fa4-f00728c03d04")
+		)
+		(pin "30"
+			(uuid "1803b4ef-80bf-54ec-a4d5-04ceb0349712")
+		)
+		(pin "31"
+			(uuid "f6b2c813-ddf8-5303-bb3b-4e9a1442f8d6")
+		)
+		(pin "32"
+			(uuid "0708652f-8e4f-56e5-b6b5-fbac420b937f")
+		)
+		(pin "33"
+			(uuid "250509bb-e9e1-5d55-9c17-8db42fe711d2")
+		)
+		(pin "34"
+			(uuid "bd3ec832-557b-566b-bea7-46aedfdad6be")
+		)
+		(pin "35"
+			(uuid "2f2a5644-3a99-51d8-909f-0fc5e905e9f3")
+		)
+		(pin "36"
+			(uuid "22dc18fc-fe85-5c4d-ab0a-b53b783abf03")
+		)
+		(pin "37"
+			(uuid "15105de5-a98a-5cc0-b570-646fdee6cfaa")
+		)
+		(pin "38"
+			(uuid "738ff380-2928-5f9a-bc58-4542f89712ba")
+		)
+		(pin "39"
+			(uuid "2d11a072-fef6-5f62-8502-1c43d3668a71")
+		)
+		(pin "40"
+			(uuid "0c1caa69-a52d-5520-a1c2-6414e7f88519")
+		)
+		(pin "EP"
+			(uuid "70db5668-02c4-5574-a499-d400515cb5f0")
+		)
+		(instances
+			(project "plataVM"
+				(path "/94cad467-8d35-5990-ae6e-a509ab43f03f"
+					(reference "U_DCDC")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 134.76 70.87) (xy 129.68 70.87))
+		(stroke (width 0) (type default))
+		(uuid "87106592-d644-5b66-8b72-fb028d41fabe")
+	)
+	(label "SS_COMMON"
+		(at 129.68 70.87 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "13e45e0e-243a-5d20-90ce-2c942141cd19")
+	)
+	(wire
+		(pts (xy 134.76 73.41) (xy 129.68 73.41))
+		(stroke (width 0) (type default))
+		(uuid "db6dc559-de60-5321-989f-764e717a5c1b")
+	)
+	(label "COMP_COMMON"
+		(at 129.68 73.41 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "b567f718-7a20-525a-ae06-a926503dcf4c")
+	)
+	(wire
+		(pts (xy 134.76 75.95) (xy 129.68 75.95))
+		(stroke (width 0) (type default))
+		(uuid "b191046c-b490-5e20-a502-385555c1f6c4")
+	)
+	(label "AGND"
+		(at 129.68 75.95 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "ae35adc6-502a-5c9a-9a2f-50f0b9efbd89")
+	)
+	(wire
+		(pts (xy 134.76 78.49) (xy 129.68 78.49))
+		(stroke (width 0) (type default))
+		(uuid "39f4d8f2-a1df-565d-9b45-712671cc4000")
+	)
+	(label "CS2_FILTERED"
+		(at 129.68 78.49 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "111e2db3-e032-5379-a381-f5260774959c")
+	)
+	(wire
+		(pts (xy 134.76 81.03) (xy 129.68 81.03))
+		(stroke (width 0) (type default))
+		(uuid "37314ae8-e8a8-55ea-b8d6-190d0e9a6960")
+	)
+	(label "5V_SYS_BUS"
+		(at 129.68 81.03 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "bfc23960-b7ba-5037-a162-182e0e7659e1")
+	)
+	(wire
+		(pts (xy 134.76 83.57) (xy 129.68 83.57))
+		(stroke (width 0) (type default))
+		(uuid "efebca85-f3ae-5108-9e9f-9e2db00883c5")
+	)
+	(label "5V_SYS_BUS"
+		(at 129.68 83.57 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "243fadc1-6377-5484-b3d9-cf1a1ec0c5dd")
+	)
+	(wire
+		(pts (xy 134.76 86.11) (xy 129.68 86.11))
+		(stroke (width 0) (type default))
+		(uuid "e7d1c905-783c-5764-885e-2d9674eeda2e")
+	)
+	(label "NC_PG2_TESTPAD"
+		(at 129.68 86.11 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "d4bd4160-495f-5dcb-ba45-8581b65afb3b")
+	)
+	(wire
+		(pts (xy 134.76 88.65) (xy 129.68 88.65))
+		(stroke (width 0) (type default))
+		(uuid "be79bde0-c267-53a0-a87d-3a2c8d9fcd95")
+	)
+	(label "GH2_OFF"
+		(at 129.68 88.65 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "e90bf076-a155-55f9-b3cc-d4ff007d1147")
+	)
+	(wire
+		(pts (xy 134.76 91.19) (xy 129.68 91.19))
+		(stroke (width 0) (type default))
+		(uuid "b9e5d7de-77d4-5356-b959-624a4a195626")
+	)
+	(label "GH2_ON"
+		(at 129.68 91.19 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "17fc9a7f-9863-5e9d-ae52-0168649a99c1")
+	)
+	(wire
+		(pts (xy 134.76 93.73) (xy 129.68 93.73))
+		(stroke (width 0) (type default))
+		(uuid "d720b80e-491b-54d0-a1e2-edf397f7d8e4")
+	)
+	(label "PHASE2_SW"
+		(at 129.68 93.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "e46575ed-6fd7-512c-bb58-07225682c1c7")
+	)
+	(wire
+		(pts (xy 134.76 96.27) (xy 129.68 96.27))
+		(stroke (width 0) (type default))
+		(uuid "1b7b917e-cbe6-53e3-bcc3-600866da908a")
+	)
+	(label "HB2_BOOT"
+		(at 129.68 96.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "942b784b-4bfb-5a9b-be03-5e7d2f4bce8b")
+	)
+	(wire
+		(pts (xy 134.76 98.81) (xy 129.68 98.81))
+		(stroke (width 0) (type default))
+		(uuid "05675146-c923-5106-8493-b071a22f1c0a")
+	)
+	(label "GL2_OFF"
+		(at 129.68 98.81 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "519eb73a-e198-563f-8563-14dc2315664f")
+	)
+	(wire
+		(pts (xy 134.76 101.35) (xy 129.68 101.35))
+		(stroke (width 0) (type default))
+		(uuid "7d9970fc-0258-5b49-9bc8-c091379b6a52")
+	)
+	(label "GL2_ON"
+		(at 129.68 101.35 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "74254d88-d824-53dd-a282-2402395efc03")
+	)
+	(wire
+		(pts (xy 134.76 103.89) (xy 129.68 103.89))
+		(stroke (width 0) (type default))
+		(uuid "be18dd67-7aaa-5fcc-9484-740d382057bd")
+	)
+	(label "POWER_GND"
+		(at 129.68 103.89 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "80bc29bb-296d-5795-9253-8111d9de3a4e")
+	)
+	(wire
+		(pts (xy 134.76 106.43) (xy 129.68 106.43))
+		(stroke (width 0) (type default))
+		(uuid "f77cbcee-ba8a-5137-8674-f7dbbcd273c8")
+	)
+	(label "VCC_BIAS"
+		(at 129.68 106.43 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "65784111-2544-52ec-86be-deea252556da")
+	)
+	(wire
+		(pts (xy 134.76 108.97) (xy 129.68 108.97))
+		(stroke (width 0) (type default))
+		(uuid "b5fe91c1-5b7f-5f4c-8fd6-b12380059266")
+	)
+	(label "VCC_BIAS"
+		(at 129.68 108.97 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "43c999f5-d136-5532-b08f-69511978d40e")
+	)
+	(wire
+		(pts (xy 134.76 111.51) (xy 129.68 111.51))
+		(stroke (width 0) (type default))
+		(uuid "348ba318-4a57-5e7c-aa87-3dc772c5594e")
+	)
+	(label "POWER_GND"
+		(at 129.68 111.51 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "639d2068-b7e4-550a-ae47-8aa6f12669c9")
+	)
+	(wire
+		(pts (xy 134.76 114.05) (xy 129.68 114.05))
+		(stroke (width 0) (type default))
+		(uuid "75361bbc-1689-5c10-a691-7137f5918d21")
+	)
+	(label "GL1_ON"
+		(at 129.68 114.05 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "075af9a8-960d-5619-9395-1e8c1e77ad5f")
+	)
+	(wire
+		(pts (xy 134.76 116.59) (xy 129.68 116.59))
+		(stroke (width 0) (type default))
+		(uuid "8c3e891e-eb77-5f04-b684-a2ba21d33256")
+	)
+	(label "GL1_OFF"
+		(at 129.68 116.59 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "94e5b575-e7f4-58dc-8aaa-701642713f82")
+	)
+	(wire
+		(pts (xy 134.76 119.13) (xy 129.68 119.13))
+		(stroke (width 0) (type default))
+		(uuid "ff1de7a0-b59f-53e1-ae9a-00988622c2f3")
+	)
+	(label "HB1_BOOT"
+		(at 129.68 119.13 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "6ee01b36-91b0-5184-b74e-547e1c497eb3")
+	)
+	(wire
+		(pts (xy 165.24 70.87) (xy 170.32 70.87))
+		(stroke (width 0) (type default))
+		(uuid "7dd9a830-fcd3-5877-85a5-163e7a8a6971")
+	)
+	(label "PHASE1_SW"
+		(at 170.32 70.87 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "0d65bfd1-6261-5eca-9016-9a34c9baccf6")
+	)
+	(wire
+		(pts (xy 165.24 73.41) (xy 170.32 73.41))
+		(stroke (width 0) (type default))
+		(uuid "4699a7c7-11c0-548a-8a74-58a031115409")
+	)
+	(label "GH1_ON"
+		(at 170.32 73.41 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "ea275c72-1dd3-5546-92fb-3496f64462b7")
+	)
+	(wire
+		(pts (xy 165.24 75.95) (xy 170.32 75.95))
+		(stroke (width 0) (type default))
+		(uuid "ed6e568a-bb99-5f17-86fd-61b816aa7a43")
+	)
+	(label "GH1_OFF"
+		(at 170.32 75.95 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b6c0f9e5-e3fe-5618-add7-26bdec88d498")
+	)
+	(wire
+		(pts (xy 165.24 78.49) (xy 170.32 78.49))
+		(stroke (width 0) (type default))
+		(uuid "a3562ae4-8bb7-5eea-8f4e-abc308107c19")
+	)
+	(label "P5_PGOOD_OD"
+		(at 170.32 78.49 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "7d920fda-8af5-56ab-b130-810c775af0c3")
+	)
+	(wire
+		(pts (xy 165.24 81.03) (xy 170.32 81.03))
+		(stroke (width 0) (type default))
+		(uuid "121d5190-bf38-5f15-9560-47522f44d56d")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 170.32 81.03 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "af451864-4f72-502a-9611-ab7cd814f55d")
+	)
+	(wire
+		(pts (xy 165.24 83.57) (xy 170.32 83.57))
+		(stroke (width 0) (type default))
+		(uuid "3b9d6f55-fc34-503c-b6bc-70a780ee8399")
+	)
+	(label "5V_SYS_BUS"
+		(at 170.32 83.57 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "460c681e-6114-566e-839f-cb195eedde8c")
+	)
+	(wire
+		(pts (xy 165.24 86.11) (xy 170.32 86.11))
+		(stroke (width 0) (type default))
+		(uuid "7c58ac40-7f3e-5ff3-8362-5594b00cb079")
+	)
+	(label "CS1_FILTERED"
+		(at 170.32 86.11 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "95e2a243-f46d-5814-ba39-da4866fee937")
+	)
+	(wire
+		(pts (xy 165.24 88.65) (xy 170.32 88.65))
+		(stroke (width 0) (type default))
+		(uuid "1086bd77-4308-5f3b-8311-c1f64b699960")
+	)
+	(label "AGND"
+		(at 170.32 88.65 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "2bf3522c-1a13-557c-a676-d6cc3aed5195")
+	)
+	(wire
+		(pts (xy 165.24 91.19) (xy 170.32 91.19))
+		(stroke (width 0) (type default))
+		(uuid "97beffd2-ca30-591d-8501-85cb212a293d")
+	)
+	(label "COMP_COMMON"
+		(at 170.32 91.19 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "2d084698-5e0f-5ee9-ae7a-fa6728dfb1a7")
+	)
+	(wire
+		(pts (xy 165.24 93.73) (xy 170.32 93.73))
+		(stroke (width 0) (type default))
+		(uuid "e2ad6b7a-6286-5666-bdc3-7d16e0167f37")
+	)
+	(label "SS_COMMON"
+		(at 170.32 93.73 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e5ab82c4-404d-5701-9366-b8932f7a997b")
+	)
+	(wire
+		(pts (xy 165.24 96.27) (xy 170.32 96.27))
+		(stroke (width 0) (type default))
+		(uuid "ae9e373a-b952-5aa5-87f5-5c65b4f4404e")
+	)
+	(label "EN_RUN"
+		(at 170.32 96.27 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "238799bd-a812-57db-93b2-b5a6bef838dd")
+	)
+	(wire
+		(pts (xy 165.24 98.81) (xy 170.32 98.81))
+		(stroke (width 0) (type default))
+		(uuid "e2720726-d00f-5429-ae08-e3b02ef2f134")
+	)
+	(label "RES_TIMER"
+		(at 170.32 98.81 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "a3e5b8f1-ab48-5682-9ad2-d1464670d44a")
+	)
+	(wire
+		(pts (xy 165.24 101.35) (xy 170.32 101.35))
+		(stroke (width 0) (type default))
+		(uuid "f38de610-9d04-5aa8-96e5-727ca73b139e")
+	)
+	(label "VDDA_BIAS"
+		(at 170.32 101.35 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "fc3c68d7-6e40-5290-b021-3ce9bc773dac")
+	)
+	(wire
+		(pts (xy 165.24 103.89) (xy 170.32 103.89))
+		(stroke (width 0) (type default))
+		(uuid "da500383-4909-5393-b844-b711de3b536b")
+	)
+	(label "VDDA_BIAS"
+		(at 170.32 103.89 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "f7e49155-fc78-5652-8da9-00fe038de6f3")
+	)
+	(wire
+		(pts (xy 165.24 106.43) (xy 170.32 106.43))
+		(stroke (width 0) (type default))
+		(uuid "2e321791-96f6-5348-b56f-f14ac55d6621")
+	)
+	(label "AGND"
+		(at 170.32 106.43 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "638ae7fb-86e5-5c75-9d56-729b7ac1c9e8")
+	)
+	(wire
+		(pts (xy 165.24 108.97) (xy 170.32 108.97))
+		(stroke (width 0) (type default))
+		(uuid "235e6783-1d9e-5d8f-8444-24a370998fda")
+	)
+	(label "VDDA_BIAS"
+		(at 170.32 108.97 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "bb393713-3244-5270-bdfa-c265bf0b2c92")
+	)
+	(wire
+		(pts (xy 165.24 111.51) (xy 170.32 111.51))
+		(stroke (width 0) (type default))
+		(uuid "9eda7011-c09d-5916-9ac7-8d33c7c49e67")
+	)
+	(label "RT_SET"
+		(at 170.32 111.51 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "341c862e-df69-5172-9cc9-bea16934ea77")
+	)
+	(wire
+		(pts (xy 165.24 114.05) (xy 170.32 114.05))
+		(stroke (width 0) (type default))
+		(uuid "96c4aa71-1a36-58ea-8d29-c6ed05a3f4ad")
+	)
+	(label "VDDA_BIAS"
+		(at 170.32 114.05 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c3c69b97-447c-5d91-9ac3-b04a5379cd07")
+	)
+	(wire
+		(pts (xy 165.24 116.59) (xy 170.32 116.59))
+		(stroke (width 0) (type default))
+		(uuid "855e2fac-e037-5589-a027-b3ecd64204b3")
+	)
+	(label "SYNCOUT_TESTPAD"
+		(at 170.32 116.59 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b0b30a63-20bb-56ba-98c6-87c49a02305c")
+	)
+	(wire
+		(pts (xy 165.24 119.13) (xy 170.32 119.13))
+		(stroke (width 0) (type default))
+		(uuid "3888afdb-18eb-5fed-955d-d46201b60856")
+	)
+	(label "EN_RUN"
+		(at 170.32 119.13 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "6b8c1828-93e9-5068-bcbd-e17072969e17")
+	)
+	(wire
+		(pts (xy 150 122.94) (xy 150 128.02))
+		(stroke (width 0) (type default))
+		(uuid "a199a745-51d6-53f2-8ba2-bea866a54f02")
+	)
+	(label "AGND"
+		(at 150 128.02 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "6845542c-30e2-5343-93a2-67258dc3175e")
+	)
+	(symbol
+		(lib_id "plataVM:NMOS_POWER")
+		(at 35 55 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "156ad05d-50f6-5838-a0e0-d8d89974c9c1")
+		(property "Reference" "Q_HS1"
+			(at 35 51 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "BUK9Y6R0-60E,115"
+			(at 35 59 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 35 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 35 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 35 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "f0bfb7c3-19e8-50b8-849c-37c4747b7d2a")
+		)
+		(pin "2"
+			(uuid "8d0e7062-1052-5105-85a9-d02015cff84c")
+		)
+		(pin "3"
+			(uuid "c8d03c85-cc90-55b4-bb89-a3743b311eb7")
+		)
+		(instances
+			(project "plataVM"
+				(path "/156ad05d-50f6-5838-a0e0-d8d89974c9c1"
+					(reference "Q_HS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 29.92 55) (xy 27.38 55))
+		(stroke (width 0) (type default))
+		(uuid "79005ffa-b100-5d42-9f42-c5fa42807fba")
+	)
+	(label "Q_HS1_GATE"
+		(at 27.38 55 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "484a4cdf-fce1-5efa-856a-276e5c6dddc6")
+	)
+	(wire
+		(pts (xy 40.08 53.73) (xy 42.62 53.73))
+		(stroke (width 0) (type default))
+		(uuid "9e2d755f-fe36-5305-9a08-1e8150c60c7a")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 42.62 53.73 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c3acfe11-600f-55be-bce4-8fcba45d509a")
+	)
+	(wire
+		(pts (xy 40.08 56.27) (xy 42.62 56.27))
+		(stroke (width 0) (type default))
+		(uuid "856787a6-7a62-5d4b-8d88-bd8e28207981")
+	)
+	(label "PHASE1_SW"
+		(at 42.62 56.27 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c6e48fd1-1c17-56ed-b62c-487d09815e2b")
+	)
+	(symbol
+		(lib_id "plataVM:NMOS_POWER")
+		(at 35 70 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "14d7169f-794f-552d-bb02-c430a8c4916a")
+		(property "Reference" "Q_LS1"
+			(at 35 66 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "BUK9Y6R0-60E,115"
+			(at 35 74 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 35 70 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 35 70 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 35 70 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "64a6d090-2169-561e-8223-798c7a0aa0d5")
+		)
+		(pin "2"
+			(uuid "3c6fca1c-679d-5f5a-93e8-b5948e69c2a4")
+		)
+		(pin "3"
+			(uuid "1ffb7c0c-35c1-5682-867a-84e493aa0bdb")
+		)
+		(instances
+			(project "plataVM"
+				(path "/14d7169f-794f-552d-bb02-c430a8c4916a"
+					(reference "Q_LS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 29.92 70) (xy 27.38 70))
+		(stroke (width 0) (type default))
+		(uuid "11dfbf48-5b03-5799-aa2f-599a4331f9f9")
+	)
+	(label "Q_LS1_GATE"
+		(at 27.38 70 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "abd6b9f2-3e07-58df-b1d7-f2f6a794bff3")
+	)
+	(wire
+		(pts (xy 40.08 68.73) (xy 42.62 68.73))
+		(stroke (width 0) (type default))
+		(uuid "7292173d-b9f9-5a21-a90e-a1d3ba379dd4")
+	)
+	(label "PHASE1_SW"
+		(at 42.62 68.73 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "f408437d-8efc-5526-980b-584969d97055")
+	)
+	(wire
+		(pts (xy 40.08 71.27) (xy 42.62 71.27))
+		(stroke (width 0) (type default))
+		(uuid "83b6f890-dfb7-5a2b-bd37-793c3ce3dbd8")
+	)
+	(label "POWER_GND"
+		(at 42.62 71.27 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e2eeffa6-cc3d-57c5-981d-5c5aacf8f62b")
+	)
+	(symbol
+		(lib_id "plataVM:L")
+		(at 62 60 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0ee59b6c-a59f-52fa-9236-65a2d5108ce6")
+		(property "Reference" "L1"
+			(at 62 56 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "XAL1010-332MED 3.3uH"
+			(at 62 64 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 62 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 62 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 62 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "13bee186-7331-5cda-ab2f-06f14694d4e2")
+		)
+		(pin "2"
+			(uuid "e47eb093-d649-5bd0-bbe3-e578fb38848d")
+		)
+		(instances
+			(project "plataVM"
+				(path "/0ee59b6c-a59f-52fa-9236-65a2d5108ce6"
+					(reference "L1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 56.92 60) (xy 54.38 60))
+		(stroke (width 0) (type default))
+		(uuid "0b68ba31-8db6-5d02-9cb3-a934962e022f")
+	)
+	(label "PHASE1_SW"
+		(at 54.38 60 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "38f723cd-0a95-5f95-81c0-0cb349d15a82")
+	)
+	(wire
+		(pts (xy 67.08 60) (xy 69.62 60))
+		(stroke (width 0) (type default))
+		(uuid "31056410-803c-58d2-8cd5-272f54c91961")
+	)
+	(label "PHASE1_L_OUT"
+		(at 69.62 60 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "11a47099-6c12-5eff-a3cc-ecfdf2192a41")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 88 60 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "78c699d6-dc26-5aee-8e22-3d806152b0b1")
+		(property "Reference" "RSH1"
+			(at 88 56 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "WSK25125L000FEA 5mR 1%"
+			(at 88 64 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 88 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 88 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 88 60 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "d3987057-9ff7-505b-95a0-3ebad621024d")
+		)
+		(pin "2"
+			(uuid "62f296e5-6c1f-52d1-91ad-a012d76df999")
+		)
+		(instances
+			(project "plataVM"
+				(path "/78c699d6-dc26-5aee-8e22-3d806152b0b1"
+					(reference "RSH1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 82.92 60) (xy 80.38 60))
+		(stroke (width 0) (type default))
+		(uuid "6761b9b2-80cf-5e47-b621-1e88f3f6d735")
+	)
+	(label "PHASE1_L_OUT"
+		(at 80.38 60 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "ba9f1e46-dabf-5d91-9bd0-795167bab4ad")
+	)
+	(wire
+		(pts (xy 93.08 60) (xy 95.62 60))
+		(stroke (width 0) (type default))
+		(uuid "8a4a9b24-fcbf-5047-8355-9db537dcda2f")
+	)
+	(label "5V_SYS_BUS"
+		(at 95.62 60 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "49ef399d-63fd-5bf6-809e-59a8994e3520")
+	)
+	(symbol
+		(lib_id "plataVM:NMOS_POWER")
+		(at 35 125 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a822adbf-9ece-5617-8f1e-a057bd8eaee9")
+		(property "Reference" "Q_HS2"
+			(at 35 121 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "BUK9Y6R0-60E,115"
+			(at 35 129 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 35 125 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 35 125 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 35 125 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "6c8a0101-ee1e-54f3-b0f8-05ef57992d12")
+		)
+		(pin "2"
+			(uuid "98de6c7b-c5fb-5ae8-a6d7-acadabb6caa6")
+		)
+		(pin "3"
+			(uuid "5f3d6523-37fd-5270-b3f4-fce433aabb03")
+		)
+		(instances
+			(project "plataVM"
+				(path "/a822adbf-9ece-5617-8f1e-a057bd8eaee9"
+					(reference "Q_HS2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 29.92 125) (xy 27.38 125))
+		(stroke (width 0) (type default))
+		(uuid "e61f3d83-b158-5b9b-9615-77a9dfde9c6b")
+	)
+	(label "Q_HS2_GATE"
+		(at 27.38 125 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "f0663064-2779-5910-9aaa-2136248c09ba")
+	)
+	(wire
+		(pts (xy 40.08 123.73) (xy 42.62 123.73))
+		(stroke (width 0) (type default))
+		(uuid "e5beeb7c-a14f-527f-b555-43492b9af42e")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 42.62 123.73 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "0d615283-ff1a-5214-80fa-4b1daba70603")
+	)
+	(wire
+		(pts (xy 40.08 126.27) (xy 42.62 126.27))
+		(stroke (width 0) (type default))
+		(uuid "39dc00c5-fcc8-540b-bb3e-66c7fa986e9d")
+	)
+	(label "PHASE2_SW"
+		(at 42.62 126.27 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "fe61c46e-33d0-577e-b018-e12f10532d26")
+	)
+	(symbol
+		(lib_id "plataVM:NMOS_POWER")
+		(at 35 140 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "e1431d21-6552-50ac-8de6-9968fe83a4d4")
+		(property "Reference" "Q_LS2"
+			(at 35 136 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "BUK9Y6R0-60E,115"
+			(at 35 144 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 35 140 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 35 140 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 35 140 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "98d730cd-dedb-5f62-858b-f9a12d9fda7f")
+		)
+		(pin "2"
+			(uuid "3fb945df-d67c-5ba5-a9dc-83e789de98b5")
+		)
+		(pin "3"
+			(uuid "75034cc3-84a8-5c9f-833a-80305ded20d1")
+		)
+		(instances
+			(project "plataVM"
+				(path "/e1431d21-6552-50ac-8de6-9968fe83a4d4"
+					(reference "Q_LS2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 29.92 140) (xy 27.38 140))
+		(stroke (width 0) (type default))
+		(uuid "70408f56-d9e2-5e22-bd41-d17f86ca26de")
+	)
+	(label "Q_LS2_GATE"
+		(at 27.38 140 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "eb63f133-811a-5dd1-b3a6-94274d749bbb")
+	)
+	(wire
+		(pts (xy 40.08 138.73) (xy 42.62 138.73))
+		(stroke (width 0) (type default))
+		(uuid "442226ef-73ac-58b0-b4da-84a6e92a4d3a")
+	)
+	(label "PHASE2_SW"
+		(at 42.62 138.73 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b3cb0dd9-65a6-5449-8935-f957261d8a55")
+	)
+	(wire
+		(pts (xy 40.08 141.27) (xy 42.62 141.27))
+		(stroke (width 0) (type default))
+		(uuid "c661bddc-70db-5e8a-9dc9-53b287c65264")
+	)
+	(label "POWER_GND"
+		(at 42.62 141.27 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c59b701d-6107-5466-aa37-70826ae3338b")
+	)
+	(symbol
+		(lib_id "plataVM:L")
+		(at 62 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "40466d71-ab2c-5b57-9ae8-0a453b66de21")
+		(property "Reference" "L2"
+			(at 62 126 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "XAL1010-332MED 3.3uH"
+			(at 62 134 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 62 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 62 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 62 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "51d6a7c1-1a9b-5d01-acc9-ce3a6ceb0dda")
+		)
+		(pin "2"
+			(uuid "7492448e-e67b-5e2d-adad-7944485cd306")
+		)
+		(instances
+			(project "plataVM"
+				(path "/40466d71-ab2c-5b57-9ae8-0a453b66de21"
+					(reference "L2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 56.92 130) (xy 54.38 130))
+		(stroke (width 0) (type default))
+		(uuid "abe459dd-cdcd-5e70-8bb1-aa4e583f576b")
+	)
+	(label "PHASE2_SW"
+		(at 54.38 130 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "8d7f3571-f625-56c6-9c0e-e4e484a4d641")
+	)
+	(wire
+		(pts (xy 67.08 130) (xy 69.62 130))
+		(stroke (width 0) (type default))
+		(uuid "71b6ba1e-2820-5912-9648-a4cc56a3f375")
+	)
+	(label "PHASE2_L_OUT"
+		(at 69.62 130 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "56f23368-5855-5790-9db0-656aa040dcbd")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 88 130 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b4794a0d-7e8c-537f-846e-48b328435af6")
+		(property "Reference" "RSH2"
+			(at 88 126 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "WSK25125L000FEA 5mR 1%"
+			(at 88 134 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 88 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 88 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 88 130 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "fd526ea8-3a26-5cc8-b673-b4fc6af95a21")
+		)
+		(pin "2"
+			(uuid "37f7040f-deed-5286-ab49-ddf846bc2b71")
+		)
+		(instances
+			(project "plataVM"
+				(path "/b4794a0d-7e8c-537f-846e-48b328435af6"
+					(reference "RSH2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 82.92 130) (xy 80.38 130))
+		(stroke (width 0) (type default))
+		(uuid "47e9c1c9-4b16-5dd3-b1d6-dbacdb76edcd")
+	)
+	(label "PHASE2_L_OUT"
+		(at 80.38 130 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "d205d944-acbd-5f04-bffb-5a04a4be5196")
+	)
+	(wire
+		(pts (xy 93.08 130) (xy 95.62 130))
+		(stroke (width 0) (type default))
+		(uuid "83f93e33-3b6f-5f88-ad28-f42d5bd3802e")
+	)
+	(label "5V_SYS_BUS"
+		(at 95.62 130 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "4a869c49-d467-5dc0-88a9-69a5eb4f6c60")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d1546552-9c4f-5a90-86d2-acff8fe61004")
+		(property "Reference" "R_GH1_ON"
+			(at 220 41 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 49 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "016466e1-3ff7-5375-ab85-d22e56e85728")
+		)
+		(pin "2"
+			(uuid "f6bc61c1-d661-5492-b03a-ec85c910351f")
+		)
+		(instances
+			(project "plataVM"
+				(path "/d1546552-9c4f-5a90-86d2-acff8fe61004"
+					(reference "R_GH1_ON")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 45) (xy 212.38 45))
+		(stroke (width 0) (type default))
+		(uuid "72dd26b5-d3aa-504d-83f0-ece83387da4f")
+	)
+	(label "GH1_ON"
+		(at 212.38 45 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "44cdf11f-68ef-5eee-97ab-ba38a7069464")
+	)
+	(wire
+		(pts (xy 225.08 45) (xy 227.62 45))
+		(stroke (width 0) (type default))
+		(uuid "6b6d0c19-d182-5dea-9ea1-8bd0a0930e68")
+	)
+	(label "Q_HS1_GATE"
+		(at 227.62 45 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "9a39d71d-6437-5ce0-a542-5d662575c251")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ebe3d5b3-5aee-530f-b2d8-d850a5be0cb4")
+		(property "Reference" "R_GH1_OFF"
+			(at 220 53 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 61 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "435c41d8-4bbd-56f6-8a2e-d54b35e0f919")
+		)
+		(pin "2"
+			(uuid "f5bc8192-ff1f-5597-ad68-305718c51a96")
+		)
+		(instances
+			(project "plataVM"
+				(path "/ebe3d5b3-5aee-530f-b2d8-d850a5be0cb4"
+					(reference "R_GH1_OFF")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 57) (xy 212.38 57))
+		(stroke (width 0) (type default))
+		(uuid "48ce51ca-c881-51b7-a905-2f2e63d2a558")
+	)
+	(label "GH1_OFF"
+		(at 212.38 57 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "6726f645-9fa7-53cd-a15c-bf5f25ddde93")
+	)
+	(wire
+		(pts (xy 225.08 57) (xy 227.62 57))
+		(stroke (width 0) (type default))
+		(uuid "dbf8279e-5e2e-5ee8-ab4f-db3cc92bca64")
+	)
+	(label "Q_HS1_GATE"
+		(at 227.62 57 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "ca93dbce-2090-5104-b7d3-0078b533bec3")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 69 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "dafffc22-454d-5b0f-a675-2cc298e91174")
+		(property "Reference" "R_GL1_ON"
+			(at 220 65 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 73 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "7634b5e4-d1b9-521a-8308-a2e0208fb854")
+		)
+		(pin "2"
+			(uuid "ce8ae487-a4c0-56a6-a4b2-aa46f9bb61b8")
+		)
+		(instances
+			(project "plataVM"
+				(path "/dafffc22-454d-5b0f-a675-2cc298e91174"
+					(reference "R_GL1_ON")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 69) (xy 212.38 69))
+		(stroke (width 0) (type default))
+		(uuid "45c7e6e5-32d5-5690-bc14-9c461c0d0264")
+	)
+	(label "GL1_ON"
+		(at 212.38 69 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "73074637-1147-5076-b914-c5e7167ed2a0")
+	)
+	(wire
+		(pts (xy 225.08 69) (xy 227.62 69))
+		(stroke (width 0) (type default))
+		(uuid "f26f3056-7dfb-518f-91b9-142ea7c66168")
+	)
+	(label "Q_LS1_GATE"
+		(at 227.62 69 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "7f3f6731-7ce1-5d03-b337-b25168123e7b")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cdc1dcbe-1b1f-55ff-8d50-40650c6bbcbd")
+		(property "Reference" "R_GL1_OFF"
+			(at 220 77 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 85 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "09c3904d-01e5-51fd-b5ec-35bd0cbc4c17")
+		)
+		(pin "2"
+			(uuid "75203bd2-0d4c-5c13-9928-6699211b06f4")
+		)
+		(instances
+			(project "plataVM"
+				(path "/cdc1dcbe-1b1f-55ff-8d50-40650c6bbcbd"
+					(reference "R_GL1_OFF")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 81) (xy 212.38 81))
+		(stroke (width 0) (type default))
+		(uuid "abdf243c-168f-592a-8476-dadd05417ef0")
+	)
+	(label "GL1_OFF"
+		(at 212.38 81 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "943a3810-618a-5a55-8489-9852be7883a5")
+	)
+	(wire
+		(pts (xy 225.08 81) (xy 227.62 81))
+		(stroke (width 0) (type default))
+		(uuid "75f7e898-1b7a-5276-a5bb-eb326678f4ce")
+	)
+	(label "Q_LS1_GATE"
+		(at 227.62 81 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "ac4d70a5-fb3b-5c7d-9bd3-ac7dbb586d8f")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 262 45 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "09ed11ff-a345-5485-b9eb-3e8fb49067c2")
+		(property "Reference" "R_GH2_ON"
+			(at 262 41 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 262 49 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 262 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 262 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 262 45 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a23824e5-1ba6-55aa-ab24-0589b7025c2b")
+		)
+		(pin "2"
+			(uuid "765c3041-bb70-5c51-b399-6ce99e04300e")
+		)
+		(instances
+			(project "plataVM"
+				(path "/09ed11ff-a345-5485-b9eb-3e8fb49067c2"
+					(reference "R_GH2_ON")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 256.92 45) (xy 254.38 45))
+		(stroke (width 0) (type default))
+		(uuid "7045c467-d507-5dc5-850a-5b4db8bedfc2")
+	)
+	(label "GH2_ON"
+		(at 254.38 45 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "05c24c4c-b384-5961-96f7-ca4906bd88cd")
+	)
+	(wire
+		(pts (xy 267.08 45) (xy 269.62 45))
+		(stroke (width 0) (type default))
+		(uuid "c77c76a6-8db7-5847-a14a-77e258f1db63")
+	)
+	(label "Q_HS2_GATE"
+		(at 269.62 45 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "413e2a96-c547-56d8-a81c-7a802b248854")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 262 57 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "bd32b77a-bd7c-53f9-a756-0b2e6dd44200")
+		(property "Reference" "R_GH2_OFF"
+			(at 262 53 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 262 61 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 262 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 262 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 262 57 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1cb97285-5d9e-5d09-9462-bec3a619cb8e")
+		)
+		(pin "2"
+			(uuid "c79447c4-ab1e-5f7d-a5fc-a27b20fc80d4")
+		)
+		(instances
+			(project "plataVM"
+				(path "/bd32b77a-bd7c-53f9-a756-0b2e6dd44200"
+					(reference "R_GH2_OFF")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 256.92 57) (xy 254.38 57))
+		(stroke (width 0) (type default))
+		(uuid "9084b159-8322-5fc0-b140-69d5e240efef")
+	)
+	(label "GH2_OFF"
+		(at 254.38 57 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "7dde93c2-e940-5de6-9859-a7cc18ae12df")
+	)
+	(wire
+		(pts (xy 267.08 57) (xy 269.62 57))
+		(stroke (width 0) (type default))
+		(uuid "dfba2d78-06d3-5ec3-bf83-cd9f068a8edc")
+	)
+	(label "Q_HS2_GATE"
+		(at 269.62 57 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "1fede369-e87d-584c-9d53-bcd89991a525")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 262 69 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a26a50ee-d7f3-5b80-b2a5-6c21a660f64c")
+		(property "Reference" "R_GL2_ON"
+			(at 262 65 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 262 73 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 262 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 262 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 262 69 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1d55141d-aa57-5364-a512-a5fbbb456fb4")
+		)
+		(pin "2"
+			(uuid "c39f3df6-7df3-5dc8-9ad6-bf140d0e86d6")
+		)
+		(instances
+			(project "plataVM"
+				(path "/a26a50ee-d7f3-5b80-b2a5-6c21a660f64c"
+					(reference "R_GL2_ON")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 256.92 69) (xy 254.38 69))
+		(stroke (width 0) (type default))
+		(uuid "2f0e2dca-dd66-53d5-818e-c8f734cfcee5")
+	)
+	(label "GL2_ON"
+		(at 254.38 69 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "4956e840-26f7-5632-a097-80682b498d0d")
+	)
+	(wire
+		(pts (xy 267.08 69) (xy 269.62 69))
+		(stroke (width 0) (type default))
+		(uuid "7279b5da-3b67-595b-9e9f-8c21f8ed1d2a")
+	)
+	(label "Q_LS2_GATE"
+		(at 269.62 69 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "14f74a3b-4161-5d41-a1c9-1a0afd15c315")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 262 81 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4dcf2479-44df-5f6e-aafe-8cbbb0ace5d6")
+		(property "Reference" "R_GL2_OFF"
+			(at 262 77 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 262 85 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 262 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 262 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 262 81 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "018ab64b-716e-5a87-9180-76caaa90da37")
+		)
+		(pin "2"
+			(uuid "0d1bc117-38b8-510c-a0e7-2a691c200b97")
+		)
+		(instances
+			(project "plataVM"
+				(path "/4dcf2479-44df-5f6e-aafe-8cbbb0ace5d6"
+					(reference "R_GL2_OFF")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 256.92 81) (xy 254.38 81))
+		(stroke (width 0) (type default))
+		(uuid "5dedba1b-8649-57a3-b39c-227ed6aa992e")
+	)
+	(label "GL2_OFF"
+		(at 254.38 81 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "4a3277c3-d00b-5ac7-ae10-626498b417b0")
+	)
+	(wire
+		(pts (xy 267.08 81) (xy 269.62 81))
+		(stroke (width 0) (type default))
+		(uuid "94103267-d32d-5668-8c32-7dd23456533f")
+	)
+	(label "Q_LS2_GATE"
+		(at 269.62 81 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "8c3718da-dc12-5d89-aca4-e8ab5d4df505")
+	)
+	(symbol
+		(lib_id "plataVM:D")
+		(at 220 98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cd693f7f-425f-54fb-8aaa-8ab5b7d2890a")
+		(property "Reference" "D_BOOT1"
+			(at 220 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 102 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "720d13be-f467-5513-8219-4cbf3f951115")
+		)
+		(pin "2"
+			(uuid "66fb1c1b-c1dd-56eb-a5ec-4d081c1dc7b2")
+		)
+		(instances
+			(project "plataVM"
+				(path "/cd693f7f-425f-54fb-8aaa-8ab5b7d2890a"
+					(reference "D_BOOT1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 98) (xy 212.38 98))
+		(stroke (width 0) (type default))
+		(uuid "187bf24e-0f8c-5331-9075-c2e88d9f972a")
+	)
+	(label "VCC_BIAS"
+		(at 212.38 98 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "9b7eb83a-52f8-53af-84aa-77847e435189")
+	)
+	(wire
+		(pts (xy 225.08 98) (xy 227.62 98))
+		(stroke (width 0) (type default))
+		(uuid "9aeb0639-55cd-5ae6-b062-7341bda3f60c")
+	)
+	(label "HB1_BOOT"
+		(at 227.62 98 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "7812c241-ba13-57a0-9301-e3de7fda6ee3")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "b5efd644-2832-56db-90dd-a3602035b1aa")
+		(property "Reference" "C_BOOT1"
+			(at 250 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 250 102 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 98 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "4312a1d5-2954-5d3f-be7d-229637670d93")
+		)
+		(pin "2"
+			(uuid "09dda705-1417-501b-beec-22b19c4ee642")
+		)
+		(instances
+			(project "plataVM"
+				(path "/b5efd644-2832-56db-90dd-a3602035b1aa"
+					(reference "C_BOOT1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 98) (xy 242.38 98))
+		(stroke (width 0) (type default))
+		(uuid "cca6152e-d30d-5d39-8925-67ca4bfd36ab")
+	)
+	(label "HB1_BOOT"
+		(at 242.38 98 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "4645f1ef-7861-52d1-99f2-7a9796f58fd9")
+	)
+	(wire
+		(pts (xy 255.08 98) (xy 257.62 98))
+		(stroke (width 0) (type default))
+		(uuid "634f7f5d-7ba8-5d89-b8ef-3fbe35ef68db")
+	)
+	(label "PHASE1_SW"
+		(at 257.62 98 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "489a4322-0579-50a2-99b4-fe649925451e")
+	)
+	(symbol
+		(lib_id "plataVM:D")
+		(at 220 112 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a1654b20-ab92-584f-918f-2c2c529420ac")
+		(property "Reference" "D_BOOT2"
+			(at 220 108 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 116 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "4a08102d-7c69-5995-b687-76f1025f8acd")
+		)
+		(pin "2"
+			(uuid "7c8f2dee-70f0-5185-8cbe-d44cc81ea310")
+		)
+		(instances
+			(project "plataVM"
+				(path "/a1654b20-ab92-584f-918f-2c2c529420ac"
+					(reference "D_BOOT2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 112) (xy 212.38 112))
+		(stroke (width 0) (type default))
+		(uuid "7f5d98e5-b1b5-59b3-98e4-4a3cd4beae1d")
+	)
+	(label "VCC_BIAS"
+		(at 212.38 112 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "143e0d20-33af-5f43-89d2-126feae315fb")
+	)
+	(wire
+		(pts (xy 225.08 112) (xy 227.62 112))
+		(stroke (width 0) (type default))
+		(uuid "fa3cfe33-bdbc-57af-b34a-afee6c9661f0")
+	)
+	(label "HB2_BOOT"
+		(at 227.62 112 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "8d7c921a-7bb3-57fc-9068-3fea9aa2fdfc")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 112 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ffc92bbc-18d7-5424-a878-6c33471b4f85")
+		(property "Reference" "C_BOOT2"
+			(at 250 108 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 250 116 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 112 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ef07b2a8-1a7e-5dbf-867e-719a21332092")
+		)
+		(pin "2"
+			(uuid "bacca343-a95c-5c4f-9e4c-15bcbd1fdbfa")
+		)
+		(instances
+			(project "plataVM"
+				(path "/ffc92bbc-18d7-5424-a878-6c33471b4f85"
+					(reference "C_BOOT2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 112) (xy 242.38 112))
+		(stroke (width 0) (type default))
+		(uuid "8cb4c664-b544-53c7-8e39-0c3b1d9be8f0")
+	)
+	(label "HB2_BOOT"
+		(at 242.38 112 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "c2095f72-c5d6-5404-986a-9183f9f99d25")
+	)
+	(wire
+		(pts (xy 255.08 112) (xy 257.62 112))
+		(stroke (width 0) (type default))
+		(uuid "3bea5c2a-fb53-5a52-9eb2-48d4feada89c")
+	)
+	(label "PHASE2_SW"
+		(at 257.62 112 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e6f59a55-f8e5-5553-b3bd-da857bc41e7e")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 132 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3037b66e-7c1f-5643-bb5c-f3a1ed3249d5")
+		(property "Reference" "R_CS1"
+			(at 220 128 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 136 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "d9de5494-4edc-55c3-a46c-b858400b9af0")
+		)
+		(pin "2"
+			(uuid "ceab6d17-9c86-5820-9be4-6f7c6ba2ae59")
+		)
+		(instances
+			(project "plataVM"
+				(path "/3037b66e-7c1f-5643-bb5c-f3a1ed3249d5"
+					(reference "R_CS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 132) (xy 212.38 132))
+		(stroke (width 0) (type default))
+		(uuid "e5c895ff-11c1-5be5-9029-f354795a85be")
+	)
+	(label "PHASE1_L_OUT"
+		(at 212.38 132 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "63327b3c-0128-543e-b7dd-b5f72f78842d")
+	)
+	(wire
+		(pts (xy 225.08 132) (xy 227.62 132))
+		(stroke (width 0) (type default))
+		(uuid "25c4c65a-6ea7-5c70-aef4-7b362155b280")
+	)
+	(label "CS1_FILTERED"
+		(at 227.62 132 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "1f1d9f2a-48c8-534f-b1ce-c5a4f9947fd9")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 132 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "21e9c6c6-9a7f-57b0-9aa9-436cb31189f8")
+		(property "Reference" "C_CS1"
+			(at 250 128 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 250 136 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 132 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "637a2da0-8336-5409-884a-e2d01d6fc9a8")
+		)
+		(pin "2"
+			(uuid "56e9c79e-4a81-5a9a-8c4e-6d2d6771f108")
+		)
+		(instances
+			(project "plataVM"
+				(path "/21e9c6c6-9a7f-57b0-9aa9-436cb31189f8"
+					(reference "C_CS1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 132) (xy 242.38 132))
+		(stroke (width 0) (type default))
+		(uuid "34d5f922-8a42-5d4e-94c0-5d6da643e9d9")
+	)
+	(label "CS1_FILTERED"
+		(at 242.38 132 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "4ec16b26-b5eb-56dc-a831-734aec90a101")
+	)
+	(wire
+		(pts (xy 255.08 132) (xy 257.62 132))
+		(stroke (width 0) (type default))
+		(uuid "dd26118d-8c92-5f22-b93c-2130cf82a257")
+	)
+	(label "5V_SYS_BUS"
+		(at 257.62 132 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "6ec6d52f-b04f-54dd-8260-cb85a118c677")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 146 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d218afd9-8b76-5bd4-86b0-dd84f9333ad7")
+		(property "Reference" "R_CS2"
+			(at 220 142 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 150 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "11047c42-1468-5488-9a6a-f74741907fde")
+		)
+		(pin "2"
+			(uuid "cf857cbc-99e5-5ab0-96a6-e6b53afe35d7")
+		)
+		(instances
+			(project "plataVM"
+				(path "/d218afd9-8b76-5bd4-86b0-dd84f9333ad7"
+					(reference "R_CS2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 146) (xy 212.38 146))
+		(stroke (width 0) (type default))
+		(uuid "7151241e-6204-5fed-b7f2-afbb2ff9d7b6")
+	)
+	(label "PHASE2_L_OUT"
+		(at 212.38 146 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "26c93834-1213-5334-b295-f42688a3ea82")
+	)
+	(wire
+		(pts (xy 225.08 146) (xy 227.62 146))
+		(stroke (width 0) (type default))
+		(uuid "cd9ffc5d-6d7f-58bb-9afa-be153e512971")
+	)
+	(label "CS2_FILTERED"
+		(at 227.62 146 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e9129b9c-c373-5e48-9a02-32eb3cf0e0f4")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 146 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "de28715d-8382-561b-921f-bd53067c3776")
+		(property "Reference" "C_CS2"
+			(at 250 142 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 250 150 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 146 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "0aac8e50-def2-5c09-9fa3-0f806e7c5a9c")
+		)
+		(pin "2"
+			(uuid "e5d9e9cb-6e2c-5d0b-93b6-c6904294deda")
+		)
+		(instances
+			(project "plataVM"
+				(path "/de28715d-8382-561b-921f-bd53067c3776"
+					(reference "C_CS2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 146) (xy 242.38 146))
+		(stroke (width 0) (type default))
+		(uuid "c647fc66-d760-5a19-84e2-d0861144c343")
+	)
+	(label "CS2_FILTERED"
+		(at 242.38 146 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "397629e8-286f-55da-9b0d-11ac6d03c838")
+	)
+	(wire
+		(pts (xy 255.08 146) (xy 257.62 146))
+		(stroke (width 0) (type default))
+		(uuid "83e64e3e-5c2a-54ae-92d0-7339b7d34b4f")
+	)
+	(label "5V_SYS_BUS"
+		(at 257.62 146 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "3821c848-fcfc-5cb2-8066-f1cf9b0f1139")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 172 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "6eab560c-c132-54c5-a58d-02b21bbb7a43")
+		(property "Reference" "R_RT"
+			(at 220 168 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "54.9k 1%"
+			(at 220 176 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "647f7c1d-ba02-5ace-aaa0-cb7ba193b2a4")
+		)
+		(pin "2"
+			(uuid "f6e5c078-f097-542a-a7b6-77f204092864")
+		)
+		(instances
+			(project "plataVM"
+				(path "/6eab560c-c132-54c5-a58d-02b21bbb7a43"
+					(reference "R_RT")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 172) (xy 212.38 172))
+		(stroke (width 0) (type default))
+		(uuid "11627990-a529-52ec-9841-0ae25def20c7")
+	)
+	(label "RT_SET"
+		(at 212.38 172 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "5ee70fc3-b0d4-5707-a831-ca11078a96d7")
+	)
+	(wire
+		(pts (xy 225.08 172) (xy 227.62 172))
+		(stroke (width 0) (type default))
+		(uuid "95f3dc74-7cf1-554c-94f2-b26e0b5080c0")
+	)
+	(label "AGND"
+		(at 227.62 172 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "a62f1b3b-2671-51fc-b7e7-1d38441e452e")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 172 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "aaafd8ce-beb4-50a8-9686-eb690c52713f")
+		(property "Reference" "C_SS"
+			(at 250 168 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "510nF"
+			(at 250 176 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "dac6eb0b-bc8d-5294-ab96-b56397c8e1cb")
+		)
+		(pin "2"
+			(uuid "fa06d8d5-19e3-591e-b929-180ca0d77e7f")
+		)
+		(instances
+			(project "plataVM"
+				(path "/aaafd8ce-beb4-50a8-9686-eb690c52713f"
+					(reference "C_SS")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 172) (xy 242.38 172))
+		(stroke (width 0) (type default))
+		(uuid "9930ad48-ca82-56c3-9fe1-46f3412f5738")
+	)
+	(label "SS_COMMON"
+		(at 242.38 172 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "5374ee24-cd18-5397-8063-04cb59202fbc")
+	)
+	(wire
+		(pts (xy 255.08 172) (xy 257.62 172))
+		(stroke (width 0) (type default))
+		(uuid "83f477e4-1a4c-50e6-9e65-b615a60a19c9")
+	)
+	(label "AGND"
+		(at 257.62 172 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "2c698a8e-efed-550b-b165-ee0cbc2c3b57")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 280 172 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "5faa73dc-54b0-57c6-91d7-4e0371fea600")
+		(property "Reference" "C_RES"
+			(at 280 168 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "470nF PROTOTYPE_START"
+			(at 280 176 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 280 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 280 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 280 172 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "ca32b63d-b49d-57fa-8387-49a704565e71")
+		)
+		(pin "2"
+			(uuid "57e83514-b701-568a-b380-6d9a284b5b78")
+		)
+		(instances
+			(project "plataVM"
+				(path "/5faa73dc-54b0-57c6-91d7-4e0371fea600"
+					(reference "C_RES")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 274.92 172) (xy 272.38 172))
+		(stroke (width 0) (type default))
+		(uuid "8f0dfd29-4ca5-5562-ab59-2eb1538c0856")
+	)
+	(label "RES_TIMER"
+		(at 272.38 172 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "8a112ccb-2f98-5c02-acff-34b6c0e0ce82")
+	)
+	(wire
+		(pts (xy 285.08 172) (xy 287.62 172))
+		(stroke (width 0) (type default))
+		(uuid "15cef463-5e5e-5a91-87cb-ff0071cc3aa8")
+	)
+	(label "AGND"
+		(at 287.62 172 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b5a57950-762b-599c-b517-fde22e6c201d")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 220 188 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "9b5c0339-1826-5ce3-af82-31c4db42bb79")
+		(property "Reference" "R_COMP"
+			(at 220 184 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "24.9k 1%"
+			(at 220 192 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "5ab17866-6863-59b5-a34a-dec2cba86c83")
+		)
+		(pin "2"
+			(uuid "fee07ff2-ec80-5a1a-8324-95a52c5788df")
+		)
+		(instances
+			(project "plataVM"
+				(path "/9b5c0339-1826-5ce3-af82-31c4db42bb79"
+					(reference "R_COMP")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 188) (xy 212.38 188))
+		(stroke (width 0) (type default))
+		(uuid "48bec3bd-d84c-5d8d-9631-74b9dad9918c")
+	)
+	(label "COMP_COMMON"
+		(at 212.38 188 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "8108c5ee-bc5a-554c-9826-2cd1b79e9276")
+	)
+	(wire
+		(pts (xy 225.08 188) (xy 227.62 188))
+		(stroke (width 0) (type default))
+		(uuid "979ad3bd-4170-5078-ba23-e9887a43d34b")
+	)
+	(label "COMP_RC_NODE"
+		(at 227.62 188 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "53dbd598-5891-563e-b9cc-1772abf0c63c")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 188 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "f975f26b-18bd-53d2-998a-fd5b71a24a03")
+		(property "Reference" "C_COMP"
+			(at 250 184 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "3.3nF"
+			(at 250 192 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "e1cbeb9a-a7d4-5085-b3be-c259601a458d")
+		)
+		(pin "2"
+			(uuid "cf4e9afd-4aed-5a4e-be3b-d2c1f03cc50d")
+		)
+		(instances
+			(project "plataVM"
+				(path "/f975f26b-18bd-53d2-998a-fd5b71a24a03"
+					(reference "C_COMP")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 188) (xy 242.38 188))
+		(stroke (width 0) (type default))
+		(uuid "e241b737-ab36-5ec5-aca6-6188c4464ab7")
+	)
+	(label "COMP_RC_NODE"
+		(at 242.38 188 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "c47515a6-446f-5d82-98d6-b20ae7b96411")
+	)
+	(wire
+		(pts (xy 255.08 188) (xy 257.62 188))
+		(stroke (width 0) (type default))
+		(uuid "d80b3b04-706f-5dc6-ae0e-d1746faeeaf7")
+	)
+	(label "AGND"
+		(at 257.62 188 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "87f2d6a6-1cb5-5271-9131-73c7f8fb9e26")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 280 188 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "188cef0f-222a-5c36-9b85-065598ca19eb")
+		(property "Reference" "C_HF"
+			(at 280 184 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "220pF"
+			(at 280 192 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 280 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 280 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 280 188 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a16920f5-dcc2-57c8-80b3-81de7161e33a")
+		)
+		(pin "2"
+			(uuid "af89cb46-83aa-5ee7-9edb-3e35398497be")
+		)
+		(instances
+			(project "plataVM"
+				(path "/188cef0f-222a-5c36-9b85-065598ca19eb"
+					(reference "C_HF")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 274.92 188) (xy 272.38 188))
+		(stroke (width 0) (type default))
+		(uuid "e4234cd1-6d1f-5fa5-8855-1f489d05795d")
+	)
+	(label "COMP_COMMON"
+		(at 272.38 188 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "37d637ef-0cd2-5f3c-88b5-48af69e0f23e")
+	)
+	(wire
+		(pts (xy 285.08 188) (xy 287.62 188))
+		(stroke (width 0) (type default))
+		(uuid "368578b1-9bf6-5fce-804f-2b2524599530")
+	)
+	(label "AGND"
+		(at 287.62 188 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e3d61171-5b10-52ed-aacc-4adfc127448d")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 220 205 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "eccaf872-f8f3-52d4-95d2-1ea5f4bc0692")
+		(property "Reference" "C_VCC"
+			(at 220 201 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 220 209 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "59dc8a23-fc7a-59e1-ab1c-c1382a0baf48")
+		)
+		(pin "2"
+			(uuid "c1350fe6-6caf-563f-b546-b5012e37e13b")
+		)
+		(instances
+			(project "plataVM"
+				(path "/eccaf872-f8f3-52d4-95d2-1ea5f4bc0692"
+					(reference "C_VCC")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 205) (xy 212.38 205))
+		(stroke (width 0) (type default))
+		(uuid "ea7f1e26-8644-50e2-8da1-465d12a53115")
+	)
+	(label "VCC_BIAS"
+		(at 212.38 205 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "0d39e3d1-5cfd-533b-8725-02c94db2bae4")
+	)
+	(wire
+		(pts (xy 225.08 205) (xy 227.62 205))
+		(stroke (width 0) (type default))
+		(uuid "4589ae0f-bf83-500a-8275-3c9db2742781")
+	)
+	(label "POWER_GND"
+		(at 227.62 205 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c47334f3-2728-5056-a3df-2b8ff2b1d97c")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 250 205 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "3d6d6bab-8a87-5ae4-bc28-9ff159e5e50f")
+		(property "Reference" "C_VDDA"
+			(at 250 201 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 250 209 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 250 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 250 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 250 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "711ca32e-a421-5302-8103-c0c7680bdd64")
+		)
+		(pin "2"
+			(uuid "f2fc3426-c3ff-57e4-b721-f825e34229cc")
+		)
+		(instances
+			(project "plataVM"
+				(path "/3d6d6bab-8a87-5ae4-bc28-9ff159e5e50f"
+					(reference "C_VDDA")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 244.92 205) (xy 242.38 205))
+		(stroke (width 0) (type default))
+		(uuid "8bb9bcae-0f18-544e-bb12-1d2c4067dd43")
+	)
+	(label "VDDA_BIAS"
+		(at 242.38 205 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "84a51333-baf8-562f-a71c-8065dc7a8a66")
+	)
+	(wire
+		(pts (xy 255.08 205) (xy 257.62 205))
+		(stroke (width 0) (type default))
+		(uuid "993f4d79-ddcf-532c-b8e5-e22364f7cb02")
+	)
+	(label "AGND"
+		(at 257.62 205 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "4cbdb0f0-6f18-5133-bc45-b396aae4e17c")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 280 205 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a82a8ee6-b75b-5f48-85fa-ca63c88499ba")
+		(property "Reference" "C_VCCX"
+			(at 280 201 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 280 209 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 280 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 280 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 280 205 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "8344c4f4-3679-5036-aed3-cd70a204d03a")
+		)
+		(pin "2"
+			(uuid "bd1940c2-85d5-55d0-be8b-1a8f393d8407")
+		)
+		(instances
+			(project "plataVM"
+				(path "/a82a8ee6-b75b-5f48-85fa-ca63c88499ba"
+					(reference "C_VCCX")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 274.92 205) (xy 272.38 205))
+		(stroke (width 0) (type default))
+		(uuid "fe311378-b7eb-5c8d-94a9-d1731f9c8b3b")
+	)
+	(label "5V_SYS_BUS"
+		(at 272.38 205 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "afcb8dc6-671b-5bf3-a2bb-e69985846e99")
+	)
+	(wire
+		(pts (xy 285.08 205) (xy 287.62 205))
+		(stroke (width 0) (type default))
+		(uuid "1f321245-afbf-52a7-b7c3-f0cfd7059aa6")
+	)
+	(label "POWER_GND"
+		(at 287.62 205 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "39b055af-61c9-5de1-a6a9-34b7d5ce4afc")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 220 221 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "d69211ea-4dfe-59cc-8d94-ee40fd1578fa")
+		(property "Reference" "CIN_EQ"
+			(at 220 217 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "Ceff>=100uF @16V"
+			(at 220 225 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 220 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 220 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 220 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "7dfac950-0556-5ef6-94a8-28c469b02abe")
+		)
+		(pin "2"
+			(uuid "9d2e854e-9d1d-5196-b758-6981b5bf5125")
+		)
+		(instances
+			(project "plataVM"
+				(path "/d69211ea-4dfe-59cc-8d94-ee40fd1578fa"
+					(reference "CIN_EQ")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 214.92 221) (xy 212.38 221))
+		(stroke (width 0) (type default))
+		(uuid "09b3cbaa-c9a1-5dc0-83f2-78c479bb2b01")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 212.38 221 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "cf18b636-1c4d-5f46-93c0-04df5f4f204d")
+	)
+	(wire
+		(pts (xy 225.08 221) (xy 227.62 221))
+		(stroke (width 0) (type default))
+		(uuid "cf5488b4-5700-5400-98bb-52e5b792afe1")
+	)
+	(label "POWER_GND"
+		(at 227.62 221 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "714fffe1-cf83-5881-b5ce-52cfb91f45e6")
+	)
+	(symbol
+		(lib_id "plataVM:C")
+		(at 265 221 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c7c3c6c2-31ee-53fd-b8c8-4c0b41b9937e")
+		(property "Reference" "COUT_EQ"
+			(at 265 217 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "2x330uF + X7R TUNING"
+			(at 265 225 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 265 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 265 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 265 221 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "c4f0509b-8b95-536b-820f-d10794b41dad")
+		)
+		(pin "2"
+			(uuid "cee8142b-ff77-5368-b168-055f09799e0a")
+		)
+		(instances
+			(project "plataVM"
+				(path "/c7c3c6c2-31ee-53fd-b8c8-4c0b41b9937e"
+					(reference "COUT_EQ")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 259.92 221) (xy 257.38 221))
+		(stroke (width 0) (type default))
+		(uuid "3703eccf-b103-5acf-8972-972f3f3dc6f5")
+	)
+	(label "5V_SYS_BUS"
+		(at 257.38 221 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "a9b5f588-d33a-5933-9adf-d044f2f621e5")
+	)
+	(wire
+		(pts (xy 270.08 221) (xy 272.62 221))
+		(stroke (width 0) (type default))
+		(uuid "3c367beb-42dc-5a66-8119-bcba27e0fd09")
+	)
+	(label "POWER_GND"
+		(at 272.62 221 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c0790eb3-dcb3-5b6e-8bae-176e8330ecda")
+	)
+	(symbol
+		(lib_id "plataVM:TESTPOINT")
+		(at 305 55 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "ad914cc7-4cab-5ffe-b90e-836179450f16")
+		(property "Reference" "TP_PG2"
+			(at 305 51 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "TESTPOINT"
+			(at 305 59 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 305 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 305 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 305 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "558d1f53-d2f1-5f6f-bff1-4d17c8527385")
+		)
+		(instances
+			(project "plataVM"
+				(path "/ad914cc7-4cab-5ffe-b90e-836179450f16"
+					(reference "TP_PG2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 305 57.54) (xy 305 60.08))
+		(stroke (width 0) (type default))
+		(uuid "dbdc6d25-00fc-5754-bf47-64d7718c76dc")
+	)
+	(label "NC_PG2_TESTPAD"
+		(at 305 60.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "889e46e5-5e02-51cc-9869-82767c27bf4b")
+	)
+	(symbol
+		(lib_id "plataVM:TESTPOINT")
+		(at 320 55 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "2f6ffe78-3467-5601-bf7a-d35c3a633880")
+		(property "Reference" "TP_SYNC"
+			(at 320 51 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "TESTPOINT"
+			(at 320 59 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 320 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 320 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 320 55 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a100d87e-ecae-59c1-acf3-20fc909e3f12")
+		)
+		(instances
+			(project "plataVM"
+				(path "/2f6ffe78-3467-5601-bf7a-d35c3a633880"
+					(reference "TP_SYNC")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 320 57.54) (xy 320 60.08))
+		(stroke (width 0) (type default))
+		(uuid "4d072847-e05d-5992-b959-ee18c3a35aa3")
+	)
+	(label "SYNCOUT_TESTPAD"
+		(at 320 60.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "9aab3a06-23c4-55e7-a08f-db6dd4f4e000")
+	)
+	(symbol
+		(lib_id "plataVM:PWR_FLAG")
+		(at 305 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(dnp no)
+		(uuid "7a8d8726-02b9-5c92-b7a2-b771f7619fc7")
+		(property "Reference" "#FLG01"
+			(at 305 86 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "PWR_FLAG"
+			(at 305 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 305 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 305 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 305 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a847a1ec-77aa-5911-89f3-1f0bad6dd165")
+		)
+		(instances
+			(project "plataVM"
+				(path "/7a8d8726-02b9-5c92-b7a2-b771f7619fc7"
+					(reference "#FLG01")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 305 92.54) (xy 305 95.08))
+		(stroke (width 0) (type default))
+		(uuid "7c54a34f-e5b6-5621-b81d-c991b6742904")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 305 95.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "e5946b39-444c-5321-8aad-b997e9cc299b")
+	)
+	(symbol
+		(lib_id "plataVM:PWR_FLAG")
+		(at 320 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(dnp no)
+		(uuid "91ee87f5-ffe3-599c-a6ad-5c0b4e838772")
+		(property "Reference" "#FLG02"
+			(at 320 86 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "PWR_FLAG"
+			(at 320 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 320 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 320 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 320 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "3d495df4-64da-5457-ae50-873f6afa4d6f")
+		)
+		(instances
+			(project "plataVM"
+				(path "/91ee87f5-ffe3-599c-a6ad-5c0b4e838772"
+					(reference "#FLG02")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 320 92.54) (xy 320 95.08))
+		(stroke (width 0) (type default))
+		(uuid "47447469-39ad-5c88-9d17-77d5591052bc")
+	)
+	(label "5V_SYS_BUS"
+		(at 320 95.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "3dfd08e0-86b3-50e7-8cef-ced3926569e6")
+	)
+	(symbol
+		(lib_id "plataVM:PWR_FLAG")
+		(at 335 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(dnp no)
+		(uuid "590e9b0e-195c-557b-9258-be485920835d")
+		(property "Reference" "#FLG03"
+			(at 335 86 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "PWR_FLAG"
+			(at 335 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 335 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 335 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 335 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "57973660-0cb1-5114-b331-98fce2889d38")
+		)
+		(instances
+			(project "plataVM"
+				(path "/590e9b0e-195c-557b-9258-be485920835d"
+					(reference "#FLG03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 335 92.54) (xy 335 95.08))
+		(stroke (width 0) (type default))
+		(uuid "50ce1b07-508d-5a21-9769-174062e14cfc")
+	)
+	(label "POWER_GND"
+		(at 335 95.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b0f546ee-07a8-598a-9208-2b82b837564f")
+	)
+	(symbol
+		(lib_id "plataVM:PWR_FLAG")
+		(at 350 90 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board no)
+		(dnp no)
+		(uuid "6a666c24-442d-5a5a-bba0-499d1931c42c")
+		(property "Reference" "#FLG04"
+			(at 350 86 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "PWR_FLAG"
+			(at 350 94 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 350 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 350 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 350 90 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "50e266ac-cbdc-53aa-8c58-20fd03b6bb45")
+		)
+		(instances
+			(project "plataVM"
+				(path "/6a666c24-442d-5a5a-bba0-499d1931c42c"
+					(reference "#FLG04")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 350 92.54) (xy 350 95.08))
+		(stroke (width 0) (type default))
+		(uuid "bd1891b3-4e55-5034-862e-a609afecca03")
+	)
+	(label "AGND"
+		(at 350 95.08 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "032e25f0-525a-5aeb-87a7-6bc8ac81b356")
+	)
+	(symbol
+		(lib_id "plataVM:UVLO_SUPERVISOR_TBD")
+		(at 45 185 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "13335a52-592c-5590-9c88-3cabca5404ca")
+		(property "Reference" "U_UVLO"
+			(at 45 181 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD 8.9V_RISE 8.35V_FALL"
+			(at 45 189 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 45 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 45 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 45 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "9a91295d-75f1-5894-90c0-98ec7fc97e05")
+		)
+		(pin "2"
+			(uuid "69716338-caad-5c9a-bfc6-8354cef844f0")
+		)
+		(pin "3"
+			(uuid "724a536b-bb79-5ebe-9851-f0ebdce7fbe6")
+		)
+		(instances
+			(project "plataVM"
+				(path "/13335a52-592c-5590-9c88-3cabca5404ca"
+					(reference "U_UVLO")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 34.84 182.46) (xy 29.76 182.46))
+		(stroke (width 0) (type default))
+		(uuid "1b6c6b90-239c-58fd-a3e4-5766735da221")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 29.76 182.46 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "45180a41-dc28-55fb-81a4-5f114e435f83")
+	)
+	(wire
+		(pts (xy 34.84 187.54) (xy 29.76 187.54))
+		(stroke (width 0) (type default))
+		(uuid "c92ac737-d6ad-5cac-8ac0-5768f9ae140d")
+	)
+	(label "AGND"
+		(at 29.76 187.54 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "2e6e3a52-826e-5731-bbea-5ca27ecd1122")
+	)
+	(wire
+		(pts (xy 55.16 185) (xy 60.24 185))
+		(stroke (width 0) (type default))
+		(uuid "5e21c6b2-cf6d-5277-a52a-1e76cf698556")
+	)
+	(label "UVLO_OK"
+		(at 60.24 185 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "936354ae-f392-5090-a627-95de38a9d9c8")
+	)
+	(symbol
+		(lib_id "plataVM:HW_ENABLE_GATE_TBD")
+		(at 87 185 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "586a2b75-025f-5fd8-a931-bfe0cfb62221")
+		(property "Reference" "U_EN_GATE"
+			(at 87 181 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD FAIL_SAFE_HW"
+			(at 87 189 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 87 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 87 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 87 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "a280906c-e52c-5072-ac2b-591ec34a6535")
+		)
+		(pin "2"
+			(uuid "57df57a4-e6d6-532f-94c4-f1ad6e93c116")
+		)
+		(pin "3"
+			(uuid "c9d78a7b-de59-505d-8478-5e0fb7cacc78")
+		)
+		(pin "4"
+			(uuid "6af15010-49d6-5f73-898c-1806b14830cb")
+		)
+		(pin "5"
+			(uuid "e5f66c51-24cc-5025-b411-af1734ad7920")
+		)
+		(pin "6"
+			(uuid "efad3916-2808-5799-99fd-b199bcc10e07")
+		)
+		(pin "7"
+			(uuid "e51f8b40-31b5-5605-9554-660bd0249577")
+		)
+		(instances
+			(project "plataVM"
+				(path "/586a2b75-025f-5fd8-a931-bfe0cfb62221"
+					(reference "U_EN_GATE")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 74.3 178.65) (xy 69.22 178.65))
+		(stroke (width 0) (type default))
+		(uuid "3724cb20-f5be-5f56-95eb-a0a56c730689")
+	)
+	(label "5V_SYS_EN"
+		(at 69.22 178.65 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "8b2566b1-ef37-5e61-b7ec-5e568ce58c08")
+	)
+	(wire
+		(pts (xy 74.3 181.19) (xy 69.22 181.19))
+		(stroke (width 0) (type default))
+		(uuid "81256ffa-7869-53e7-9186-12b068784f4a")
+	)
+	(label "UVLO_OK"
+		(at 69.22 181.19 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "213272b2-2c94-571b-a722-c9fef379f423")
+	)
+	(wire
+		(pts (xy 74.3 183.73) (xy 69.22 183.73))
+		(stroke (width 0) (type default))
+		(uuid "03966446-5e5c-57ee-a310-b0921c7a5fb8")
+	)
+	(label "P5_GROUP_SAFE_OFF"
+		(at 69.22 183.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "f9a18d8c-6003-5004-a5d6-f4f8f1052f49")
+	)
+	(wire
+		(pts (xy 74.3 186.27) (xy 69.22 186.27))
+		(stroke (width 0) (type default))
+		(uuid "b6446495-048a-5bfa-9921-ba7c35ad2752")
+	)
+	(label "P5_GROUP_HARD_OFF"
+		(at 69.22 186.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "19d1881c-1c63-515b-b1d7-7f44d1fa1a8a")
+	)
+	(wire
+		(pts (xy 74.3 188.81) (xy 69.22 188.81))
+		(stroke (width 0) (type default))
+		(uuid "9c4cffdb-9572-52a0-a62b-c2f50693cf99")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 69.22 188.81 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "cf1041bc-f3ce-5d15-a58f-efcc1e2b8bcb")
+	)
+	(wire
+		(pts (xy 74.3 191.35) (xy 69.22 191.35))
+		(stroke (width 0) (type default))
+		(uuid "485b00ee-9d45-5b5d-b3f7-941dbeccafbf")
+	)
+	(label "AGND"
+		(at 69.22 191.35 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "15596a2e-04ed-5731-966f-f14bcfb81e7e")
+	)
+	(wire
+		(pts (xy 99.7 185) (xy 104.78 185))
+		(stroke (width 0) (type default))
+		(uuid "60786aeb-9325-5d42-8112-b1bbd509023a")
+	)
+	(label "EN_RUN"
+		(at 104.78 185 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "79f0c33b-f9cb-5837-a281-517586eac6e3")
+	)
+	(symbol
+		(lib_id "plataVM:FAULT_EXPORT_TBD")
+		(at 125 185 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "a7ab395b-d167-51c9-a5ab-e32e835661cf")
+		(property "Reference" "U_FAULT"
+			(at 125 181 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD FAULT_AGGREGATE"
+			(at 125 189 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 125 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 125 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 125 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "26953823-aeee-5f53-925e-722ad7c6ae64")
+		)
+		(pin "2"
+			(uuid "e777bb3b-0acc-5107-83e1-919e66e5d469")
+		)
+		(pin "3"
+			(uuid "cd30e262-2da2-5c20-b8ff-5c5c0fab6238")
+		)
+		(pin "4"
+			(uuid "a12d6b0a-7185-5041-88bd-b1fd3e6bf8b2")
+		)
+		(pin "5"
+			(uuid "53ad317f-2f44-57e2-9403-14aee579ff4c")
+		)
+		(instances
+			(project "plataVM"
+				(path "/a7ab395b-d167-51c9-a5ab-e32e835661cf"
+					(reference "U_FAULT")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 113.57 181.19) (xy 108.49 181.19))
+		(stroke (width 0) (type default))
+		(uuid "bb627fd8-ed7c-5c96-9efb-015ee0f5822f")
+	)
+	(label "P5_PGOOD_OD"
+		(at 108.49 181.19 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "8a920095-4f5a-5df7-a62e-baa93758e126")
+	)
+	(wire
+		(pts (xy 113.57 183.73) (xy 108.49 183.73))
+		(stroke (width 0) (type default))
+		(uuid "3fd1aff7-96b5-5161-82a2-459b49b6dee0")
+	)
+	(label "UVLO_OK"
+		(at 108.49 183.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "2cb71122-cc18-55f3-b61e-f6c9e6e7eb53")
+	)
+	(wire
+		(pts (xy 113.57 186.27) (xy 108.49 186.27))
+		(stroke (width 0) (type default))
+		(uuid "84a6399e-f720-5918-ace7-e07027e44a40")
+	)
+	(label "EN_RUN"
+		(at 108.49 186.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "459306ca-03fd-5f25-a49b-f86258abaff2")
+	)
+	(wire
+		(pts (xy 113.57 188.81) (xy 108.49 188.81))
+		(stroke (width 0) (type default))
+		(uuid "52e4b73e-949b-502f-8749-6fbb8539f47e")
+	)
+	(label "AGND"
+		(at 108.49 188.81 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "5c8c6ad7-ab86-57e0-8de2-869d3d43e285")
+	)
+	(wire
+		(pts (xy 136.43 185) (xy 141.51 185))
+		(stroke (width 0) (type default))
+		(uuid "d601c0f9-06b8-504a-9b18-2619b008f4ff")
+	)
+	(label "P5_DC_DC_FAULT_N"
+		(at 141.51 185 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "91e67499-4043-510a-90d4-2847d7b3a134")
+	)
+	(symbol
+		(lib_id "plataVM:R")
+		(at 160 185 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c59d1141-218f-5866-9dce-b24140a14844")
+		(property "Reference" "R_PG1_PULLUP"
+			(at 160 181 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD"
+			(at 160 189 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 160 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 160 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 160 185 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "1461a5ff-50d5-5d72-9ea3-f6540785ac38")
+		)
+		(pin "2"
+			(uuid "1e98107d-3bf7-5730-8d05-355887f3dc87")
+		)
+		(instances
+			(project "plataVM"
+				(path "/c59d1141-218f-5866-9dce-b24140a14844"
+					(reference "R_PG1_PULLUP")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 154.92 185) (xy 152.38 185))
+		(stroke (width 0) (type default))
+		(uuid "5ad7d52b-7f54-55a3-8f88-b021d735c91f")
+	)
+	(label "5V_SYS_BUS"
+		(at 152.38 185 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "b2c9cbd3-a1d7-5e4a-b8d5-5886e3b5e576")
+	)
+	(wire
+		(pts (xy 165.08 185) (xy 167.62 185))
+		(stroke (width 0) (type default))
+		(uuid "3bc81c09-5a23-5f19-907a-d3e5029af51d")
+	)
+	(label "P5_PGOOD_OD"
+		(at 167.62 185 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "7cdeecd9-8759-5d12-bc8c-20988ebc8757")
+	)
+	(symbol
+		(lib_id "plataVM:ISENSE_EXPORT_TBD")
+		(at 45 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "cd056e60-1f99-5598-a865-2375247d3696")
+		(property "Reference" "U_ISENSE1"
+			(at 45 211 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD PHASE1_MONITOR"
+			(at 45 219 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 45 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 45 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 45 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "fa2ba6e3-6409-55c9-9080-4674d94f22cf")
+		)
+		(pin "2"
+			(uuid "82027169-8546-5809-97fa-5e2c0d473ccb")
+		)
+		(pin "3"
+			(uuid "9e1e60ee-d37d-5583-a2cc-1e5ae6bd2375")
+		)
+		(instances
+			(project "plataVM"
+				(path "/cd056e60-1f99-5598-a865-2375247d3696"
+					(reference "U_ISENSE1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 34.84 213.73) (xy 29.76 213.73))
+		(stroke (width 0) (type default))
+		(uuid "0bdca210-5af6-5ffa-a4f8-2a2410c62eee")
+	)
+	(label "PHASE1_L_OUT"
+		(at 29.76 213.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "9f5d1419-187a-597d-80b5-a1fbba05ef2d")
+	)
+	(wire
+		(pts (xy 34.84 216.27) (xy 29.76 216.27))
+		(stroke (width 0) (type default))
+		(uuid "33eb94e1-5e50-5c0d-81ad-132c7530f9fe")
+	)
+	(label "5V_SYS_BUS"
+		(at 29.76 216.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "26b4d379-826f-5f20-a7ae-f813ff145b6d")
+	)
+	(wire
+		(pts (xy 55.16 215) (xy 60.24 215))
+		(stroke (width 0) (type default))
+		(uuid "58cd2a4a-77f2-5ce9-bd6c-2361f377eeab")
+	)
+	(label "P5_PHASE1_ISENSE"
+		(at 60.24 215 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "b039d63f-86de-5496-a53a-81fe5bc49def")
+	)
+	(symbol
+		(lib_id "plataVM:ISENSE_EXPORT_TBD")
+		(at 87 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "09fbc88e-db44-535a-8ae8-cafd07b582c1")
+		(property "Reference" "U_ISENSE2"
+			(at 87 211 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD PHASE2_MONITOR"
+			(at 87 219 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 87 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 87 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 87 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "d73a181b-d842-5dad-b889-c73cc9a3a8ff")
+		)
+		(pin "2"
+			(uuid "248da47f-67a0-5cb3-ad36-178271588186")
+		)
+		(pin "3"
+			(uuid "d0029bed-6373-56f8-b068-5885797152fc")
+		)
+		(instances
+			(project "plataVM"
+				(path "/09fbc88e-db44-535a-8ae8-cafd07b582c1"
+					(reference "U_ISENSE2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 76.84 213.73) (xy 71.76 213.73))
+		(stroke (width 0) (type default))
+		(uuid "b28dc70b-ee24-57ab-8387-c3c16dd6aa6a")
+	)
+	(label "PHASE2_L_OUT"
+		(at 71.76 213.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "ad14a0de-5140-5fea-b441-dee9e2ed43c1")
+	)
+	(wire
+		(pts (xy 76.84 216.27) (xy 71.76 216.27))
+		(stroke (width 0) (type default))
+		(uuid "117fcbcd-f433-5bbb-bf7e-d597079dda21")
+	)
+	(label "5V_SYS_BUS"
+		(at 71.76 216.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "1a850186-b034-5941-bef6-8639a9603907")
+	)
+	(wire
+		(pts (xy 97.16 215) (xy 102.24 215))
+		(stroke (width 0) (type default))
+		(uuid "58c16b24-c1ed-5d91-a16f-ab88897364c2")
+	)
+	(label "P5_PHASE2_ISENSE"
+		(at 102.24 215 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "c9fedc27-fbbd-5874-a995-31df7d0f5172")
+	)
+	(symbol
+		(lib_id "plataVM:ISENSE_SUM_TBD")
+		(at 125 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "50cb787a-e209-559d-9041-c44d1840e5f1")
+		(property "Reference" "U_ISUM"
+			(at 125 211 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "CALC_TBD TOTAL_MONITOR"
+			(at 125 219 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 125 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 125 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 125 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "3f001403-72b7-5f5b-a48b-f300ec14c2fe")
+		)
+		(pin "2"
+			(uuid "a83aacc7-21ca-5e77-81af-ec6ba5cf5a96")
+		)
+		(pin "3"
+			(uuid "fdf4a4e3-8e57-5363-a085-948708d431c7")
+		)
+		(instances
+			(project "plataVM"
+				(path "/50cb787a-e209-559d-9041-c44d1840e5f1"
+					(reference "U_ISUM")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 114.84 213.73) (xy 109.76 213.73))
+		(stroke (width 0) (type default))
+		(uuid "1cc8aa03-d327-5c35-b7ac-b253b6a95e1c")
+	)
+	(label "P5_PHASE1_ISENSE"
+		(at 109.76 213.73 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "a23ec0e3-d8fc-5962-a053-2edae715a824")
+	)
+	(wire
+		(pts (xy 114.84 216.27) (xy 109.76 216.27))
+		(stroke (width 0) (type default))
+		(uuid "42465228-c821-5708-b506-309b1cb04f12")
+	)
+	(label "P5_PHASE2_ISENSE"
+		(at 109.76 216.27 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "70438333-67b0-5092-a596-71b090795a19")
+	)
+	(wire
+		(pts (xy 135.16 215) (xy 140.24 215))
+		(stroke (width 0) (type default))
+		(uuid "047b9caf-50f0-5dae-a76b-9c8939cd9d7c")
+	)
+	(label "5V_SYS_TOTAL_ISENSE"
+		(at 140.24 215 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "0888e6b4-d60e-5373-aab0-cc72ffd4e588")
+	)
+	(symbol
+		(lib_id "plataVM:NET_TIE_TBD")
+		(at 180 215 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "21ae965a-6db5-5003-88b6-2f82def32aef")
+		(property "Reference" "NT_AGND_PGND"
+			(at 180 211 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "AGND_PGND_STAR_LAYOUT_TBD"
+			(at 180 219 0)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 180 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Datasheet" "~"
+			(at 180 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
+			(at 180 215 0)
+			(effects (font (size 1 1)) (hide yes))
+		)
+		(pin "1"
+			(uuid "94ccfee4-f4d0-5ba3-a0c4-cbb61b3686e5")
+		)
+		(pin "2"
+			(uuid "14d1843c-dd88-5b7d-9d17-7a4f63145bf3")
+		)
+		(instances
+			(project "plataVM"
+				(path "/21ae965a-6db5-5003-88b6-2f82def32aef"
+					(reference "NT_AGND_PGND")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts (xy 174.92 215) (xy 172.38 215))
+		(stroke (width 0) (type default))
+		(uuid "32173f43-cafb-5498-b0a5-39e1e5d8267f")
+	)
+	(label "AGND"
+		(at 172.38 215 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "4877c6b5-aea3-5de9-89a0-0f33f731074a")
+	)
+	(wire
+		(pts (xy 185.08 215) (xy 187.62 215))
+		(stroke (width 0) (type default))
+		(uuid "725cd882-6df4-5f8a-8446-284c7ae7b2f6")
+	)
+	(label "POWER_GND"
+		(at 187.62 215 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "199bb1fb-c28e-575c-b8a8-cd1c75e33766")
+	)
+	(hierarchical_label "PACK_BUS_P5_IN"
+		(shape input)
+		(at 25 245 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "4740c8fc-1742-5c5c-a5ab-12b00cb0a99f")
+	)
+	(hierarchical_label "POWER_GND"
+		(shape passive)
+		(at 25 252 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "d7c340b2-00ae-5c65-8c85-ddf94578ec20")
+	)
+	(hierarchical_label "5V_SYS_EN"
+		(shape input)
+		(at 25 259 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "7d4d3710-005a-5fc2-a6ed-741ddf2abe82")
+	)
+	(hierarchical_label "P5_GROUP_SAFE_OFF"
+		(shape input)
+		(at 25 266 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "0cb49ca7-5841-52f7-b45a-36c81acc775d")
+	)
+	(hierarchical_label "P5_GROUP_HARD_OFF"
+		(shape input)
+		(at 25 273 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "21295d23-0a3e-515e-8854-3fb501224009")
+	)
+	(hierarchical_label "5V_SYS_BUS"
+		(shape output)
+		(at 310 245 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "e3deb7d4-ca93-58ad-ab5c-a9765fb0fa66")
+	)
+	(hierarchical_label "5V_SYS_VSENSE"
+		(shape output)
+		(at 310 252 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "a7b1c046-b0fb-586b-9d97-183733b20ab8")
+	)
+	(hierarchical_label "5V_SYS_TOTAL_ISENSE"
+		(shape output)
+		(at 310 259 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "53376e68-e02c-5b50-841b-a455cbe5ea6c")
+	)
+	(hierarchical_label "P5_DC_DC_FAULT_N"
+		(shape output)
+		(at 310 266 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "7b3c7c77-dbfe-59d0-8c98-11f736623e7d")
+	)
+	(hierarchical_label "P5_PHASE1_ISENSE"
+		(shape output)
+		(at 310 273 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "26a0f0f9-dd37-5970-8ed3-468f3f94814b")
+	)
+	(hierarchical_label "P5_PHASE2_ISENSE"
+		(shape output)
+		(at 310 280 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "e516efec-a324-56c3-b452-01d14b074d67")
+	)
+	(wire
+		(pts (xy 25 245) (xy 32.62 245))
+		(stroke (width 0) (type default))
+		(uuid "651457ea-1c15-5dd6-93d7-2ded8e381449")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 32.62 245 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "20b0ac55-534b-5d98-9b24-7cb26e0b9127")
+	)
+	(wire
+		(pts (xy 25 252) (xy 32.62 252))
+		(stroke (width 0) (type default))
+		(uuid "bf89728c-d0c5-5ea8-a0d5-a40b81cc81ce")
+	)
+	(label "POWER_GND"
+		(at 32.62 252 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "ce4811ff-591e-5f42-b7d7-ac936b4f5cd7")
+	)
+	(wire
+		(pts (xy 25 259) (xy 32.62 259))
+		(stroke (width 0) (type default))
+		(uuid "ea7f4338-c219-5e1a-b826-401c17df69a1")
+	)
+	(label "5V_SYS_EN"
+		(at 32.62 259 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "26753228-ff19-5260-bf01-5983af437f5b")
+	)
+	(wire
+		(pts (xy 25 266) (xy 32.62 266))
+		(stroke (width 0) (type default))
+		(uuid "dbb1b37e-4495-5b8c-9e12-6615a7efc4ad")
+	)
+	(label "P5_GROUP_SAFE_OFF"
+		(at 32.62 266 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "dac20463-2795-5e94-8dfb-114ef98dbc31")
+	)
+	(wire
+		(pts (xy 25 273) (xy 32.62 273))
+		(stroke (width 0) (type default))
+		(uuid "e3b72074-1b1f-5865-a81a-44842bfccd75")
+	)
+	(label "P5_GROUP_HARD_OFF"
+		(at 32.62 273 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "f784a213-7016-5268-ba44-b26af29d41ea")
+	)
+	(wire
+		(pts (xy 310 245) (xy 302.38 245))
+		(stroke (width 0) (type default))
+		(uuid "f54290f5-8c75-5b33-b5bd-144e62c4aaaa")
+	)
+	(label "5V_SYS_BUS"
+		(at 302.38 245 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "6abb24f8-abee-5cbd-8cad-44a5af47fd54")
+	)
+	(wire
+		(pts (xy 310 252) (xy 302.38 252))
+		(stroke (width 0) (type default))
+		(uuid "b8d7cd85-1dec-5d4e-8a9d-ec35502d59af")
+	)
+	(label "5V_SYS_BUS"
+		(at 302.38 252 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "a54fbdfe-553b-5399-b925-599a5cf10411")
+	)
+	(wire
+		(pts (xy 310 259) (xy 302.38 259))
+		(stroke (width 0) (type default))
+		(uuid "a226bb48-5dda-57c1-9f12-ba09a287a6d9")
+	)
+	(label "5V_SYS_TOTAL_ISENSE"
+		(at 302.38 259 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "dbcd400f-37ca-5927-9a84-5d8e3c0dd19b")
+	)
+	(wire
+		(pts (xy 310 266) (xy 302.38 266))
+		(stroke (width 0) (type default))
+		(uuid "7bf2d601-c2cb-5b12-82c7-c71181d23be2")
+	)
+	(label "P5_DC_DC_FAULT_N"
+		(at 302.38 266 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "fc7734c5-14c5-5984-bb2b-6b8cc45f8a01")
+	)
+	(wire
+		(pts (xy 310 273) (xy 302.38 273))
+		(stroke (width 0) (type default))
+		(uuid "c8247a4a-6e9f-5043-9306-7209b4cddb2b")
+	)
+	(label "P5_PHASE1_ISENSE"
+		(at 302.38 273 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "f2b4cf55-2351-5563-a698-dbb9d54adfaa")
+	)
+	(wire
+		(pts (xy 310 280) (xy 302.38 280))
+		(stroke (width 0) (type default))
+		(uuid "9f5a3aa5-7a20-57f7-ad08-239216823604")
+	)
+	(label "P5_PHASE2_ISENSE"
+		(at 302.38 280 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "91a7aada-1546-523e-9614-d9b91177b50f")
+	)
+	(text "PCB-D 5-V CONVERTER CORE — SYMBOL INSTANTIATION GATE"
 		(exclude_from_sim no)
 		(at 12 12 0)
-		(effects (font (size 1.22 1.22)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000101")
+		(effects (font (size 1.5 1.5)) (justify left))
+		(uuid "08ddf2a3-8bb6-5bec-b437-d3fe95dc1efe")
 	)
-	(text "CONTROLLER CONFIGURATION / EXACT RHA-40 PINS\nU_DCDC = LM5143QRHARQ1 prototype candidate\nMODE pin 34 -> VDDA; DEMB pin 33 -> VDDA; DITH pin 38 -> VDDA\nFB1 pin 28 -> AGND; FB2 pin 3 -> AGND for fixed 5 V interleaved operation\nCOMP1 pin 29 <-> COMP2 pin 2 = COMP_COMMON\nSS1 pin 30 <-> SS2 pin 1 = SS_COMMON\nEN1 pin 31 = EN2 pin 40 = hardware EN_RUN\nPG1 pin 24 = P5_PGOOD_OD; PG2 pin 7 = isolated testpad only\nVCC pins 15/16 common; VOUT1 pin 26 and VOUT2 pin 5 sense 5V_SYS_BUS."
+	(text "LM5143A-Q1 RHA-40 exact pin map instantiated. No production footprint/BOM/copper/layout freeze."
 		(exclude_from_sim no)
-		(at 12 48 0)
-		(effects (font (size 1.02 1.02)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000102")
+		(at 12 18 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "6bf4e122-ec94-5ae6-9910-ec0aaf77865d")
 	)
-	(text "PHASE 1 POWER STAGE\nQ_HS1/Q_LS1 = BUK9Y6R0-60E,115\nL1 = XAL1010-332MED, 3.3 uH +/-20%\nRSH1 = WSK25125L000FEA, 5 mOhm /1% Kelvin\nPACK_BUS_P5_IN -> half bridge -> SW1 -> L1 -> RSH1 -> 5V_SYS_BUS\nR_GATE_HS1/R_GATE_LS1 = CALC_TBD\nC_BOOT1/D_BOOT1 = CALC_TBD\nRCS1/CCS1 = CALC_TBD\nRC_SNUB1 = DNP_CALC_TBD."
+	(text "Eight independent HO/HOL and LO/LOL gate-resistor positions are intentional; all values remain CALC_TBD."
 		(exclude_from_sim no)
-		(at 12 102 0)
-		(effects (font (size 1.04 1.04)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000103")
+		(at 12 23 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "7bc05971-2277-5258-bd1c-423da39ddeb3")
 	)
-	(text "PHASE 2 POWER STAGE\nQ_HS2/Q_LS2 = BUK9Y6R0-60E,115\nL2 = XAL1010-332MED, 3.3 uH +/-20%\nRSH2 = WSK25125L000FEA, 5 mOhm /1% Kelvin\nPACK_BUS_P5_IN -> half bridge -> SW2 -> L2 -> RSH2 -> 5V_SYS_BUS\nR_GATE_HS2/R_GATE_LS2 = CALC_TBD\nC_BOOT2/D_BOOT2 = CALC_TBD\nRCS2/CCS2 = CALC_TBD\nRC_SNUB2 = DNP_CALC_TBD."
+	(text "Direct SAFE/HARD_OFF hardware gate, UVLO, fault/current-monitor blocks and AGND-PGND star are explicit CALC_TBD boundaries."
 		(exclude_from_sim no)
-		(at 102 102 0)
-		(effects (font (size 1.04 1.04)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000104")
+		(at 12 28 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "bb72f50a-eb21-5b9f-8ad2-b00ce119514b")
 	)
-	(text "TIMING / COMPENSATION\nR_RT = 54.9 kOhm /1% -> about 400.73 kHz nominal\nC_SS = 510 nF -> about 14.57 ms nominal\nC_RES = 470 nF prototype start; exact hiccup correlation OPEN\nR_COMP = 24.9 kOhm /1%\nC_COMP = 3.3 nF\nC_HF = 220 pF\nCalculated nominal crossover/PM: about 29.18 kHz /73.55 deg\nModeled minimum PM in declared sweep: about 56.21 deg\nBench Bode and load-step correlation remain mandatory."
+	(text "Native KiCad ERC is performed by CI/owner KiCad 10.0.5. Bench Bode/OCP/load-step/thermal Gates remain open."
 		(exclude_from_sim no)
-		(at 192 48 0)
-		(effects (font (size 1.06 1.06)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000105")
+		(at 12 33 0)
+		(effects (font (size 1 1)) (justify left))
+		(uuid "9d9fda07-93a0-54ba-ac9e-def2549b5e12")
 	)
-	(text "UVLO / HARDWARE ENABLE\nRequired targets: rising 8.8...9.0 V; falling 8.2...8.5 V\nA passive divider on LM5143A EN cannot implement the required narrow hysteresis.\nU_UVLO external supervisor/comparator = CALC_TBD\nUVLO_OK gates EN1 pin 31 and EN2 pin 40.\nEN_RUN = 5V_SYS_EN AND UVLO_OK AND NOT P5_GROUP_SAFE_OFF AND NOT P5_GROUP_HARD_OFF\nExact fail-safe gate implementation = CALC_TBD.\nSAFE/HARD_OFF must not depend on local MCU, CAN-FD or SERVICE_OVERRIDE."
-		(exclude_from_sim no)
-		(at 192 102 0)
-		(effects (font (size 1.04 1.04)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000106")
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
 	)
-	(text "CAPACITOR / PROTECTION BOUNDARY\nInput TVS and damping remain on PCB-D input-protection boundary.\nCIN: 50-V X7R positions; total actual Ceff >=100 uF at 16 V/tolerance/temp/aging.\nCOUT starting set: 2 x 10SVPC330M + 4 x 47 uF X7R; 2 x 47 uF DNP.\nActual Ceff/ESR/ESL = CALC_TBD until manufacturer curves and placement are reviewed.\nP5_DC_DC_FAULT_N uses PG1 and local protection; PG2 is not part of the aggregate."
-		(exclude_from_sim no)
-		(at 12 178 0)
-		(effects (font (size 1.04 1.04)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000107")
-	)
-	(text "FREEZE STATUS\nLM5143DESIGN-CALC Gate: PASS\nExact LM5143A-Q1 RHA-40 pin mapping: PASS\nKiCad symbol instantiation and native ERC: OPEN\nProduction schematic/BOM/footprints/3D/copper/layout: NOT FROZEN\nMachine-readable converter-core and pin-map ERC: PASS."
-		(exclude_from_sim no)
-		(at 192 178 0)
-		(effects (font (size 1.04 1.04)) (justify left))
-		(uuid "power-5v-00000041-0000-4000-8000-000000000108")
-	)
-	(hierarchical_label "PACK_BUS_P5_IN" (shape input) (exclude_from_sim no) (at 158 224 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000201"))
-	(hierarchical_label "POWER_GND" (shape passive) (exclude_from_sim no) (at 158 232 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000202"))
-	(hierarchical_label "5V_SYS_EN" (shape input) (exclude_from_sim no) (at 158 244 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000203"))
-	(hierarchical_label "P5_GROUP_SAFE_OFF" (shape input) (exclude_from_sim no) (at 158 252 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000204"))
-	(hierarchical_label "P5_GROUP_HARD_OFF" (shape input) (exclude_from_sim no) (at 158 260 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000205"))
-	(hierarchical_label "5V_SYS_BUS" (shape output) (exclude_from_sim no) (at 244 224 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000206"))
-	(hierarchical_label "5V_SYS_VSENSE" (shape output) (exclude_from_sim no) (at 244 236 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000207"))
-	(hierarchical_label "5V_SYS_TOTAL_ISENSE" (shape output) (exclude_from_sim no) (at 244 244 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000208"))
-	(hierarchical_label "P5_DC_DC_FAULT_N" (shape output) (exclude_from_sim no) (at 244 252 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000209"))
-	(hierarchical_label "P5_PHASE1_ISENSE" (shape output) (exclude_from_sim no) (at 244 260 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000210"))
-	(hierarchical_label "P5_PHASE2_ISENSE" (shape output) (exclude_from_sim no) (at 244 268 0) (effects (font (size 1.1 1.1)) (justify left)) (uuid "power-5v-00000041-0000-4000-8000-000000000211"))
+	(embedded_fonts no)
 )
