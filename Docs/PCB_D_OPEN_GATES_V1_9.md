@@ -1,7 +1,7 @@
-# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC V1.9
+# PCB-D POWER_5V — открытые Gates после LM5143DESIGN-CALC и exact pin-map V1.9
 
-Дата: 2026-07-21  
-Статус: `CALCULATION GATE PASSED — NATIVE ERC, TEST AND PRODUCTION GATES OPEN`
+Дата: 2026-07-23  
+Статус: `CALCULATION AND EXACT PIN-MAP GATES PASSED — SYMBOL, NATIVE ERC, TEST AND PRODUCTION GATES OPEN`
 
 ## 1. Закрыто предварительно
 
@@ -18,6 +18,7 @@
 | Q-P5-018A | Candidate loss feasibility at 75 Вт | CLOSED_PRELIMINARY |
 | LM5143DESIGN-CALC | Official-family calculator configuration and input/output record | CLOSED_CALCULATION |
 | Q-P5-016A | Nominal and tolerance-sweep compensation model | CLOSED_PRELIMINARY |
+| Q-P5-019A | Exact LM5143A-Q1 RHA-40 physical pin mapping and single-output tie contract | CLOSED_PINMAP |
 
 ## 2. Calculator result
 
@@ -61,7 +62,52 @@ modeled minimum phase margin ≈56,21°
 
 These are prototype calculation results, not production guarantees.
 
-## 3. Открыто после calculator Gate
+## 3. Exact LM5143A-Q1 pin-map result
+
+Exact RHA-40 upper pin group:
+
+```text
+31 EN1
+32 RES
+33 DEMB
+34 MODE
+35 AGND
+36 VDDA
+37 RT
+38 DITH
+39 SYNCOUT
+40 EN2
+```
+
+Single-output interleaved contract:
+
+```text
+MODE -> VDDA
+FB2 -> AGND
+FB1 -> AGND for fixed 5 V
+COMP1 <-> COMP2
+SS1 <-> SS2
+DEMB -> VDDA for FPWM
+EN1 = EN2 = EN_RUN
+PG1 pin 24 = primary PGOOD
+PG2 pin 7 = isolated testpad only
+VCC pins 15 and 16 = common VCC_BIAS
+```
+
+Validation:
+
+```text
+physical pins: 40
+exposed pad: 1
+pin-number/name uniqueness: PASS
+single-output tie contract: PASS
+PG1/PG2 role separation: PASS
+machine-readable pin-map ERC: PASS
+```
+
+Pin mapping is frozen for the selected prototype controller. Symbol geometry, footprint and production BOM are not frozen.
+
+## 4. Открыто после calculator и pin-map Gates
 
 | ID | Открытый параметр | Статус |
 |---|---|---|
@@ -80,9 +126,9 @@ These are prototype calculation results, not production guarantees.
 | Q-P5-016B | Native Bode measurement over VIN/load/cap tolerance | OPEN_TEST |
 | Q-P5-017B | Bode/load-step bench correlation | OPEN_TEST |
 | Q-P5-018B | Exact MOSFET switching and inductor core losses | OPEN_CALC_TEST |
-| Q-P5-019 | Exact controller/discrete symbols and native KiCad ERC | OPEN_SCHEMATIC_ERC |
+| Q-P5-019B | Exact KiCad symbol/discrete-core instantiation and native KiCad ERC | OPEN_SCHEMATIC_ERC |
 
-## 4. UVLO result
+## 5. UVLO result
 
 Required operating window:
 
@@ -97,25 +143,29 @@ LM5143A-Q1 EN thresholds do not permit this narrow hysteresis from one passive d
 passive EN divider: REJECTED
 external supervisor/comparator: CALC_TBD
 nominal target: 8,9 В rising /8,35 В falling
-hardware-qualified UVLO_OK required for both EN inputs
+hardware-qualified UVLO_OK required for EN1 pin 31 and EN2 pin 40
 ```
 
 The exact device and resistor network remain outside production freeze.
 
-## 5. Prototype converter-core status
+## 6. Prototype converter-core status
 
-Created:
+Created or updated:
 
 ```text
 Hardware/KiCad/41_5V_DC_DC.kicad_sch
 Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
+Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_ERC_RESULT_V1_9.txt
 Tools/erc/pcb_d_converter_core_erc.py
+Tools/erc/pcb_d_lm5143_pinmap_erc.py
 ```
 
-The sheet contains:
+The sheet and manifests contain:
 
 - selected prototype candidates;
 - confirmed RT/SS/compensation starting values;
+- exact LM5143A-Q1 physical pin numbers and roles;
 - explicit `CALC_TBD` values for UVLO, CS filters, gate resistors, bootstrap and snubbers;
 - DNP/tuning options;
 - direct SAFE/HARD_OFF equation;
@@ -126,13 +176,14 @@ Validation:
 
 ```text
 S-expression structural check: PASS
-machine-readable semantic ERC: PASS
+machine-readable converter-core semantic ERC: PASS
+machine-readable exact pin-map ERC: PASS
 native KiCad application ERC: OPEN
 ```
 
-The current sheet is a preliminary converter-core definition. Production schematic freeze is not granted.
+The current sheet remains a preliminary converter-core definition. Production schematic freeze is not granted.
 
-## 6. Thermal Gate
+## 7. Thermal Gate
 
 Prototype component selection and calculation do not close:
 
@@ -154,7 +205,7 @@ Required measurements:
 - fault telemetry;
 - conformal-coating impact.
 
-## 7. Mechanical Gate
+## 8. Mechanical Gate
 
 Required before footprint freeze:
 
@@ -170,11 +221,12 @@ connector and harness mating volume
 inter-level L1/L2 clearance
 ```
 
-## 8. Next Gate
+## 9. Next Gate
 
 ```text
-exact LM5143A-Q1 and discrete symbol/pin instantiation
-→ owner KiCad 10.0 open
+create exact KiCad symbol from verified pin map
+→ instantiate controller and discrete converter-core symbols
+→ owner KiCad 10.0 open/save
 → native KiCad ERC
 → exact UVLO/CS/gate/bootstrap/snubber calculation
 → Bode/load-step/OCP bench correlation
