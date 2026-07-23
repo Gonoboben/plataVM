@@ -1,6 +1,17 @@
 name: PCB-D KiCad 10 ERC
 
 on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - "Hardware/KiCad/41_5V_DC_DC.kicad_sch"
+      - "Hardware/KiCad/plataVM_symbols.kicad_sym"
+      - "Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json"
+      - "Tools/kicad/generate_pcb_d_converter_core.py"
+      - "Tools/erc/pcb_d_kicad_symbol_gate.py"
+      - "Tools/erc/pcb_d_converter_core_erc.py"
+      - ".github/workflows/pcb-d-kicad-erc.yml"
   pull_request:
     paths:
       - "Hardware/KiCad/41_5V_DC_DC.kicad_sch"
@@ -15,16 +26,21 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: pcb-d-kicad-erc-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   exact-symbol-and-native-erc:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
       - name: Deterministic semantic and symbol Gates
         run: |
+          set -euo pipefail
           python Tools/erc/pcb_d_converter_core_erc.py \
             Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
           python Tools/erc/pcb_d_lm5143_pinmap_erc.py \
@@ -33,37 +49,56 @@ jobs:
             Hardware/KiCad/41_5V_DC_DC.kicad_sch \
             Hardware/KiCad/plataVM_symbols.kicad_sym
 
-      - name: Verify canonical KiCad source hygiene
+      - name: Verify canonical KiCad source and generator parity
         shell: bash
         run: |
           set -euo pipefail
           python -m py_compile \
             Tools/kicad/generate_pcb_d_converter_core.py \
             Tools/erc/pcb_d_kicad_symbol_gate.py
+
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py \
+            --output-dir "$generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            "$generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
+            "$generated/plataVM_symbols.kicad_sym"
+
           python - <<'PY'
           from pathlib import Path
 
-          files = [
-              Path('Hardware/KiCad/41_5V_DC_DC.kicad_sch'),
-              Path('Hardware/KiCad/plataVM_symbols.kicad_sym'),
-          ]
-          for path in files:
+          schematic = Path('Hardware/KiCad/41_5V_DC_DC.kicad_sch')
+          symbol_library = Path('Hardware/KiCad/plataVM_symbols.kicad_sym')
+          for path in (schematic, symbol_library):
               data = path.read_bytes()
               if b'\x00' in data:
                   raise SystemExit(f'{path}: NUL byte detected')
               text = data.decode('utf-8')
               if r'\t' in text or r'\n' in text:
                   raise SystemExit(f'{path}: escaped parser-control sequence detected')
-          if '(version 20260101)' not in files[0].read_text(encoding='utf-8'):
-              raise SystemExit('schematic is not normalized to the accepted KiCad 10 source version')
-          if '(version 20241209)' not in files[1].read_text(encoding='utf-8'):
+
+          schematic_text = schematic.read_text(encoding='utf-8')
+          symbol_text = symbol_library.read_text(encoding='utf-8')
+          required_schematic = (
+              '(version 20260101)',
+              '(generator "plataVM_symbol_gate")',
+              '(generator_version "1.0")',
+          )
+          for marker in required_schematic:
+              if marker not in schematic_text:
+                  raise SystemExit(f'schematic marker missing: {marker}')
+          if '(version 20241209)' not in symbol_text:
               raise SystemExit('symbol library version mismatch')
+
           print('canonical KiCad source hygiene: PASS')
-          print('NOTE: generator byte-parity remains OPEN and is not falsely claimed.')
+          print('deterministic generator byte parity: PASS')
           PY
 
       - name: Install official KiCad 10 release package
         run: |
+          set -euo pipefail
           sudo apt-get update
           sudo apt-get install --yes software-properties-common
           sudo add-apt-repository --yes ppa:kicad/kicad-10.0-releases
@@ -85,6 +120,7 @@ jobs:
           status=$?
           set -e
           printf '%s\n' "$status" > artifacts/native-erc-exit-code.txt
+          kicad-cli version > artifacts/kicad-version.txt
           cat artifacts/native-erc-command.log
           echo "native ERC exit code: $status"
 
