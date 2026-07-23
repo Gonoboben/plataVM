@@ -53,11 +53,15 @@ PCB_D_COMPONENT_SELECTION_CONSISTENCY_AMENDMENT_V1_9.md
 PCB_D_LM5143DESIGN_CALC_GATE_V1_9.md
 PCB_D_LM5143DESIGN_CALC_RECORD_V1_9.csv
 PCB_D_CONVERTER_CORE_SCHEMATIC_REVIEW_V1_9.md
+PCB_D_LM5143A_Q1_PIN_MAPPING_GATE_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ../Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+../Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
+../Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_ERC_RESULT_V1_9.txt
 ../Hardware/Mechanical/PACKAGING_P1_PLACEHOLDER.scad
 ../Hardware/Mechanical/PCB_D_POWER_STAGE_PLACEHOLDER.scad
 ../Tools/erc/pcb_d_converter_core_erc.py
+../Tools/erc/pcb_d_lm5143_pinmap_erc.py
 ```
 
 ## Трассируемость решения
@@ -74,6 +78,7 @@ chronology/2026-07-21-pcb-d-input-protection.md
 chronology/2026-07-21-pcb-d-prototype-components.md
 chronology/2026-07-21-pcb-d-prototype-components-source-fix.md
 chronology/2026-07-21-pcb-d-lm5143design-calc.md
+chronology/2026-07-23-pcb-d-lm5143a-pin-map.md
 ```
 
 ## KiCad toolchain
@@ -129,9 +134,12 @@ nominal crossover/phase margin: 29,18 кГц /73,55°
 modeled minimum phase margin: 56,21°
 external UVLO supervisor: CALC_TBD
 prototype converter-core definition: CREATED
-semantic ERC: PASS
+exact LM5143A-Q1 RHA-40 pin mapping: PASS
+single-output interleaved pin/tie contract: PASS
+PG1/PG2 role separation: PASS
+semantic converter-core ERC: PASS
+KiCad symbol instantiation: OPEN
 native KiCad ERC: OPEN
-exact symbols/pin mapping: OPEN
 footprints/3D: OPEN
 bench loop/OCP/load-step correlation: OPEN
 sealed-volume thermal test: OPEN
