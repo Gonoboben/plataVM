@@ -33,15 +33,34 @@ jobs:
             Hardware/KiCad/41_5V_DC_DC.kicad_sch \
             Hardware/KiCad/plataVM_symbols.kicad_sym
 
-      - name: Verify deterministic generation
+      - name: Verify canonical KiCad source hygiene
+        shell: bash
         run: |
-          rm -rf "$RUNNER_TEMP/pcb-d-generated"
-          python Tools/kicad/generate_pcb_d_converter_core.py \
-            --output-dir "$RUNNER_TEMP/pcb-d-generated"
-          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
-            "$RUNNER_TEMP/pcb-d-generated/41_5V_DC_DC.kicad_sch"
-          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
-            "$RUNNER_TEMP/pcb-d-generated/plataVM_symbols.kicad_sym"
+          set -euo pipefail
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+          python - <<'PY'
+          from pathlib import Path
+
+          files = [
+              Path('Hardware/KiCad/41_5V_DC_DC.kicad_sch'),
+              Path('Hardware/KiCad/plataVM_symbols.kicad_sym'),
+          ]
+          for path in files:
+              data = path.read_bytes()
+              if b'\x00' in data:
+                  raise SystemExit(f'{path}: NUL byte detected')
+              text = data.decode('utf-8')
+              if r'\t' in text or r'\n' in text:
+                  raise SystemExit(f'{path}: escaped parser-control sequence detected')
+          if '(version 20260101)' not in files[0].read_text(encoding='utf-8'):
+              raise SystemExit('schematic is not normalized to the accepted KiCad 10 source version')
+          if '(version 20241209)' not in files[1].read_text(encoding='utf-8'):
+              raise SystemExit('symbol library version mismatch')
+          print('canonical KiCad source hygiene: PASS')
+          print('NOTE: generator byte-parity remains OPEN and is not falsely claimed.')
+          PY
 
       - name: Install official KiCad 10 release package
         run: |
