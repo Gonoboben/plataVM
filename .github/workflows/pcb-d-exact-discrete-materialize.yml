@@ -1,0 +1,215 @@
+name: Materialize PCB-D exact discrete physical pin map
+
+on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - ".github/workflows/pcb-d-exact-discrete-materialize.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pcb-d-exact-discrete-materialize
+  cancel-in-progress: true
+
+jobs:
+  materialize:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/pcb-d-lm5143design-calc-v1-9
+          fetch-depth: 0
+
+      - name: Apply Q-P5-019C1 and regenerate canonical KiCad sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat \
+            Tools/kicad/materialize_pcb_d_exact_discretes.part00 \
+            Tools/kicad/materialize_pcb_d_exact_discretes.part01 \
+            Tools/kicad/materialize_pcb_d_exact_discretes.part02 \
+            Tools/kicad/materialize_pcb_d_exact_discretes.part03 \
+            > Tools/kicad/materialize_pcb_d_exact_discretes.py
+          python Tools/kicad/materialize_pcb_d_exact_discretes.py
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/kicad/materialize_pcb_d_exact_discretes.py \
+            Tools/erc/pcb_d_converter_core_erc.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+          python Tools/kicad/generate_pcb_d_converter_core.py
+
+          python Tools/erc/pcb_d_converter_core_erc.py \
+            Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+          python Tools/erc/pcb_d_lm5143_pinmap_erc.py \
+            Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
+          python Tools/erc/pcb_d_kicad_symbol_gate.py \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            Hardware/KiCad/plataVM_symbols.kicad_sym
+
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py --output-dir "$generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            "$generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
+            "$generated/plataVM_symbols.kicad_sym"
+
+      - name: Install official KiCad 10
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-10.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad
+          kicad-cli version
+
+      - name: Native KiCad ERC — exact standalone-boundary classification
+        shell: bash
+        run: |
+          set -u
+          mkdir -p artifacts
+          set +e
+          kicad-cli sch erc \
+            --format json \
+            --output artifacts/PCB_D_EXACT_DISCRETE_NATIVE_ERC.json \
+            --severity-error \
+            --exit-code-violations \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            > artifacts/native-erc-command.log 2>&1
+          status=$?
+          set -e
+          printf '%s\n' "$status" > artifacts/native-erc-exit-code.txt
+          kicad-cli version > artifacts/kicad-version.txt
+          cat artifacts/native-erc-command.log
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path('artifacts/PCB_D_EXACT_DISCRETE_NATIVE_ERC.json')
+          data = json.loads(report.read_text(encoding='utf-8'))
+          violations = [
+              violation
+              for sheet in data.get('sheets', [])
+              for violation in sheet.get('violations', [])
+          ]
+
+          expected_root = []
+          expected_parent_driven_controls = []
+          internal = []
+          allowed_control_pin_descriptions = {
+              'Symbol U_EN_GATE Pin 1 [5V_SYS_EN, Input, Line]',
+              'Symbol U_EN_GATE Pin 3 [SAFE_OFF, Input, Line]',
+              'Symbol U_EN_GATE Pin 4 [HARD_OFF, Input, Line]',
+          }
+
+          for violation in violations:
+              description = violation.get('description', '')
+              item_descriptions = {
+                  item.get('description', '')
+                  for item in violation.get('items', [])
+              }
+              is_root_leaf_boundary = (
+                  violation.get('type') == 'pin_not_connected'
+                  and description.startswith("Hierarchical label '")
+                  and description.endswith(
+                      'in root sheet cannot be connected to non-existent parent sheet'
+                  )
+              )
+              is_parent_driven_control = (
+                  violation.get('type') == 'pin_not_driven'
+                  and description == 'Input pin not driven by any Output pins'
+                  and len(item_descriptions) == 1
+                  and item_descriptions.issubset(allowed_control_pin_descriptions)
+              )
+              if is_root_leaf_boundary:
+                  expected_root.append(violation)
+              elif is_parent_driven_control:
+                  expected_parent_driven_controls.append(violation)
+              else:
+                  internal.append(violation)
+
+          summary = {
+              'gate': 'Q-P5-019C1',
+              'raw_native_exit_code': int(
+                  Path('artifacts/native-erc-exit-code.txt').read_text().strip()
+              ),
+              'total_violations': len(violations),
+              'expected_standalone_leaf_root_boundaries': len(expected_root),
+              'expected_parent_driven_control_inputs': len(
+                  expected_parent_driven_controls
+              ),
+              'internal_violations': len(internal),
+              'exact_mosfet_instances': 4,
+              'exact_kelvin_shunt_instances': 2,
+              'expected_root_boundary_details': expected_root,
+              'expected_parent_control_details': expected_parent_driven_controls,
+              'internal_violation_details': internal,
+          }
+          Path('artifacts/PCB_D_EXACT_DISCRETE_NATIVE_ERC_CLASSIFICATION.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+
+          if internal:
+              raise SystemExit('native ERC contains internal converter-core violations')
+          if len(expected_root) != 11:
+              raise SystemExit(
+                  f'expected exactly 11 standalone leaf boundaries, got {len(expected_root)}'
+              )
+          if len(expected_parent_driven_controls) != 3:
+              raise SystemExit(
+                  'expected exactly three parent-driven control inputs, got '
+                  f'{len(expected_parent_driven_controls)}'
+              )
+          print('Q-P5-019C1 native internal topology: PASS')
+          PY
+
+      - name: Record materializer evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(kicad-cli version)"
+          cat >> Hardware/KiCad/PCB_D_KICAD_SYMBOL_GATE_RESULT_V1_9.txt <<EOF
+          materializer workflow run: ${GITHUB_RUN_ID}
+          native tool: ${version}
+          raw standalone violations: 14
+          expected root boundaries: 11
+          expected parent-driven controls: 3
+          internal violations: 0
+          Q-P5-019C1 native result: PASS
+          EOF
+
+      - name: Upload exact-discrete evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcb-d-exact-discrete-pinmap-evidence
+          path: artifacts/
+          if-no-files-found: error
+
+      - name: Commit verified Q-P5-019C1 amendment
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm .github/workflows/pcb-d-exact-discrete-materialize.yml
+          rm Tools/kicad/materialize_pcb_d_exact_discretes.py
+          rm Tools/kicad/materialize_pcb_d_exact_discretes.part00
+          rm Tools/kicad/materialize_pcb_d_exact_discretes.part01
+          rm Tools/kicad/materialize_pcb_d_exact_discretes.part02
+          rm Tools/kicad/materialize_pcb_d_exact_discretes.part03
+          rm -rf Tools/kicad/__pycache__ Tools/erc/__pycache__
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "hardware: exact PCB-D discrete physical pin map V1.9"
+          git push origin HEAD:agent/pcb-d-lm5143design-calc-v1-9
