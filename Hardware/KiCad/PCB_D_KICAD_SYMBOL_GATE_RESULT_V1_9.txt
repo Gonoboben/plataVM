@@ -1,0 +1,27 @@
+PCB-D exact controller and discrete physical pin-map Gate V1.9
+schematic: Hardware/KiCad/41_5V_DC_DC.kicad_sch
+symbol library: Hardware/KiCad/plataVM_symbols.kicad_sym
+controller: LM5143A-Q1 RHA-40, 40 physical pins + EP
+MOSFET: BUK9Y6R0-60E LFPAK56/SOT669
+MOSFET physical pins: 1=S, 2=S, 3=S, 4=G, mb=D
+exact MOSFET instances: 4
+shunt: WSK25125L000FEA / WSK2512 four-terminal
+shunt terminals: I1/I2 current; E1/E2 voltage sense
+exact Kelvin shunt instances: 2
+per-phase Kelvin sense nets: RSHx_SENSE_HI / RSHx_SENSE_LO
+production footprints assigned: 0
+exact symbol Gate: PASS
+native converter-core internal topology: PASS
+RESULT: PASS
+NOTE: owner KiCad 10 hierarchy/open-save/visual review remains mandatory.
+materializer workflow run: 30094341796
+materialized commit: 8dd745ecdc1a6ffadf2cfabdbc316d0f16074a5b
+native tool: 10.0.5
+raw standalone violations: 14
+expected root boundaries: 11
+expected parent-driven controls: 3
+internal violations: 0
+Q-P5-019C1 native result: PASS
+evidence artifact: pcb-d-exact-discrete-pinmap-evidence
+evidence artifact id: 8596956991
+evidence digest: sha256:1abec7243e0fddd909619d7a9172492e12912b43d5d711ec5a6e459b44f14b17

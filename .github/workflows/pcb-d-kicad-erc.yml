@@ -1,0 +1,220 @@
+name: PCB-D KiCad 10 ERC
+
+on:
+  push:
+    branches:
+      - agent/pcb-d-lm5143design-calc-v1-9
+    paths:
+      - "Hardware/KiCad/41_5V_DC_DC.kicad_sch"
+      - "Hardware/KiCad/plataVM_symbols.kicad_sym"
+      - "Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json"
+      - "Tools/kicad/generate_pcb_d_converter_core.py"
+      - "Tools/erc/pcb_d_kicad_symbol_gate.py"
+      - "Tools/erc/pcb_d_converter_core_erc.py"
+      - ".github/workflows/pcb-d-kicad-erc.yml"
+  pull_request:
+    paths:
+      - "Hardware/KiCad/41_5V_DC_DC.kicad_sch"
+      - "Hardware/KiCad/plataVM_symbols.kicad_sym"
+      - "Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json"
+      - "Tools/kicad/generate_pcb_d_converter_core.py"
+      - "Tools/erc/pcb_d_kicad_symbol_gate.py"
+      - "Tools/erc/pcb_d_converter_core_erc.py"
+      - ".github/workflows/pcb-d-kicad-erc.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pcb-d-kicad-erc-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  exact-symbol-and-native-erc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deterministic semantic and symbol Gates
+        run: |
+          set -euo pipefail
+          python Tools/erc/pcb_d_converter_core_erc.py \
+            Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
+          python Tools/erc/pcb_d_lm5143_pinmap_erc.py \
+            Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json
+          python Tools/erc/pcb_d_kicad_symbol_gate.py \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            Hardware/KiCad/plataVM_symbols.kicad_sym
+
+      - name: Verify canonical KiCad source and generator parity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m py_compile \
+            Tools/kicad/generate_pcb_d_converter_core.py \
+            Tools/erc/pcb_d_kicad_symbol_gate.py
+
+          generated="$RUNNER_TEMP/pcb-d-generated"
+          rm -rf "$generated"
+          python Tools/kicad/generate_pcb_d_converter_core.py \
+            --output-dir "$generated"
+          diff -u Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            "$generated/41_5V_DC_DC.kicad_sch"
+          diff -u Hardware/KiCad/plataVM_symbols.kicad_sym \
+            "$generated/plataVM_symbols.kicad_sym"
+
+          python - <<'PY'
+          from pathlib import Path
+
+          schematic = Path('Hardware/KiCad/41_5V_DC_DC.kicad_sch')
+          symbol_library = Path('Hardware/KiCad/plataVM_symbols.kicad_sym')
+          for path in (schematic, symbol_library):
+              data = path.read_bytes()
+              if b'\x00' in data:
+                  raise SystemExit(f'{path}: NUL byte detected')
+              text = data.decode('utf-8')
+              if r'\t' in text or r'\n' in text:
+                  raise SystemExit(f'{path}: escaped parser-control sequence detected')
+
+          schematic_text = schematic.read_text(encoding='utf-8')
+          symbol_text = symbol_library.read_text(encoding='utf-8')
+          required_schematic = (
+              '(version 20260101)',
+              '(generator "plataVM_symbol_gate")',
+              '(generator_version "1.0")',
+          )
+          for marker in required_schematic:
+              if marker not in schematic_text:
+                  raise SystemExit(f'schematic marker missing: {marker}')
+          if '(version 20241209)' not in symbol_text:
+              raise SystemExit('symbol library version mismatch')
+
+          print('canonical KiCad source hygiene: PASS')
+          print('deterministic generator byte parity: PASS')
+          PY
+
+      - name: Install official KiCad 10 release package
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --yes software-properties-common
+          sudo add-apt-repository --yes ppa:kicad/kicad-10.0-releases
+          sudo apt-get update
+          sudo apt-get install --yes --no-install-recommends kicad
+          kicad-cli version
+
+      - name: Native KiCad ERC — capture and classify
+        shell: bash
+        run: |
+          set -u
+          mkdir -p artifacts
+          set +e
+          kicad-cli sch erc \
+            --format json \
+            --output artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json \
+            --severity-error \
+            --exit-code-violations \
+            Hardware/KiCad/41_5V_DC_DC.kicad_sch \
+            > artifacts/native-erc-command.log 2>&1
+          status=$?
+          set -e
+          printf '%s\n' "$status" > artifacts/native-erc-exit-code.txt
+          kicad-cli version > artifacts/kicad-version.txt
+          cat artifacts/native-erc-command.log
+          echo "native ERC raw exit code: $status"
+
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          report = Path('artifacts/PCB_D_41_5V_DC_DC_NATIVE_ERC.json')
+          data = json.loads(report.read_text(encoding='utf-8'))
+          violations = [
+              violation
+              for sheet in data.get('sheets', [])
+              for violation in sheet.get('violations', [])
+          ]
+
+          expected_root = []
+          expected_parent_driven_controls = []
+          internal = []
+          allowed_control_pin_descriptions = {
+              'Symbol U_EN_GATE Pin 1 [5V_SYS_EN, Input, Line]',
+              'Symbol U_EN_GATE Pin 3 [SAFE_OFF, Input, Line]',
+              'Symbol U_EN_GATE Pin 4 [HARD_OFF, Input, Line]',
+          }
+
+          for violation in violations:
+              description = violation.get('description', '')
+              item_descriptions = {
+                  item.get('description', '')
+                  for item in violation.get('items', [])
+              }
+              is_root_leaf_boundary = (
+                  violation.get('type') == 'pin_not_connected'
+                  and description.startswith("Hierarchical label '")
+                  and description.endswith(
+                      'in root sheet cannot be connected to non-existent parent sheet'
+                  )
+              )
+              is_parent_driven_control = (
+                  violation.get('type') == 'pin_not_driven'
+                  and description == 'Input pin not driven by any Output pins'
+                  and len(item_descriptions) == 1
+                  and item_descriptions.issubset(allowed_control_pin_descriptions)
+              )
+
+              if is_root_leaf_boundary:
+                  expected_root.append(violation)
+              elif is_parent_driven_control:
+                  expected_parent_driven_controls.append(violation)
+              else:
+                  internal.append(violation)
+
+          summary = {
+              'native_tool': 'KiCad 10 release package',
+              'raw_native_exit_code': int(
+                  Path('artifacts/native-erc-exit-code.txt').read_text().strip()
+              ),
+              'total_violations': len(violations),
+              'expected_standalone_leaf_root_boundaries': len(expected_root),
+              'expected_parent_driven_control_inputs': len(
+                  expected_parent_driven_controls
+              ),
+              'internal_violations': len(internal),
+              'expected_root_boundary_details': expected_root,
+              'expected_parent_control_details': expected_parent_driven_controls,
+              'internal_violation_details': internal,
+          }
+          Path('artifacts/PCB_D_NATIVE_ERC_CLASSIFICATION.json').write_text(
+              json.dumps(summary, indent=2, ensure_ascii=False) + '\n',
+              encoding='utf-8',
+          )
+          print(json.dumps(summary, indent=2, ensure_ascii=False))
+
+          if internal:
+              raise SystemExit('native ERC contains internal converter-core violations')
+          if len(expected_root) != 11:
+              raise SystemExit(
+                  f'expected exactly 11 standalone leaf boundaries, got {len(expected_root)}'
+              )
+          if len(expected_parent_driven_controls) != 3:
+              raise SystemExit(
+                  'expected exactly three parent-driven control inputs, got '
+                  f'{len(expected_parent_driven_controls)}'
+              )
+
+          print('native KiCad ERC converter-core internal topology: PASS')
+          print('standalone leaf boundaries: 11 hierarchical + 3 parent-driven EXPECTED')
+          PY
+
+      - name: Upload native ERC evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pcb-d-kicad-native-erc
+          path: artifacts/
+          if-no-files-found: error

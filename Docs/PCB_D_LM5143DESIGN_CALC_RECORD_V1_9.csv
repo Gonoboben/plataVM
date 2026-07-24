@@ -1,0 +1,42 @@
+category,parameter,value,unit,status
+configuration,controller,LM5143QRHARQ1,,PROTOTYPE
+configuration,mode,single-output 2-phase FPWM,,PASS
+input,VIN_min,9.2,V,INPUT
+input,VIN_nom,12.8,V,INPUT
+input,VIN_max,16.0,V,INPUT
+output,VOUT,5.0,V,INPUT
+output,IOUT_continuous,15,A,INPUT
+output,IOUT_short,20,A for 1 s,INPUT
+timing,fSW_target,400,kHz per phase,INPUT
+timing,RT_standard,54.9,kOhm,PROTOTYPE_START
+timing,fSW_equation_nominal,400.73,kHz,CALCULATED
+timing,fSW_manual_sweep_min,351.7,kHz,ENGINEERING_CORNER
+timing,fSW_manual_sweep_max,450.8,kHz,ENGINEERING_CORNER
+magnetics,L_selected,3.3,uH,PROTOTYPE
+magnetics,L_slope_ideal,2.604,uH,CALCULATED
+ocp,tool_RS_recommended_for_22.5A,5.879,mOhm,CALCULATED
+ocp,RS_selected,5.0,mOhm,PROTOTYPE
+ocp,tool_total_avg_VINmin,27.454,A,NOMINAL_TOOL
+ocp,tool_total_avg_VINnom,26.867,A,NOMINAL_TOOL
+ocp,tool_total_avg_VINmax,26.566,A,NOMINAL_TOOL
+ocp,manual_total_avg_min,22.522,A,TOLERANCE
+ocp,manual_phase_peak_20A_worst,11.851,A,TOLERANCE
+ocp,manual_phase_threshold_min,13.069,A,TOLERANCE
+ocp,manual_margin_min,10.28,percent,PRELIMINARY_PASS
+soft_start,tSS_target,15,ms,INPUT
+soft_start,CSS_calculated,525,nF,CALCULATED
+soft_start,CSS_starting,510,nF,PROTOTYPE_START
+compensation,RCOMP,24.9,kOhm,PROTOTYPE_START
+compensation,CCOMP,3.3,nF,PROTOTYPE_START
+compensation,CHF,220,pF,PROTOTYPE_START
+stability,crossover_nominal,29.18,kHz,CALCULATED
+stability,phase_margin_nominal,73.55,deg,CALCULATED
+stability,crossover_corner_min,18.31,kHz,CALCULATED
+stability,crossover_corner_max,39.14,kHz,CALCULATED
+stability,phase_margin_corner_min,56.21,deg,CALCULATED_PASS
+uvlo,rising_target,8.9,V,CALC_TBD
+uvlo,falling_target,8.35,V,CALC_TBD
+uvlo,implementation,external supervisor/comparator,,CALC_TBD
+freeze,production_BOM,false,,NOT_GRANTED
+freeze,footprints,false,,NOT_GRANTED
+freeze,production_schematic,false,,NOT_GRANTED

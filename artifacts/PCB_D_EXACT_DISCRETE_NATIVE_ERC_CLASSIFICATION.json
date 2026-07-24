@@ -1,0 +1,225 @@
+{
+  "gate": "Q-P5-019C1",
+  "raw_native_exit_code": 5,
+  "total_violations": 14,
+  "expected_standalone_leaf_root_boundaries": 11,
+  "expected_parent_driven_control_inputs": 3,
+  "internal_violations": 0,
+  "exact_mosfet_instances": 4,
+  "exact_kelvin_shunt_instances": 2,
+  "expected_root_boundary_details": [
+    {
+      "description": "Hierarchical label 'PACK_BUS_P5_IN' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'PACK_BUS_P5_IN'",
+          "pos": {
+            "x": 0.25,
+            "y": 2.45
+          },
+          "uuid": "4740c8fc-1742-5c5c-a5ab-12b00cb0a99f"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'POWER_GND' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'POWER_GND'",
+          "pos": {
+            "x": 0.25,
+            "y": 2.52
+          },
+          "uuid": "d7c340b2-00ae-5c65-8c85-ddf94578ec20"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label '5V_SYS_EN' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label '5V_SYS_EN'",
+          "pos": {
+            "x": 0.25,
+            "y": 2.59
+          },
+          "uuid": "7d4d3710-005a-5fc2-a6ed-741ddf2abe82"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'P5_GROUP_SAFE_OFF' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'P5_GROUP_SAFE_OFF'",
+          "pos": {
+            "x": 0.25,
+            "y": 2.66
+          },
+          "uuid": "0cb49ca7-5841-52f7-b45a-36c81acc775d"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'P5_GROUP_HARD_OFF' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'P5_GROUP_HARD_OFF'",
+          "pos": {
+            "x": 0.25,
+            "y": 2.73
+          },
+          "uuid": "21295d23-0a3e-515e-8854-3fb501224009"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label '5V_SYS_BUS' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label '5V_SYS_BUS'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.45
+          },
+          "uuid": "e3deb7d4-ca93-58ad-ab5c-a9765fb0fa66"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label '5V_SYS_VSENSE' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label '5V_SYS_VSENSE'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.52
+          },
+          "uuid": "a7b1c046-b0fb-586b-9d97-183733b20ab8"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label '5V_SYS_TOTAL_ISENSE' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label '5V_SYS_TOTAL_ISENSE'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.59
+          },
+          "uuid": "53376e68-e02c-5b50-841b-a455cbe5ea6c"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'P5_DC_DC_FAULT_N' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'P5_DC_DC_FAULT_N'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.66
+          },
+          "uuid": "7b3c7c77-dbfe-59d0-8c98-11f736623e7d"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'P5_PHASE1_ISENSE' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'P5_PHASE1_ISENSE'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.73
+          },
+          "uuid": "26a0f0f9-dd37-5970-8ed3-468f3f94814b"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    },
+    {
+      "description": "Hierarchical label 'P5_PHASE2_ISENSE' in root sheet cannot be connected to non-existent parent sheet",
+      "items": [
+        {
+          "description": "Hierarchical Label 'P5_PHASE2_ISENSE'",
+          "pos": {
+            "x": 3.1,
+            "y": 2.8
+          },
+          "uuid": "e516efec-a324-56c3-b452-01d14b074d67"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_connected"
+    }
+  ],
+  "expected_parent_control_details": [
+    {
+      "description": "Input pin not driven by any Output pins",
+      "items": [
+        {
+          "description": "Symbol U_EN_GATE Pin 4 [HARD_OFF, Input, Line]",
+          "pos": {
+            "x": 0.743,
+            "y": 1.8373
+          },
+          "uuid": "6af15010-49d6-5f73-898c-1806b14830cb"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_driven"
+    },
+    {
+      "description": "Input pin not driven by any Output pins",
+      "items": [
+        {
+          "description": "Symbol U_EN_GATE Pin 3 [SAFE_OFF, Input, Line]",
+          "pos": {
+            "x": 0.743,
+            "y": 1.8627
+          },
+          "uuid": "c9d78a7b-de59-505d-8478-5e0fb7cacc78"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_driven"
+    },
+    {
+      "description": "Input pin not driven by any Output pins",
+      "items": [
+        {
+          "description": "Symbol U_EN_GATE Pin 1 [5V_SYS_EN, Input, Line]",
+          "pos": {
+            "x": 0.743,
+            "y": 1.9135
+          },
+          "uuid": "a280906c-e52c-5072-ac2b-591ec34a6535"
+        }
+      ],
+      "severity": "error",
+      "type": "pin_not_driven"
+    }
+  ],
+  "internal_violation_details": []
+}

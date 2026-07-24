@@ -1,0 +1,4 @@
+Hardware/KiCad/41_5V_DC_DC.kicad_sch
+Hardware/KiCad/plataVM_symbols.kicad_sym
+Tools/erc/pcb_d_kicad_symbol_gate.py
+Tools/kicad/generate_pcb_d_converter_core.py

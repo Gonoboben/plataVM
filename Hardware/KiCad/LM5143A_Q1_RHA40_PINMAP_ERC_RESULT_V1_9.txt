@@ -1,0 +1,13 @@
+LM5143A-Q1 RHA-40 pin-map ERC: PASS
+physical pins: 40
+exposed pad: 1
+single-output interleaved ties: PASS
+MODE=VDDA / FB2=AGND / FB1=AGND: PASS
+COMP1-COMP2 and SS1-SS2 common nets: PASS
+DEMB=VDDA FPWM selection: PASS
+EN1/EN2 common hardware EN_RUN: PASS
+PG1 primary PGOOD / PG2 unused-testpad separation: PASS
+VCC pins 15 and 16 common VCC_BIAS: PASS
+pin mapping freeze: GRANTED
+KiCad symbol geometry/native ERC: OPEN
+production footprint/BOM freeze: NOT GRANTED

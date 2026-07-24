@@ -1,0 +1,405 @@
+{
+  "document": "PCB-D converter-core schematic manifest V1.9",
+  "status": "EXACT_CONTROLLER_AND_DISCRETE_SYMBOLS_NATIVE_INTERNAL_ERC_PASS_OWNER_OPEN_SAVE_OPEN_NO_PRODUCTION_FREEZE",
+  "source_main": "c513dbb3c9da57b8b5a26e755accc94e893e3ef3",
+  "architecture": {
+    "input": "PACK_BUS_P5_IN",
+    "output": "5V_SYS_BUS",
+    "phases": 2,
+    "interleave_degrees": 180,
+    "mode": "FPWM",
+    "forbidden_nets": [
+      "K_MAIN",
+      "MAIN_INPUT_BUS",
+      "5V_CRIT",
+      "3V3_CRIT",
+      "EMG_4S2P"
+    ],
+    "high_current_owner": "PCB-D",
+    "high_current_forbidden_board": "PCB-B"
+  },
+  "kicad_artifacts": {
+    "schematic": "Hardware/KiCad/41_5V_DC_DC.kicad_sch",
+    "symbol_library": "Hardware/KiCad/plataVM_symbols.kicad_sym",
+    "generator": "Tools/kicad/generate_pcb_d_converter_core.py",
+    "symbol_validator": "Tools/erc/pcb_d_kicad_symbol_gate.py",
+    "symbol_gate_result": "Hardware/KiCad/PCB_D_KICAD_SYMBOL_GATE_RESULT_V1_9.txt",
+    "format": "KiCad 10 native S-expression",
+    "generator_identity": "plataVM_symbol_gate",
+    "controller_instances": 1,
+    "power_mosfet_instances": 4,
+    "total_symbol_instances": 50,
+    "hierarchical_interfaces": 11,
+    "split_gate_resistor_positions": 8,
+    "footprints_assigned": 0,
+    "native_erc": "PASS_INTERNAL_TOPOLOGY_OWNER_HIERARCHY_OPEN",
+    "symbol_library_definitions": 15,
+    "exact_mosfet_instances": 4,
+    "exact_kelvin_shunt_instances": 2
+  },
+  "controller": {
+    "ref": "U_DCDC",
+    "part": "LM5143QRHARQ1",
+    "family": "LM5143A-Q1",
+    "package": "RHA VQFN-40",
+    "ties": {
+      "MODE": "VDDA",
+      "FB1": "AGND",
+      "FB2": "AGND",
+      "COMP1": "COMP_COMMON",
+      "COMP2": "COMP_COMMON",
+      "SS1": "SS_COMMON",
+      "SS2": "SS_COMMON",
+      "DEMB": "VDDA",
+      "DITH": "VDDA",
+      "VOUT1": "RSH1_SENSE_LO",
+      "VOUT2": "RSH2_SENSE_LO",
+      "VOUT_route_class": "PER_PHASE_KELVIN_SENSE",
+      "VCCX": "5V_SYS_BUS",
+      "EN1": "EN_RUN",
+      "EN2": "EN_RUN",
+      "PG1": "P5_PGOOD_OD",
+      "PG2": "NC_PG2_TESTPAD"
+    }
+  },
+  "pin_mapping": {
+    "file": "Hardware/KiCad/LM5143A_Q1_RHA40_PINMAP_V1_9.json",
+    "datasheet": "TI SNVSCC1, May 2022",
+    "status": "PASS",
+    "physical_pins": 40,
+    "exposed_pad": 1,
+    "upper_pin_group": {
+      "31": "EN1",
+      "32": "RES",
+      "33": "DEMB",
+      "34": "MODE",
+      "35": "AGND",
+      "36": "VDDA",
+      "37": "RT",
+      "38": "DITH",
+      "39": "SYNCOUT",
+      "40": "EN2"
+    },
+    "symbol_definition": "PASS",
+    "symbol_instantiation": "PASS",
+    "footprint_freeze": false
+  },
+  "timing": {
+    "RT": {
+      "ref": "R_RT",
+      "value": "54.9 kOhm 1%",
+      "net": "RT_SET"
+    },
+    "CSS": {
+      "ref": "C_SS",
+      "value": "510 nF",
+      "net": "SS_COMMON"
+    },
+    "CRES": {
+      "ref": "C_RES",
+      "value": "470 nF prototype start",
+      "net": "RES_TIMER"
+    }
+  },
+  "compensation": {
+    "R_COMP": {
+      "ref": "R_COMP",
+      "value": "24.9 kOhm 1%"
+    },
+    "C_COMP": {
+      "ref": "C_COMP",
+      "value": "3.3 nF"
+    },
+    "C_HF": {
+      "ref": "C_HF",
+      "value": "220 pF"
+    },
+    "network": "COMP_COMMON to AGND"
+  },
+  "uvlo": {
+    "ref": "U_UVLO",
+    "symbol": "UVLO_SUPERVISOR_TBD",
+    "value": "CALC_TBD",
+    "rise_target_V": 8.9,
+    "fall_target_V": 8.35,
+    "output_net": "UVLO_OK",
+    "note": "Passive EN divider rejected"
+  },
+  "enable_logic": {
+    "ref": "U_EN_GATE",
+    "symbol": "HW_ENABLE_GATE_TBD",
+    "output_net": "EN_RUN",
+    "controller_pins": [
+      31,
+      40
+    ],
+    "inputs": [
+      "5V_SYS_EN",
+      "UVLO_OK",
+      "P5_GROUP_SAFE_OFF",
+      "P5_GROUP_HARD_OFF"
+    ],
+    "equation": "5V_SYS_EN AND UVLO_OK AND NOT SAFE_OFF AND NOT HARD_OFF",
+    "implementation": "CALC_TBD",
+    "bias": "PACK_BUS_P5_IN",
+    "must_be_hardware": true,
+    "fail_safe_required": true
+  },
+  "grounding": {
+    "controller_ep_net": "AGND",
+    "controlled_join_ref": "NT_AGND_PGND",
+    "join_value": "AGND_PGND_STAR_LAYOUT_TBD",
+    "layout_rule": "AGND and PGND join at controlled point under/adjacent to controller per datasheet; no hull thermal path",
+    "copper_and_via_pattern": "OPEN_LAYOUT_GATE"
+  },
+  "diagnostics": {
+    "fault_ref": "U_FAULT",
+    "fault_implementation": "CALC_TBD",
+    "fault_output": "P5_DC_DC_FAULT_N",
+    "phase_monitor_refs": [
+      "U_ISENSE1",
+      "U_ISENSE2"
+    ],
+    "total_monitor_ref": "U_ISUM",
+    "monitor_implementation": "CALC_TBD",
+    "power_good_source": "PG1 pin 24",
+    "pg2_policy": "testpad only; not aggregated"
+  },
+  "phases": [
+    {
+      "name": "PHASE1",
+      "controller_pins": {
+        "CS": 27,
+        "VOUT": 26,
+        "HB": 20,
+        "SW": 21,
+        "HO": 22,
+        "HOL": 23,
+        "LO": 18,
+        "LOL": 19,
+        "PGND": 17
+      },
+      "high_side": {
+        "ref": "Q_HS1",
+        "part": "BUK9Y6R0-60E,115",
+        "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+        "physical_pins": {
+          "1": "S",
+          "2": "S",
+          "3": "S",
+          "4": "G",
+          "mb": "D"
+        },
+        "footprint_freeze": false
+      },
+      "low_side": {
+        "ref": "Q_LS1",
+        "part": "BUK9Y6R0-60E,115",
+        "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+        "physical_pins": {
+          "1": "S",
+          "2": "S",
+          "3": "S",
+          "4": "G",
+          "mb": "D"
+        },
+        "footprint_freeze": false
+      },
+      "inductor": {
+        "ref": "L1",
+        "part": "XAL1010-332MED",
+        "value": "3.3 uH +/-20%"
+      },
+      "shunt": {
+        "ref": "RSH1",
+        "part": "WSK25125L000FEA",
+        "value": "5 mOhm 1% Kelvin",
+        "symbol": "plataVM:WSK2512_4T_KELVIN",
+        "force_high": "PHASE1_L_OUT",
+        "force_low": "5V_SYS_BUS",
+        "sense_high": "RSH1_SENSE_HI",
+        "sense_low": "RSH1_SENSE_LO",
+        "terminal_contract": {
+          "I1": "force_high",
+          "I2": "force_low",
+          "E1": "sense_high",
+          "E2": "sense_low"
+        }
+      },
+      "switch_net": "PHASE1_SW",
+      "inductor_output_net": "PHASE1_L_OUT",
+      "cs_filter": {
+        "R": "R_CS1 CALC_TBD",
+        "C": "C_CS1 CALC_TBD",
+        "topology": "RSH1 E1 via R_CS1 to CS1; C_CS1 returned to RSH1 E2/VOUT1 Kelvin node"
+      },
+      "gate_resistors": {
+        "HS_ON": "R_GH1_ON CALC_TBD",
+        "HS_OFF": "R_GH1_OFF CALC_TBD",
+        "LS_ON": "R_GL1_ON CALC_TBD",
+        "LS_OFF": "R_GL1_OFF CALC_TBD"
+      },
+      "bootstrap": {
+        "C": "C_BOOT1 CALC_TBD",
+        "D": "D_BOOT1 CALC_TBD"
+      },
+      "snubber": "DNP_CALC_TBD_PHASE1"
+    },
+    {
+      "name": "PHASE2",
+      "controller_pins": {
+        "CS": 4,
+        "VOUT": 5,
+        "HB": 11,
+        "SW": 10,
+        "HO": 9,
+        "HOL": 8,
+        "LO": 13,
+        "LOL": 12,
+        "PGND": 14
+      },
+      "high_side": {
+        "ref": "Q_HS2",
+        "part": "BUK9Y6R0-60E,115",
+        "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+        "physical_pins": {
+          "1": "S",
+          "2": "S",
+          "3": "S",
+          "4": "G",
+          "mb": "D"
+        },
+        "footprint_freeze": false
+      },
+      "low_side": {
+        "ref": "Q_LS2",
+        "part": "BUK9Y6R0-60E,115",
+        "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+        "physical_pins": {
+          "1": "S",
+          "2": "S",
+          "3": "S",
+          "4": "G",
+          "mb": "D"
+        },
+        "footprint_freeze": false
+      },
+      "inductor": {
+        "ref": "L2",
+        "part": "XAL1010-332MED",
+        "value": "3.3 uH +/-20%"
+      },
+      "shunt": {
+        "ref": "RSH2",
+        "part": "WSK25125L000FEA",
+        "value": "5 mOhm 1% Kelvin",
+        "symbol": "plataVM:WSK2512_4T_KELVIN",
+        "force_high": "PHASE2_L_OUT",
+        "force_low": "5V_SYS_BUS",
+        "sense_high": "RSH2_SENSE_HI",
+        "sense_low": "RSH2_SENSE_LO",
+        "terminal_contract": {
+          "I1": "force_high",
+          "I2": "force_low",
+          "E1": "sense_high",
+          "E2": "sense_low"
+        }
+      },
+      "switch_net": "PHASE2_SW",
+      "inductor_output_net": "PHASE2_L_OUT",
+      "cs_filter": {
+        "R": "R_CS2 CALC_TBD",
+        "C": "C_CS2 CALC_TBD",
+        "topology": "RSH2 E1 via R_CS2 to CS2; C_CS2 returned to RSH2 E2/VOUT2 Kelvin node"
+      },
+      "gate_resistors": {
+        "HS_ON": "R_GH2_ON CALC_TBD",
+        "HS_OFF": "R_GH2_OFF CALC_TBD",
+        "LS_ON": "R_GL2_ON CALC_TBD",
+        "LS_OFF": "R_GL2_OFF CALC_TBD"
+      },
+      "bootstrap": {
+        "C": "C_BOOT2 CALC_TBD",
+        "D": "D_BOOT2 CALC_TBD"
+      },
+      "snubber": "DNP_CALC_TBD_PHASE2"
+    }
+  ],
+  "capacitors": {
+    "input": {
+      "Ceff_required": "at least 100 uF at 16 V/tolerance/temp/aging",
+      "exact_Ceff": "CALC_TBD"
+    },
+    "output": {
+      "polymer": "2 x 10SVPC330M",
+      "mlcc_populated": "4 x 47 uF class",
+      "mlcc_dnp": "2 x 47 uF class",
+      "actual_Ceff_ESR_ESL": "CALC_TBD"
+    }
+  },
+  "safety": {
+    "direct_inputs": [
+      "P5_GROUP_SAFE_OFF",
+      "P5_GROUP_HARD_OFF"
+    ],
+    "fault_output": "P5_DC_DC_FAULT_N",
+    "power_good_source": "PG1 pin 24",
+    "pg2_policy": "testpad only; not aggregated",
+    "local_mcu_bypass_prohibited": true,
+    "service_override_bypass_prohibited": true
+  },
+  "freeze": {
+    "calculation_gate": true,
+    "pin_mapping": true,
+    "kicad_symbol_definition": true,
+    "kicad_symbol_instantiation": true,
+    "native_kicad_erc": true,
+    "owner_kicad_open_save": false,
+    "production_bom": false,
+    "footprints": false,
+    "layout": false,
+    "copper": false,
+    "thermal_qualification": false,
+    "discrete_pin_mapping": true
+  },
+  "discrete_pin_mapping": {
+    "status": "PASS_EXACT_SYMBOL_CONTRACT_NO_FOOTPRINT_FREEZE",
+    "mosfet": {
+      "part": "BUK9Y6R0-60E,115",
+      "package": "LFPAK56 / SOT669",
+      "datasheet": "Nexperia BUK9Y6R0-60E interactive datasheet",
+      "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+      "instances": [
+        "Q_HS1",
+        "Q_LS1",
+        "Q_HS2",
+        "Q_LS2"
+      ],
+      "pins": {
+        "1": "S",
+        "2": "S",
+        "3": "S",
+        "4": "G",
+        "mb": "D"
+      },
+      "footprint_freeze": false
+    },
+    "shunt": {
+      "part": "WSK25125L000FEA",
+      "family": "WSK2512 surface-mount four-terminal",
+      "datasheet": "Vishay document 30108, revision 11-Dec-2023",
+      "symbol": "plataVM:WSK2512_4T_KELVIN",
+      "instances": [
+        "RSH1",
+        "RSH2"
+      ],
+      "terminals": {
+        "I1": "current high",
+        "I2": "current low",
+        "E1": "voltage sense high",
+        "E2": "voltage sense low"
+      },
+      "footprint_freeze": false
+    }
+  }
+}
