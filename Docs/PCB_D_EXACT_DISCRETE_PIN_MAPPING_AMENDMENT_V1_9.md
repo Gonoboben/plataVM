@@ -10,6 +10,9 @@ Owner visual review выявил, что controller symbol был exact, но с
 
 ## 2. Официальный physical contract
 
+Источник MOSFET: Nexperia BUK9Y6R0-60E interactive datasheet, LFPAK56 / SOT669.  
+Источник шунта: Vishay WSK2512 datasheet, document 30108.
+
 ```text
 BUK9Y6R0-60E, LFPAK56 / SOT669:
 1 = Source
@@ -48,6 +51,35 @@ generator byte parity: PASS
 native KiCad internal topology: PASS
 production footprints: 0
 ```
+
+Materializer evidence:
+
+```text
+workflow run: 30094341796
+native tool: KiCad 10.0.5
+artifact: pcb-d-exact-discrete-pinmap-evidence
+artifact id: 8596956991
+raw violations: 14
+expected standalone hierarchical boundaries: 11
+expected parent-driven control inputs: 3
+internal violations: 0
+```
+
+Independent current-head workflow evidence:
+
+```text
+head: 7795b88c268ca9a55c4a5a23404ed7f1c72a0044
+workflow run: 30094550937
+job: 89485413477
+native tool: KiCad 10.0.5
+artifact: pcb-d-kicad-native-erc
+artifact id: 8597053735
+raw violations: 14
+internal violations: 0
+result: PASS
+```
+
+Raw ERC не объявляется zero-error: 14 сообщений являются строго классифицированными standalone child-sheet boundaries. Любое дополнительное нарушение блокирует CI.
 
 ## 5. Freeze boundary
 
