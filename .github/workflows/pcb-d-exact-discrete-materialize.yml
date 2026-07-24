@@ -6,6 +6,9 @@ on:
       - agent/pcb-d-lm5143design-calc-v1-9
     paths:
       - ".github/workflows/pcb-d-exact-discrete-materialize.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/pcb-d-exact-discrete-materialize.yml"
   workflow_dispatch:
 
 permissions:
