@@ -89,24 +89,20 @@ PACK_BUS, two-phase buck, 5V_SYS_BUS, direct SAFE/HARD_OFF and AGND/PGND boundar
     )
     OPEN_GATES.write_text(open_text, encoding="utf-8")
 
-    index_text = INDEX.read_text(encoding="utf-8")
-    if "PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md" not in index_text:
-        marker = "PCB_D_KICAD_SYMBOL_INSTANTIATION_GATE_V1_9.md\n"
-        index_text = replace_once(
-            index_text,
-            marker,
-            marker + "PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md\n",
-            "document index amendment",
-        )
-    if "2026-07-24-pcb-d-exact-discrete-pin-map.md" not in index_text:
-        marker = "chronology/2026-07-23-pcb-d-kicad-symbol-instantiation.md\n"
-        index_text = replace_once(
-            index_text,
-            marker,
-            marker + "chronology/2026-07-24-pcb-d-exact-discrete-pin-map.md\n",
-            "chronology index amendment",
-        )
-    INDEX.write_text(index_text, encoding="utf-8")
+    index_data = INDEX.read_bytes()
+    document_name = b"PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md"
+    if document_name not in index_data:
+        marker = b"PCB_D_KICAD_SYMBOL_INSTANTIATION_GATE_V1_9.md\n"
+        if index_data.count(marker) != 1:
+            raise RuntimeError("document index amendment: ASCII marker mismatch")
+        index_data = index_data.replace(marker, marker + document_name + b"\n", 1)
+    chronology_name = b"chronology/2026-07-24-pcb-d-exact-discrete-pin-map.md"
+    if chronology_name not in index_data:
+        marker = b"chronology/2026-07-23-pcb-d-kicad-symbol-instantiation.md\n"
+        if index_data.count(marker) != 1:
+            raise RuntimeError("chronology index amendment: ASCII marker mismatch")
+        index_data = index_data.replace(marker, marker + chronology_name + b"\n", 1)
+    INDEX.write_bytes(index_data)
 
 def main() -> None:
     patch_generator()
