@@ -1,0 +1,125 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+GEN = ROOT / "Tools/kicad/generate_pcb_d_converter_core.py"
+SYMBOL_GATE = ROOT / "Tools/erc/pcb_d_kicad_symbol_gate.py"
+SEMANTIC_GATE = ROOT / "Tools/erc/pcb_d_converter_core_erc.py"
+MANIFEST = ROOT / "Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json"
+RESULT = ROOT / "Hardware/KiCad/PCB_D_KICAD_SYMBOL_GATE_RESULT_V1_9.txt"
+AMENDMENT = ROOT / "Docs/PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md"
+OPEN_GATES = ROOT / "Docs/PCB_D_OPEN_GATES_V1_9.md"
+INDEX = ROOT / "Docs/V1_9_DOCUMENT_INDEX.md"
+CHRONOLOGY = ROOT / "Docs/chronology/2026-07-24-pcb-d-exact-discrete-pin-map.md"
+
+
+def replace_once(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise RuntimeError(f"{label}: expected one match, got {count}")
+    return text.replace(old, new, 1)
+
+
+def replace_between(text: str, start: str, end: str, replacement: str, label: str) -> str:
+    i = text.find(start)
+    if i < 0:
+        raise RuntimeError(f"{label}: start marker not found")
+    j = text.find(end, i)
+    if j < 0:
+        raise RuntimeError(f"{label}: end marker not found")
+    return text[:i] + replacement.rstrip() + "\n\n" + text[j:]
+
+
+def patch_generator() -> None:
+    text = GEN.read_text(encoding="utf-8")
+
+    text = replace_once(
+        text,
+        "('4','CS2','input','CS2_FILTERED'),('5','VOUT2','input','5V_SYS_BUS'),('6','VCCX','power_in','5V_SYS_BUS'),",
+        "('4','CS2','input','CS2_FILTERED'),('5','VOUT2','input','RSH2_SENSE_LO'),('6','VCCX','power_in','5V_SYS_BUS'),",
+        "phase-2 VOUT Kelvin net",
+    )
+    text = replace_once(
+        text,
+        "('25','VIN','power_in','PACK_BUS_P5_IN'),('26','VOUT1','input','5V_SYS_BUS'),('27','CS1','input','CS1_FILTERED'),",
+        "('25','VIN','power_in','PACK_BUS_P5_IN'),('26','VOUT1','input','RSH1_SENSE_LO'),('27','CS1','input','CS1_FILTERED'),",
+        "phase-1 VOUT Kelvin net",
+    )
+
+    exact_symbols = r"""def buk9y6r0_symbol():
+    props='\n'.join([
+        prop('Reference','Q',0,0,-8.89),
+        prop('Value','BUK9Y6R0-60E',1,0,8.89),
+        prop('Footprint','',2,0,0,hide=True),
+        prop('Datasheet','https://www.nexperia.com/interactive-datasheet?id=BUK9Y6R0-60E',3,0,0,hide=True),
+        prop('Description','Exact BUK9Y6R0-60E LFPAK56/SOT669 physical pin contract; footprint not frozen',4,0,0,hide=True),
+    ])
+    return f'''\t(symbol "plataVM:BUK9Y6R0_60E_LFPAK56"
+\t\t(pin_names (offset 0.5))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+\t\t(in_pos_files yes)
+\t\t(duplicate_pin_numbers_are_jumpers no)
+{props}
+\t\t(symbol "BUK9Y6R0_60E_LFPAK56_0_1"
+\t\t\t(rectangle (start -2.54 -6.35) (end 2.54 6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "LFPAK56" (at 0 0 90) {effects(0.8)})
+\t\t)
+\t\t(symbol "BUK9Y6R0_60E_LFPAK56_1_1"
+\t\t\t(pin input line (at -5.08 0 0) (length 2.54) (name "G" {effects(0.8)}) (number "4" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 -2.54 180) (length 2.54) (name "S" {effects(0.8)}) (number "1" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 0 180) (length 2.54) (name "S" {effects(0.8)}) (number "2" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 2.54 180) (length 2.54) (name "S" {effects(0.8)}) (number "3" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 5.08 180) (length 2.54) (name "D" {effects(0.8)}) (number "mb" {effects(0.8)}))
+\t\t)
+\t\t(embedded_fonts no)
+\t)'''
+
+
+def wsk2512_symbol():
+    props='\n'.join([
+        prop('Reference','RSH',0,0,-6.35),
+        prop('Value','WSK25125L000FEA',1,0,6.35),
+        prop('Footprint','',2,0,0,hide=True),
+        prop('Datasheet','https://www.vishay.com/docs/30108/wsk2512.pdf',3,0,0,hide=True),
+        prop('Description','Exact WSK2512 four-terminal Kelvin contract: I1/I2 current, E1/E2 voltage sense; footprint not frozen',4,0,0,hide=True),
+    ])
+    return f'''\t(symbol "plataVM:WSK2512_4T_KELVIN"
+\t\t(pin_names (offset 0.5))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+\t\t(in_pos_files yes)
+\t\t(duplicate_pin_numbers_are_jumpers no)
+{props}
+\t\t(symbol "WSK2512_4T_KELVIN_0_1"
+\t\t\t(rectangle (start -3.81 -3.81) (end 3.81 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "4T KELVIN" (at 0 0 0) {effects(0.75)})
+\t\t)
+\t\t(symbol "WSK2512_4T_KELVIN_1_1"
+\t\t\t(pin passive line (at -6.35 -2.54 0) (length 2.54) (name "I1" {effects(0.8)}) (number "I1" {effects(0.8)}))
+\t\t\t(pin passive line (at -6.35 2.54 0) (length 2.54) (name "E1" {effects(0.8)}) (number "E1" {effects(0.8)}))
+\t\t\t(pin passive line (at 6.35 -2.54 180) (length 2.54) (name "I2" {effects(0.8)}) (number "I2" {effects(0.8)}))
+\t\t\t(pin passive line (at 6.35 2.54 180) (length 2.54) (name "E2" {effects(0.8)}) (number "E2" {effects(0.8)}))
+\t\t)
+\t\t(embedded_fonts no)
+\t)'''
+"""
+    text = replace_between(
+        text,
+        "def nmos_symbol():",
+        "def one_pin_symbol",
+        exact_symbols,
+        "exact discrete symbol definitions",
+    )
+
+    text = replace_once(
+        text,
+        "    nmos_symbol(),\n    one_pin_symbol('plataVM:PWR_FLAG'",
+        "    buk9y6r0_symbol(),\n    wsk2512_symbol(),\n    one_pin_symbol('plataVM:PWR_FLAG'",
+        "exact discrete library list",
+    )
+
