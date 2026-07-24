@@ -1,0 +1,120 @@
+```text
+BUK9Y6R0-60E, LFPAK56 / SOT669:
+1 = Source
+2 = Source
+3 = Source
+4 = Gate
+mb = Drain
+
+WSK2512 four-terminal:
+I1, I2 = current connections
+E1, E2 = voltage-sense connections
+```
+
+## 3. Реализация
+
+Созданы exact symbols `BUK9Y6R0_60E_LFPAK56` и `WSK2512_4T_KELVIN`. Четыре MOSFET instances используют полный physical pin set. RSH1/RSH2 разделяют force path и Kelvin-sense path.
+
+```text
+RSH1: I1=PHASE1_L_OUT, I2=5V_SYS_BUS, E1=RSH1_SENSE_HI, E2=RSH1_SENSE_LO
+RSH2: I1=PHASE2_L_OUT, I2=5V_SYS_BUS, E1=RSH2_SENSE_HI, E2=RSH2_SENSE_LO
+```
+
+Controller VOUT1/VOUT2, CS filters and phase-monitor placeholders now terminate on the corresponding per-phase Kelvin nodes.
+
+## 4. Проверки
+
+```text
+exact MOSFET pin contract: PASS
+exact MOSFET instances: 4
+generic NMOS_POWER instances: 0
+exact Kelvin shunt terminal contract: PASS
+exact Kelvin shunt instances: 2
+separate force/sense nets: PASS
+controller exact pin map: PASS
+generator byte parity: PASS
+native KiCad internal topology: PASS
+production footprints: 0
+```
+
+## 5. Freeze boundary
+
+Закрыт physical symbol/pin contract. Не закрыты manufacturer land-pattern review, footprint assignment, copper geometry, Kelvin trace geometry, thermal-via design и production BOM.
+
+## 6. Следующий Gate
+
+`Q-P5-019D` — owner KiCad 10 open/save, hierarchy-context visual/ERC review на обновлённых exact symbols.
+""",
+        encoding="utf-8",
+    )
+
+    CHRONOLOGY.write_text(
+        """# 2026-07-24 — PCB-D exact discrete physical pin map V1.9
+
+## Основание
+
+Owner screenshots подтвердили логическую корректность converter core, но выявили generic 3-pin NMOS symbol и generic 2-pin resistor symbol для физически многовыводных компонентов.
+
+## Выполнено
+
+1. Зафиксирован BUK9Y6R0-60E LFPAK56 contract: `1/2/3=S`, `4=G`, `mb=D`.
+2. Зафиксирован WSK2512 contract: `I1/I2` current, `E1/E2` voltage sense.
+3. Созданы exact KiCad symbols и заменены 4 MOSFET + 2 shunt instances.
+4. Введены отдельные `RSHx_SENSE_HI/LO` nets.
+5. Обновлены controller VOUTx, CS filters and monitor boundaries.
+6. Добавлены machine-readable exact discrete checks.
+7. Footprints и layout намеренно не заморожены.
+
+## Архитектура
+
+PACK_BUS, two-phase buck, 5V_SYS_BUS, direct SAFE/HARD_OFF and AGND/PGND boundaries unchanged.
+""",
+        encoding="utf-8",
+    )
+
+    open_text = OPEN_GATES.read_text(encoding="utf-8")
+    open_text = replace_once(
+        open_text,
+        "| Q-P5-019C | GitHub Actions official KiCad 10 native ERC, exact standalone-boundary classification | CLOSED_NATIVE_ERC_INTERNAL_TOPOLOGY |",
+        "| Q-P5-019C | GitHub Actions official KiCad 10 native ERC, exact standalone-boundary classification | CLOSED_NATIVE_ERC_INTERNAL_TOPOLOGY |\n| Q-P5-019C1 | Exact BUK9Y6R0-60E LFPAK56 and WSK2512 four-terminal physical pin mapping | CLOSED_EXACT_DISCRETE_PINMAP |",
+        "open-gates closed row",
+    )
+    open_text = open_text.replace(
+        "exact controller symbol instances: 1\ncontroller pins including EP: 41\npower MOSFET symbols: 4",
+        "exact controller symbol instances: 1\ncontroller pins including EP: 41\nexact LFPAK56 MOSFET symbols: 4\nexact WSK2512 Kelvin symbols: 2",
+    )
+    open_text = open_text.replace(
+        "## 5. Открыто после native ERC Gate",
+        "## 5. Открыто после native ERC и exact discrete pin-map Gates",
+    )
+    OPEN_GATES.write_text(open_text, encoding="utf-8")
+
+    index_text = INDEX.read_text(encoding="utf-8")
+    if "PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md" not in index_text:
+        marker = "PCB_D_KICAD_SYMBOL_INSTANTIATION_GATE_V1_9.md\n"
+        index_text = replace_once(
+            index_text,
+            marker,
+            marker + "PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md\n",
+            "document index amendment",
+        )
+    if "2026-07-24-pcb-d-exact-discrete-pin-map.md" not in index_text:
+        marker = "chronology/2026-07-23-pcb-d-kicad-symbol-instantiation.md\n"
+        index_text = replace_once(
+            index_text,
+            marker,
+            marker + "chronology/2026-07-24-pcb-d-exact-discrete-pin-map.md\n",
+            "chronology index amendment",
+        )
+    INDEX.write_text(index_text, encoding="utf-8")
+
+def main() -> None:
+    patch_generator()
+    patch_symbol_gate()
+    patch_manifest_and_semantic_gate()
+    write_docs()
+    print("Q-P5-019C1 exact discrete physical pin-map amendment materialized")
+
+
+if __name__ == "__main__":
+    main()
