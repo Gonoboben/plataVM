@@ -1,0 +1,163 @@
+    data["controller"]["ties"]["VOUT2"] = "RSH2_SENSE_LO"
+    data["controller"]["ties"]["VOUT_route_class"] = "PER_PHASE_KELVIN_SENSE"
+    data["discrete_pin_mapping"] = {
+        "status": "PASS_EXACT_SYMBOL_CONTRACT_NO_FOOTPRINT_FREEZE",
+        "mosfet": {
+            "part": "BUK9Y6R0-60E,115",
+            "package": "LFPAK56 / SOT669",
+            "datasheet": "Nexperia BUK9Y6R0-60E interactive datasheet",
+            "symbol": "plataVM:BUK9Y6R0_60E_LFPAK56",
+            "instances": ["Q_HS1", "Q_LS1", "Q_HS2", "Q_LS2"],
+            "pins": {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"},
+            "footprint_freeze": False,
+        },
+        "shunt": {
+            "part": "WSK25125L000FEA",
+            "family": "WSK2512 surface-mount four-terminal",
+            "datasheet": "Vishay document 30108, revision 11-Dec-2023",
+            "symbol": "plataVM:WSK2512_4T_KELVIN",
+            "instances": ["RSH1", "RSH2"],
+            "terminals": {
+                "I1": "current high",
+                "I2": "current low",
+                "E1": "voltage sense high",
+                "E2": "voltage sense low",
+            },
+            "footprint_freeze": False,
+        },
+    }
+    for index, phase in enumerate(data["phases"], 1):
+        for side in ("high_side", "low_side"):
+            phase[side]["symbol"] = "plataVM:BUK9Y6R0_60E_LFPAK56"
+            phase[side]["physical_pins"] = {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"}
+            phase[side]["footprint_freeze"] = False
+        shunt = phase["shunt"]
+        shunt["symbol"] = "plataVM:WSK2512_4T_KELVIN"
+        shunt["force_high"] = f"PHASE{index}_L_OUT"
+        shunt["force_low"] = "5V_SYS_BUS"
+        shunt["sense_high"] = f"RSH{index}_SENSE_HI"
+        shunt["sense_low"] = f"RSH{index}_SENSE_LO"
+        shunt["terminal_contract"] = {"I1": "force_high", "I2": "force_low", "E1": "sense_high", "E2": "sense_low"}
+        phase["cs_filter"]["topology"] = f"RSH{index} E1 via R_CS{index} to CS{index}; C_CS{index} returned to RSH{index} E2/VOUT{index} Kelvin node"
+    data["freeze"]["discrete_pin_mapping"] = True
+    data["freeze"]["native_kicad_erc"] = True
+    MANIFEST.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+
+    text = SEMANTIC_GATE.read_text(encoding="utf-8")
+    text = replace_once(text, '    "safety", "freeze",\n', '    "safety", "discrete_pin_mapping", "freeze",\n', "semantic top-level discrete key")
+    text = text.replace(
+        'if artifacts.get("native_erc") != "OPEN_CI_AND_OWNER_KICAD":\n        fail("native ERC status is not explicitly open", errors)',
+        'if artifacts.get("native_erc") != "PASS_INTERNAL_TOPOLOGY_OWNER_HIERARCHY_OPEN":\n        fail("native ERC internal-topology status mismatch", errors)',
+    )
+    text = replace_once(
+        text,
+        '    if artifacts.get("power_mosfet_instances") != 4:\n        fail("four power MOSFET symbols are required", errors)\n',
+        '    if artifacts.get("power_mosfet_instances") != 4 or artifacts.get("exact_mosfet_instances") != 4:\n        fail("four exact power MOSFET symbols are required", errors)\n    if artifacts.get("exact_kelvin_shunt_instances") != 2:\n        fail("two exact Kelvin shunt symbols are required", errors)\n    if artifacts.get("symbol_library_definitions") != 15:\n        fail("exact symbol-library definition count mismatch", errors)\n',
+        "semantic exact discrete artifact counts",
+    )
+    text = text.replace(
+        '"DITH": "VDDA", "VOUT1": "5V_SYS_BUS", "VOUT2": "5V_SYS_BUS",\n        "VOUT_route_class": "KELVIN_SENSE", "VCCX": "5V_SYS_BUS",',
+        '"DITH": "VDDA", "VOUT1": "RSH1_SENSE_LO", "VOUT2": "RSH2_SENSE_LO",\n        "VOUT_route_class": "PER_PHASE_KELVIN_SENSE", "VCCX": "5V_SYS_BUS",',
+    )
+
+    discrete_validation = '''
+    discrete = data["discrete_pin_mapping"]
+    if discrete.get("status") != "PASS_EXACT_SYMBOL_CONTRACT_NO_FOOTPRINT_FREEZE":
+        fail("exact discrete pin-map status mismatch", errors)
+    mosfet = discrete.get("mosfet", {})
+    if mosfet.get("pins") != {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"}:
+        fail("BUK9Y6R0-60E LFPAK56 physical pin contract mismatch", errors)
+    if mosfet.get("instances") != ["Q_HS1", "Q_LS1", "Q_HS2", "Q_LS2"]:
+        fail("exact MOSFET instance set mismatch", errors)
+    shunt = discrete.get("shunt", {})
+    if shunt.get("terminals") != {
+        "I1": "current high", "I2": "current low",
+        "E1": "voltage sense high", "E2": "voltage sense low",
+    }:
+        fail("WSK2512 four-terminal contract mismatch", errors)
+    if shunt.get("instances") != ["RSH1", "RSH2"]:
+        fail("exact Kelvin shunt instance set mismatch", errors)
+    if mosfet.get("footprint_freeze") is not False or shunt.get("footprint_freeze") is not False:
+        fail("discrete footprint freeze granted prematurely", errors)
+'''
+    text = replace_once(text, "\n    uvlo = data[\"uvlo\"]", discrete_validation + "\n    uvlo = data[\"uvlo\"]", "semantic discrete validation")
+
+    phase_extra = '''
+        expected_mosfet_pins = {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"}
+        for side in ("high_side", "low_side"):
+            device = phase.get(side, {})
+            if device.get("symbol") != "plataVM:BUK9Y6R0_60E_LFPAK56":
+                fail(f"phase {index} {side} exact MOSFET symbol mismatch", errors)
+            if device.get("physical_pins") != expected_mosfet_pins:
+                fail(f"phase {index} {side} MOSFET physical pin mismatch", errors)
+            if device.get("footprint_freeze") is not False:
+                fail(f"phase {index} {side} footprint frozen prematurely", errors)
+        shunt = phase.get("shunt", {})
+        expected_shunt = {
+            "I1": "force_high", "I2": "force_low",
+            "E1": "sense_high", "E2": "sense_low",
+        }
+        if shunt.get("symbol") != "plataVM:WSK2512_4T_KELVIN" or shunt.get("terminal_contract") != expected_shunt:
+            fail(f"phase {index} exact Kelvin shunt terminal contract mismatch", errors)
+        if shunt.get("sense_high") != f"RSH{index}_SENSE_HI" or shunt.get("sense_low") != f"RSH{index}_SENSE_LO":
+            fail(f"phase {index} Kelvin sense nets mismatch", errors)
+'''
+    text = replace_once(
+        text,
+        '        if phase.get("shunt", {}).get("value") != "5 mOhm 1% Kelvin":\n            fail(f"phase {index} Kelvin shunt contract mismatch", errors)\n',
+        '        if phase.get("shunt", {}).get("value") != "5 mOhm 1% Kelvin":\n            fail(f"phase {index} Kelvin shunt contract mismatch", errors)\n' + phase_extra,
+        "semantic per-phase exact discrete checks",
+    )
+
+    text = text.replace(
+        '"kicad_symbol_definition": True, "kicad_symbol_instantiation": True,\n        "native_kicad_erc": False, "owner_kicad_open_save": False,',
+        '"kicad_symbol_definition": True, "kicad_symbol_instantiation": True,\n        "discrete_pin_mapping": True, "native_kicad_erc": True,\n        "owner_kicad_open_save": False,',
+    )
+    text = replace_once(
+        text,
+        '    print("exact LM5143A-Q1 RHA-40 symbol instantiation: PASS")\n',
+        '    print("exact LM5143A-Q1 RHA-40 symbol instantiation: PASS")\n    print("exact BUK9Y6R0-60E LFPAK56 physical pin mapping: PASS")\n    print("exact WSK2512 four-terminal Kelvin mapping: PASS")\n',
+        "semantic exact discrete summary",
+    )
+    text = text.replace(
+        'print("NOTE: native KiCad ERC and owner KiCad open/save remain mandatory.")',
+        'print("NOTE: owner KiCad hierarchy/open-save review remains mandatory.")',
+    )
+    SEMANTIC_GATE.write_text(text, encoding="utf-8")
+
+
+def write_docs() -> None:
+    RESULT.write_text(
+        """PCB-D exact controller and discrete physical pin-map Gate V1.9
+schematic: Hardware/KiCad/41_5V_DC_DC.kicad_sch
+symbol library: Hardware/KiCad/plataVM_symbols.kicad_sym
+controller: LM5143A-Q1 RHA-40, 40 physical pins + EP
+MOSFET: BUK9Y6R0-60E LFPAK56/SOT669
+MOSFET physical pins: 1=S, 2=S, 3=S, 4=G, mb=D
+exact MOSFET instances: 4
+shunt: WSK25125L000FEA / WSK2512 four-terminal
+shunt terminals: I1/I2 current; E1/E2 voltage sense
+exact Kelvin shunt instances: 2
+per-phase Kelvin sense nets: RSHx_SENSE_HI / RSHx_SENSE_LO
+production footprints assigned: 0
+exact symbol Gate: PASS
+native converter-core internal topology: PASS (verified before materialized commit)
+RESULT: PASS
+NOTE: owner KiCad 10 hierarchy/open-save/visual review remains mandatory.
+""",
+        encoding="utf-8",
+    )
+
+    AMENDMENT.write_text(
+        """# PCB-D POWER_5V — exact discrete physical pin-map amendment V1.9
+
+Дата: 2026-07-24  
+Gate: `Q-P5-019C1`  
+Статус: `CLOSED_EXACT_DISCRETE_PINMAP_NATIVE_INTERNAL_ERC_PASS`
+
+## 1. Причина amendment
+
+Owner visual review выявил, что controller symbol был exact, но силовые MOSFETs и Kelvin-шунты оставались generic symbols. Это было допустимо до footprint Gate, но недостаточно для физически проверяемой схемы.
+
+## 2. Официальный physical contract
+
