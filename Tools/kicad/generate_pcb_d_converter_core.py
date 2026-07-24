@@ -38,14 +38,14 @@ class Pin:
 # Exact PCB-D configuration-specific electrical typing.
 pin_rows = [
 ('1','SS2','passive','SS_COMMON'),('2','COMP2','passive','COMP_COMMON'),('3','FB2','input','AGND'),
-('4','CS2','input','CS2_FILTERED'),('5','VOUT2','input','5V_SYS_BUS'),('6','VCCX','power_in','5V_SYS_BUS'),
+('4','CS2','input','CS2_FILTERED'),('5','VOUT2','input','RSH2_SENSE_LO'),('6','VCCX','power_in','5V_SYS_BUS'),
 ('7','PG2','open_collector','NC_PG2_TESTPAD'),('8','HOL2','output','GH2_OFF'),('9','HO2','output','GH2_ON'),
 ('10','SW2','passive','PHASE2_SW'),('11','HB2','passive','HB2_BOOT'),('12','LOL2','output','GL2_OFF'),
 ('13','LO2','output','GL2_ON'),('14','PGND2','power_in','POWER_GND'),('15','VCC','power_out','VCC_BIAS'),
 ('16','VCC','passive','VCC_BIAS'),('17','PGND1','power_in','POWER_GND'),('18','LO1','output','GL1_ON'),
 ('19','LOL1','output','GL1_OFF'),('20','HB1','passive','HB1_BOOT'),('21','SW1','passive','PHASE1_SW'),
 ('22','HO1','output','GH1_ON'),('23','HOL1','output','GH1_OFF'),('24','PG1','open_collector','P5_PGOOD_OD'),
-('25','VIN','power_in','PACK_BUS_P5_IN'),('26','VOUT1','input','5V_SYS_BUS'),('27','CS1','input','CS1_FILTERED'),
+('25','VIN','power_in','PACK_BUS_P5_IN'),('26','VOUT1','input','RSH1_SENSE_LO'),('27','CS1','input','CS1_FILTERED'),
 ('28','FB1','input','AGND'),('29','COMP1','output','COMP_COMMON'),('30','SS1','input','SS_COMMON'),
 ('31','EN1','input','EN_RUN'),('32','RES','output','RES_TIMER'),('33','DEMB','input','VDDA_BIAS'),
 ('34','MODE','input','VDDA_BIAS'),('35','AGND','power_in','AGND'),('36','VDDA','power_out','VDDA_BIAS'),
@@ -107,9 +107,65 @@ def two_pin_symbol(name, ref, graphic='box', in_bom='yes', on_board='yes', pin_t
     base=name.split(':')[-1]
     return f'''\t(symbol "{name}"\n\t\t(pin_names (offset 0))\n\t\t(exclude_from_sim no)\n\t\t(in_bom {in_bom})\n\t\t(on_board {on_board})\n\t\t(in_pos_files {on_board})\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "{base}_0_1"\n{shape}\n\t\t)\n\t\t(symbol "{base}_1_1"\n\t\t\t(pin {pin_types[0]} line (at -5.08 0 0) (length 2.54) (name "1" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin {pin_types[1]} line (at 5.08 0 180) (length 2.54) (name "2" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
 
-def nmos_symbol():
-    props='\n'.join([prop('Reference','Q',0,0,-4.064),prop('Value','NMOS_POWER',1,0,4.064),prop('Footprint','',2,0,0,hide=True),prop('Datasheet','~',3,0,0,hide=True)])
-    return f'''\t(symbol "plataVM:NMOS_POWER"\n\t\t(pin_names (offset 0.5))\n\t\t(exclude_from_sim no)\n\t\t(in_bom yes)\n\t\t(on_board yes)\n\t\t(in_pos_files yes)\n\t\t(duplicate_pin_numbers_are_jumpers no)\n{props}\n\t\t(symbol "NMOS_POWER_0_1"\n\t\t\t(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))\n\t\t\t(text "NMOS" (at 0 0 0) {effects(0.8)})\n\t\t)\n\t\t(symbol "NMOS_POWER_1_1"\n\t\t\t(pin passive line (at -5.08 0 0) (length 2.54) (name "G" {effects(0.8)}) (number "1" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" {effects(0.8)}) (number "2" {effects(0.8)}))\n\t\t\t(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" {effects(0.8)}) (number "3" {effects(0.8)}))\n\t\t)\n\t\t(embedded_fonts no)\n\t)'''
+def buk9y6r0_symbol():
+    props='\n'.join([
+        prop('Reference','Q',0,0,-8.89),
+        prop('Value','BUK9Y6R0-60E',1,0,8.89),
+        prop('Footprint','',2,0,0,hide=True),
+        prop('Datasheet','https://www.nexperia.com/interactive-datasheet?id=BUK9Y6R0-60E',3,0,0,hide=True),
+        prop('Description','Exact BUK9Y6R0-60E LFPAK56/SOT669 physical pin contract; footprint not frozen',4,0,0,hide=True),
+    ])
+    return f'''\t(symbol "plataVM:BUK9Y6R0_60E_LFPAK56"
+\t\t(pin_names (offset 0.5))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+\t\t(in_pos_files yes)
+\t\t(duplicate_pin_numbers_are_jumpers no)
+{props}
+\t\t(symbol "BUK9Y6R0_60E_LFPAK56_0_1"
+\t\t\t(rectangle (start -2.54 -6.35) (end 2.54 6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "LFPAK56" (at 0 0 90) {effects(0.8)})
+\t\t)
+\t\t(symbol "BUK9Y6R0_60E_LFPAK56_1_1"
+\t\t\t(pin input line (at -5.08 0 0) (length 2.54) (name "G" {effects(0.8)}) (number "4" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 -2.54 180) (length 2.54) (name "S" {effects(0.8)}) (number "1" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 0 180) (length 2.54) (name "S" {effects(0.8)}) (number "2" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 2.54 180) (length 2.54) (name "S" {effects(0.8)}) (number "3" {effects(0.8)}))
+\t\t\t(pin passive line (at 5.08 5.08 180) (length 2.54) (name "D" {effects(0.8)}) (number "mb" {effects(0.8)}))
+\t\t)
+\t\t(embedded_fonts no)
+\t)'''
+
+
+def wsk2512_symbol():
+    props='\n'.join([
+        prop('Reference','RSH',0,0,-6.35),
+        prop('Value','WSK25125L000FEA',1,0,6.35),
+        prop('Footprint','',2,0,0,hide=True),
+        prop('Datasheet','https://www.vishay.com/docs/30108/wsk2512.pdf',3,0,0,hide=True),
+        prop('Description','Exact WSK2512 four-terminal Kelvin contract: I1/I2 current, E1/E2 voltage sense; footprint not frozen',4,0,0,hide=True),
+    ])
+    return f'''\t(symbol "plataVM:WSK2512_4T_KELVIN"
+\t\t(pin_names (offset 0.5))
+\t\t(exclude_from_sim no)
+\t\t(in_bom yes)
+\t\t(on_board yes)
+\t\t(in_pos_files yes)
+\t\t(duplicate_pin_numbers_are_jumpers no)
+{props}
+\t\t(symbol "WSK2512_4T_KELVIN_0_1"
+\t\t\t(rectangle (start -3.81 -3.81) (end 3.81 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+\t\t\t(text "4T KELVIN" (at 0 0 0) {effects(0.75)})
+\t\t)
+\t\t(symbol "WSK2512_4T_KELVIN_1_1"
+\t\t\t(pin passive line (at -6.35 -2.54 0) (length 2.54) (name "I1" {effects(0.8)}) (number "I1" {effects(0.8)}))
+\t\t\t(pin passive line (at -6.35 2.54 0) (length 2.54) (name "E1" {effects(0.8)}) (number "E1" {effects(0.8)}))
+\t\t\t(pin passive line (at 6.35 -2.54 180) (length 2.54) (name "I2" {effects(0.8)}) (number "I2" {effects(0.8)}))
+\t\t\t(pin passive line (at 6.35 2.54 180) (length 2.54) (name "E2" {effects(0.8)}) (number "E2" {effects(0.8)}))
+\t\t)
+\t\t(embedded_fonts no)
+\t)'''
 
 def one_pin_symbol(name, ref, etype='passive', on_board='yes', in_bom='no'):
     base=name.split(':')[-1]
@@ -203,7 +259,8 @@ lib_defs = [
     two_pin_symbol('plataVM:L','L','inductor'),
     two_pin_symbol('plataVM:D','D','diode'),
     two_pin_symbol('plataVM:NET_TIE_TBD','NT','box','no','no'),
-    nmos_symbol(),
+    buk9y6r0_symbol(),
+    wsk2512_symbol(),
     one_pin_symbol('plataVM:PWR_FLAG','#FLG','power_out','no','no'),
     one_pin_symbol('plataVM:TESTPOINT','TP','passive','yes','yes'),
     uvlo_symbol, enable_symbol, fault_symbol, isense_symbol, isum_symbol,
@@ -249,12 +306,39 @@ def add_two(ref, lib, value, x,y, net1,net2, rot=0):
     else:
         raise NotImplementedError
 
-def add_nmos(ref,x,y,gate,drain,source):
-    objects.append(sym_instance('plataVM:NMOS_POWER',ref,'BUK9Y6R0-60E,115',x,y,['1','2','3']))
+def add_buk9y6r0(ref,x,y,gate,drain,source):
+    objects.append(sym_instance(
+        'plataVM:BUK9Y6R0_60E_LFPAK56', ref, 'BUK9Y6R0-60E,115',
+        x, y, ['1','2','3','4','mb']
+    ))
     objects.extend([
-        wire(x-5.08,y,x-7.62,y,f'{ref}:G'),label(gate,x-7.62,y,'right'),
-        wire(x+5.08,y+1.27,x+7.62,y+1.27,f'{ref}:D'),label(drain,x+7.62,y+1.27,'left'),
-        wire(x+5.08,y-1.27,x+7.62,y-1.27,f'{ref}:S'),label(source,x+7.62,y-1.27,'left'),
+        wire(x-5.08,y,x-7.62,y,f'{ref}:G4'),
+        label(gate,x-7.62,y,'right'),
+        wire(x+5.08,y+2.54,x+7.62,y+2.54,f'{ref}:S1'),
+        label(source,x+7.62,y+2.54,'left'),
+        wire(x+5.08,y,x+7.62,y,f'{ref}:S2'),
+        label(source,x+7.62,y,'left'),
+        wire(x+5.08,y-2.54,x+7.62,y-2.54,f'{ref}:S3'),
+        label(source,x+7.62,y-2.54,'left'),
+        wire(x+5.08,y-5.08,x+10.16,y-5.08,f'{ref}:D_MB'),
+        label(drain,x+10.16,y-5.08,'left'),
+    ])
+
+
+def add_wsk2512(ref,x,y,force_hi,force_lo,sense_hi,sense_lo):
+    objects.append(sym_instance(
+        'plataVM:WSK2512_4T_KELVIN', ref, 'WSK25125L000FEA 5mR 1%',
+        x, y, ['I1','E1','I2','E2']
+    ))
+    objects.extend([
+        wire(x-6.35,y+2.54,x-8.89,y+2.54,f'{ref}:I1'),
+        label(force_hi,x-8.89,y+2.54,'right'),
+        wire(x-6.35,y-2.54,x-8.89,y-2.54,f'{ref}:E1'),
+        label(sense_hi,x-8.89,y-2.54,'right'),
+        wire(x+6.35,y+2.54,x+8.89,y+2.54,f'{ref}:I2'),
+        label(force_lo,x+8.89,y+2.54,'left'),
+        wire(x+6.35,y-2.54,x+8.89,y-2.54,f'{ref}:E2'),
+        label(sense_lo,x+8.89,y-2.54,'left'),
     ])
 
 def add_flag(ref,x,y,net):
@@ -303,15 +387,15 @@ for p in pins:
         px,py=ux,uy-27.94; oy=py-5.08
         objects.extend([wire(px,py,px,oy,f'U:{p.num}'), label(p.net,px,oy,'left')])
 
-# Phase 1 and 2 power stages.
-add_nmos('Q_HS1',35,55,'Q_HS1_GATE','PACK_BUS_P5_IN','PHASE1_SW')
-add_nmos('Q_LS1',35,70,'Q_LS1_GATE','PHASE1_SW','POWER_GND')
-add_two('L1','plataVM:L','XAL1010-332MED 3.3uH',62,60,'PHASE1_SW','PHASE1_L_OUT')
-add_two('RSH1','plataVM:R','WSK25125L000FEA 5mR 1%',88,60,'PHASE1_L_OUT','5V_SYS_BUS')
-add_nmos('Q_HS2',35,125,'Q_HS2_GATE','PACK_BUS_P5_IN','PHASE2_SW')
-add_nmos('Q_LS2',35,140,'Q_LS2_GATE','PHASE2_SW','POWER_GND')
-add_two('L2','plataVM:L','XAL1010-332MED 3.3uH',62,130,'PHASE2_SW','PHASE2_L_OUT')
-add_two('RSH2','plataVM:R','WSK25125L000FEA 5mR 1%',88,130,'PHASE2_L_OUT','5V_SYS_BUS')
+# Phase 1 and 2 power stages with exact LFPAK56 and four-terminal Kelvin contracts.
+add_buk9y6r0('Q_HS1',35,55,'Q_HS1_GATE','PACK_BUS_P5_IN','PHASE1_SW')
+add_buk9y6r0('Q_LS1',35,70,'Q_LS1_GATE','PHASE1_SW','POWER_GND')
+add_two('L1','plataVM:L','XAL1010-332MED 3.3uH',65,60,'PHASE1_SW','PHASE1_L_OUT')
+add_wsk2512('RSH1',100,60,'PHASE1_L_OUT','5V_SYS_BUS','RSH1_SENSE_HI','RSH1_SENSE_LO')
+add_buk9y6r0('Q_HS2',35,125,'Q_HS2_GATE','PACK_BUS_P5_IN','PHASE2_SW')
+add_buk9y6r0('Q_LS2',35,140,'Q_LS2_GATE','PHASE2_SW','POWER_GND')
+add_two('L2','plataVM:L','XAL1010-332MED 3.3uH',65,130,'PHASE2_SW','PHASE2_L_OUT')
+add_wsk2512('RSH2',100,130,'PHASE2_L_OUT','5V_SYS_BUS','RSH2_SENSE_HI','RSH2_SENSE_LO')
 
 # Split gate resistors: independent turn-on and turn-off paths.
 gate_defs=[
@@ -328,10 +412,10 @@ add_two('D_BOOT2','plataVM:D','CALC_TBD',220,112,'VCC_BIAS','HB2_BOOT')
 add_two('C_BOOT2','plataVM:C','CALC_TBD',250,112,'HB2_BOOT','PHASE2_SW')
 
 # Differential high-frequency current-sense filters.
-add_two('R_CS1','plataVM:R','CALC_TBD',220,132,'PHASE1_L_OUT','CS1_FILTERED')
-add_two('C_CS1','plataVM:C','CALC_TBD',250,132,'CS1_FILTERED','5V_SYS_BUS')
-add_two('R_CS2','plataVM:R','CALC_TBD',220,146,'PHASE2_L_OUT','CS2_FILTERED')
-add_two('C_CS2','plataVM:C','CALC_TBD',250,146,'CS2_FILTERED','5V_SYS_BUS')
+add_two('R_CS1','plataVM:R','CALC_TBD',220,132,'RSH1_SENSE_HI','CS1_FILTERED')
+add_two('C_CS1','plataVM:C','CALC_TBD',250,132,'CS1_FILTERED','RSH1_SENSE_LO')
+add_two('R_CS2','plataVM:R','CALC_TBD',220,146,'RSH2_SENSE_HI','CS2_FILTERED')
+add_two('C_CS2','plataVM:C','CALC_TBD',250,146,'CS2_FILTERED','RSH2_SENSE_LO')
 
 # Timing and compensation.
 add_two('R_RT','plataVM:R','54.9k 1%',220,172,'RT_SET','AGND')
@@ -379,13 +463,13 @@ add_box('U_FAULT','plataVM:FAULT_EXPORT_TBD','CALC_TBD FAULT_AGGREGATE',125,185,
 add_two('R_PG1_PULLUP','plataVM:R','CALC_TBD',160,185,'5V_SYS_BUS','P5_PGOOD_OD')
 
 add_box('U_ISENSE1','plataVM:ISENSE_EXPORT_TBD','CALC_TBD PHASE1_MONITOR',45,215,[
-    ('1','left',-1.27,'PHASE1_L_OUT'),
-    ('2','left',1.27,'5V_SYS_BUS'),
+    ('1','left',-1.27,'RSH1_SENSE_HI'),
+    ('2','left',1.27,'RSH1_SENSE_LO'),
     ('3','right',0,'P5_PHASE1_ISENSE'),
 ],15.24,7.62)
 add_box('U_ISENSE2','plataVM:ISENSE_EXPORT_TBD','CALC_TBD PHASE2_MONITOR',87,215,[
-    ('1','left',-1.27,'PHASE2_L_OUT'),
-    ('2','left',1.27,'5V_SYS_BUS'),
+    ('1','left',-1.27,'RSH2_SENSE_HI'),
+    ('2','left',1.27,'RSH2_SENSE_LO'),
     ('3','right',0,'P5_PHASE2_ISENSE'),
 ],15.24,7.62)
 add_box('U_ISUM','plataVM:ISENSE_SUM_TBD','CALC_TBD TOTAL_MONITOR',125,215,[
@@ -418,7 +502,7 @@ notes=[
 ('LM5143A-Q1 RHA-40 exact pin map instantiated. No production footprint/BOM/copper/layout freeze.',12,18,1.0),
 ('Eight independent HO/HOL and LO/LOL gate-resistor positions are intentional; all values remain CALC_TBD.',12,23,1.0),
 ('Direct SAFE/HARD_OFF hardware gate, UVLO, fault/current-monitor blocks and AGND-PGND star are explicit CALC_TBD boundaries.',12,28,1.0),
-('Native KiCad ERC is performed by CI/owner KiCad 10.0.5. Bench Bode/OCP/load-step/thermal Gates remain open.',12,33,1.0),
+('Native KiCad ERC is performed by official KiCad 10.x CI/owner review. Bench Bode/OCP/load-step/thermal Gates remain open.',12,33,1.0),
 ]
 for text,x,y,sz in notes:
     objects.append(f'''\t(text "{text}"\n\t\t(exclude_from_sim no)\n\t\t(at {fx(x)} {fx(y)} 0)\n\t\t{effects(sz, justify='left')}\n\t\t(uuid "{uid('text:'+text)}")\n\t)''')

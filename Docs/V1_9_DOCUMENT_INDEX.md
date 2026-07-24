@@ -55,6 +55,7 @@ PCB_D_LM5143DESIGN_CALC_RECORD_V1_9.csv
 PCB_D_CONVERTER_CORE_SCHEMATIC_REVIEW_V1_9.md
 PCB_D_LM5143A_Q1_PIN_MAPPING_GATE_V1_9.md
 PCB_D_KICAD_SYMBOL_INSTANTIATION_GATE_V1_9.md
+PCB_D_EXACT_DISCRETE_PIN_MAPPING_AMENDMENT_V1_9.md
 ../Hardware/KiCad/Boards/PRELIMINARY_OUTLINE_VALIDATION_V1_9.md
 ../Hardware/KiCad/PCB_D_CONVERTER_CORE_MANIFEST_V1_9.json
 ../Hardware/KiCad/PCB_D_CONVERTER_CORE_ERC_RESULT_V1_9.txt
@@ -87,6 +88,7 @@ chronology/2026-07-21-pcb-d-prototype-components-source-fix.md
 chronology/2026-07-21-pcb-d-lm5143design-calc.md
 chronology/2026-07-23-pcb-d-lm5143a-pin-map.md
 chronology/2026-07-23-pcb-d-kicad-symbol-instantiation.md
+chronology/2026-07-24-pcb-d-exact-discrete-pin-map.md
 ```
 
 ## KiCad toolchain

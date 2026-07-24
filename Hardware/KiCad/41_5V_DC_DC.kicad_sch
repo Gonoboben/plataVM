@@ -527,7 +527,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(symbol "plataVM:NMOS_POWER"
+	(symbol "plataVM:BUK9Y6R0_60E_LFPAK56"
 		(pin_names (offset 0.5))
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -535,13 +535,13 @@
 		(in_pos_files yes)
 		(duplicate_pin_numbers_are_jumpers no)
 		(property "Reference" "Q"
-			(at 0 -4.064 0)
+			(at 0 -8.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
-		(property "Value" "NMOS_POWER"
-			(at 0 4.064 0)
+		(property "Value" "BUK9Y6R0-60E"
+			(at 0 8.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
@@ -553,21 +553,82 @@
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.nexperia.com/interactive-datasheet?id=BUK9Y6R0-60E"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(symbol "NMOS_POWER_0_1"
-			(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))
-			(text "NMOS" (at 0 0 0) (effects (font (size 0.8 0.8))))
+		(property "Description" "Exact BUK9Y6R0-60E LFPAK56/SOT669 physical pin contract; footprint not frozen"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
 		)
-		(symbol "NMOS_POWER_1_1"
-			(pin passive line (at -5.08 0 0) (length 2.54) (name "G" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
-			(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
-			(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+		(symbol "BUK9Y6R0_60E_LFPAK56_0_1"
+			(rectangle (start -2.54 -6.35) (end 2.54 6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+			(text "LFPAK56" (at 0 0 90) (effects (font (size 0.8 0.8))))
+		)
+		(symbol "BUK9Y6R0_60E_LFPAK56_1_1"
+			(pin input line (at -5.08 0 0) (length 2.54) (name "G" (effects (font (size 0.8 0.8)))) (number "4" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 -2.54 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 2.54 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 5.08 180) (length 2.54) (name "D" (effects (font (size 0.8 0.8)))) (number "mb" (effects (font (size 0.8 0.8)))))
+		)
+		(embedded_fonts no)
+	)
+	(symbol "plataVM:WSK2512_4T_KELVIN"
+		(pin_names (offset 0.5))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "RSH"
+			(at 0 -6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "WSK25125L000FEA"
+			(at 0 6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(property "Datasheet" "https://www.vishay.com/docs/30108/wsk2512.pdf"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(property "Description" "Exact WSK2512 four-terminal Kelvin contract: I1/I2 current, E1/E2 voltage sense; footprint not frozen"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(symbol "WSK2512_4T_KELVIN_0_1"
+			(rectangle (start -3.81 -3.81) (end 3.81 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+			(text "4T KELVIN" (at 0 0 0) (effects (font (size 0.75 0.75))))
+		)
+		(symbol "WSK2512_4T_KELVIN_1_1"
+			(pin passive line (at -6.35 -2.54 0) (length 2.54) (name "I1" (effects (font (size 0.8 0.8)))) (number "I1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at -6.35 2.54 0) (length 2.54) (name "E1" (effects (font (size 0.8 0.8)))) (number "E1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 6.35 -2.54 180) (length 2.54) (name "I2" (effects (font (size 0.8 0.8)))) (number "I2" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 6.35 2.54 180) (length 2.54) (name "E2" (effects (font (size 0.8 0.8)))) (number "E2" (effects (font (size 0.8 0.8)))))
 		)
 		(embedded_fonts no)
 	)
@@ -1138,10 +1199,10 @@
 		(stroke (width 0) (type default))
 		(uuid "37314ae8-e8a8-55ea-b8d6-190d0e9a6960")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH2_SENSE_LO"
 		(at 129.68 108.97 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "f9abca3f-a353-52d5-9d00-6f68922ef16c")
+		(uuid "839bd810-af46-53ab-9704-a9bd9f749d8a")
 	)
 	(wire
 		(pts (xy 134.76 106.43) (xy 129.68 106.43))
@@ -1348,10 +1409,10 @@
 		(stroke (width 0) (type default))
 		(uuid "3b9d6f55-fc34-503c-b6bc-70a780ee8399")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH1_SENSE_LO"
 		(at 170.32 106.43 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "ff18101a-454e-5d47-a3e8-864e2e62497d")
+		(uuid "2f584d3f-dbfb-504c-9048-f66329b5da40")
 	)
 	(wire
 		(pts (xy 165.24 103.89) (xy 170.32 103.89))
@@ -1504,7 +1565,7 @@
 		(uuid "5865f27e-85fb-562d-b78e-ed1937e2fd13")
 	)
 	(symbol
-		(lib_id "plataVM:NMOS_POWER")
+		(lib_id "plataVM:BUK9Y6R0_60E_LFPAK56")
 		(at 35 55 0)
 		(unit 1)
 		(body_style 1)
@@ -1556,6 +1617,12 @@
 		(pin "3"
 			(uuid "c8d03c85-cc90-55b4-bb89-a3743b311eb7")
 		)
+		(pin "4"
+			(uuid "4a7d4c58-4e40-5bef-9258-bffc71ff6b7d")
+		)
+		(pin "mb"
+			(uuid "42d90ad6-baca-54d4-bb4c-eba106e37152")
+		)
 		(instances
 			(project "plataVM"
 				(path "/d3c9d66b-51f6-53a6-af26-3a9355c81649"
@@ -1568,7 +1635,7 @@
 	(wire
 		(pts (xy 29.92 55) (xy 27.38 55))
 		(stroke (width 0) (type default))
-		(uuid "79005ffa-b100-5d42-9f42-c5fa42807fba")
+		(uuid "ef516405-d0df-5e9c-ba51-7a6790efcfbd")
 	)
 	(label "Q_HS1_GATE"
 		(at 27.38 55 0)
@@ -1576,27 +1643,47 @@
 		(uuid "484a4cdf-fce1-5efa-856a-276e5c6dddc6")
 	)
 	(wire
-		(pts (xy 40.08 56.27) (xy 42.62 56.27))
+		(pts (xy 40.08 57.54) (xy 42.62 57.54))
 		(stroke (width 0) (type default))
-		(uuid "9e2d755f-fe36-5305-9a08-1e8150c60c7a")
-	)
-	(label "PACK_BUS_P5_IN"
-		(at 42.62 56.27 0)
-		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "1ece1e42-1868-5f19-809e-e8cb01ba5ac3")
-	)
-	(wire
-		(pts (xy 40.08 53.73) (xy 42.62 53.73))
-		(stroke (width 0) (type default))
-		(uuid "856787a6-7a62-5d4b-8d88-bd8e28207981")
+		(uuid "31c567fb-5be2-5b37-826f-ca9c5c8ee7ff")
 	)
 	(label "PHASE1_SW"
-		(at 42.62 53.73 0)
+		(at 42.62 57.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "fe866cfb-70f0-5b92-921b-acef00c7d64d")
+		(uuid "8cee0ca2-832a-5e8f-aec2-443f3cf2fcff")
+	)
+	(wire
+		(pts (xy 40.08 55) (xy 42.62 55))
+		(stroke (width 0) (type default))
+		(uuid "a451b3d5-816c-52a4-a7af-553c113cc372")
+	)
+	(label "PHASE1_SW"
+		(at 42.62 55 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "2102a786-9ccd-594c-8f1d-ecd839592e80")
+	)
+	(wire
+		(pts (xy 40.08 52.46) (xy 42.62 52.46))
+		(stroke (width 0) (type default))
+		(uuid "9af3497a-37c2-5736-9e94-ebc09ba096fa")
+	)
+	(label "PHASE1_SW"
+		(at 42.62 52.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "97cd0427-0416-590f-9da7-1e64a74ffc48")
+	)
+	(wire
+		(pts (xy 40.08 49.92) (xy 45.16 49.92))
+		(stroke (width 0) (type default))
+		(uuid "85efd70a-4f23-5ff4-b12c-127a04acb55e")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 45.16 49.92 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "24aef020-6ddb-5201-8923-6eab2894a193")
 	)
 	(symbol
-		(lib_id "plataVM:NMOS_POWER")
+		(lib_id "plataVM:BUK9Y6R0_60E_LFPAK56")
 		(at 35 70 0)
 		(unit 1)
 		(body_style 1)
@@ -1648,6 +1735,12 @@
 		(pin "3"
 			(uuid "1ffb7c0c-35c1-5682-867a-84e493aa0bdb")
 		)
+		(pin "4"
+			(uuid "7bc7fbcb-0e28-5870-9e9b-f23476164217")
+		)
+		(pin "mb"
+			(uuid "28b93993-89ba-5878-84df-328340555fe9")
+		)
 		(instances
 			(project "plataVM"
 				(path "/d3c9d66b-51f6-53a6-af26-3a9355c81649"
@@ -1660,7 +1753,7 @@
 	(wire
 		(pts (xy 29.92 70) (xy 27.38 70))
 		(stroke (width 0) (type default))
-		(uuid "11dfbf48-5b03-5799-aa2f-599a4331f9f9")
+		(uuid "0da88408-42e7-5061-a34a-b96cd9bc7b6a")
 	)
 	(label "Q_LS1_GATE"
 		(at 27.38 70 0)
@@ -1668,28 +1761,48 @@
 		(uuid "abd6b9f2-3e07-58df-b1d7-f2f6a794bff3")
 	)
 	(wire
-		(pts (xy 40.08 71.27) (xy 42.62 71.27))
+		(pts (xy 40.08 72.54) (xy 42.62 72.54))
 		(stroke (width 0) (type default))
-		(uuid "7292173d-b9f9-5a21-a90e-a1d3ba379dd4")
-	)
-	(label "PHASE1_SW"
-		(at 42.62 71.27 0)
-		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "0441d5b2-af95-5fee-b08e-1fa682709bfc")
-	)
-	(wire
-		(pts (xy 40.08 68.73) (xy 42.62 68.73))
-		(stroke (width 0) (type default))
-		(uuid "83b6f890-dfb7-5a2b-bd37-793c3ce3dbd8")
+		(uuid "f498e4c0-bf74-5706-a485-8c745eff6907")
 	)
 	(label "POWER_GND"
-		(at 42.62 68.73 0)
+		(at 42.62 72.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "dd00458f-77d7-5f79-9af6-10627ce55811")
+		(uuid "727b4d88-38c2-5219-8515-de2c26001e2a")
+	)
+	(wire
+		(pts (xy 40.08 70) (xy 42.62 70))
+		(stroke (width 0) (type default))
+		(uuid "c8f6b938-9704-5d81-8b18-e46bbc19ffe2")
+	)
+	(label "POWER_GND"
+		(at 42.62 70 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "f433f0c3-a0f8-5fae-bdf1-1817f8d77fae")
+	)
+	(wire
+		(pts (xy 40.08 67.46) (xy 42.62 67.46))
+		(stroke (width 0) (type default))
+		(uuid "f7672440-2110-514c-93d8-c17068ad897b")
+	)
+	(label "POWER_GND"
+		(at 42.62 67.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "a695aeae-c780-5ae9-827d-147f85c56344")
+	)
+	(wire
+		(pts (xy 40.08 64.92) (xy 45.16 64.92))
+		(stroke (width 0) (type default))
+		(uuid "d0e28e9e-19f1-5cdf-a797-d3a6560d2a71")
+	)
+	(label "PHASE1_SW"
+		(at 45.16 64.92 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "9b14ddcc-15d1-5aaa-a49f-be483f3dbc7c")
 	)
 	(symbol
 		(lib_id "plataVM:L")
-		(at 62 60 0)
+		(at 65 60 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1699,33 +1812,33 @@
 		(dnp no)
 		(uuid "0ee59b6c-a59f-52fa-9236-65a2d5108ce6")
 		(property "Reference" "L1"
-			(at 62 56 0)
+			(at 65 56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Value" "XAL1010-332MED 3.3uH"
-			(at 62 64 0)
+			(at 65 64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Footprint" ""
-			(at 62 60 0)
+			(at 65 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Datasheet" "~"
-			(at 62 60 0)
+			(at 65 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
-			(at 62 60 0)
+			(at 65 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -1747,28 +1860,28 @@
 		)
 	)
 	(wire
-		(pts (xy 56.92 60) (xy 54.38 60))
+		(pts (xy 59.92 60) (xy 57.38 60))
 		(stroke (width 0) (type default))
 		(uuid "0b68ba31-8db6-5d02-9cb3-a934962e022f")
 	)
 	(label "PHASE1_SW"
-		(at 54.38 60 0)
+		(at 57.38 60 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "38f723cd-0a95-5f95-81c0-0cb349d15a82")
+		(uuid "36e2fe36-d1be-5a49-80c9-63fe0838fcc8")
 	)
 	(wire
-		(pts (xy 67.08 60) (xy 69.62 60))
+		(pts (xy 70.08 60) (xy 72.62 60))
 		(stroke (width 0) (type default))
 		(uuid "31056410-803c-58d2-8cd5-272f54c91961")
 	)
 	(label "PHASE1_L_OUT"
-		(at 69.62 60 0)
+		(at 72.62 60 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "11a47099-6c12-5eff-a3cc-ecfdf2192a41")
+		(uuid "46f97432-c9cd-536c-b0a9-3b748e40120f")
 	)
 	(symbol
-		(lib_id "plataVM:R")
-		(at 88 60 0)
+		(lib_id "plataVM:WSK2512_4T_KELVIN")
+		(at 100 60 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -1778,43 +1891,49 @@
 		(dnp no)
 		(uuid "78c699d6-dc26-5aee-8e22-3d806152b0b1")
 		(property "Reference" "RSH1"
-			(at 88 56 0)
+			(at 100 56 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Value" "WSK25125L000FEA 5mR 1%"
-			(at 88 64 0)
+			(at 100 64 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Footprint" ""
-			(at 88 60 0)
+			(at 100 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Datasheet" "~"
-			(at 88 60 0)
+			(at 100 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
-			(at 88 60 0)
+			(at 100 60 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(pin "1"
-			(uuid "d3987057-9ff7-505b-95a0-3ebad621024d")
+		(pin "I1"
+			(uuid "d0448359-5884-50fb-9b26-daf5b6126317")
 		)
-		(pin "2"
-			(uuid "62f296e5-6c1f-52d1-91ad-a012d76df999")
+		(pin "E1"
+			(uuid "06002116-5b34-5a7f-a262-1bc7bfd91e36")
+		)
+		(pin "I2"
+			(uuid "bdbaf600-3bd2-5bd3-8d4c-69534f30d7bb")
+		)
+		(pin "E2"
+			(uuid "bcfa93c9-c3a2-5370-8ea5-9e6f54e2a853")
 		)
 		(instances
 			(project "plataVM"
@@ -1826,27 +1945,47 @@
 		)
 	)
 	(wire
-		(pts (xy 82.92 60) (xy 80.38 60))
+		(pts (xy 93.65 62.54) (xy 91.11 62.54))
 		(stroke (width 0) (type default))
-		(uuid "6761b9b2-80cf-5e47-b621-1e88f3f6d735")
+		(uuid "998d0813-cea1-54e7-b1fd-f8c8877058db")
 	)
 	(label "PHASE1_L_OUT"
-		(at 80.38 60 0)
+		(at 91.11 62.54 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "ba9f1e46-dabf-5d91-9bd0-795167bab4ad")
+		(uuid "835e3864-d023-5e7e-844c-7e1fbf6436c3")
 	)
 	(wire
-		(pts (xy 93.08 60) (xy 95.62 60))
+		(pts (xy 93.65 57.46) (xy 91.11 57.46))
 		(stroke (width 0) (type default))
-		(uuid "8a4a9b24-fcbf-5047-8355-9db537dcda2f")
+		(uuid "4cf031bf-f878-52e6-bab1-7d1952f16734")
+	)
+	(label "RSH1_SENSE_HI"
+		(at 91.11 57.46 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "40991467-62ce-5854-bc07-e64650ff8163")
+	)
+	(wire
+		(pts (xy 106.35 62.54) (xy 108.89 62.54))
+		(stroke (width 0) (type default))
+		(uuid "8e8a3a8b-bf10-57da-9d46-d3bf3c245e48")
 	)
 	(label "5V_SYS_BUS"
-		(at 95.62 60 0)
+		(at 108.89 62.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "49ef399d-63fd-5bf6-809e-59a8994e3520")
+		(uuid "501d8581-db6f-5785-86e0-7b7bfc60ebfa")
+	)
+	(wire
+		(pts (xy 106.35 57.46) (xy 108.89 57.46))
+		(stroke (width 0) (type default))
+		(uuid "6ab0d9b2-8a50-56f7-b0a9-171b010207c0")
+	)
+	(label "RSH1_SENSE_LO"
+		(at 108.89 57.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "72b3f619-f714-56c1-9942-31de9e48e8c5")
 	)
 	(symbol
-		(lib_id "plataVM:NMOS_POWER")
+		(lib_id "plataVM:BUK9Y6R0_60E_LFPAK56")
 		(at 35 125 0)
 		(unit 1)
 		(body_style 1)
@@ -1898,6 +2037,12 @@
 		(pin "3"
 			(uuid "5f3d6523-37fd-5270-b3f4-fce433aabb03")
 		)
+		(pin "4"
+			(uuid "39dcbace-d2c6-592b-bd88-36deaacad42f")
+		)
+		(pin "mb"
+			(uuid "77ac202e-0383-5006-80b6-61347c09c672")
+		)
 		(instances
 			(project "plataVM"
 				(path "/d3c9d66b-51f6-53a6-af26-3a9355c81649"
@@ -1910,7 +2055,7 @@
 	(wire
 		(pts (xy 29.92 125) (xy 27.38 125))
 		(stroke (width 0) (type default))
-		(uuid "e61f3d83-b158-5b9b-9615-77a9dfde9c6b")
+		(uuid "26d34fc9-d4a2-55e1-9130-04989db5decf")
 	)
 	(label "Q_HS2_GATE"
 		(at 27.38 125 0)
@@ -1918,27 +2063,47 @@
 		(uuid "f0663064-2779-5910-9aaa-2136248c09ba")
 	)
 	(wire
-		(pts (xy 40.08 126.27) (xy 42.62 126.27))
+		(pts (xy 40.08 127.54) (xy 42.62 127.54))
 		(stroke (width 0) (type default))
-		(uuid "e5beeb7c-a14f-527f-b555-43492b9af42e")
-	)
-	(label "PACK_BUS_P5_IN"
-		(at 42.62 126.27 0)
-		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "8022c628-0cd1-5e10-b16e-ae21715be1b4")
-	)
-	(wire
-		(pts (xy 40.08 123.73) (xy 42.62 123.73))
-		(stroke (width 0) (type default))
-		(uuid "39dc00c5-fcc8-540b-bb3e-66c7fa986e9d")
+		(uuid "313244f0-8177-5563-8bbd-7ca4b614d1f4")
 	)
 	(label "PHASE2_SW"
-		(at 42.62 123.73 0)
+		(at 42.62 127.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "35b3f6f6-99b3-520e-a063-d20480d957b3")
+		(uuid "43def738-d4ba-5a68-ae08-5f3a4164033d")
+	)
+	(wire
+		(pts (xy 40.08 125) (xy 42.62 125))
+		(stroke (width 0) (type default))
+		(uuid "0095ae44-8b46-5072-9183-76450913fd4a")
+	)
+	(label "PHASE2_SW"
+		(at 42.62 125 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "1f277035-6241-5b4f-b119-ad1155a7f08b")
+	)
+	(wire
+		(pts (xy 40.08 122.46) (xy 42.62 122.46))
+		(stroke (width 0) (type default))
+		(uuid "0732dc42-45e8-5a3a-a394-97bca6f34775")
+	)
+	(label "PHASE2_SW"
+		(at 42.62 122.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "152aa03d-a50a-5547-a610-469ad98dce6d")
+	)
+	(wire
+		(pts (xy 40.08 119.92) (xy 45.16 119.92))
+		(stroke (width 0) (type default))
+		(uuid "e73097ee-ecf8-5199-bdb8-eea2714baedb")
+	)
+	(label "PACK_BUS_P5_IN"
+		(at 45.16 119.92 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "83388413-9c7a-5182-ad66-7a935d49ca90")
 	)
 	(symbol
-		(lib_id "plataVM:NMOS_POWER")
+		(lib_id "plataVM:BUK9Y6R0_60E_LFPAK56")
 		(at 35 140 0)
 		(unit 1)
 		(body_style 1)
@@ -1990,6 +2155,12 @@
 		(pin "3"
 			(uuid "75034cc3-84a8-5c9f-833a-80305ded20d1")
 		)
+		(pin "4"
+			(uuid "b8b2a8eb-304e-58b7-b416-8d7e94d08e46")
+		)
+		(pin "mb"
+			(uuid "5a7774a2-6302-5402-b411-3972dd7e518f")
+		)
 		(instances
 			(project "plataVM"
 				(path "/d3c9d66b-51f6-53a6-af26-3a9355c81649"
@@ -2002,7 +2173,7 @@
 	(wire
 		(pts (xy 29.92 140) (xy 27.38 140))
 		(stroke (width 0) (type default))
-		(uuid "70408f56-d9e2-5e22-bd41-d17f86ca26de")
+		(uuid "55ac36a5-1b0d-57dc-917f-e2dc711b71d1")
 	)
 	(label "Q_LS2_GATE"
 		(at 27.38 140 0)
@@ -2010,28 +2181,48 @@
 		(uuid "eb63f133-811a-5dd1-b3a6-94274d749bbb")
 	)
 	(wire
-		(pts (xy 40.08 141.27) (xy 42.62 141.27))
+		(pts (xy 40.08 142.54) (xy 42.62 142.54))
 		(stroke (width 0) (type default))
-		(uuid "442226ef-73ac-58b0-b4da-84a6e92a4d3a")
-	)
-	(label "PHASE2_SW"
-		(at 42.62 141.27 0)
-		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "59250ff0-5ca5-5303-832e-bf29576ff6eb")
-	)
-	(wire
-		(pts (xy 40.08 138.73) (xy 42.62 138.73))
-		(stroke (width 0) (type default))
-		(uuid "c661bddc-70db-5e8a-9dc9-53b287c65264")
+		(uuid "b777ed3f-316a-5c98-a249-288dbba73c9a")
 	)
 	(label "POWER_GND"
-		(at 42.62 138.73 0)
+		(at 42.62 142.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "46b354a5-3c3c-51a7-a90d-025750794e85")
+		(uuid "4106eca3-a2a0-5172-8d72-8e5cd3938f38")
+	)
+	(wire
+		(pts (xy 40.08 140) (xy 42.62 140))
+		(stroke (width 0) (type default))
+		(uuid "18c3ac51-8285-57d7-906d-88f99216625c")
+	)
+	(label "POWER_GND"
+		(at 42.62 140 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "83d975d8-1041-5e60-ae1b-4a3ad9345b46")
+	)
+	(wire
+		(pts (xy 40.08 137.46) (xy 42.62 137.46))
+		(stroke (width 0) (type default))
+		(uuid "de512e08-fb3c-5f8e-9b01-c9538da6d1fd")
+	)
+	(label "POWER_GND"
+		(at 42.62 137.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "82816e88-76aa-5b8c-9db7-acc1edba220e")
+	)
+	(wire
+		(pts (xy 40.08 134.92) (xy 45.16 134.92))
+		(stroke (width 0) (type default))
+		(uuid "d4be56d2-23cd-5000-994e-df59e231d2a3")
+	)
+	(label "PHASE2_SW"
+		(at 45.16 134.92 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "1e5210e3-61ff-5a8b-8b9c-5e8dbb219f19")
 	)
 	(symbol
 		(lib_id "plataVM:L")
-		(at 62 130 0)
+		(at 65 130 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2041,33 +2232,33 @@
 		(dnp no)
 		(uuid "40466d71-ab2c-5b57-9ae8-0a453b66de21")
 		(property "Reference" "L2"
-			(at 62 126 0)
+			(at 65 126 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Value" "XAL1010-332MED 3.3uH"
-			(at 62 134 0)
+			(at 65 134 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Footprint" ""
-			(at 62 130 0)
+			(at 65 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Datasheet" "~"
-			(at 62 130 0)
+			(at 65 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
-			(at 62 130 0)
+			(at 65 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -2089,28 +2280,28 @@
 		)
 	)
 	(wire
-		(pts (xy 56.92 130) (xy 54.38 130))
+		(pts (xy 59.92 130) (xy 57.38 130))
 		(stroke (width 0) (type default))
 		(uuid "abe459dd-cdcd-5e70-8bb1-aa4e583f576b")
 	)
 	(label "PHASE2_SW"
-		(at 54.38 130 0)
+		(at 57.38 130 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "8d7f3571-f625-56c6-9c0e-e4e484a4d641")
+		(uuid "5fb333a4-cc69-5673-bd29-63fe1aa3757c")
 	)
 	(wire
-		(pts (xy 67.08 130) (xy 69.62 130))
+		(pts (xy 70.08 130) (xy 72.62 130))
 		(stroke (width 0) (type default))
 		(uuid "71b6ba1e-2820-5912-9648-a4cc56a3f375")
 	)
 	(label "PHASE2_L_OUT"
-		(at 69.62 130 0)
+		(at 72.62 130 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "56f23368-5855-5790-9db0-656aa040dcbd")
+		(uuid "621250e6-1135-5449-a5e9-7f668abb62a2")
 	)
 	(symbol
-		(lib_id "plataVM:R")
-		(at 88 130 0)
+		(lib_id "plataVM:WSK2512_4T_KELVIN")
+		(at 100 130 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -2120,43 +2311,49 @@
 		(dnp no)
 		(uuid "b4794a0d-7e8c-537f-846e-48b328435af6")
 		(property "Reference" "RSH2"
-			(at 88 126 0)
+			(at 100 126 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Value" "WSK25125L000FEA 5mR 1%"
-			(at 88 134 0)
+			(at 100 134 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
 		(property "Footprint" ""
-			(at 88 130 0)
+			(at 100 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Datasheet" "~"
-			(at 88 130 0)
+			(at 100 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
 		(property "Description" "PROTOTYPE / NO FOOTPRINT FREEZE"
-			(at 88 130 0)
+			(at 100 130 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(pin "1"
-			(uuid "fd526ea8-3a26-5cc8-b673-b4fc6af95a21")
+		(pin "I1"
+			(uuid "cebc6fb4-fd73-5940-a547-70c02c691202")
 		)
-		(pin "2"
-			(uuid "37f7040f-deed-5286-ab49-ddf846bc2b71")
+		(pin "E1"
+			(uuid "2058b103-3fb1-5236-b6cc-6a7a84d3dda8")
+		)
+		(pin "I2"
+			(uuid "da58ae74-add5-52f1-be72-bf08bfd2299c")
+		)
+		(pin "E2"
+			(uuid "23b83c98-17a6-5c24-94a5-4031aa7fbcac")
 		)
 		(instances
 			(project "plataVM"
@@ -2168,24 +2365,44 @@
 		)
 	)
 	(wire
-		(pts (xy 82.92 130) (xy 80.38 130))
+		(pts (xy 93.65 132.54) (xy 91.11 132.54))
 		(stroke (width 0) (type default))
-		(uuid "47e9c1c9-4b16-5dd3-b1d6-dbacdb76edcd")
+		(uuid "ca54b481-87e2-50c2-b3c8-1283b697ae63")
 	)
 	(label "PHASE2_L_OUT"
-		(at 80.38 130 0)
+		(at 91.11 132.54 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "d205d944-acbd-5f04-bffb-5a04a4be5196")
+		(uuid "675991b5-da92-52eb-912c-00d240baab7e")
 	)
 	(wire
-		(pts (xy 93.08 130) (xy 95.62 130))
+		(pts (xy 93.65 127.46) (xy 91.11 127.46))
 		(stroke (width 0) (type default))
-		(uuid "83f93e33-3b6f-5f88-ad28-f42d5bd3802e")
+		(uuid "1cfb4230-64d4-5303-a372-cebca4ccba8a")
+	)
+	(label "RSH2_SENSE_HI"
+		(at 91.11 127.46 0)
+		(effects (font (size 0.9 0.9)) (justify right))
+		(uuid "76c1b82c-62a7-502a-b5ea-022b3e0675b6")
+	)
+	(wire
+		(pts (xy 106.35 132.54) (xy 108.89 132.54))
+		(stroke (width 0) (type default))
+		(uuid "377b62d2-d71c-5c5c-954e-e427678b24d7")
 	)
 	(label "5V_SYS_BUS"
-		(at 95.62 130 0)
+		(at 108.89 132.54 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "4a869c49-d467-5dc0-88a9-69a5eb4f6c60")
+		(uuid "057126ae-bcc3-5372-8343-23ec42cc41e5")
+	)
+	(wire
+		(pts (xy 106.35 127.46) (xy 108.89 127.46))
+		(stroke (width 0) (type default))
+		(uuid "d4f46c26-b7e5-5f94-be30-f47b892bc4f4")
+	)
+	(label "RSH2_SENSE_LO"
+		(at 108.89 127.46 0)
+		(effects (font (size 0.9 0.9)) (justify left))
+		(uuid "62b16482-ff6d-540c-923b-6511564381eb")
 	)
 	(symbol
 		(lib_id "plataVM:R")
@@ -3199,10 +3416,10 @@
 		(stroke (width 0) (type default))
 		(uuid "e5c895ff-11c1-5be5-9029-f354795a85be")
 	)
-	(label "PHASE1_L_OUT"
+	(label "RSH1_SENSE_HI"
 		(at 212.38 132 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "63327b3c-0128-543e-b7dd-b5f72f78842d")
+		(uuid "7c1a644f-a22d-563b-b310-4e7940b645fa")
 	)
 	(wire
 		(pts (xy 225.08 132) (xy 227.62 132))
@@ -3288,10 +3505,10 @@
 		(stroke (width 0) (type default))
 		(uuid "dd26118d-8c92-5f22-b93c-2130cf82a257")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH1_SENSE_LO"
 		(at 257.62 132 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "6ec6d52f-b04f-54dd-8260-cb85a118c677")
+		(uuid "077c87d9-affd-5560-8f49-39f76c051ddc")
 	)
 	(symbol
 		(lib_id "plataVM:R")
@@ -3357,10 +3574,10 @@
 		(stroke (width 0) (type default))
 		(uuid "7151241e-6204-5fed-b7f2-afbb2ff9d7b6")
 	)
-	(label "PHASE2_L_OUT"
+	(label "RSH2_SENSE_HI"
 		(at 212.38 146 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "26c93834-1213-5334-b295-f42688a3ea82")
+		(uuid "7ccec4c7-d964-5877-9800-a841cbb0a3df")
 	)
 	(wire
 		(pts (xy 225.08 146) (xy 227.62 146))
@@ -3446,10 +3663,10 @@
 		(stroke (width 0) (type default))
 		(uuid "83e64e3e-5c2a-54ae-92d0-7339b7d34b4f")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH2_SENSE_LO"
 		(at 257.62 146 0)
 		(effects (font (size 0.9 0.9)) (justify left))
-		(uuid "3821c848-fcfc-5cb2-8066-f1cf9b0f1139")
+		(uuid "5cf6d678-a624-5ac4-aff6-f0445e5b1164")
 	)
 	(symbol
 		(lib_id "plataVM:R")
@@ -5216,20 +5433,20 @@
 		(stroke (width 0) (type default))
 		(uuid "0bdca210-5af6-5ffa-a4f8-2a2410c62eee")
 	)
-	(label "PHASE1_L_OUT"
+	(label "RSH1_SENSE_HI"
 		(at 29.76 216.27 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "9e8c5b7c-053c-5d0d-8eeb-2be8b0ecfc0f")
+		(uuid "12790423-81ac-5ffd-add1-3e420ab89d0d")
 	)
 	(wire
 		(pts (xy 34.84 213.73) (xy 29.76 213.73))
 		(stroke (width 0) (type default))
 		(uuid "33eb94e1-5e50-5c0d-81ad-132c7530f9fe")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH1_SENSE_LO"
 		(at 29.76 213.73 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "703c06ff-6f58-5df4-8006-c7f5fb9e7e8b")
+		(uuid "79ebe9c2-76b6-5023-ad50-35f162cca68f")
 	)
 	(wire
 		(pts (xy 55.16 215) (xy 60.24 215))
@@ -5308,20 +5525,20 @@
 		(stroke (width 0) (type default))
 		(uuid "b28dc70b-ee24-57ab-8387-c3c16dd6aa6a")
 	)
-	(label "PHASE2_L_OUT"
+	(label "RSH2_SENSE_HI"
 		(at 71.76 216.27 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "a0dce052-b0d7-52e3-9483-4a7856df0526")
+		(uuid "08c54326-0c7d-5865-9128-3e3e22144d6d")
 	)
 	(wire
 		(pts (xy 76.84 213.73) (xy 71.76 213.73))
 		(stroke (width 0) (type default))
 		(uuid "117fcbcd-f433-5bbb-bf7e-d597079dda21")
 	)
-	(label "5V_SYS_BUS"
+	(label "RSH2_SENSE_LO"
 		(at 71.76 213.73 0)
 		(effects (font (size 0.9 0.9)) (justify right))
-		(uuid "e91e0126-9831-54e6-8ee6-e00326ed5bf6")
+		(uuid "81b93121-9316-5a70-b892-da1046e587b7")
 	)
 	(wire
 		(pts (xy 97.16 215) (xy 102.24 215))
@@ -5704,11 +5921,11 @@
 		(effects (font (size 1 1)) (justify left))
 		(uuid "bb72f50a-eb21-5b9f-8ad2-b00ce119514b")
 	)
-	(text "Native KiCad ERC is performed by CI/owner KiCad 10.0.5. Bench Bode/OCP/load-step/thermal Gates remain open."
+	(text "Native KiCad ERC is performed by official KiCad 10.x CI/owner review. Bench Bode/OCP/load-step/thermal Gates remain open."
 		(exclude_from_sim no)
 		(at 12 33 0)
 		(effects (font (size 1 1)) (justify left))
-		(uuid "9d9fda07-93a0-54ba-ac9e-def2549b5e12")
+		(uuid "d0f0fa36-3e7f-52d3-9148-6f29b6ef52ae")
 	)
 	(sheet_instances
 		(path "/"

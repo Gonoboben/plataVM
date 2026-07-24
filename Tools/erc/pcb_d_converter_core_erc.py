@@ -17,7 +17,7 @@ REQUIRED_TOP = {
     "document", "status", "source_main", "architecture", "kicad_artifacts",
     "controller", "pin_mapping", "timing", "compensation", "uvlo",
     "enable_logic", "grounding", "diagnostics", "phases", "capacitors",
-    "safety", "freeze",
+    "safety", "discrete_pin_mapping", "freeze",
 }
 
 
@@ -59,14 +59,18 @@ def main(path: str) -> int:
         fail("third-party KiCad generator identity mismatch", errors)
     if artifacts.get("controller_instances") != 1:
         fail("exact controller must be instantiated once", errors)
-    if artifacts.get("power_mosfet_instances") != 4:
-        fail("four power MOSFET symbols are required", errors)
+    if artifacts.get("power_mosfet_instances") != 4 or artifacts.get("exact_mosfet_instances") != 4:
+        fail("four exact power MOSFET symbols are required", errors)
+    if artifacts.get("exact_kelvin_shunt_instances") != 2:
+        fail("two exact Kelvin shunt symbols are required", errors)
+    if artifacts.get("symbol_library_definitions") != 15:
+        fail("exact symbol-library definition count mismatch", errors)
     if artifacts.get("split_gate_resistor_positions") != 8:
         fail("eight split gate-resistor positions are required", errors)
     if artifacts.get("footprints_assigned") != 0:
         fail("premature footprint assignment detected", errors)
-    if artifacts.get("native_erc") != "OPEN_CI_AND_OWNER_KICAD":
-        fail("native ERC status is not explicitly open", errors)
+    if artifacts.get("native_erc") != "PASS_INTERNAL_TOPOLOGY_OWNER_HIERARCHY_OPEN":
+        fail("native ERC internal-topology status mismatch", errors)
 
     controller = data["controller"]
     if controller.get("part") != "LM5143QRHARQ1" or controller.get("package") != "RHA VQFN-40":
@@ -75,8 +79,8 @@ def main(path: str) -> int:
         "MODE": "VDDA", "FB1": "AGND", "FB2": "AGND",
         "COMP1": "COMP_COMMON", "COMP2": "COMP_COMMON",
         "SS1": "SS_COMMON", "SS2": "SS_COMMON", "DEMB": "VDDA",
-        "DITH": "VDDA", "VOUT1": "5V_SYS_BUS", "VOUT2": "5V_SYS_BUS",
-        "VOUT_route_class": "KELVIN_SENSE", "VCCX": "5V_SYS_BUS",
+        "DITH": "VDDA", "VOUT1": "RSH1_SENSE_LO", "VOUT2": "RSH2_SENSE_LO",
+        "VOUT_route_class": "PER_PHASE_KELVIN_SENSE", "VCCX": "5V_SYS_BUS",
         "EN1": "EN_RUN", "EN2": "EN_RUN", "PG1": "P5_PGOOD_OD",
         "PG2": "NC_PG2_TESTPAD",
     }
@@ -114,6 +118,25 @@ def main(path: str) -> int:
             fail(f"phase {index} controller pin allocation mismatch", errors)
         if phase.get("shunt", {}).get("value") != "5 mOhm 1% Kelvin":
             fail(f"phase {index} Kelvin shunt contract mismatch", errors)
+
+        expected_mosfet_pins = {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"}
+        for side in ("high_side", "low_side"):
+            device = phase.get(side, {})
+            if device.get("symbol") != "plataVM:BUK9Y6R0_60E_LFPAK56":
+                fail(f"phase {index} {side} exact MOSFET symbol mismatch", errors)
+            if device.get("physical_pins") != expected_mosfet_pins:
+                fail(f"phase {index} {side} MOSFET physical pin mismatch", errors)
+            if device.get("footprint_freeze") is not False:
+                fail(f"phase {index} {side} footprint frozen prematurely", errors)
+        shunt = phase.get("shunt", {})
+        expected_shunt = {
+            "I1": "force_high", "I2": "force_low",
+            "E1": "sense_high", "E2": "sense_low",
+        }
+        if shunt.get("symbol") != "plataVM:WSK2512_4T_KELVIN" or shunt.get("terminal_contract") != expected_shunt:
+            fail(f"phase {index} exact Kelvin shunt terminal contract mismatch", errors)
+        if shunt.get("sense_high") != f"RSH{index}_SENSE_HI" or shunt.get("sense_low") != f"RSH{index}_SENSE_LO":
+            fail(f"phase {index} Kelvin sense nets mismatch", errors)
         gate = phase.get("gate_resistors", {})
         expected_gate_keys = {"HS_ON", "HS_OFF", "LS_ON", "LS_OFF"}
         if set(gate) != expected_gate_keys or any("CALC_TBD" not in str(v) for v in gate.values()):
@@ -124,6 +147,25 @@ def main(path: str) -> int:
             fail(f"phase {index} bootstrap is not explicit CALC_TBD", errors)
         if "DNP_CALC_TBD" not in str(phase.get("snubber")):
             fail(f"phase {index} snubber must remain DNP_CALC_TBD", errors)
+
+    discrete = data["discrete_pin_mapping"]
+    if discrete.get("status") != "PASS_EXACT_SYMBOL_CONTRACT_NO_FOOTPRINT_FREEZE":
+        fail("exact discrete pin-map status mismatch", errors)
+    mosfet = discrete.get("mosfet", {})
+    if mosfet.get("pins") != {"1": "S", "2": "S", "3": "S", "4": "G", "mb": "D"}:
+        fail("BUK9Y6R0-60E LFPAK56 physical pin contract mismatch", errors)
+    if mosfet.get("instances") != ["Q_HS1", "Q_LS1", "Q_HS2", "Q_LS2"]:
+        fail("exact MOSFET instance set mismatch", errors)
+    shunt = discrete.get("shunt", {})
+    if shunt.get("terminals") != {
+        "I1": "current high", "I2": "current low",
+        "E1": "voltage sense high", "E2": "voltage sense low",
+    }:
+        fail("WSK2512 four-terminal contract mismatch", errors)
+    if shunt.get("instances") != ["RSH1", "RSH2"]:
+        fail("exact Kelvin shunt instance set mismatch", errors)
+    if mosfet.get("footprint_freeze") is not False or shunt.get("footprint_freeze") is not False:
+        fail("discrete footprint freeze granted prematurely", errors)
 
     uvlo = data["uvlo"]
     if uvlo.get("ref") != "U_UVLO" or uvlo.get("value") != "CALC_TBD":
@@ -167,7 +209,8 @@ def main(path: str) -> int:
     required_freeze = {
         "calculation_gate": True, "pin_mapping": True,
         "kicad_symbol_definition": True, "kicad_symbol_instantiation": True,
-        "native_kicad_erc": False, "owner_kicad_open_save": False,
+        "discrete_pin_mapping": True, "native_kicad_erc": True,
+        "owner_kicad_open_save": False,
         "production_bom": False, "footprints": False, "layout": False,
         "copper": False, "thermal_qualification": False,
     }
@@ -186,6 +229,8 @@ def main(path: str) -> int:
     print(f"manifest: {path}")
     print(f"phases: {len(phases)}")
     print("exact LM5143A-Q1 RHA-40 symbol instantiation: PASS")
+    print("exact BUK9Y6R0-60E LFPAK56 physical pin mapping: PASS")
+    print("exact WSK2512 four-terminal Kelvin mapping: PASS")
     print(f"split gate-resistor positions: {artifacts.get('split_gate_resistor_positions')}")
     print(f"CALC_TBD markers: {tbd_count}")
     if errors:
@@ -194,7 +239,7 @@ def main(path: str) -> int:
         print(f"RESULT: FAIL ({len(errors)} error(s))")
         return 1
     print("RESULT: PASS")
-    print("NOTE: native KiCad ERC and owner KiCad open/save remain mandatory.")
+    print("NOTE: owner KiCad hierarchy/open-save review remains mandatory.")
     return 0
 
 

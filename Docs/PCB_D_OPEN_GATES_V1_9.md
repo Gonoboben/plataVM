@@ -21,6 +21,7 @@
 | Q-P5-019A | Exact LM5143A-Q1 RHA-40 physical pin mapping and tie contract | CLOSED_PINMAP |
 | Q-P5-019B | Exact KiCad symbol definition and converter-core instantiation | CLOSED_SYMBOL_GATE |
 | Q-P5-019C | GitHub Actions official KiCad 10 native ERC, exact standalone-boundary classification | CLOSED_NATIVE_ERC_INTERNAL_TOPOLOGY |
+| Q-P5-019C1 | Exact BUK9Y6R0-60E LFPAK56 and WSK2512 four-terminal physical pin mapping | CLOSED_EXACT_DISCRETE_PINMAP |
 
 ## 2. Calculator result
 
@@ -129,7 +130,8 @@ Result:
 ```text
 exact controller symbol instances: 1
 controller pins including EP: 41
-power MOSFET symbols: 4
+exact LFPAK56 MOSFET symbols: 4
+exact WSK2512 Kelvin symbols: 2
 schematic symbol instances: 50
 split gate-resistor positions: 8
 hierarchical interfaces: 11
@@ -154,7 +156,7 @@ NT_AGND_PGND
 
 Exact devices/values remain `CALC_TBD` where not yet calculated or measured.
 
-## 5. Открыто после native ERC Gate
+## 5. Открыто после native ERC и exact discrete pin-map Gates
 
 | ID | Открытый параметр | Статус |
 |---|---|---|

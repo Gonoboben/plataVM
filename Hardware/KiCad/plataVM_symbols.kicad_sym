@@ -515,7 +515,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(symbol "NMOS_POWER"
+	(symbol "BUK9Y6R0_60E_LFPAK56"
 		(pin_names (offset 0.5))
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -523,13 +523,13 @@
 		(in_pos_files yes)
 		(duplicate_pin_numbers_are_jumpers no)
 		(property "Reference" "Q"
-			(at 0 -4.064 0)
+			(at 0 -8.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
 		)
-		(property "Value" "NMOS_POWER"
-			(at 0 4.064 0)
+		(property "Value" "BUK9Y6R0-60E"
+			(at 0 8.89 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects (font (size 1 1)))
@@ -541,21 +541,82 @@
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(property "Datasheet" "~"
+		(property "Datasheet" "https://www.nexperia.com/interactive-datasheet?id=BUK9Y6R0-60E"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
 			(effects (font (size 1 1)))
 		)
-		(symbol "NMOS_POWER_0_1"
-			(rectangle (start -2.54 -2.54) (end 2.54 2.54) (stroke (width 0.254) (type default)) (fill (type none)))
-			(text "NMOS" (at 0 0 0) (effects (font (size 0.8 0.8))))
+		(property "Description" "Exact BUK9Y6R0-60E LFPAK56/SOT669 physical pin contract; footprint not frozen"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
 		)
-		(symbol "NMOS_POWER_1_1"
-			(pin passive line (at -5.08 0 0) (length 2.54) (name "G" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
-			(pin passive line (at 5.08 -1.27 180) (length 2.54) (name "D" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
-			(pin passive line (at 5.08 1.27 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+		(symbol "BUK9Y6R0_60E_LFPAK56_0_1"
+			(rectangle (start -2.54 -6.35) (end 2.54 6.35) (stroke (width 0.254) (type default)) (fill (type background)))
+			(text "LFPAK56" (at 0 0 90) (effects (font (size 0.8 0.8))))
+		)
+		(symbol "BUK9Y6R0_60E_LFPAK56_1_1"
+			(pin input line (at -5.08 0 0) (length 2.54) (name "G" (effects (font (size 0.8 0.8)))) (number "4" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 -2.54 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 0 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "2" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 2.54 180) (length 2.54) (name "S" (effects (font (size 0.8 0.8)))) (number "3" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 5.08 5.08 180) (length 2.54) (name "D" (effects (font (size 0.8 0.8)))) (number "mb" (effects (font (size 0.8 0.8)))))
+		)
+		(embedded_fonts no)
+	)
+	(symbol "WSK2512_4T_KELVIN"
+		(pin_names (offset 0.5))
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(duplicate_pin_numbers_are_jumpers no)
+		(property "Reference" "RSH"
+			(at 0 -6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1 1)))
+		)
+		(property "Value" "WSK25125L000FEA"
+			(at 0 6.35 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects (font (size 1 1)))
+		)
+		(property "Footprint" ""
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(property "Datasheet" "https://www.vishay.com/docs/30108/wsk2512.pdf"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(property "Description" "Exact WSK2512 four-terminal Kelvin contract: I1/I2 current, E1/E2 voltage sense; footprint not frozen"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects (font (size 1 1)))
+		)
+		(symbol "WSK2512_4T_KELVIN_0_1"
+			(rectangle (start -3.81 -3.81) (end 3.81 3.81) (stroke (width 0.254) (type default)) (fill (type background)))
+			(text "4T KELVIN" (at 0 0 0) (effects (font (size 0.75 0.75))))
+		)
+		(symbol "WSK2512_4T_KELVIN_1_1"
+			(pin passive line (at -6.35 -2.54 0) (length 2.54) (name "I1" (effects (font (size 0.8 0.8)))) (number "I1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at -6.35 2.54 0) (length 2.54) (name "E1" (effects (font (size 0.8 0.8)))) (number "E1" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 6.35 -2.54 180) (length 2.54) (name "I2" (effects (font (size 0.8 0.8)))) (number "I2" (effects (font (size 0.8 0.8)))))
+			(pin passive line (at 6.35 2.54 180) (length 2.54) (name "E2" (effects (font (size 0.8 0.8)))) (number "E2" (effects (font (size 0.8 0.8)))))
 		)
 		(embedded_fonts no)
 	)

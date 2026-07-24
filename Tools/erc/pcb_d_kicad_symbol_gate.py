@@ -35,6 +35,20 @@ EXPECTED_PINS = {
     "39": ("SYNCOUT", "output"), "40": ("EN2", "input"),
     "EP": ("EXPOSED_PAD", "passive"),
 }
+EXPECTED_MOSFET_PINS = {
+    "1": ("S", "passive"),
+    "2": ("S", "passive"),
+    "3": ("S", "passive"),
+    "4": ("G", "input"),
+    "mb": ("D", "passive"),
+}
+
+EXPECTED_SHUNT_PINS = {
+    "I1": ("I1", "passive"),
+    "E1": ("E1", "passive"),
+    "I2": ("I2", "passive"),
+    "E2": ("E2", "passive"),
+}
 
 REQUIRED_REFS = {
     "U_DCDC", "Q_HS1", "Q_LS1", "Q_HS2", "Q_LS2", "L1", "L2",
@@ -110,8 +124,8 @@ def extract_block(text: str, marker: str) -> str:
     raise ValueError(f"unterminated block: {marker}")
 
 
-def controller_pins(symbol_text: str) -> dict[str, tuple[str, str]]:
-    block = extract_block(symbol_text, '(symbol "LM5143A_Q1_RHA40"')
+def exact_symbol_pins(symbol_text: str, symbol_name: str) -> dict[str, tuple[str, str]]:
+    block = extract_block(symbol_text, f'(symbol "{symbol_name}"')
     result: dict[str, tuple[str, str]] = {}
     pattern = re.compile(
         r'\(pin\s+(\w+)\s+\w+.*?'
@@ -121,10 +135,13 @@ def controller_pins(symbol_text: str) -> dict[str, tuple[str, str]]:
     )
     for electrical_type, name, number in pattern.findall(block):
         if number in result:
-            raise ValueError(f"duplicate controller pin number {number}")
+            raise ValueError(f"duplicate {symbol_name} pin number {number}")
         result[number] = (name, electrical_type)
     return result
 
+
+def controller_pins(symbol_text: str) -> dict[str, tuple[str, str]]:
+    return exact_symbol_pins(symbol_text, "LM5143A_Q1_RHA40")
 
 def instance_refs(schematic: str) -> set[str]:
     # Instance symbols uniquely include a lib_id before their Reference property.
@@ -157,13 +174,13 @@ def main(schematic_path: str, symbol_path: str) -> int:
 
     if '(version 20260101)' not in schematic:
         fail("schematic format must match the KiCad 10.0 supported 20260101 format", errors)
-    if schematic.count('(embedded_fonts no)') != 15:
+    if schematic.count('(embedded_fonts no)') != 16:
         fail("schematic embedded-font metadata count mismatch", errors)
-    if symbols.count('(embedded_fonts no)') != 14:
+    if symbols.count('(embedded_fonts no)') != 15:
         fail("symbol-library embedded-font metadata count mismatch", errors)
     if schematic.count('(in_pos_files yes)') < 50:
         fail("schematic instances/lib symbols are missing in_pos_files metadata", errors)
-    if schematic.count('(duplicate_pin_numbers_are_jumpers no)') != 14:
+    if schematic.count('(duplicate_pin_numbers_are_jumpers no)') != 15:
         fail("embedded library symbol jumper metadata count mismatch", errors)
     if schematic.count('(body_style 1)') != 50:
         fail("schematic symbol body-style metadata count mismatch", errors)
@@ -193,6 +210,22 @@ def main(schematic_path: str, symbol_path: str) -> int:
         fail(str(exc), errors)
         actual_pins = {}
 
+    try:
+        mosfet_pins = exact_symbol_pins(symbols, "BUK9Y6R0_60E_LFPAK56")
+        if mosfet_pins != EXPECTED_MOSFET_PINS:
+            fail(f"BUK9Y6R0-60E LFPAK56 pin contract mismatch: {mosfet_pins}", errors)
+    except ValueError as exc:
+        fail(str(exc), errors)
+        mosfet_pins = {}
+
+    try:
+        shunt_pins = exact_symbol_pins(symbols, "WSK2512_4T_KELVIN")
+        if shunt_pins != EXPECTED_SHUNT_PINS:
+            fail(f"WSK2512 four-terminal pin contract mismatch: {shunt_pins}", errors)
+    except ValueError as exc:
+        fail(str(exc), errors)
+        shunt_pins = {}
+
     refs = instance_refs(schematic)
     missing_refs = sorted(REQUIRED_REFS - refs)
     if missing_refs:
@@ -215,6 +248,7 @@ def main(schematic_path: str, symbol_path: str) -> int:
         "AGND_PGND_STAR_LAYOUT_TBD", "P5_PGOOD_OD", "P5_DC_DC_FAULT_N",
         "P5_PHASE1_ISENSE", "P5_PHASE2_ISENSE", "5V_SYS_TOTAL_ISENSE",
         "PHASE1_L_OUT", "PHASE2_L_OUT", "CS1_FILTERED", "CS2_FILTERED",
+        "RSH1_SENSE_HI", "RSH1_SENSE_LO", "RSH2_SENSE_HI", "RSH2_SENSE_LO",
     }
     for token in sorted(required_tokens):
         if token not in schematic:
@@ -233,13 +267,19 @@ def main(schematic_path: str, symbol_path: str) -> int:
 
     if schematic.count('(lib_id "plataVM:LM5143A_Q1_RHA40")') != 1:
         fail("exact controller symbol must be instantiated exactly once", errors)
-    if schematic.count('(lib_id "plataVM:NMOS_POWER")') != 4:
-        fail("four power MOSFET symbols are required", errors)
+    if '(lib_id "plataVM:NMOS_POWER")' in schematic:
+        fail("generic NMOS_POWER instances are forbidden after Q-P5-019C1", errors)
+    if schematic.count('(lib_id "plataVM:BUK9Y6R0_60E_LFPAK56")') != 4:
+        fail("four exact BUK9Y6R0-60E LFPAK56 symbols are required", errors)
+    if schematic.count('(lib_id "plataVM:WSK2512_4T_KELVIN")') != 2:
+        fail("two exact WSK2512 four-terminal Kelvin symbols are required", errors)
 
     print("PCB-D KiCad exact-symbol Gate V1.9")
     print(f"schematic: {schematic_path}")
     print(f"symbol library: {symbol_path}")
     print(f"controller pins: {len(actual_pins)} including exposed pad")
+    print(f"exact MOSFET pins: {len(mosfet_pins)} per LFPAK56 symbol")
+    print(f"exact shunt terminals: {len(shunt_pins)} per Kelvin symbol")
     print(f"schematic instances: {len(refs)}")
     print(f"split gate resistors: {len(gate_refs)}")
     print(f"hierarchical interfaces: {len(hlabels)}")
@@ -250,7 +290,7 @@ def main(schematic_path: str, symbol_path: str) -> int:
         print(f"RESULT: FAIL ({len(errors)} error(s))")
         return 1
     print("RESULT: PASS")
-    print("NOTE: native KiCad ERC remains a separate mandatory check.")
+    print("NOTE: native KiCad ERC and owner hierarchy/open-save review remain mandatory.")
     return 0
 
 
